@@ -1,0 +1,51 @@
+SIM_INIT
+timestep 0.0001
+duration 500
+max_delay 0.01
+random_init_seed -444444
+END_SIM_INIT
+
+SET_OUTPUTS
+outputting_period 10
+clear_spike_lists 1
+name_model NULL
+connectivity_outputted 1
+CREATE_OUTPUTTER rate during_sim ascii
+CREATE_OUTPUTTER weight during_sim ascii
+CREATE_OUTPUTTER weight during_sim ascii
+END_SET_OUTPUTS
+
+CREATE_GROUP
+n 30
+PLAST_NRN
+LINEAR_POISSON_MECH_CFG
+spontaneous_rate 10
+OUTPUT_KEY group 0
+OUTPUT_KEY group 2
+END_CREATE_GROUP
+
+CONNECT
+n_source 0
+n_target 0
+WEIGHT_UNIFORM
+mean 0.03
+spread 0.003
+DELAY_UNIFORM
+mean 0.004
+spread 0.001
+KERNEL_MECH
+tauA 0.001
+tauB 0.005
+STDP
+eta 0.0000001
+w_in 3.0
+w_out -0.5
+tauP 0.017
+tauD 0.034
+cP 15.0
+cD 10.0
+gmin 0.0
+gmax 0.03
+RANDOM
+proba_connection 0.4
+END_CONNECT
