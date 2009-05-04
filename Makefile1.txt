@@ -7,7 +7,7 @@ CXXFLAGS = -I/usr/local -I/opt/mpich/ch-p4/include
 SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
 # BBS.o ParSpike.o BBServer.o BBClient.o BBS2MPI.o
 
-all: ParSpikeSim CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
+# all: ParSpikeSim CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
 # BBS.o ParSpike.o BBServer.o BBClient.o BBS2MPI.o
 
 CondSynMech.o: CondSynMech.cpp   CondSynMech.h   ConfigBase.h Visitor.h Error.h   IdCounter.h
@@ -37,6 +37,11 @@ SimulationEnvironment.o: SimulationEnvironment.cpp   SimulationEnvironment.h   G
 
 main.o: main.cpp   TypeDefs.h Macros.h CreatedTypeMaps.h Error.h ConfigBase.h Visitor.h   InterfaceBase.h   GlobalDefs.h 
 	$(MPICXX) $(CXXFLAGS)  -c main.cpp -o main.o
+
+SpikeSim: $(SpikeSim_OBJECTS)
+	$(CXX) -o SpikeSim $(SpikeSim_OBJECTS)
+
+
 
 ParSpike.o: ParSpike.h ParSpike.cpp
 	$(MPICXX) $(CXXFLAGS)  -c ParSpike.cpp -o ParSpike.o

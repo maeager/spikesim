@@ -1,13 +1,17 @@
 // Network.h
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef NETWORK_H
-#define NETWORK_H
+#ifndef PARNETWORK_H
+#define PARNETWORK_H
 
 #include <list>
+#include <map>
 
 #include "Group.h"
 #include "GlobalDefs.h"
+
+
+#include "ParSpike.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -16,29 +20,38 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-class parNetwork 
+class ParNetwork 
 {
 public:
-	parNetwork() {}
-#ifdef ParallelSim
-	parNetwork(ParSpike * par) { parInterface = par;)
-#endif
-	~parNetwork(){delete ParSpike;}
+	ParNetwork() {par_ = new ParSpike;}
+	ParNetwork(ParSpike * par) { par_ = par;)
+
+	~ParNetwork(){if (par_) delete par_;}
 	void build_from_file(std::string filename, std::string logfilename = "log.dat", bool no_output = false);
 	void update();
 	void clear_past_of_spike_list(const Time & time_end_past);
-#ifdef ParallelSim
-	ParSpike * parInterface;
-#endif
+
+	ParSpike * par_;
+	static Gid2PreSyn* gid2out_;
+	static Gid2PreSyn* gid2in_;
+
+
 protected:
-    typedef std::list<boost::shared_ptr<Group> > ListGroupType;
-    typedef std::list<boost::shared_ptr<ConfigBase> > ListConfigType;
-	ListGroupType gp_list_; // list of pointers to the neurons of the network
+    typedef std::list<boost::shared_ptr<SynMechInterface> > ListSynType;
+	typedef std::list<boost::shared_ptr<NeuronInterface> > ListNeuronType;
+    typedef std::map<int, boost::shared_ptr<ConfigBase> > MapConfigType;
+	typedef std::list<boost::shared_ptr<ConfigBase> > ListConfigType;
+	ListGroupType gp_list_; // list of pointers to the groups of the network
 	ListConfigType cfg_list_; // list of pointers to the configurators for the connections to keep
 //	const DataCommonNeuron::ListSynMechType & DataCommonNeuron
-#ifdef ParallelSim
-	ParSpike * parInterface;
-#endif
+
+	typedef	std::map< int, SynMechInterface> Gid2PreSyn;  //Similar to NEURON's hash table for parallel program
+	typedef	std::map<int,boost::shared_ptr<ConfigBase>> MapCellId;  //Cell id map
+
+	ListNeuronType* cell_list;  // list of pointers to all the neurons of the network
+	ListSynType presyn_list,postsyn_list;
+	MapCellId2Presyn gid2presyn;
+
 
 };
 
@@ -50,7 +63,7 @@ protected:
 ///////////////////////////////////////////////////////////////////////////
 // Update method
 // all the groups are updates from #0 to last one
-inline void Network::update()
+inline void ParNetwork::update()
 {
 	for (ListGroupType::const_iterator i = gp_list_.begin(); 
 		 i != gp_list_.end(); 

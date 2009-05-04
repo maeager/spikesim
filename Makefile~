@@ -1,5 +1,5 @@
 
-CXX = g++
+
 CXX = g++
 CXXFLAGS = -I/usr/include/boost-1_33_1
 

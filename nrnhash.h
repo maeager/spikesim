@@ -2,15 +2,9 @@
 #define nrnhash_h
 // hash table where buckets are binary search maps and key is castable to unsigned long
 
-#include <ivstream.h>
-
-#if defined(HAVE_SSTREAM) // the standard...
+#include <iostream>
 #include <vector>
 #include <map>
-#else
-#include <vector.h>
-#include <map.h>
-#endif
 
 #define __NrnHashEntry(Table) Table##_Entry
 #define NrnHashEntry(Table) __NrnHashEntry(Table)
