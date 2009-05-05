@@ -37,13 +37,15 @@ public:
 	void update();
 //	void plasticity_update();
 
+// a virer ??? xxx
+	typedef std::list<boost::shared_ptr<NeuronInterface> > ListNrnType; /*!< Type redefinition for the list of pointers to the neurons. */
+	ListNrnType list_; /*!< List of pointers to the neurons of the group. */
+
 private:
 	ConfigBase * data_cfg_; /*!< Common configurator for the neural data shared by all the neurons of this group. */
 	ConfigBase * nrn_act_cfg_; /*!< Common configurator for the activation mechanism shared by all the neurons of this group. */
 
-// a virer ??? xxx
-	typedef std::list<boost::shared_ptr<NeuronInterface> > ListNrnType; /*!< Type redefinition for the list of pointers to the neurons. */
-	ListNrnType list_; /*!< List of pointers to the neurons of the group. */
+
 
 // accessors to information about the group
 public:

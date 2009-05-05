@@ -3,14 +3,22 @@
 
 
 #include "NoThreading.h"
+#ifdef PARALLELSIM
+#include "ParNetwork.h"
+#else
 #include "Network.h"
+#endif
 #include "ManageableInput.h"
 #include "DataPlastNeuron.h"
 #include "SimulationEnvironment.h"
 #include "OutputManager.h"
 
-
+#ifdef PARALLELSIM
+void NoThreading::launch_sim(ParNetwork & net)
+#else
 void NoThreading::launch_sim(Network & net)
+#endif
+
 {
 	while (SimEnv::i_time() < SimEnv::i_duration())
 	{

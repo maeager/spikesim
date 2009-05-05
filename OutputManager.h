@@ -10,7 +10,11 @@
 
 #include "StringFormatters.h"
 #include "SimulationEnvironment.h"
+#ifdef PARALLELSIM
+#include "ParNetwork.h"
+#else
 #include "Network.h"
+#endif
 #include "ConfigBase.h"
 #include "AsciiFileWrapper.h"
 

@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 
+
 #define __NrnHashEntry(Table) Table##_Entry
 #define NrnHashEntry(Table) __NrnHashEntry(Table)
 #define __NrnHashLT(Table) nrnhash_lt_##Table

@@ -9,6 +9,17 @@
 #include "OutputManager.h"
 
 
+ParNetwork::
+~ParNetwork()
+{
+	if (par_) delete par_; 
+	cell_list.clear();
+	gf_list_.clear();
+	cfg_list_clear();
+	presyn_list.clear();
+	postsyn_list.clear();
+}
+
 
 /////////////////////////////////////////////////
 // connect to another group according to a script file describing the connections
@@ -18,7 +29,7 @@
 //----------ME------------
 // TODO: This needs to be split into a configurator and an implementor, so that one process does not decide to build everything
 // TODO: The master must be the hold of the network config and distribute them to the slaves
-void Network::build_from_file(std::string configfilename, std::string logfilename, bool no_output)
+void ParNetwork::build_from_file(std::string configfilename, std::string logfilename, bool no_output)
 {
 //	std::ofstream logoutfile;
 //	logoutfile.open(logfilename.c_str());

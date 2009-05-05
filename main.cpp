@@ -5,7 +5,12 @@
 #include <time.h>
 
 #include "TypeDefs.h"
+
+#ifdef PARALLELSIM
+#include "ParNetwork.h"
+#else
 #include "Network.h"
+#endif
 
 #include "SimulationEnvironment.h"
 #include "OutputManager.h"
@@ -16,16 +21,19 @@
 
 int main(int argc, char *argv[])
 {
+	/*
 	MPI::Init(argc, argv);
-
 	int rank = MPI::COMM_WORLD.Get_rank();
 	int size = MPI::COMM_WORLD.Get_size();
-
+*/
 
 	std::cout << "[info] press any key at end of execution to close this window" << std::endl << std::endl;
-
+		
+#ifdef PARALLELSIM
+	ParNetwork net;
+#else
 	Network net;
-
+#endif
 	// construction of the network, initialisation of the simulation environment, etc.
 	try {
 		net.build_from_file("./script.txt");

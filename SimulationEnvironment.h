@@ -51,6 +51,13 @@ private:
 	// optional features
 	static long random_init_seed_; // to initialise the random number generator
 	static bool reinit_random_before_sim_; // if 'true', reinit the random number generator after the construction of the network just before starting the simulation
+
+
+#ifdef PARALLELSIM
+
+#else
+
+#endif
 };
 
 

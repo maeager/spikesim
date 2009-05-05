@@ -38,8 +38,8 @@ SimulationEnvironment.o: SimulationEnvironment.cpp   SimulationEnvironment.h   G
 main.o: main.cpp   TypeDefs.h Macros.h CreatedTypeMaps.h Error.h ConfigBase.h Visitor.h   InterfaceBase.h   GlobalDefs.h 
 	$(MPICXX) $(CXXFLAGS)  -c main.cpp -o main.o
 
-SpikeSim: $(SpikeSim_OBJECTS)
-	$(CXX) -o SpikeSim $(SpikeSim_OBJECTS)
+SpikeSim.exe: $(SpikeSim_OBJECTS)
+	$(MPICXX) -o SpikeSim.exe $(SpikeSim_OBJECTS)
 
 
 
@@ -63,8 +63,8 @@ NetPar.o: NetPar.h NetPar.cpp
 	$(MPICXX) $(CXXFLAGS)  -c NetPar.cpp -o NetPar.o
 
 
-ParSpikeSim: $(SpikeSim_OBJECTS)
-	$(MPICXX) $(LDFLAGS) -o ParSpikeSim $(SpikeSim_OBJECTS)
+ParSpikeSim.exe: $(SpikeSim_OBJECTS)
+	$(MPICXX) $(LDFLAGS) -o ParSpikeSim.exe $(SpikeSim_OBJECTS)
 
 clean:
-	rm -f *.o
+	rm -f *.o *.exe
