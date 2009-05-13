@@ -30,10 +30,10 @@ static int BBS2MPI::bufcnt_;
 static MPI_Datatype mytypes[] = {MPI_INT, MPI_DOUBLE, MPI_CHAR, MPI_PACKED};
 
 
-BBS2MPI::BBS2MPI()
+/*BBS2MPI::BBS2MPI()
 {
 
-}
+}*/
 
  void BBS2MPI::unpack(void* buf, int count, int my_datatype, bbsmpibuf* r, const char* errmes) {
 	int type[2];

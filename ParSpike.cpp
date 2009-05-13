@@ -11,6 +11,7 @@ ParSpike::ParSpike(void)
 
 
 */ 
+ int ParSpike::mpi_use = 0;
  int ParSpike::numprocs = 1;
  int ParSpike::under_mpi_control_ = 1;
  int ParSpike::my_rank = 0; /* rank */
@@ -137,7 +138,7 @@ void ParSpike::make_spikebuf_type() {
 #endif
 
 double ParSpike::wtime() {
-		return MPI_Wtime();
+	return MPI_Wtime();
 }
 
 void ParSpike::terminate() {

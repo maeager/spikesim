@@ -50,7 +50,7 @@ public:
 
 	virtual void worker(); // forever execute
 	virtual bool is_master();
-	virtual double time();
+	 double time();
 	
 	virtual void perror(const char*);
 public:

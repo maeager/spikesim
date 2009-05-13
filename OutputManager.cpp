@@ -212,7 +212,11 @@ void OutputManager::do_output(const std::string & freq_tag)
 
 /////////////////////////////////////////////////
 // performs the outputting during the simulation
+#ifdef PARALLELSIM
+void OutputManager::clear_past_of_spike_lists(ParNetwork & net)
+#else
 void OutputManager::clear_past_of_spike_lists(Network & net)
+#endif
 {
 	if (clear_spike_lists_)
 		net.clear_past_of_spike_list(SimEnv::sim_time() - outputting_period());

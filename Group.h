@@ -18,6 +18,9 @@
 #include "ConnectivityManager.h"
 #include "DistributionManager.h"
 
+#ifdef PARALLELSIM
+#else
+#endif
 
 //! Group of neurons sharing similar properties.
 /*!	All the neurons of the group share the same configurators for the neural data (\link Group::data_cfg_ \endlink) 
@@ -28,7 +31,11 @@ class Group
 {
 	friend class SingleWayThroughGroups;
 	friend class AllCrossPairsThroughSameGroups;
+#ifdef PARALLELSIM	
+	friend class ParNetwork;
+#else
 	friend class Network;
+#endif
 public:
 	Group() : data_cfg_(0), nrn_act_cfg_(0) {}
 	void populate(std::ifstream & is);

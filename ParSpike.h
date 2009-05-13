@@ -46,17 +46,17 @@ static void pgvts_op(double* in, double* inout, int* len, MPI_Datatype* dptr);
 
 
 
-class ParSpike
+class ParSpike 
 {
 public:
 	ParSpike(void);
 	
 
 	void init(int under_control, int* pargc, char*** pargv);
-	void terminate();
+	static void terminate();
 	void mpiabort(int errcode);
 	double wtime();
-void make_spikebuf_type();
+	void make_spikebuf_type();
 	void make_spike_type();
 	/*inline */void spike_initialize() {
 		make_spike_type();
@@ -100,7 +100,7 @@ void make_spikebuf_type();
 	SpikeBuffer_* spbufin_;;
 #endif	
 
-	int mpi_use; /* are we using MPI? */
+	
 	int nout_; 
 	int* nin_;
 	int icapacity_;
@@ -115,6 +115,7 @@ void make_spikebuf_type();
 	unsigned char* spfixin_;
 	unsigned char* spfixin_ovfl_;
 
+	static int mpi_use; /* are we using MPI? */
 	static int under_mpi_control_;
 	static int my_rank; /* rank */
 	static int numprocs;

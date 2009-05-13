@@ -183,7 +183,7 @@ char* BBSDirect::upkstr() {
 
 void BBSDirect::pkbegin() {
 #if debug
-printf("%d BBSDirect::pkbegin\n", my_rank);
+//printf("%d BBSDirect::pkbegin\n", ParSpike::my_rank);
 #endif
 	BBS2MPI::unref(sendbuf_);
 	sendbuf_ = BBS2MPI::newbuf(100);
@@ -193,35 +193,35 @@ printf("%d BBSDirect::pkbegin\n", my_rank);
 
 void BBSDirect::pkint(int i) {
 #if debug
-printf("%d BBSDirect::pkint %d\n", my_rank, i);
+//printf("%d BBSDirect::pkint %d\n", ParSpike::my_rank, i);
 #endif
 	BBS2MPI::pkint(i, sendbuf_);
 }
 
 void BBSDirect::pkdouble(double x) {
 #if debug
-printf("%d BBSDirect::pkdouble\n", my_rank, x);
+//printf("%d BBSDirect::pkdouble\n", ParSpike::my_rank, x);
 #endif
 	BBS2MPI::pkdouble(x, sendbuf_);
 }
 
 void BBSDirect::pkvec(int n, double* x) {
 #if debug
-printf("%d BBSDirect::pkvec n=%d\n", my_rank, n);
+//printf("%d BBSDirect::pkvec n=%d\n", ParSpike::my_rank, n);
 #endif
 	BBS2MPI::pkvec(n, x, sendbuf_);
 }
 
 void BBSDirect::pkstr(const char* s) {
 #if debug
-printf("%d BBSDirect::pkstr %s\n", my_rank, s);
+//printf("%d BBSDirect::pkstr %s\n", ParSpike::my_rank, s);
 #endif
 	BBS2MPI::pkstr(s, sendbuf_);
 }
 
 void BBSDirect::post(const char* key) {
 #if debug
-	printf("%d BBSDirect::post |%s|\n", my_rank, key);
+//	printf("%d BBSDirect::post |%s|\n", ParSpike::my_rank, key);
 #endif
 	BBS2MPI::enddata(sendbuf_);
 	BBS2MPI::pkstr(key, sendbuf_);
@@ -233,11 +233,11 @@ void BBSDirect::post(const char* key) {
 
 void BBSDirect::post_todo(int parentid) {
 #if debug
-	printf("%d BBSDirect::post_todo for %d\n", my_rank, parentid);
+//	printf("%d BBSDirect::post_todo for %d\n", ParSpike::my_rank, parentid);
 #endif
 	BBS2MPI::enddata(sendbuf_);
 	BBS2MPI::pkint(parentid, sendbuf_);
-	BBSDirectServer::server_->post_todo(parentid, my_rank, sendbuf_);
+	BBSDirectServer::server_->post_todo(parentid, ParSpike::my_rank, sendbuf_);
 	BBS2MPI::unref(sendbuf_);
 	sendbuf_ = nil;
 	BBSDirectServer::handle();
@@ -245,7 +245,7 @@ void BBSDirect::post_todo(int parentid) {
 
 void BBSDirect::post_result(int id) {
 #if debug
-	printf("%d BBSDirect::post_result %d\n", my_rank, id);
+//	printf("%d BBSDirect::post_result %d\n", ParSpike::my_rank, id);
 #endif
 	BBS2MPI::enddata(sendbuf_);
 	BBS2MPI::pkint(id, sendbuf_);
@@ -266,7 +266,7 @@ printf("%d look_take_todo getid=%d\n", BBS2MPI::getid(recvbuf_));
 #endif
 	}
 #if debug
-printf("%d BBSDirect::look_take_todo id=%d\n", my_rank, id);
+//printf("%d BBSDirect::look_take_todo id=%d\n", ParSpike::my_rank, id);
 #endif
 	return id;
 }
@@ -278,7 +278,7 @@ int BBSDirect::take_todo() {
 		assert(0);
 	}
 #if debug
-	printf("%d BBSDirect::take_todo id=%d\n", my_rank, id);
+//	printf("%d BBSDirect::take_todo id=%d\n", ParSpike::my_rank, id);
 #endif
 	return id;
 }
@@ -287,13 +287,13 @@ int BBSDirect::look_take_result(int pid) {
 	BBSDirectServer::handle();
 	int id = BBSDirectServer::server_->look_take_result(pid, &recvbuf_);
 #if debug
-	printf("%d BBSDirect::look_take_result id=%d pid=%d\n", my_rank, id, pid);
+//	printf("%d BBSDirect::look_take_result id=%d pid=%d\n", ParSpike::my_rank, id, pid);
 #endif
 	if (id) {
 		BBS2MPI::upkbegin(recvbuf_);
 	}
 #if debug
-printf("%d look_take_result return id=%d\n", my_rank, id);
+//printf("%d look_take_result return id=%d\n", ParSpike::my_rank, id);
 #endif
 	return id;
 }
@@ -379,9 +379,9 @@ void BBSDirect::done() {
 	BBS2MPI::unref(sendbuf_);
 	sendbuf_ = BBS2MPI::newbuf(20);
 #if debug
-printf("done: numprocs=%d\n", GlobalSpikeConfig.numprocs);
+printf("done: numprocs=%d\n", ParSpike::numprocs);
 #endif
-	for (i=1; i < GlobalSpikeConfig.numprocs; ++i) {
+	for (i=1; i < ParSpike::numprocs; ++i) {
 		BBS2MPI::bbssend(i, QUIT, sendbuf_);
 //printf("kill %d\n", i);
 	}
@@ -399,7 +399,7 @@ void BBSDirect::start() {
 
 
 void BBSDirectServer::start() {
-	if (GlobalSpikeConfig.numprocs > 1) {
+	if (ParSpike::numprocs > 1) {
 		bbs_poll_ = POLLCNT;
 	}
 }
@@ -572,7 +572,7 @@ std::cout << "unknown message" << std::endl;
 
 
 
-void nrnbbs_context_wait();
+
 
 
 BBSDirectServer::BBSDirectServer(){
@@ -737,7 +737,7 @@ void  BBSDirectServer::context(bbsmpibuf* send) {
 
 	int cid, j;
 #if debug
-std::cout << "numprocs=" <<  << "\n", GlobalSpikeConfig.numprocs);
+std::cout << "numprocs=" <<  << "\n", ParSpike::numprocs);
 #endif
 	if (remaining_context_cnt_ > 0) {
 		std::cout << "some workers did not receive previous context" << std::endl;
@@ -745,8 +745,8 @@ std::cout << "numprocs=" <<  << "\n", GlobalSpikeConfig.numprocs);
 		BBS2MPI::unref(context_buf_);
 		context_buf_ = nil;
 	}
-	remaining_context_cnt_ = GlobalSpikeConfig.numprocs - 1;
-	for (j = 1; j < GlobalSpikeConfig.numprocs; ++j) {
+	remaining_context_cnt_ = ParSpike::numprocs - 1;
+	for (j = 1; j < ParSpike::numprocs; ++j) {
 		send_context_->insert(j);
 	}
 	LookingToDoList::iterator i = looking_todo_->begin();
@@ -770,7 +770,7 @@ std::cout << "sending context to already waiting " <<cid  << std::endl;
 
 }
 
-void nrnbbs_context_wait() {
+void bbs_context_wait() {
 	if (BBSImpl::is_master_) {
 		BBSDirectServer::server_->context_wait();
 	}

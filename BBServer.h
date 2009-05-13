@@ -37,6 +37,10 @@
 #define PendingList MpiPendingList
 #define LookingToDoList MpiLookingToDoList
 
+int bbs_poll_;
+#define BBSPOLL if (--bbs_poll_ == 0) { bbs_handle(); }
+
+
 
 class MpiMessageList;
 class MpiPendingList;
@@ -45,10 +49,9 @@ class MpiReadyList;
 class MpiLookingToDoList;
 class MpiResultList;
 struct bbsmpibuf;
-
-
 class KeepArgs;
 
+	void bbs_context_wait();
 	void bbs_handle();
 	void bbs_done();
 
@@ -135,9 +138,6 @@ private:
 	bbsmpibuf* context_buf_;
 	int remaining_context_cnt_;
 };
-
-
-void bbs_context_wait();
 
 
 

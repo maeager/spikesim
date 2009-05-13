@@ -155,7 +155,12 @@ public:
 	static void open_files();
 	static void close_all();
 	static void do_output(const std::string & freq_tag);
-	static void clear_past_of_spike_lists(Network & net);
+	static void clear_past_of_spike_lists(
+#ifdef PARALLELSIM 
+	ParNetwork & net);
+#else
+	Network & net);
+#endif
 	static void do_output_connectivity(const std::list<Size> & list_nb_pre_nrn, const std::list<Size> & list_nb_post_nrn, int bide);
 
 // members

@@ -25,9 +25,9 @@ typedef struct bbsmpibuf {
 	int refcount;
 } bbsmpibuf;
 
-class BBS2MPI {
-public:
-	BBS2MPI();
+namespace BBS2MPI {
+//public:
+//	BBS2MPI();
 	bbsmpibuf* newbuf(int size);
 	void free (bbsmpibuf* buf);
 	void copy(bbsmpibuf* dest, bbsmpibuf* src);
@@ -54,7 +54,7 @@ public:
 	void bbssend(int dest, int tag, bbsmpibuf* r);
 	int bbsrecv(int source, bbsmpibuf* r);
 	int bbssendrecv(int dest, int tag, bbsmpibuf* s, bbsmpibuf* r);
-};
+}
 
 
 

@@ -18,7 +18,6 @@ void NoThreading::launch_sim(ParNetwork & net)
 #else
 void NoThreading::launch_sim(Network & net)
 #endif
-
 {
 	while (SimEnv::i_time() < SimEnv::i_duration())
 	{

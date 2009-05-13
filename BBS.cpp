@@ -94,12 +94,11 @@ bool BBSImpl::is_master() {
 }
 
 double BBS::time() {
-	return impl_->time();
+	return impl_->time(); 
 }
 
 double BBSImpl::time() {
-
-	return wtime();
+	return MPI_Wtime();
 
 }
 
@@ -235,7 +234,7 @@ std::cout <<  " execute begin " << st << " : working_id_= " <<  working_id_ <<  
 		}
 		userid = upkint();
 		ac_ = double(id);
-		execute_helper(); //builds and execute hoc statement
+	//	execute_helper(); //builds and execute hoc statement
 		et = time() - st;
 		total_exec_time += et;
 		if (debug) {
@@ -372,6 +371,7 @@ void BBS::take(const char* key) { // blocking
 
 void BBS::done() {
 	impl_->done();
+	//terminate();
 }
 
 void BBSImpl::done() {

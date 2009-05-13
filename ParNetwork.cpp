@@ -3,21 +3,22 @@
 
 
 #include "StringFormatters.h"
-#include "ParNetwork.h"
 #include "TypeDefs.h"
 #include "SimulationEnvironment.h"
 #include "OutputManager.h"
 
+#include "ParNetwork.h"
 
 ParNetwork::
 ~ParNetwork()
 {
-	if (par_) delete par_; 
-	cell_list.clear();
+//	if (par_) delete par_; 
+/*	cell_list.clear();
 	gf_list_.clear();
 	cfg_list_clear();
 	presyn_list.clear();
 	postsyn_list.clear();
+*/
 }
 
 
