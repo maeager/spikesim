@@ -127,27 +127,27 @@ void nc_append(int precell_id, int postcell_id) {
 	if (gid_exists(postcell_id)) {
 		// target in this subset
 		// source may be on this or another machine
-		nc = cm2t(precell_id, pc.gid2cell(postcell_id), $3, $4, $5)
+		nc = cm2t(precell_id, pc->gid2cell(postcell_id), $3, $4, $5)
 		i = nclist.count
 		nclist.append(nc)
 	} else if ((se = gid_exists(precell_id)) > 0) {
 		// source exists but not the target
 		if (se != 3){ // output to another machine and it is
 			// not yet an outputcell
-			pc.outputcell(precell_id);
+			pc->outputcell(precell_id);
 		}
 	}
 
 }
 
-obfunc cm2t(int precell_id, int postcell_id) {
+obfunc cm2t(int precell_id, void * postcell, int postcell_synid=-1, double weight=0.0, double delay=0.0) {
 	if ($3 < 0) {
-		nc = pc.gid_connect($1, $o2)
+		nc = pc->gid_connect(precell_id, $o2)
 	}else{
-		nc = pc.gid_connect($1, $o2.synlist.object($3))
+		nc = pc->gid_connect(precell_id, postcell->synlist[postcell_synid])
 	}
-	nc.weight = $4
-	nc.delay = $5
+	nc->weight = $4
+	nc->delay = $5
 	return nc
 }
 

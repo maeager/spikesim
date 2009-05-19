@@ -9,59 +9,21 @@
 
 class PreSyn;
 
-// hash table where buckets are binary search maps
-declareNrnHash(Gid2PreSyn, int, PreSyn*)
-implementNrnHash(Gid2PreSyn, int, PreSyn*)
-
-extern NetCvode* net_cvode_instance;
-extern double t, dt;
-extern int cvode_active_;
-extern Point_process* ob2pntproc(Object*);
 extern int nrn_use_selfqueue_;
 extern void nrn_pending_selfqueue(double, NrnThread*);
-
 extern void ncs2nrn_integrate(double tstop);
 extern void nrn_fake_fire(int gid, double firetime, int fake_out);
 extern void nrn_partrans_clear();
-extern int nrnmpi_int_allmax(int);
-extern void nrnmpi_int_allgather(int*, int*, int);
 
 class NetPar
 {
-
-
-	const DataCommonNeuron::ListSynMechType & DataCommonNeuron::presynmechlist_impl();
-
-const ListSynMechType & presynmechlist_impl() const {return presyn_mech_list_;};
-
-
-
-
-
-
-
-
-
-
 private:
-inline static void sppk(vector<unsigned char> c, int gid) {
-	for (int i = localgid_size_-1; i >= 0; --i) {
-		c[i] = gid & 255;
-		gid >>= 8;
-	}
-}
-inline static int spupk(vector<unsigned char> c) {
-	int gid = *c++;
-	for (int i = 1; i < localgid_size_; ++i) {
-		gid <<= 8;
-		gid += *c++;
-	}
-	return gid;
-}
+	static void sppk(vector<unsigned char> c, int gid);
+	static int spupk(vector<unsigned char> c);
 public:
 	NetPar(void);
-
-
+	const DataCommonNeuron::ListSynMechType & DataCommonNeuron::presynmechlist_impl();
+	const ListSynMechType & presynmechlist_impl() const {return presyn_mech_list_;};
 	static void alloc_space();
 	int nrnmpi_spike_compress(int nspike, boolean gid_compress, int xchng_meth);
 	static void nrn_spike_exchange_compressed();	
@@ -110,3 +72,17 @@ public:
 };
 
 
+inline static void sppk(vector<unsigned char> c, int gid) {
+	for (int i = localgid_size_-1; i >= 0; --i) {
+		c[i] = gid & 255;
+		gid >>= 8;
+	}
+}
+inline static int spupk(vector<unsigned char> c) {
+	int gid = *c++;
+	for (int i = 1; i < localgid_size_; ++i) {
+		gid <<= 8;
+		gid += *c++;
+	}
+	return gid;
+}

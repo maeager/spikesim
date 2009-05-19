@@ -47,8 +47,9 @@ if (rank==0){
 	}
 
 	net.build_network();
-	std::cout << "simulation duration: " << (SimEnv::i_duration() * SimEnv::timestep()) << std::endl;
 	std::cout << std::endl << "ParNetwork size " << net.network_size() << std::endl;
+
+	std::cout << "simulation duration: " << (SimEnv::i_duration() * SimEnv::timestep()) << std::endl;
 	std::cout << std::endl << "[info] press any key now to start the execution" << std::endl << std::endl;
 	std::cin.get();
 	

@@ -67,5 +67,18 @@ NetPar.o: NetPar.h NetPar.cpp
 ParSpikeSim.exe: $(ParSpikeSim_OBJECTS)
 	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.exe $(ParSpikeSim_OBJECTS)
 
+
 clean:
-	rm -f *.o *.exe
+	rm -f *.o *.exe *.bak *.sav *~
+
+upload:
+	rsync -Cavuzb --exclude='ncb' --exclude='.hg*' --exclude='*.o' --exclude='*.exe' . meager@soma:~/dmf/ParSpikeSim
+
+upload-dryrun:
+	rsync -Cavuzb -n --exclude='.hg*' --exclude='*.o' --exclude='ncb' --exclude='*.exe' . meager@soma:~/dmf/ParSpikeSim
+
+download:
+	rsync -Cavuzb --exclude='*.o' --exclude='*.exe' meager@soma:~/dmf/ParSpikeSim/ ./
+
+download-dryrun:
+	rsync -Cavuzb -n --exclude='*.o' --exclude='*.exe' meager@soma:~/dmf/ParSpikeSim/ ./

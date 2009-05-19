@@ -1,9 +1,15 @@
 
+# CXX = /opt/gcc-3.4.4/bin/c++
+# MPICXX = /opt/mpich/ch-p4/bin/mpicxx
+# CXXFLAGS = -Wall -I/usr/local -I/opt/mpich/ch-p4/include -DPARALLELSIM
+# LDFLAGS = -L/opt/mpich/ch-p4/lib -lmpich
+SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
+ParSpikeSim_OBJECTS= ParNetwork.o BBS.o ParSpike.o BBServer.o BBClient.o BBS2MPI.o $(SpikeSim_OBJECTS)
 MPICH_INCLUDE= -I/home/maeager/mpich2-1.0/src/include 
 MPILIBNAME = -L/home/maeager/mpich2-1.0/lib -lmpich
-CXX = g++
-CXXFLAGS = -I/usr/include/boost-1_33_1
-SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
+CXX = /home/maeager/mpich2-1.0/bin/mpicxx # g++ 
+CXXFLAGS = -I/usr/include/boost-1_33_1 -I/home/maeager/mpich2-1.0/src/include 
+# SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
 
 
 all: ParSpikeSim CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
@@ -33,31 +39,47 @@ STDPMech.o: STDPMech.cpp   STDPMech.h   SimulationEnvironment.h GlobalDefs.h Con
 ShortTimeCorrInputRefs.o: ShortTimeCorrInputRefs.cpp   ShortTimeCorrInputRefs.h   CorrInputMech.h SimulationEnvironment.h GlobalDefs.h ConfigBase.h   Visitor.h Error.h   SpikeTimeGenerator.h DistributionManager.h RandomGenerator.h   
 SimulationEnvironment.o: SimulationEnvironment.cpp   SimulationEnvironment.h   GlobalDefs.h SpikeTimeGenerator.h DistributionManager.h   RandomGenerator.h 
 
-main.o: main.cpp   TypeDefs.h Macros.h CreatedTypeMaps.h Error.h ConfigBase.h Visitor.h   InterfaceBase.h   GlobalDefs.h IdCounter.h NeuronTemplate.h SynapseTemplate.h   DataCommonNeuron.h   DataRecordNeuron.h   SimulationEnvironment.h DataPlastNeuron.h   Threading.h   DistributionManager.h RandomGenerator.h   PoissonMech.h NeuronActivationFunction.h SpikeTimeGenerator.h   PoissonParameters.h ManageableInput.h CorrInputMech.h   DeltaCorrInputRefs.h ShortTimeCorrInputRefs.h   OscillatoryCorrInputRefs.h DataIndivSynapse.h DataLightSynapse.h   DataPlastSynapse.h DoubleExpSynMech.h CondSynMech.h InstantSynMech.h   NoPlastMech.h STDPMech.h STDPFunction.h Network.h Group.h   ConnectivityManager.h OutputManager.h   StringFormatters.h   AsciiFileWrapper.h NoThreading.h Engine.h
+main.o: main.cpp   TypeDefs.h Macros.h CreatedTypeMaps.h Error.h ConfigBase.h Visitor.h   InterfaceBase.h   GlobalDefs.h 
+	$(MPICXX) $(CXXFLAGS)  -c main.cpp -o main.o
+
+SpikeSim.exe: $(SpikeSim_OBJECTS)
+	$(MPICXX) $(CXXFLAGS) -o SpikeSim.exe $(SpikeSim_OBJECTS)
+
+ParNetwork.o: ParNetwork.h ParNetwork.cpp
+	$(MPICXX) $(CXXFLAGS)  -c ParNetwork.cpp -o ParNetwork.o
 
 ParSpike.o: ParSpike.h ParSpike.cpp
-	$(CXX) $(MPICH_INCLUDE) -c ParSpike.cpp -o ParSpike.o
+	$(MPICXX) $(CXXFLAGS)  -c ParSpike.cpp -o ParSpike.o
 
 
 BBS.o: BBS.h BBS.cpp ParSpike.h
-	$(CXX) $(MPICH_INCLUDE) -c BBS.cpp -o BBS.o
+	$(MPICXX) $(CXXFLAGS)  -c BBS.cpp -o BBS.o
 
 BBS2MPI.o: BBS2MPI.h BBS2MPI.cpp ParSpike.h
-	$(CXX) $(MPICH_INCLUDE) -c BBS2MPI.cpp -o BBS2MPI.o
+	$(MPICXX) $(CXXFLAGS)  -c BBS2MPI.cpp -o BBS2MPI.o
 	
 BBServer.o: BBS.h BBServer.cpp BBServer.h ParSpike.h
-	$(CXX) $(MPICH_INCLUDE) -c BBServer.cpp -o BBServer.o
+	$(MPICXX) $(CXXFLAGS)  -c BBServer.cpp -o BBServer.o
 
 BBClient.o: BBS.h BBClient.cpp BBServer.h ParSpike.h
-	$(CXX) $(MPICH_INCLUDE) -c BBClient.cpp -o BBClient.o
+	$(MPICXX) $(CXXFLAGS)  -c BBClient.cpp -o BBClient.o
+
+NetPar.o: NetPar.h NetPar.cpp
+	$(MPICXX) $(CXXFLAGS)  -c NetPar.cpp -o NetPar.o
 
 
-
-
-ParSpikeSim: $(SpikeSim_OBJECTS)
-	$(CXX) -o ParSpikeSim $(SpikeSim_OBJECTS)
+ParSpikeSim.exe: $(ParSpikeSim_OBJECTS)
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.exe $(ParSpikeSim_OBJECTS)
 
 clean:
-	rm -f *.o
+	rm -f *.o *.exe
+	
+remake:
+	head -5 Makefile > Makefile.tmp
+	for i in `ls *.cpp`; do $(CXX) $(CXXFLAGS) -M $i >> Makefile.tmp; done	
+	(echo "SpikeSim_OBJECTS=";echo "`basename *.cpp .cpp`.o") >> Makefile.tmp
+	tail -30 Makefile > Makefile.tmp
+	# 296- to end
+	# 1 to 5
 
 	

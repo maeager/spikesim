@@ -42,7 +42,7 @@ void NetParEvent::deliver(double tt, NetCvode* nc, NrnThread* nt){
 	nt->_stop_stepping = 1;
 	nt->_t = tt;
 
-    if (nrnmpi_numprocs > 0 && nt->id == 0) {
+    if (ParSpike::numprocs > 0 && nt->id == 0) {
   	nrn_spike_exchange();
 	wx_ += wt_;
 	ws_ += wt1_;
@@ -107,7 +107,7 @@ void NetPar::nrn_outputevent(unsigned char localgid, double firetime) {
 	}
 	spfixout_[i++] = (unsigned char)((firetime - t_exchange_)*dt1_ + .5);
 	spfixout_[i] = localgid;
-//printf("%d idx=%d lgid=%d firetime=%g t_exchange_=%g [0]=%d [1]=%d\n", nrnmpi_myid, i, (int)localgid, firetime, t_exchange_, (int)spfixout_[i-1], (int)spfixout_[i]);
+//printf("%d idx=%d lgid=%d firetime=%g t_exchange_=%g [0]=%d [1]=%d\n", ParSpike::myid, i, (int)localgid, firetime, t_exchange_, (int)spfixout_[i-1], (int)spfixout_[i]);
 }
 
 /*
@@ -121,12 +121,12 @@ void nrn2ncs_outputevent(int gid, double firetime) {
 		spfixout_capacity_ *= 2;
 		spfixout_.resize(spfixout_capacity_);
 	}
-//printf("%d nrnncs_outputevent %d %.20g %.20g %d\n", nrnmpi_myid, gid, firetime, t_exchange_,
+//printf("%d nrnncs_outputevent %d %.20g %.20g %d\n", ParSpike::myid, gid, firetime, t_exchange_,
 //(int)((unsigned char)((firetime - t_exchange_)*dt1_ + .5)));
 	spfixout_[i++] = (unsigned char)((firetime - t_exchange_)*dt1_ + .5);
-//printf("%d idx=%d firetime=%g t_exchange_=%g spfixout=%d\n", nrnmpi_myid, i, firetime, t_exchange_, (int)spfixout_[i-1]);
+//printf("%d idx=%d firetime=%g t_exchange_=%g spfixout=%d\n", ParSpike::myid, i, firetime, t_exchange_, (int)spfixout_[i-1]);
 	sppk(spfixout_+i, gid);
-//printf("%d idx=%d gid=%d spupk=%d\n", nrnmpi_myid, i, gid, spupk(spfixout_+i));
+//printf("%d idx=%d gid=%d spupk=%d\n", ParSpike::myid, i, gid, spupk(spfixout_+i));
     }else{
 #if nrn_spikebuf_size == 0
 	int i = nout_++;
@@ -134,7 +134,7 @@ void nrn2ncs_outputevent(int gid, double firetime) {
 		ocapacity_ *= 2;
 		spikeout_.resize(ocapacity_);
 	}		
-//printf("%d cell %d in slot %d fired at %g\n", nrnmpi_myid, gid, i, firetime);
+//printf("%d cell %d in slot %d fired at %g\n", ParSpike::myid, gid, i, firetime);
 	spikeout_[i].gid = gid;
 	spikeout_[i].spiketime = firetime;
 #else
@@ -153,7 +153,7 @@ void nrn2ncs_outputevent(int gid, double firetime) {
 	}
 #endif
     }
-//printf("%d cell %d in slot %d fired at %g\n", nrnmpi_myid, gid, i, firetime);
+//printf("%d cell %d in slot %d fired at %g\n", ParSpike::myid, gid, i, firetime);
 }
 */
 
@@ -195,14 +195,14 @@ void NetPar::spike_exchange_init() {
 	if (!nrn_need_npe()) { return; }
 //	if (!active_ && !nrn_use_selfqueue_) { return; }
 	alloc_space();
-//printf("nrnmpi_use=%d active=%d\n", nrnmpi_use, active_);
+//printf("ParSpike::use=%d active=%d\n", ParSpike::use, active_);
 	calc_actual_mindelay();	
 	usable_mindelay_ = mindelay_;
 	if (cvode_active_ == 0 && nrn_nthread > 1) {
 		usable_mindelay_ -= dt;
 	}
 	if ((usable_mindelay_ < 1e-9) || (cvode_active_ == 0 && usable_mindelay_ < dt)) {
-		if (nrnmpi_myid == 0) {
+		if (ParSpike::myid == 0) {
 			std::cerr << "usable mindelay is 0 (or less than dt for fixed step method) \n";
 		}else{
 			return;
@@ -237,7 +237,7 @@ void NetPar::spike_exchange_init() {
 	nout_ = 0;
 	nsend_ = nsendmax_ = nrecv_ = nrecv_useful_ = 0;
 
-	//if (nrnmpi_myid == 0){printf("usable_mindelay_ = %g\n", usable_mindelay_);}
+	//if (ParSpike::myid == 0){printf("usable_mindelay_ = %g\n", usable_mindelay_);}
 }
 
 
@@ -260,7 +260,7 @@ void NetPar::spike_exchange() {
 	wt = ParSpike::wtime();
 	errno = 0;
 //if (n > 0) {
-//printf("%d nrn_spike_exchange sent %d received %d\n", nrnmpi_myid, nout_, n);
+//printf("%d nrn_spike_exchange sent %d received %d\n", ParSpike::myid, nout_, n);
 //}
 	nout_ = 0;
 	if (n == 0) {
@@ -274,7 +274,7 @@ void NetPar::spike_exchange() {
 	if (max_histogram_) {
 		int mx = 0;
 		if (n > 0) {
-			for (i=nrnmpi_numprocs-1 ; i >= 0; --i) {
+			for (i=ParSpike::numprocs-1 ; i >= 0; --i) {
 #if nrn_spikebuf_size == 0
 				if (mx < nin_[i]) {
 					mx = nin_[i];
@@ -292,7 +292,7 @@ void NetPar::spike_exchange() {
 	}
 #endif // NRNSTAT
 #if nrn_spikebuf_size > 0
-	for (i = 0; i < nrnmpi_numprocs; ++i) {
+	for (i = 0; i < ParSpike::numprocs; ++i) {
 		int j;
 		int nn = spbufin_[i].nspike;
 		if (nn > nrn_spikebuf_size) { nn = nrn_spikebuf_size; }
@@ -317,7 +317,7 @@ void NetPar::spike_exchange() {
 #endif
 		}
 	}
-	wt1_ = nrnmpi_wtime() - wt;
+	wt1_ = ParSpike::wtime() - wt;
 }
 		
 void nrn_spike_exchange_compressed() {
@@ -333,13 +333,13 @@ void nrn_spike_exchange_compressed() {
 	spfixout_[1] = (unsigned char)(nout_ & 0xff);
 	spfixout_[0] = (unsigned char)(nout_>>8);
 
-	wt = nrnmpi_wtime();
-	n = nrnmpi_spike_exchange_compressed();
-	wt_ = nrnmpi_wtime() - wt;
-	wt = nrnmpi_wtime();
+	wt = ParSpike::wtime();
+	n = ParSpike::spike_exchange_compressed();
+	wt_ = ParSpike::wtime() - wt;
+	wt = ParSpike::wtime();
 	errno = 0;
 //if (n > 0) {
-//printf("%d nrn_spike_exchange sent %d received %d\n", nrnmpi_myid, nout_, n);
+//printf("%d nrn_spike_exchange sent %d received %d\n", ParSpike::myid, nout_, n);
 //}
 	nout_ = 0;
 	idxout_ = 2;
@@ -355,7 +355,7 @@ void nrn_spike_exchange_compressed() {
 	if (max_histogram_) {
 		int mx = 0;
 		if (n > 0) {
-			for (i=nrnmpi_numprocs-1 ; i >= 0; --i) {
+			for (i=ParSpike::numprocs-1 ; i >= 0; --i) {
 				if (mx < nin_[i]) {
 					mx = nin_[i];
 				}
@@ -368,11 +368,11 @@ void nrn_spike_exchange_compressed() {
 #endif // NRNSTAT
     if (nrn_use_localgid_) {
 	int idxov = 0;
-	for (i = 0; i < nrnmpi_numprocs; ++i) {
+	for (i = 0; i < ParSpike::numprocs; ++i) {
 		int j, nnn;
 		int nn = nin_[i];
 	    if (nn) {
-		if (i == nrnmpi_myid) { // skip but may need to increment idxov.
+		if (i == ParSpike::myid) { // skip but may need to increment idxov.
 			if (nn > ag_send_nspike_) {
 				idxov += (nn - ag_send_nspike_)*(1 + localgid_size_);
 			}
@@ -413,7 +413,7 @@ void nrn_spike_exchange_compressed() {
 	    }
 	}
     }else{
-	for (i = 0; i < nrnmpi_numprocs; ++i) {
+	for (i = 0; i < ParSpike::numprocs; ++i) {
 		int j;
 		int nn = nin_[i];
 		if (nn > ag_send_nspike_) { nn = ag_send_nspike_; }
@@ -448,7 +448,7 @@ void nrn_spike_exchange_compressed() {
 	}
     }
 	t_exchange_ = nrn_threads->_t;
-	wt1_ = nrnmpi_wtime() - wt;
+	wt1_ = ParSpike::wtime() - wt;
 }
 
 
@@ -464,7 +464,7 @@ void mk_localgid_rep() {
 			++ngid;
 		}
 	}}}
-	int ngidmax = nrnmpi_int_allmax(ngid);
+	int ngidmax = ParSpike::int_allmax(ngid);
 	if (ngidmax >= 256) {
 		//do not compress
 		return;
@@ -472,8 +472,8 @@ void mk_localgid_rep() {
 	localgid_size_ = sizeof(unsigned char);
 	nrn_use_localgid_ = true;
 
-	// allocate Allgather receive buffer (send is the nrnmpi_myid one)
-	int* rbuf = new int[nrnmpi_numprocs*(ngidmax + 1)];
+	// allocate Allgather receive buffer (send is the ParSpike::myid one)
+	int* rbuf = new int[ParSpike::numprocs*(ngidmax + 1)];
 	int* sbuf = rbuf + my_rank*(ngidmax + 1);
 
 	sbuf[0] = ngid;
@@ -497,8 +497,8 @@ void mk_localgid_rep() {
 	// there is a lot of potential for efficiency here. i.e. use of
 	// perfect hash functions, or even simple Vectors.
 	localmaps_ = new Gid2PreSyn*[numprocs];
-	localmaps_[nrnmpi_myid] = 0;
-	for (i = 0; i < nrnmpi_numprocs; ++i) if (i != nrnmpi_myid) {
+	localmaps_[ParSpike::myid] = 0;
+	for (i = 0; i < ParSpike::numprocs; ++i) if (i != ParSpike::myid) {
 		// how many do we need?
 		sbuf = rbuf + i*(ngidmax + 1);
 		ngid = *(sbuf++); // at most
@@ -513,7 +513,7 @@ void mk_localgid_rep() {
 	}
 
 	// fill in the maps
-	for (i = 0; i < nrnmpi_numprocs; ++i) if (i != nrnmpi_myid) {
+	for (i = 0; i < ParSpike::numprocs; ++i) if (i != ParSpike::myid) {
 		sbuf = rbuf + i*(ngidmax + 1);
 		ngid = *(sbuf++);
 		for (k=0; k < ngid; ++k) {
@@ -572,10 +572,10 @@ static void alloc_space() {
 		icapacity_  = 100;
 		spikein_.resize(icapacity_);
 		if (nin_) delete nin_[];
-		nin_ = new int[nrnmpi_numprocs];
+		nin_ = new int[ParSpike::numprocs];
 #if nrn_spikebuf_size > 0
 spbufout_.resize(1);
-spbufin_.resize(nrnmpi_numprocs);
+spbufin_.resize(ParSpike::numprocs);
 #endif
 
 	}
@@ -584,11 +584,11 @@ spbufin_.resize(nrnmpi_numprocs);
 void BBS::set_gid2node(int gid, int nid) {
 	alloc_space();
 
-	if (nid == nrnmpi_myid) {
+	if (nid == ParSpike::myid) {
 
 	{
 #endif
-//printf("gid %d defined on %d\n", gid, nrnmpi_myid);
+//printf("gid %d defined on %d\n", gid, ParSpike::myid);
 		PreSyn* ps;
 		assert(!(gid2in_->find(gid, ps)));
 		(*gid2out_)[gid] = nil;
@@ -596,7 +596,7 @@ void BBS::set_gid2node(int gid, int nid) {
 	}
 }
 
-void nrnmpi_gid_clear() {
+void ParSpike::gid_clear() {
 	nrn_partrans_clear();
 #if PARANEURON
 	nrnmpi_split_clear();

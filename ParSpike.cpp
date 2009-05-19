@@ -11,6 +11,7 @@ ParSpike::ParSpike(void)
 
 
 */ 
+
  int ParSpike::mpi_use = 0;
  int ParSpike::numprocs = 1;
  int ParSpike::under_mpi_control_ = 1;

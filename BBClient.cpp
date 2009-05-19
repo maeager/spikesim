@@ -99,7 +99,7 @@ void BBSClient::pkstr(const char* s) {
 
 void BBSClient::post(const char* key) {
 #if debug
-std::cout <<  ParSpike::ParSpike::my_rank << ": " 
+std::cout <<  ParSpike::my_rank << ": " 
 	<<  key << " BBSClient::post |" 
 	<< key << "|" << std::endl; 
 #endif
@@ -112,7 +112,7 @@ std::cout <<  ParSpike::ParSpike::my_rank << ": "
 
 void BBSClient::post_todo(int parentid) {
 #if debug
-std::cout <<  ParSpike::ParSpike::my_rank << ": " << parentid << " BBSClient::post_todo for %d " << std::endl; 
+std::cout <<  ParSpike::my_rank << ": " << parentid << " BBSClient::post_todo for %d " << std::endl; 
  
 #endif
 	BBS2MPI::enddata(sendbuf_);
@@ -124,7 +124,7 @@ std::cout <<  ParSpike::ParSpike::my_rank << ": " << parentid << " BBSClient::po
 
 void BBSClient::post_result(int id) {
 #if debug
-std::cout <<  ParSpike::ParSpike::my_rank << ": " << id << " BBSClient::post_result %d " << std::endl; 
+std::cout <<  ParSpike::my_rank << ": " << id << " BBSClient::post_result %d " << std::endl; 
  
 #endif
 	BBS2MPI::enddata(sendbuf_);
@@ -136,7 +136,7 @@ std::cout <<  ParSpike::ParSpike::my_rank << ": " << id << " BBSClient::post_res
 
 int BBSClient::get(const char* key, int type) {
 #if debug
-std::cout <<  ParSpike::ParSpike::my_rank << ": " << key, type << " BBSClient::get |%s| type=%d " << std::endl; 
+std::cout <<  ParSpike::my_rank << ": " << key, type << " BBSClient::get |%s| type=%d " << std::endl; 
  
 #endif
 	BBS2MPI::pkbegin(request_);
@@ -147,7 +147,7 @@ std::cout <<  ParSpike::ParSpike::my_rank << ": " << key, type << " BBSClient::g
 
 int BBSClient::get(int key, int type) {
 #if debug
-std::cout <<  ParSpike::ParSpike::my_rank << ": " << key, type << " BBSClient::get %d type=%d " << std::endl; 
+std::cout <<  ParSpike::my_rank << ": " << key, type << " BBSClient::get %d type=%d " << std::endl; 
  
 #endif
 	BBS2MPI::pkbegin(request_);
@@ -167,7 +167,7 @@ fflush(stderr);
 	errno = 0;
 	wait_time_ += time() - ts;
 #if debug
-std::cout <<  ParSpike::ParSpike::my_rank << ": " << msgtag << " BBSClient::get return msgtag=%d " << std::endl; 
+std::cout <<  ParSpike::my_rank << ": " << msgtag << " BBSClient::get return msgtag=%d " << std::endl; 
  
 #endif
 	if (msgtag == QUIT) {
@@ -178,7 +178,7 @@ std::cout <<  ParSpike::ParSpike::my_rank << ": " << msgtag << " BBSClient::get 
 	
 bool BBSClient::look_take(const char* key) {
 #if debug
-std::cout <<  ParSpike::ParSpike::my_rank << ": " << key << " BBSClient::look_take %s " << std::endl; 
+std::cout <<  ParSpike::my_rank << ": " << key << " BBSClient::look_take %s " << std::endl; 
 #endif
 	int type = get(key, LOOK_TAKE);
 	bool b = (type == LOOK_TAKE_YES);
@@ -190,7 +190,7 @@ std::cout <<  ParSpike::ParSpike::my_rank << ": " << key << " BBSClient::look_ta
 
 bool BBSClient::look(const char* key) {
 #if debug
-std::cout <<  ParSpike::ParSpike::my_rank << ": " << key << " BBSClient::look %s " << std::endl; 
+std::cout <<  ParSpike::my_rank << ": " << key << " BBSClient::look %s " << std::endl; 
 #endif
 	int type = get(key, LOOK);
 	bool b = (type == LOOK_YES);
