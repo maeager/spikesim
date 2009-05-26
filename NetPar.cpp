@@ -587,7 +587,7 @@ void BBS::set_gid2node(int gid, int nid) {
 	if (nid == ParSpike::myid) {
 
 	{
-#endif
+
 //printf("gid %d defined on %d\n", gid, ParSpike::myid);
 		PreSyn* ps;
 		assert(!(gid2in_->find(gid, ps)));

@@ -22,9 +22,9 @@
 int main(int argc, char *argv[])
 {
 #ifdef PARALLELSIM	
-	MPI::Init(argc, argv);
-	int rank = MPI::COMM_WORLD.Get_rank();
-	int size = MPI::COMM_WORLD.Get_size();
+//	MPI::Init(argc, argv);
+//	int rank = MPI::COMM_WORLD.Get_rank();
+//	int size = MPI::COMM_WORLD.Get_size();
 	ParNetwork net;
 if (rank==0){
 #else
@@ -84,10 +84,10 @@ OutputManager::do_output_connectivity(std::list<Size>(), std::list<Size>(), 1);
 	// memory cleaning
 #ifdef PARALLELSIM
 }
-	std::cout << "Hello World! I am " << rank << " of " << size <<
-	std::endl;
+//	std::cout << "Hello World! I am " << rank << " of " << size <<
+//	std::endl;
 	
-	MPI::Finalize();
+//	MPI::Finalize();
 #endif
 	// wait for key pressed
 //	std::cin.get();

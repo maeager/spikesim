@@ -118,7 +118,7 @@ public:
 	double threshold();
 	void cell();
 	void outputcell(int);
-	void spike_record(int, std::vector<float>,std::vector<float>);
+	void spike_record(int, std::vector<double>,std::vector<double>);
 	void netpar_solve(double);
 	void** gid2obj(int);
 	void** gid2cell(int);

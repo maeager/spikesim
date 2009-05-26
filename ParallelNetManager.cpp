@@ -124,13 +124,14 @@ void set_maxstep() {
 //	printf("%d localmaxstep=%g\n", myid, localmaxstep_)
 }
 
-proc maxstepsize() {local i, m
+void maxstepsize() {
+	int i, m;
 	if (!maxstepsize_called_) {
-		maxstepsize_called_ = 1
+		maxstepsize_called_ = 1;
 		if (nwork > 1) {
-			pc->context(this, "set_maxstep")
+			pc->context(this, "set_maxstep");
 		}
-		set_maxstep()
+		set_maxstep();
 	}
 }
 
@@ -138,51 +139,52 @@ proc maxstepsize() {local i, m
 // without using the bulletin board. A file should be opened
 // with File.aopen for appending at the beginning of the iterator_statement
 // and closed at the end.
-iterator serialize() {local rank
+iterator serialize() {
+	int rank
 	pc->barrier
 	for rank = 0, pc->nhost {
 		if (rank == pc->id) {
-			iterator_statement
+			iterator_statement;
 		}
-		pc->barrier
+		pc->barrier;
 	}
 }
 
-proc doinit() {
-	stdinit()
+void doinit() {
+	stdinit();
 }
 
-proc pinit() {
-	maxstepsize()
+void pinit() {
+	maxstepsize();
 	if (nwork > 1) {
-	        pc->context(this, "doinit")
+	        pc->context(this, "doinit");
 	}
-	doinit() // the master does one also
+	doinit(); // the master does one also
 }
 
-proc psolve() {
-	pc->psolve($1)
+void psolve(double x) {
+	pc->psolve(x)
 }
 
-proc pcontinue() {
+void pcontinue(double x) {
 	if (nwork > 1) {
-		pc->context(this, "psolve", $1)
+		pc->context(this, "psolve", x);
 	}
-	psolve($1)
+	psolve(x);
 }
 
-proc prun() {
-	pinit()
-	pcontinue(tstop)
+void prun() {
+	pinit();
+	pcontinue(tstop);
 }
 
 proc postwait() {local w, sm, s, r, ru
 	if ($1 == 0) {
-		pc->post("waittime", myid, pc->wait_time())
+		pc->post("waittime", myid, pc->wait_time());
 	}else{
 		w = pc->wait_time()
-		sm = pc->spike_statistics(&s, &r, &ru)
-		pc->post("poststat", myid, w, sm, s, r, ru)
+		sm = pc->spike_statistics(&s, &r, &ru);
+		pc->post("poststat", ParSpike::my_rank, w, sm, s, r, ru);
 	}
 }
 

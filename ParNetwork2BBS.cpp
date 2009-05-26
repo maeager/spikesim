@@ -1,60 +1,17 @@
-#include <../../nrnconf.h>
-#include "bbsconf.h"
-#include <InterViews/resource.h>
-#include "classreg.h"
-#include "oc2iv.h"
-#include "ivocvect.h"
-#include "hoclist.h"
-#include "bbs.h"
-#include "bbsimpl.h"
-#include "ivocvect.h"
-#include "parse.h"
-#include "section.h"
-#include "membfunc.h"
-#include <nrnmpi.h>
-#include <errno.h>
+
+#include "ParSpike.h"
+#include "BBS.h"
+
 
 #undef MD
 #define MD 2147483648.
 
 extern "C" {
-	extern int vector_arg_px(int, double**);
-	Symbol* hoc_which_template(Symbol*);
-	void bbs_done();
-	extern double t;
-#if BLUEGENE_CHECKPOINT
-	int BGLCheckpoint();
-#endif
-	extern void nrnmpi_source_var(), nrnmpi_target_var(), nrnmpi_setup_transfer();
-	extern int nrnmpi_spike_compress(int nspike, boolean gid_compress, int xchng_meth);
-	extern int nrnmpi_splitcell_connect(int that_host);
-	extern int nrnmpi_multisplit(double x, int sid, int backbonestyle);
-	extern void nrnmpi_gid_clear();
-	double nrnmpi_rtcomp_time_;
-	extern double nrn_bgp_receive_time(int);
-#if PARANEURON
-	double nrnmpi_transfer_wait_;
-	double nrnmpi_splitcell_wait_;
-#endif
-#if NRNMPI
-	void nrnmpi_barrier();
-	double nrnmpi_dbl_allreduce(double, int);
-	void nrnmpi_dbl_allgather(double*, double*, int);
-	void nrnmpi_int_alltoallv(int*, int*, int*, int*, int*, int*);
-	void nrnmpi_dbl_alltoallv(double*, int*, int*, double*, int*, int*);
-	double nrmpi_wtime();
-	void nrnmpi_int_broadcast(int*, int, int);
-	void nrnmpi_char_broadcast(char*, int, int);
-	void nrnmpi_dbl_broadcast(double*, int, int);
-#endif
 
-	extern double* nrn_mech_wtime_;
-	extern int nrn_nthread;
-	extern void nrn_threads_create(int, int);
-	extern void nrn_thread_partition(int, Object*);
-	extern void nrn_thread_stat();
-	extern int nrn_allow_busywait(int);
-	extern int nrn_how_many_processors();
+//	Symbol* hoc_which_template(Symbol*);
+
+	extern double t;
+
 }
 
 class OcBBS : public BBS , public Resource {
@@ -74,34 +31,112 @@ OcBBS::OcBBS(int n) : BBS(n) {
 OcBBS::~OcBBS() {
 }
 
-static boolean posting_ = false;
+class ParNetwork2BBS {
+public:
+	ParNetwork2BBS();
+	~ParNetwork2BBS();
+
+static int submit_help(OcBBS*);
+	static double submit(); 
+	static double working();
+	static double retval();
+	static double userid();
+	static double pack();
+	static double post();
+	static double unpack();
+	static double upkscalar();
+	static double take();
+	static double look();
+	static double look_take();
+	static double worker();
+	static double done();
+
+	static double nhost();
+	static double context();
+
+	static double pctime();
+	static double wait_time();
+	static double step_time(); 
+	static double send_time();
+	static double event_time();  //empty
+	static double integ_time(); //empty
+	static double vtransfer_time(); //empty
+//no	 mech_time
+
+	static double set_gid2node(int gid, int nid);
+	double gid_exists(int gid);
+	static double outputcell(int gid) ;
+	static double cell();
+	static double threshold();
+	static double spike_record(int gid, double* spikevec, double* gidvec) ;
+	static double psolve(double  step);
+	static double set_maxstep(double maxstep);
+	static double spike_stat(int *nsend,int * nsendmax,int * nrecv, int *nrecv_useful );
+	static double maxhist(std::vector<double> vec);
+	static double checkpoint(void*);
+	static double spcompress(int nspike=-1, int gid_compress=1,int xchng_meth = 0);
+	static double gid_clear() ;
+
+	static double source_var(void*);  // &source_variable, source_global_index
+	static double target_var(void*) ; // &target_variable, source_global_index
+	static double setup_transfer(void*); // after all source/target and before init and run
+//	"splitcell_connect", splitcell_connect,
+//	"multisplit", multisplit,
+
+	static double barrier(void*);
+	static double allreduce(double val , int type) ;
+	static double allgather(double val, std::vector<double> vec) ;
+	static double alltoall( std::vector<double> vsrc, std::vector<double> vscnt, std::vector<double> vdest); 
+	static double broadcast(std::string &s, int srcid) ;
+static double broadcast(std::vector<double> &vec, int srcid) ;
+//	"nthread", nthrd,
+//	"partition", partition,
+//	"thread_stat", thread_stat,
+//	"thread_busywait", thread_busywait,
+//	"thread_how_many_proc", thread_how_many_proc,
+//	"sec_in_thread", sec_in_thread,
+//	"thread_ctime", thread_ctime,
+
+
+	std::string upkstr() ;
+	std::vector<double> upkvec(std::vector<double>);
+
+
+	static Object** gid2obj(int gid);
+	static Object** gid2cell(int gid);
+	static Object** gid_connect(int gid);
+
+
+
 static void pack_help(int, OcBBS*);
 static void unpack_help(int, OcBBS*);
 static int submit_help(OcBBS*);
 static char* key_help();
 
-static double ihost(void* v) {
 
-	return double(bbs->myid()); // same as ParSpike::my_rank;
-
+public:
+	static bool posting_ = false;
+	OcBBS* bbs;
 }
 
-void bbs_done() {
-#if USEBBS
-	Symbol* sym = hoc_lookup("ParallelContext");
-	sym = hoc_which_template(sym);
-	hoc_Item* q, *ql;
-	ql = sym->u.ctemplate->olist;
-	q = ql->next;
-	if (q != ql) {
-		Object* ob = OBJ(q);
-		OcBBS* bbs = (OcBBS*)ob->u.this_pointer;
-		if (bbs->is_master()) {bbs->done();}
-	}
-#endif
+ParNetwork2BBS::ParNetwork2BBS(){//Object*) {
+	// not clear at moment what is best way to handle nested context
+	int i = -1;
+//	if (ifarg(1)) {
+//		i = int(chkarg(1, 0, 10000));
+//	}
+	bbs = new OcBBS(1);
+	bbs->ref();
 }
 
-static int submit_help(OcBBS* bbs) {
+ParNetwork2BBS::~ParNetwork2BBS(){
+	bbs->unref();
+}
+
+
+
+
+static int ParNetwork2BBS::submit_help() {
 	int id, i, firstarg, style;
 	posting_ = true;
 	bbs->pkbegin();
@@ -150,9 +185,8 @@ static int submit_help(OcBBS* bbs) {
 	return id;
 }
 
-static double submit(void *v) {
+static double submit() {
 	int id;
-	OcBBS* bbs = (OcBBS*)v;
 	id = submit_help(bbs);
 	bbs->submit(id);
 	return double(id);
@@ -257,27 +291,23 @@ static double upkscalar() {
 	return bbs->upkdouble();
 }
 
-static char** upkstr(void* v) {
-	OcBBS* bbs = (OcBBS*)v;
+static std::string upkstr() {
 	char* s = bbs->upkstr();
-	char** ps = hoc_pgargstr(1);
-	hoc_assign_str(ps, s);
+	std::string ps = s;
 	delete [] s;
 	return ps;
 }
 
-static Object** upkvec(void* v) {
-	OcBBS* bbs = (OcBBS*)v;
-	Vect* vec;
+static 	std::vector<double> upkvec(std::vector<double> vec=0) {
+
 	int n = bbs->upkint();
-	if (ifarg(1)) {
-		vec = vector_arg(1);
-		vec->resize(n);
+	if (vec)) {
+		vec.resize(n);
 	}else{
 		vec = new Vect(n);
 	}
-	bbs->upkvec(n, vec->vec());
-	return vec->temp_objvar();
+	bbs->upkvec(n, vec);
+	return vec;
 }
 
 static char* key_help() {
@@ -370,44 +400,30 @@ static double set_gid2node() {
 	return 0.;
 }
 
-static double gid_exists(void* v) {
-	OcBBS* bbs = (OcBBS*)v;
-	return int(bbs->gid_exists(int(chkarg(1, 0, MD))));
+static double gid_exists(int gid) {
+	return int(bbs->gid_exists(gid));
 }
 
-static double cell(void* v) {
-	OcBBS* bbs = (OcBBS*)v;
+static double cell() {
 	bbs->cell();
 	return 0.;
 }
 
-static double threshold(void* v) {
-	OcBBS* bbs = (OcBBS*)v;
+static double threshold() {
 	return bbs->threshold();
 }
 
-static double spcompress(void* v) {
-	int nspike = -1;
-	boolean gid_compress = true;
-	int xchng_meth = 0;
-	if (ifarg(1)) {
-		nspike = (int)chkarg(1, -1, MD);
-	}
-	if (ifarg(2)) {
-		gid_compress = (chkarg(2, 0, 1) ? true : false);
-	}
-	if (ifarg(3)) {
-		xchng_meth = (int)chkarg(3, 0, 1);
-	}
+static double spcompress(int nspike=-1, int gid_compress=1,int xchng_meth = 0) {
 	return (double)nrnmpi_spike_compress(nspike, gid_compress, xchng_meth);
 }
-
+/*
 static double splitcell_connect(void* v) {
-	int that_host = (int)chkarg(1, 0, nrnmpi_numprocs-1);
+	int that_host = (int)chkarg(1, 0, ParSpike::numprocs-1);
 	// also needs a currently accessed section that is the root of this_tree
 	nrnmpi_splitcell_connect(that_host);
 	return 0.;
 }
+
 
 static double multisplit(void* v) {
 	double x = -1.;
@@ -425,56 +441,39 @@ static double multisplit(void* v) {
 	nrnmpi_multisplit(x, sid, backbone_style);
 	return 0.;
 }
-
-static double gid_clear(void* v) {
+*/
+static double gid_clear() {
 	nrnmpi_gid_clear();
 	return 0.;
 }
 
-static double outputcell(void* v) {
-	OcBBS* bbs = (OcBBS*)v;
-	int gid = int(chkarg(1, 0., MD));
+static double outputcell(int gid) {
 	bbs->outputcell(gid);
 	return 0.;
 }
 
-static double spike_record(void* v) {
-	OcBBS* bbs = (OcBBS*)v;
-	int gid = int(chkarg(1, 0., MD));
-	IvocVect* spikevec = vector_arg(2);
-	IvocVect* gidvec = vector_arg(3);	
+static double spike_record(int gid, double* spikevec, double* gidvec) {
 	bbs->spike_record(gid, spikevec, gidvec);
 	return 0.;
 }
 
-static double psolve(void* v) {
-	OcBBS* bbs = (OcBBS*)v;
-	bbs->netpar_solve(chkarg(1, t, 1e9));
+static double psolve(double  step) {
+	bbs->netpar_solve(step);
 	return 0.;
 }
 
-static double set_maxstep(void* v) {
-	OcBBS* bbs = (OcBBS*)v;
-	return bbs->netpar_mindelay(chkarg(1, 1e-6, 1e9));
+static double set_maxstep(double maxstep) {
+	return bbs->netpar_mindelay(maxstep);
 }
 
-static double spike_stat(void* v) {
-	OcBBS* bbs = (OcBBS*)v;
-	int nsend, nsendmax, nrecv, nrecv_useful;
+static double spike_stat(int *nsend,int * nsendmax,int * nrecv, int *nrecv_useful ) {
 	nsend = nsendmax = nrecv = nrecv_useful = 0;
-	bbs->netpar_spanning_statistics(&nsend, &nsendmax, &nrecv, &nrecv_useful);
-	if (ifarg(1)) { *hoc_pgetarg(1) = nsend; }
-	if (ifarg(2)) { *hoc_pgetarg(2) = nrecv; }
-	if (ifarg(3)) { *hoc_pgetarg(3) = nrecv_useful; }
+	bbs->netpar_spanning_statistics(nsend, nsendmax, nrecv, nrecv_useful);
 	return double(nsendmax);
 }
 
-static double maxhist(void* v) {
-	OcBBS* bbs = (OcBBS*)v;
-	IvocVect* vec = ifarg(1) ? vector_arg(1) : nil;
-	if (vec) { hoc_obj_ref(vec->obj_); }
-	vec = bbs->netpar_max_histogram(vec);
-	if (vec) { hoc_obj_unref(vec->obj_); }
+static double maxhist(std::vector<double> vec) {
+	bbs->netpar_max_histogram(vec);
 	return 0.;
 }
 
@@ -503,71 +502,62 @@ static double setup_transfer(void*) { // after all source/target and before init
 static double barrier(void*) {
 	// return wait time
 	double t = 0.;
-#if NRNMPI
-	if (nrnmpi_numprocs > 1) {
+
+	if (ParSpike::numprocs > 1) {
 		t = nrnmpi_wtime();
 		nrnmpi_barrier();
 		t = nrnmpi_wtime() - t;
 	}
 	errno = 0;
-#endif
 	return t;
 }
 
-static double allreduce(void*) {
+static double allreduce(double val , int type) {
 	// type 1,2,3 sum, max, min
 	double val = *getarg(1);
-#if NRNMPI
-	if (nrnmpi_numprocs > 1) {
+
+	if (ParSpike::numprocs > 1) {
 		int type = (int)chkarg(2, 1, 3);
 		val = nrnmpi_dbl_allreduce(val, type);
 	}
 	errno = 0;
-#endif
 	return val;
 }
 
-static double allgather(void*) {
-	double val = *getarg(1);
-	Vect* vec = vector_arg(2);
-	vector_resize(vec, nrnmpi_numprocs);
-	double* px = vector_vec(vec);
+static double allgather(double val, std::vector<double> vec) {
+	
+	vec.resize(ParSpike::numprocs);
 
-#if NRNMPI
-	if (nrnmpi_numprocs > 1) {
-		nrnmpi_dbl_allgather(&val, px, 1);
+	if (ParSpike::numprocs > 1) {
+		nrnmpi_dbl_allgather(&val, vec, 1);
 		errno = 0;
 	}else{
-		px[0] = val;
+		vec[0] = val;
 	}
-#else
-	px[0] = val;
-#endif
+
 	return 0.;
 }
 
-static double alltoall(void*) {
-	int i, ns, np = nrnmpi_numprocs;
-	Vect* vsrc = vector_arg(1);
-	Vect* vscnt = vector_arg(2);
-	ns = vector_capacity(vsrc);
-	double* s = vector_vec(vsrc);
-	if (vector_capacity(vscnt) != np) {
-		hoc_execerror("size of source counts vector is not nhost", 0);
+static double alltoall( std::vector<double> vsrc, std::vector<double> vscnt, std::vector<double> vdest) {
+	int i, ns, np = ParSpike::numprocs;
+	ns = vsrc.capacity();
+	
+	if (vscnt.capacity() != np) {
+		throw ConfigError("alltoall(): size of source counts vector is not nhost");
 	}
-	double* x = vector_vec(vscnt);
+	
 	int* scnt = new int[np];
 	int* sdispl = new int[np+1];
 	sdispl[0] = 0;
 	for (i=0; i < np; ++i) {
-		scnt[i] = int(x[i]);
+		scnt[i] = int(vscnt[i]);
 		sdispl[i+1] = sdispl[i] + scnt[i];
 	}
 	if (ns != sdispl[np]) {
-		hoc_execerror("sum of source counts is not the size of the src vector", 0);
+		throw ConfigError("alltoall(): sum of source counts is not the size of the src vector");
 	}
-	Vect* vdest = vector_arg(3);
-#if NRNMPI
+
+
 	int* rcnt = new int[np];
 	int* rdispl = new int[np + 1];
 	int* c = new int[np];
@@ -576,72 +566,64 @@ static double alltoall(void*) {
 		c[i] = 1;
 		rdispl[i+1] = i+1;
 	}
-	nrnmpi_int_alltoallv(scnt, c, rdispl, rcnt, c, rdispl);
+	ParSpike::int_alltoallv(scnt, c, rdispl, rcnt, c, rdispl);
 	delete [] c;
 	for (i=0; i < np; ++i) {
 		rdispl[i+1] = rdispl[i] + rcnt[i];
 	}
-	vector_resize(vdest, rdispl[np]);
+	vdest.resize(rdispl[np]);
 	double* r = vector_vec(vdest);
-	nrnmpi_dbl_alltoallv(s, scnt, sdispl, r, rcnt, rdispl);
+	ParSpike::dbl_alltoallv(vsrc, scnt, sdispl, r, rcnt, rdispl);
 	delete [] rcnt;
 	delete [] rdispl;
-#else
-	vector_resize(vdest, ns);
-	double* r = vector_vec(vdest);
-	for (i=0; i < ns; ++i) {
-		r[i] = s[i];
-	}
-#endif
 	delete [] scnt;
 	delete [] sdispl;
 	return 0.;
 }
 
-static double broadcast(void*) {
-	int srcid = int(chkarg(2, 0, nrnmpi_numprocs - 1));
+static double broadcast(std::string &s, int srcid) {
+	if (srcid >=  ParSpike::numprocs || srcid < 0) {
+		throw ConfigError("broadcast(): srcid is not in numprocs range");
+	}
 	int cnt = 0;
-#if NRNMPI
-    if (nrnmpi_numprocs > 1) {
-	if (hoc_is_str_arg(1)) {
-		char* s;
-		if (srcid == nrnmpi_myid) {
-			s = gargstr(1);
-			cnt = strlen(s);
+
+    if (ParSpike::numprocs > 1) {
+		if (srcid == ParSpike::my_rank) {
+			cnt = s.size();
 		}
-		nrnmpi_int_broadcast(&cnt, 1, srcid);
-		if (srcid != nrnmpi_myid) {
-			s = new char[cnt];
+		ParSpike::int_broadcast(&cnt, 1, srcid);
+		if (srcid != ParSpike::my_rank) {
+			s.resize(cnt);
 		}
-		nrnmpi_char_broadcast(s, cnt, srcid);
-		if (srcid != nrnmpi_myid) {
-			hoc_assign_str(hoc_pgargstr(1), s);
-			delete [] s;
+		ParSpike::char_broadcast(s, cnt, srcid);
+		if (srcid != ParSpike::my_rank) {
+		//	hoc_assign_str(hoc_pgargstr(1), s);
+			s.resize(0);
 		}
-	}else{
-		Vect* vec = vector_arg(1);
-		if (srcid == nrnmpi_myid) {
-			cnt = vec->capacity();
-		}
-		nrnmpi_int_broadcast(&cnt, 1, srcid);
-		if (srcid != nrnmpi_myid) {
-			vec->resize(cnt);
-		}
-		nrnmpi_dbl_broadcast(vector_vec(vec), cnt, srcid);
+    return double(s.size());
+}
+
+static double broadcast(std::vector<double> &vec, int srcid) {
+	if (srcid >=  ParSpike::numprocs || srcid < 0) {
+		throw ConfigError("broadcast(): srcid is not in numprocs range");
 	}
-    }else{
-#else
-    {
-#endif
-	if (hoc_is_str_arg(1)) {
-		cnt = strlen(gargstr(1));
-	}else{
-		cnt = vector_arg(1)->capacity();
+	int cnt = 0;
+
+    if (ParSpike::numprocs > 1) {
+
+		if (srcid == ParSpike::my_rank) {
+			cnt = vec.capacity();
+		}
+		ParSpike::int_broadcast(&cnt, 1, srcid);
+		if (srcid != ParSpike::my_rank) {
+			vec.resize(cnt);
+		}
+		ParSpike::dbl_broadcast(vec, cnt, srcid);
 	}
-    }
 	return double(cnt);
 }
 
+/*
 static double checkpoint(void*) {
 #if BLUEGENE_CHECKPOINT
 	int i = BGLCheckpoint();
@@ -651,6 +633,7 @@ static double checkpoint(void*) {
 #endif
 }
 
+
 static double nthrd(void*) {
 	int ip = 1;
 	if (ifarg(1)) {
@@ -659,7 +642,9 @@ static double nthrd(void*) {
 	}
 	return double(nrn_nthread);
 }
+*/
 
+/*
 static double partition(void*) {
 	Object* ob = 0;
 	int it;
@@ -714,36 +699,35 @@ static double thread_ctime(void*) {
 #endif
 	return 0.0;
 }
+*/
 
-static Object** gid2obj(void* v) {
-	OcBBS* bbs = (OcBBS*)v;
-	return bbs->gid2obj(int(chkarg(1, 0, MD)));
+/* Must convert these to Synaptic interface */
+static Object** gid2obj(int gid) {
+	return bbs->gid2obj(gid);
 }
 
-static Object** gid2cell(void* v) {
-	OcBBS* bbs = (OcBBS*)v;
-	return bbs->gid2cell(int(chkarg(1, 0, MD)));
+static Object** gid2cell(int gid) {
+	return bbs->gid2cell(gid);
 }
 
-static Object** gid_connect(void* v) {
-	OcBBS* bbs = (OcBBS*)v;
-	return bbs->gid_connect(int(chkarg(1, 0, MD)));
+static Object** gid_connect(int gid) {
+	return bbs->gid_connect(gid);
 }
 
 
-
+/*
 void BBSImpl::execute_helper() {
 	char* s;
 	int style = upkint();
 	switch (style) {
 	case 0:
 		s = upkstr();
-		hoc_obj_run(s, nil);
+		//hoc_obj_run(s, nil);
+//!!run command
 		delete [] s;
 		break;
 	case 1:
 	case 2: {
-#if 1
 		int i, j;
 		Symbol* fname;
 		Object* ob = nil;
@@ -801,9 +785,9 @@ hoc_execerror("ParallelContext execution error", 0);
 			}else{
 				int n;
 				n = upkint();
-				Vect* vec = new Vect(n);
+				std::vector<double> vec(n);
 //printf("arg %d vector size=%d\n", narg, n);
-				upkvec(n, vec->vec());
+				upkvec(n, vec);
 				hoc_pushobj(vec->temp_objvar());
 			}
 		}
@@ -812,11 +796,12 @@ hoc_execerror("ParallelContext execution error", 0);
 		for (i=0; i < ns; ++i) {
 			delete [] sarg[i];
 		}
-#endif
+
 	    }
 		break;
 	}
 }
+*/
 
 void BBSImpl::return_args(int id) {
 	// the message has been set up by the subclass
@@ -851,102 +836,3 @@ void BBSImpl::return_args(int id) {
 	// now only args are left and ready to unpack.
 }
 
-class ParNetwork2BBS {
-public:
-	ParNetwork2BBS();
-	~ParNetwork2BBS();
-
-	static double submit(); 
-	static double working();
-	"retval", retval, static double retval();
-	"userid", userid,  static double userid();
-	"pack", pack, static double pack();
-	"post", post,static double post();
-	"unpack", unpack, static double unpack();
-	"upkscalar", upkscalar, static double upkscalar();
-	"take", take, static double take()
-	"look", look, static double look()
-	"look_take", look_take, static double look_take()
-	"runworker", worker, static double worker();
-	"done", done, static double done();
-	"id", ihost, static double ihost();
-	"nhost", nhost, static double nhost();
-	"context", context, static double context()
-
-	"time", pctime, static double pctime();
-	"wait_time", wait_time, static double wait_time();
-	"step_time", step_time, static double step_time() 
-	"send_time", send_time, static double send_time()
-	"event_time", event_time, static double event_time();  //empty
-	"integ_time", integ_time, static double integ_time(); //empty
-	"vtransfer_time", vtransfer_time, static double vtransfer_time(); //empty
-//no	 mech_time
-
-	"set_gid2node", set_gid2node,
-	"gid_exists", gid_exists,
-	"outputcell", outputcell,
-	"cell", cell,
-	"threshold", threshold,
-	"spike_record", spike_record,
-	"psolve", psolve,
-	"set_maxstep", set_maxstep,
-	"spike_statistics", spike_stat,
-	"max_histogram", maxhist,
-	"checkpoint", checkpoint,
-	"spike_compress", spcompress,
-	"gid_clear", gid_clear,
-
-	"source_var", source_var,
-	"target_var", target_var,
-	"setup_transfer", setup_transfer,
-	"splitcell_connect", splitcell_connect,
-	"multisplit", multisplit,
-
-	"barrier", barrier,
-	"allreduce", allreduce,
-	"allgather", allgather,
-	"alltoall", alltoall,
-	"broadcast", broadcast,
-
-	"nthread", nthrd,
-	"partition", partition,
-	"thread_stat", thread_stat,
-	"thread_busywait", thread_busywait,
-	"thread_how_many_proc", thread_how_many_proc,
-	"sec_in_thread", sec_in_thread,
-	"thread_ctime", thread_ctime,
-
-	0,0
-};
-
-static Member_ret_str_func retstr_members[] = {
-	"upkstr", upkstr,
-	0,0
-};
-
-static Member_ret_obj_func retobj_members[] = {
-	"upkvec", upkvec,
-	"gid2obj", gid2obj,
-	"gid2cell", gid2cell,
-	"gid_connect", gid_connect,
-	0,0
-};
-
-
-
-	OcBBS* bbs;
-}
-
-ParNetwork2BBS::ParNetwork2BBS(){//Object*) {
-	// not clear at moment what is best way to handle nested context
-	int i = -1;
-//	if (ifarg(1)) {
-//		i = int(chkarg(1, 0, 10000));
-//	}
-	bbs = new OcBBS(1);
-	bbs->ref();
-}
-
-ParNetwork2BBS::~ParNetwork2BBS(){
-	bbs->unref();
-}

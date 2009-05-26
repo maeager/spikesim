@@ -4,15 +4,13 @@
 #include <map>
 #include <set>
 #include <utility>
-#include <mpi.h>
-
-
 
 #include "ParSpike.h"
 #include "BBS.h"
 #include "BBServer.h"
 #include "BBS2MPI.h"
 
+#include <mpi.h>
 #define POLLCNT 300
 
 extern int bbs_poll_;

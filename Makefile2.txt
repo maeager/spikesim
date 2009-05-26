@@ -1,5 +1,5 @@
 
-# CXX = /opt/gcc-3.4.4/bin/c++
+# CXX = /opt/gcc-3.4.4/bin/c++#
 # MPICXX = /opt/mpich/ch-p4/bin/mpicxx
 # CXXFLAGS = -Wall -I/usr/local -I/opt/mpich/ch-p4/include -DPARALLELSIM
 # LDFLAGS = -L/opt/mpich/ch-p4/lib -lmpich
@@ -7,7 +7,8 @@ SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLi
 ParSpikeSim_OBJECTS= ParNetwork.o BBS.o ParSpike.o BBServer.o BBClient.o BBS2MPI.o $(SpikeSim_OBJECTS)
 MPICH_INCLUDE= -I/home/maeager/mpich2-1.0/src/include 
 MPILIBNAME = -L/home/maeager/mpich2-1.0/lib -lmpich
-CXX = /home/maeager/mpich2-1.0/bin/mpicxx # g++ 
+MPICXX = /home/maeager/mpich2-1.0/bin/mpicxx # g++ 
+CXX = MPICXX # g++
 CXXFLAGS = -I/usr/include/boost-1_33_1 -I/home/maeager/mpich2-1.0/src/include 
 # SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
 
