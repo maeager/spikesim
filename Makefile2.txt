@@ -4,7 +4,7 @@
 # CXXFLAGS = -Wall -I/usr/local -I/opt/mpich/ch-p4/include -DPARALLELSIM
 # LDFLAGS = -L/opt/mpich/ch-p4/lib -lmpich
 SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
-ParSpikeSim_OBJECTS= ParNetwork.o BBS.o ParSpike.o BBServer.o BBClient.o BBS2MPI.o $(SpikeSim_OBJECTS)
+ParSpikeSim_OBJECTS= ParNetwork.o BBS.o ParSpike.o BBServer.o BBClient.o BBS2MPI.o ParNetwork2BBS.o ParallelNetManager.o  $(SpikeSim_OBJECTS)
 MPICH_INCLUDE= -I/home/maeager/mpich2-1.0/src/include 
 MPILIBNAME = -L/home/maeager/mpich2-1.0/lib -lmpich
 MPICXX = /home/maeager/mpich2-1.0/bin/mpicxx # g++ 
@@ -48,6 +48,12 @@ SpikeSim.exe: $(SpikeSim_OBJECTS)
 
 ParNetwork.o: ParNetwork.h ParNetwork.cpp
 	$(MPICXX) $(CXXFLAGS)  -c ParNetwork.cpp -o ParNetwork.o
+	
+ParNetwork2BBS.o:  ParNetwork2BBS.cpp #ParNetwork2BBS.h
+	$(MPICXX) $(CXXFLAGS)  -c ParNetwork2BBS.cpp -o ParNetwork2BBS.o
+
+ParallelNetManager.o: ParallelNetManager.h ParallelNetManager.cpp
+	$(MPICXX) $(CXXFLAGS)  -c ParallelNetManager.cpp -o ParallelNetManager.o
 
 ParSpike.o: ParSpike.h ParSpike.cpp
 	$(MPICXX) $(CXXFLAGS)  -c ParSpike.cpp -o ParSpike.o

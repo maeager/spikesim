@@ -6,6 +6,8 @@
 
 #include "ParSpike.h"
 #include "BBS2MPI.h"
+#include "GlobalDefs.h"
+#include "ConfigBase.h"
 
 void bbs_done();
 
@@ -121,7 +123,7 @@ public:
 	void spike_record(int, std::vector<double>,std::vector<double>);
 	void netpar_solve(double);
 	void** gid2obj(int);
-	void** gid2cell(int);
+	ConfigBase* gid2cell(int);
 	void** gid_connect(int);
 	double netpar_mindelay(double maxdelay);
 	void netpar_spanning_statistics(int*, int*, int*, int*);

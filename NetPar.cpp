@@ -6,11 +6,8 @@
 #undef MD
 #define MD 2147483648.
 
-class PreSyn;
-
 // hash table where buckets are binary search maps
-declareNrnHash(Gid2PreSyn, int, PreSyn*)
-implementNrnHash(Gid2PreSyn, int, PreSyn*)
+implementNrnHash(Gid2PreSyn, int, SynapseInterface*)
 
 NetPar::NetPar(void)
 {
@@ -110,8 +107,8 @@ void NetPar::nrn_outputevent(unsigned char localgid, double firetime) {
 //printf("%d idx=%d lgid=%d firetime=%g t_exchange_=%g [0]=%d [1]=%d\n", ParSpike::myid, i, (int)localgid, firetime, t_exchange_, (int)spfixout_[i-1], (int)spfixout_[i]);
 }
 
-/*
-void nrn2ncs_outputevent(int gid, double firetime) {
+
+void NetPar::nrn2ncs_outputevent(int gid, double firetime) {
 	if (!active_) { return; }
     if (use_compress_) {
 	nout_++;
@@ -155,7 +152,7 @@ void nrn2ncs_outputevent(int gid, double firetime) {
     }
 //printf("%d cell %d in slot %d fired at %g\n", ParSpike::myid, gid, i, firetime);
 }
-*/
+
 
 int NetPar::nrn_need_npe() {
 	
@@ -563,7 +560,7 @@ void nrn_fake_fire(int gid, double spiketime, int fake_out) {
 
 static void alloc_space() {
 	if (!gid2out_) {
-		netcon_sym_ = hoc_lookup("NetCon");
+//		netcon_sym_ = hoc_lookup("NetCon");
 		gid2out_ = new Gid2PreSyn(211);
 		gid2in_ = new Gid2PreSyn(2311);
 
@@ -869,12 +866,10 @@ double BBS::netpar_mindelay(double maxdelay) {
 }
 
 void BBS::netpar_spanning_statistics(int* nsend, int* nsendmax, int* nrecv, int* nrecv_useful) {
-#if NRNMPI
 	*nsend = nsend_;
 	*nsendmax = nsendmax_;
 	*nrecv = nrecv_;
 	*nrecv_useful = nrecv_useful_;
-#endif
 }
 
 // unfortunately, ivocvect.h conflicts with STL

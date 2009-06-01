@@ -1,12 +1,18 @@
 
 
-#include "NetPar.h"
-#include "ParallelNetManager
 
 
+//#include "NetPar.h"
+#include "Group.h"
+#include "GlobalDefs.h"
+
+#include "ParallelNetManager.h"
+#include "ParNetwork2BBS.h"
+
+static int cell_cnt=0;
 
 void ParallelNetManager::init(int ncells) {
-	pc = new ParallelContext;
+	pc = new ParNetwork2BBS;
 	nhost = pc->nhost;
 	if (nhost < 2) { // for no PVM or MPI and for 1 host
 		nhost = 1;
@@ -23,8 +29,8 @@ void ParallelNetManager::init(int ncells) {
 	maxstepsize_called_ = 0;
 	want_graph_ = 0;
 	edgecount_ = 0;
-	spikevec = new double [1000] ;
-	idvec = new double [1000] ;
+	spikevec.resize(1000) ;
+	idvec.resize(1000) ;
 }
 
 // originally
@@ -67,7 +73,7 @@ void ParallelNetManager::spike_record(int cell_id) {
 // arg is gid and string that creates a cell such as "new Cell(x, y, z)"
 // return the cell object (usually nil)
 // this is deprecated
-void create_cell(int cell_id, NeuronType * nt) {
+void ParallelNetManager::create_cell(int cell_id, ConfigBase * nt) {
 	if (gid_exists(cell_id)) {
 		register_cell(cell_id, nt);
 	}
@@ -75,7 +81,7 @@ void create_cell(int cell_id, NeuronType * nt) {
 }
 
 void ParallelNetManager::register_cell(int cell_id, void* cell) { 
-	void * nc;
+	SynMechInterface * nc;
 	if (!pc->gid_exists(cell_id)) { pc->set_gid2node(cell_id, pc->id); }
 	// all existing cells must have an associated gid which
 	// is stored in the cell's PreSyn. The nc below will be
@@ -84,19 +90,19 @@ void ParallelNetManager::register_cell(int cell_id, void* cell) {
 	// to find the PreSyn and from that the Cell
 	// we force the cell to be an outputcell due to the danger of
 	// user error
-	cells.append(cell);
-	nc = new NetCon(cell, nil);
+	cells.push_back(cell_count++,cell);
+	nc = new SynapseInterface(cell, nil);
 	pc->cell(cell_id, nc, 1);
 }
 
-void nc_append(int precell_id, int postcell_id) {
+void ParallelNetManager::synmech_append(int precell_id, int postcell_id) {
 	int w,se,ww,i = -1;
 	if (gid_exists(postcell_id)) {
 		// target in this subset
 		// source may be on this or another machine
 		nc = cm2t(precell_id, pc->gid2cell(postcell_id), $3, weight, delay)
-		i = nclist.count
-		nclist.append(nc)
+		i = nclist.size();
+		nclist.push_back(nc);
 	} else if ((se = gid_exists(precell_id)) > 0) {
 		// source exists but not the target
 		if (se != 3){ // output to another machine and it is
@@ -107,24 +113,24 @@ void nc_append(int precell_id, int postcell_id) {
 
 }
 
-obfunc cm2t(int precell_id, int postcell_synid, double weight, double delay) {
-	if ($3 < 0) {
-		nc = pc->gid_connect($1, $o2)
-	}else{
+SynMechInterface* ParallelNetManager::cm2t(int precell_id, SynMechInterface* postcell_syn, double weight, double delay) {
+	if (postcell_syn) {
+		nc = pc->gid_connect(precell_id, postcell_syn);
+	} /*else{
 		nc = pc->gid_connect($1, $o2.synlist.object($3))
-	}
-	nc.weight = $4
-	nc.delay = $5
-	return nc
+	} */
+	nc.weight = weight;
+	nc.delay = delay;
+	return nc;
 }
 
-void set_maxstep() {
+void ParallelNetManager::set_maxstep() {
 	// arg is max allowed, return val is just for this subnet
 	localmaxstep_ = pc->set_maxstep(10); // arg is the maximum allowed
 //	printf("%d localmaxstep=%g\n", myid, localmaxstep_)
 }
 
-void maxstepsize() {
+void ParallelNetManager::maxstepsize() {
 	int i, m;
 	if (!maxstepsize_called_) {
 		maxstepsize_called_ = 1;
@@ -139,22 +145,23 @@ void maxstepsize() {
 // without using the bulletin board. A file should be opened
 // with File.aopen for appending at the beginning of the iterator_statement
 // and closed at the end.
-iterator serialize() {
+/*iterator serialize() {
 	int rank
-	pc->barrier
-	for rank = 0, pc->nhost {
+	pc->barrier()
+	for (rank = 0; rank < pc->nhost; ++rank) {
 		if (rank == pc->id) {
 			iterator_statement;
 		}
-		pc->barrier;
+		pc->barrier();
 	}
 }
+*/
 
-void doinit() {
+void ParallelNetManager::doinit() {
 	stdinit();
 }
 
-void pinit() {
+void ParallelNetManager::pinit() {
 	maxstepsize();
 	if (nwork > 1) {
 	        pc->context(this, "doinit");
@@ -162,24 +169,25 @@ void pinit() {
 	doinit(); // the master does one also
 }
 
-void psolve(double x) {
-	pc->psolve(x)
+void ParallelNetManager::psolve(double x) {
+	pc->psolve(x);
 }
 
-void pcontinue(double x) {
+void ParallelNetManager::pcontinue(double x) {
 	if (nwork > 1) {
 		pc->context(this, "psolve", x);
 	}
 	psolve(x);
 }
 
-void prun() {
+void ParallelNetManager::prun() {
 	pinit();
 	pcontinue(tstop);
 }
 
-proc postwait() {local w, sm, s, r, ru
-	if ($1 == 0) {
+void ParallelNetManager::postwait(int x) {
+	int w, sm, s, r, ru;
+	if (x == 0) {
 		pc->post("waittime", myid, pc->wait_time());
 	}else{
 		w = pc->wait_time()
@@ -187,8 +195,8 @@ proc postwait() {local w, sm, s, r, ru
 		pc->post("poststat", ParSpike::my_rank, w, sm, s, r, ru);
 	}
 }
-
-proc prstat() { local i, id, w, sm, s, r, ru // print the wait time and statis
+/*
+proc ParallelNetManager::prstat() { local i, id, w, sm, s, r, ru // print the wait time and statistics
 	if (nwork > 1) {
 		pc->context(this, "postwait", $1)
 	}
@@ -208,11 +216,11 @@ proc prstat() { local i, id, w, sm, s, r, ru // print the wait time and statis
 	}
 }
 
-proc postspikes() {
+proc ParallelNetManager::postspikes() {
 	pc->post("postspike", spikevec, idvec)
 }
 
-proc gatherspikes() {local i  localobj s, id
+proc ParallelNetManager::gatherspikes() {local i  localobj s, id
 	if (nwork > 1) {
 		s = new Vector()
 		id = new Vector()
@@ -225,7 +233,7 @@ proc gatherspikes() {local i  localobj s, id
 	}
 }
 
-proc wantgraph() {
+proc ParallelNetManager::wantgraph() {
 	want_graph_ = 1
 }
 
@@ -239,7 +247,7 @@ proc wantgraph() {
 // symetric but we force that. I do not know if
 // node weight and edge weight is independent and unrelated to partitioning.
 
-proc graphout() {local i, j, jx, x  localobj f, cw
+proc ParallelNetManager::graphout() {local i, j, jx, x  localobj f, cw
 	if (!want_graph_) {
 		printf("%s.wantgraph() was not called before building\n", this)
 		return
@@ -259,7 +267,7 @@ proc graphout() {local i, j, jx, x  localobj f, cw
 	f.close()
 }
 
-proc cellweight() {local i, act, loc
+proc ParallelNetManager::cellweight() {local i, act, loc
 	$o1 = new Vector(cells.count)
 	act = cvode_active()
 	loc = cvode_local()
@@ -280,3 +288,4 @@ $o1.printf
 	}
 }
 
+*/

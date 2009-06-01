@@ -86,8 +86,8 @@ inline void ParNetwork::clear_past_of_spike_list(const Time & time_end_past)
 
 
 ///////////////////////////////////////////////////////////////////////////
-// Method to 
-// all the groups are updates from #0 to last one
+// Method to gather all neurons
+
 inline void ParNetwork::build_network()
 {
 	for (ListGroupType::const_iterator i = gp_list_.begin(); 
