@@ -21,8 +21,8 @@
 //Globals -- 
 
 
-	MPI_Comm mpi_comm;
-	MPI_Comm bbs_comm;
+extern	MPI_Comm mpi_comm;
+extern	MPI_Comm bbs_comm;
 
 /* could convert to typedef pair<int,double>  SpikePacket_*/
 typedef struct {
@@ -106,7 +106,7 @@ public:
 	int icapacity_;
 //	SpikePacket_* spikeout_;
 //	SpikePacket_* spikein_;
-	int localgid_size_;
+	
 	int ag_send_size_;
 	int ag_send_nspike_;
 	int ovfl_capacity_;
@@ -114,7 +114,7 @@ public:
 	unsigned char* spfixout_;
 	unsigned char* spfixin_;
 	unsigned char* spfixin_ovfl_;
-
+	static int localgid_size_;
 	static int mpi_use; /* are we using MPI? */
 	static int under_mpi_control_;
 	static int my_rank; /* rank */

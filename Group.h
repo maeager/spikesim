@@ -18,9 +18,6 @@
 #include "ConnectivityManager.h"
 #include "DistributionManager.h"
 
-#ifdef PARALLELSIM
-#else
-#endif
 
 //! Group of neurons sharing similar properties.
 /*!	All the neurons of the group share the same configurators for the neural data (\link Group::data_cfg_ \endlink) 

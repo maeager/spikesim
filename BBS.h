@@ -85,7 +85,7 @@ public:
 	// after taking use these
 	int upkint();
 	double upkdouble();
-	void upkvec(int n, double* px); // n input px space must exist
+	void upkvec(int n, std::vector<double>* px); // n input px space must exist
 	char* upkstr(); // delete [] char* when finished
 
 	// before posting use these
@@ -122,9 +122,9 @@ public:
 	void outputcell(int);
 	void spike_record(int, std::vector<double>,std::vector<double>);
 	void netpar_solve(double);
-	void** gid2obj(int);
-	ConfigBase* gid2cell(int);
-	void** gid_connect(int);
+	SynapseInterface* gid2obj(int);
+	NeuronInterface* gid2cell(int);
+	SynapseInterface* gid_connect(int);
 	double netpar_mindelay(double maxdelay);
 	void netpar_spanning_statistics(int*, int*, int*, int*);
 	std::vector<double> netpar_max_histogram(std::vector<double>);

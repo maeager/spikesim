@@ -1,14 +1,25 @@
 
 #include "ParSpike.h"
 #include "BBS.h"
+#include "ParNetwork2BBS.h"
+#include "NetPar.h"
 
+#include <string>
+#include <vector>
 #include <deque>
 #include <boost/any.hpp>
 
+int errno=0;
 typedef std::deque<boost::any> AnyBuffer;
 
 AnyBuffer hocbuf;
-
+#define ifarg(i) (int)(hocbuf.size()) <= i 
+int * getint(int arg){  return boost::any_cast<int >(&hocbuf[arg]);}
+//double * getarg(int arg) { if (hocbuf.at(arg)) return boost::any_cast<double>(&hocbuf[arg]); else return 0. ;}
+double * getval(int arg) { return boost::any_cast<double >(&hocbuf[arg]);}
+std::vector<double> * getvec(int arg){ return boost::any_cast<std::vector<double> >(&hocbuf[arg]);}
+std::string * getstr(int arg){ return boost::any_cast<std::string>(&hocbuf[arg]);}
+bool ParNetwork2BBS::posting_ = false;
 
 ParNetwork2BBS::ParNetwork2BBS(){//Object*) {
 	// not clear at moment what is best way to handle nested context
@@ -17,27 +28,27 @@ ParNetwork2BBS::ParNetwork2BBS(){//Object*) {
 //		i = int(chkarg(1, 0, 10000));
 //	}
 	bbs = new OcBBS(1);
-	bbs->ref();
+	//bbs->ref();
 }
 
 ParNetwork2BBS::~ParNetwork2BBS(){
-	bbs->unref();
+	//bbs->unref();
 }
 
 
 
-/*
-static int ParNetwork2BBS::submit_help() {
+
+int ParNetwork2BBS::submit_help() {
 	int id, i, firstarg, style;
 	posting_ = true;
 	bbs->pkbegin();
 	i = 1;
 	if (double *d = boost::any_cast<double> (&hocbuf[i])) {
-		bbs->pkint((id = (int)(*d);i++;
+		bbs->pkint((id = (int)(*d)));i++;
 	}else{
 		bbs->pkint((id = --bbs->next_local_));
 	}
-	
+/*	
 	if (hocbuf.at(i+1)) {
 		int argtypes = 0;
 		int ii = 1;
@@ -54,9 +65,10 @@ static int ParNetwork2BBS::submit_help() {
 			bbs->pkint(b->index);
 //printf("ob=%s\n", hoc_object_name(ob));
 		}
-		bbs->pkstr(std::string *s = boost::any_cast<std::string> (&hocbuf[i++]));
+		std::string *s = boost::any_cast<std::string> (&hocbuf[i++])
+		bbs->pkstr(s->c_str());
 		firstarg = i;
-		for (; hocbuf.size() <= i; ++i) { // first is least significant
+		for (; ifarg(i); ++i) { // first is least significant
 //			if (hoc_is_double_arg(i)) {
 	if (double *d = boost::any_cast<double> (&hocbuf[i])) {
 				argtypes += 1*ii;
@@ -78,25 +90,25 @@ static int ParNetwork2BBS::submit_help() {
 	posting_ = false;
 	return id;
 	}
-
-}
 */
+}
 
-static double ParNetwork2BBS::submit() {
+
+ double ParNetwork2BBS::submit() {
 	int id;
-	id = submit_help(bbs);
+	id = submit_help();
 	bbs->submit(id);
 	return double(id);
 }
 	
-static double ParNetwork2BBS::context() {
-	submit_help(bbs);
+ double ParNetwork2BBS::context() {
+	submit_help();
 //	printf("%d context %s %s\n", bbs->myid(), hoc_object_name(*hoc_objgetarg(1)), gargstr(2));
 	bbs->context();
 	return 1.;
 }
 	
-static double ParNetwork2BBS::working() {
+ double ParNetwork2BBS::working() {
 	int id;
 	bool b = bbs->working(id, bbs->retval_, bbs->userid_);
 	if (b) {
@@ -106,155 +118,159 @@ static double ParNetwork2BBS::working() {
 	}
 }
 
-static double ParNetwork2BBS::retval() {
+ double ParNetwork2BBS::retval() {
 	return bbs->retval_;
 }
 
-static double ParNetwork2BBS::userid() {
+ double ParNetwork2BBS::userid() {
 	return (double)bbs->userid_;
 }
 
-static double ParNetwork2BBS::nhost() {
+ double ParNetwork2BBS::nhost() {
 	return double(bbs->nhost());
 }
 
-static double ParNetwork2BBS::worker() {
+ double ParNetwork2BBS::worker() {
 	bbs->worker();
 	return 0.;
 }
 
-static double ParNetwork2BBS::done() {
+ double ParNetwork2BBS::done() {
 	bbs->done();
 	return 0.;
 }
 
-static void ParNetwork2BBS::pack_help(int i) {
+ void ParNetwork2BBS::pack_help(int i) {
 	if (!posting_) {
 		bbs->pkbegin();
 		posting_ = true;
 	}
-	for (; hocbuf.size() <= i; ++i) {
+	for (; ifarg(i); ++i) {
 		//if (hoc_is_double_arg(i)) {
 		if (double *d = boost::any_cast<double> (&hocbuf[i])){
 			bbs->pkdouble(*d);
 		}else if (std::string *s = boost::any_cast<std::string> (&hocbuf[i])) {//if (hoc_is_str_arg(i)) {
-			bbs->pkstr(*s);
+			bbs->pkstr(s->c_str());
 		}else{
-			if (std:vector<double> *vec = boost::any_cast<std::vector<double>> (&hocbuf[i])){
-			int n; 
-			n = vec.size()
+			if (std::vector<double> *vec = boost::any_cast<std::vector<double> > (&hocbuf[i])){
+			int n = vec->size();
 			bbs->pkint(n);
-			bbs->pkvec(n, vec);
+			bbs->pkvec(n, &(*vec)[0]);
 			}
 		}
 	}
 }
 
-static double ParNetwork2BBS::pack() {
+ double ParNetwork2BBS::pack() {
 	pack_help(1);
 	return 0.;
 }
 
-static double ParNetwork2BBS::post(std::string key) {
+ double ParNetwork2BBS::post(std::string key) {
 	pack_help(2);
 	posting_ = false;
-	bbs->post(key);
+	bbs->post(key.c_str());
 
 	return 1.;
 }
 
-static void ParNetwork2BBS::unpack_help(int i) {
+ void ParNetwork2BBS::unpack_help(int i) {
+	std::vector<double> *vec;
 	for (; ifarg(i); ++i) {
-		if (hoc_is_pdouble_arg(i)) {
-			*hoc_pgetarg(i) = bbs->upkdouble();
-		}else if (hoc_is_str_arg(i)) {
+		if (double *pdouble = boost::any_cast<double> (&hocbuf[i])){
+//		if (hoc_is_pdouble_arg(i)) {
+			*pdouble = bbs->upkdouble();
+//			*hoc_pgetarg(i) = bbs->upkdouble();
+		}else if (std::string *ps = boost::any_cast<std::string> (&hocbuf[i])) {
+//		}else if (hoc_is_str_arg(i)) {
 			char* s = bbs->upkstr();
-			char** ps = hoc_pgargstr(i);
-			hoc_assign_str(ps, s);
+//			char** ps = hoc_pgargstr(i);
+			*ps =s;
+//			hoc_assign_str(ps, s);
 			delete [] s;
 		}else{
-			Vect* vec = vector_arg(i);
+			if ((vec = boost::any_cast<std::vector<double> > (&hocbuf[i]))){
 			int n = bbs->upkint();
 			vec->resize(n);
-			bbs->upkvec(n, vec->vec());
-		}
+			bbs->upkvec(n, vec);
+			}
+/**/		}
 	}
+
 }
 
-static double ParNetwork2BBS::unpack() {
-	unpack_help(1, bbs);
+double ParNetwork2BBS::unpack() {
+	unpack_help(1);
 	return 1.;
 }
 
-static double ParNetwork2BBS::upkscalar() {
+ double ParNetwork2BBS::upkscalar() {
 	return bbs->upkdouble();
 }
 
-static std::string ParNetwork2BBS::upkstr() {
+ std::string ParNetwork2BBS::upkstr() {
 	char* s = bbs->upkstr();
 	std::string ps = s;
 	delete [] s;
 	return ps;
 }
 
-static 	std::vector<double> ParNetwork2BBS::upkvec(std::vector<double> vec=0) {
+double ParNetwork2BBS::upkvec(std::vector<double>* vec) {
 
 	int n = bbs->upkint();
-	if (vec)) {
-		vec.resize(n);
-	}else{
-		vec = new Vect(n);
-	}
-	bbs->upkvec(n, vec);
-	return vec;
-}
-
-static char* ParNetwork2BBS::key_help() {
-	static char key[50];
-	if (hoc_is_str_arg(1)) {
-		return gargstr(1);
-	}else{
-		sprintf(key, "%g", *getarg(1));
-		return key;
-	}
-}
-
-static double ParNetwork2BBS::take() {
-	bbs->take(key_help());
-	unpack_help(2, bbs);
+	vec->resize(n);
+	bbs->upkvec(n,vec);
 	return 1.;
 }
 
-static double ParNetwork2BBS::look() {
+ char* ParNetwork2BBS::key_help() {
+	
+//	if (hoc_is_str_arg(1)) {
+	if (std::string *s = boost::any_cast<std::string>(&hocbuf[1])){
+		return &(*s)[0]; //sgargstr(1);
+	}else{
+	if (char **c = boost::any_cast<char*>(&hocbuf[1])) return *c;
+	}
+	std::cout << "key_help Error" << std::endl;
+	return 0;
+}
+
+ double ParNetwork2BBS::take() {
+	bbs->take(key_help());
+	unpack_help(2);
+	return 1.;
+}
+
+ double ParNetwork2BBS::look() {
 	if (bbs->look(key_help())) {
-		unpack_help(2, bbs);
+		unpack_help(2);
 		return 1.;
 	}
 	return 0.;
 }
 
-static double ParNetwork2BBS::look_take() {
+ double ParNetwork2BBS::look_take() {
 
 	if (bbs->look_take(key_help())) {
-		unpack_help(2, bbs);
+		unpack_help(2);
 		return 1.;
 	}
 	return 0.;
 }
 
-static double ParNetwork2BBS::pctime() {
+ double ParNetwork2BBS::pctime() {
 	return bbs->time();
 }
 
-static double ParNetwork2BBS::vtransfer_time() {
+ double ParNetwork2BBS::vtransfer_time() {
 /*	int mode = ifarg(1) ? int(chkarg(1, 0., 2.)) : 0;
 	if (mode == 2) {
-		return nrnmpi_rtcomp_time_;
+		return bbs->rtcomp_time_;
 #if PARANEURON
 	}else if (mode == 1) {
-		return nrnmpi_splitcell_wait_;
+		return bbs->splitcell_wait_;
 	}else{
-		return nrnmpi_transfer_wait_;
+		return bbs->transfer_wait_;
 	}
 #else
 	}
@@ -266,19 +282,19 @@ static double ParNetwork2BBS::vtransfer_time() {
 
 
 
-static double ParNetwork2BBS::wait_time() {
+ double ParNetwork2BBS::wait_time() {
 	return bbs->wait_time();
 }
 
-static double ParNetwork2BBS::step_time() {
+ double ParNetwork2BBS::step_time() {
 	double w =  bbs->integ_time();
 #if PARANEURON
-	w -= nrnmpi_transfer_wait_ + nrnmpi_splitcell_wait_;
+	w -= bbs->transfer_wait_ + bbs->splitcell_wait_;
 #endif
 	return w;
 }
 
-static double ParNetwork2BBS::send_time() {
+ double ParNetwork2BBS::send_time() {
 //	int arg = ifarg(1) ? int(chkarg(1, 0, 10)) : 0;
 //	if (arg) {
 //		return nrn_bgp_receive_time(arg);
@@ -286,45 +302,45 @@ static double ParNetwork2BBS::send_time() {
 	return bbs->send_time();
 }
 
-static double ParNetwork2BBS::event_time() {
+ double ParNetwork2BBS::event_time() {
 	return 0.;
 }
 
-static double ParNetwork2BBS::integ_time() {
+ double ParNetwork2BBS::integ_time() {
 	return 0.;
 }
 
-static double ParNetwork2BBS::set_gid2node() {
-	bbs->set_gid2node(int(chkarg(1, 0, MD)), int(chkarg(2, 0, MD)));
+ double ParNetwork2BBS::set_gid2node(int gid, int nid) {
+	bbs->set_gid2node(gid,nid);//int(chkarg(1, 0, MD)), int(chkarg(2, 0, MD)));
 	return 0.;
 }
 
-static double ParNetwork2BBS::gid_exists(int gid) {
+ double ParNetwork2BBS::gid_exists(int gid) {
 	return int(bbs->gid_exists(gid));
 }
 
-static double ParNetwork2BBS::cell() {
+ double ParNetwork2BBS::cell() {
 	bbs->cell();
 	return 0.;
 }
 
-static double ParNetwork2BBS::threshold() {
+ double ParNetwork2BBS::threshold() {
 	return bbs->threshold();
 }
 
-static double ParNetwork2BBS::spcompress(int nspike=-1, int gid_compress=1,int xchng_meth = 0) {
-	return (double)nrnmpi_spike_compress(nspike, gid_compress, xchng_meth);
+ double ParNetwork2BBS::spcompress(int nspike=-1, int gid_compress=1,int xchng_meth = 0) {
+	return (double)NetPar::spike_compress(nspike, gid_compress, xchng_meth);
 }
 /*
-static double splitcell_connect(void* v) {
-	int that_host = (int)chkarg(1, 0, ParSpike::numprocs-1);
+ double splitcell_connect(void* v) {
+	int that_host = (int)chkarg(1, 0, bbs->numprocs-1);
 	// also needs a currently accessed section that is the root of this_tree
-	nrnmpi_splitcell_connect(that_host);
+	bbs->splitcell_connect(that_host);
 	return 0.;
 }
 
 
-static double multisplit(void* v) {
+ double multisplit(void* v) {
 	double x = -1.;
 	int sid = -1;
 	int backbone_style = 2;
@@ -337,111 +353,111 @@ static double multisplit(void* v) {
 		backbone_style = (int)chkarg(3, 0, 2);
 	}
 	// also needs a currently accessed section
-	nrnmpi_multisplit(x, sid, backbone_style);
+	bbs->multisplit(x, sid, backbone_style);
 	return 0.;
 }
 */
-static double ParNetwork2BBS::gid_clear() {
-	nrnmpi_gid_clear();
+ double ParNetwork2BBS::gid_clear() {
+	NetPar::gid_clear();
 	return 0.;
 }
 
-static double ParNetwork2BBS::outputcell(int gid) {
+ double ParNetwork2BBS::outputcell(int gid) {
 	bbs->outputcell(gid);
 	return 0.;
 }
-
-static double ParNetwork2BBS::spike_record(int gid, double* spikevec, double* gidvec) {
-	bbs->spike_record(gid, spikevec, gidvec);
+/*
+ double ParNetwork2BBS::spike_record(int gid, std::vector<double>* spikevec, std::vector<double>* gidvec) {
+	//bbs->spike_record(gid, spikevec, gidvec);
+	return 0.;
+}
+*/
+ double ParNetwork2BBS::psolve(double  stop) {
+	bbs->netpar_solve(stop);
 	return 0.;
 }
 
-static double ParNetwork2BBS::psolve(double  step) {
-	bbs->netpar_solve(step);
-	return 0.;
-}
-
-static double ParNetwork2BBS::set_maxstep(double maxstep) {
+ double ParNetwork2BBS::set_maxstep(double maxstep) {
 	return bbs->netpar_mindelay(maxstep);
 }
 
-static double ParNetwork2BBS::spike_stat(int *nsend,int * nsendmax,int * nrecv, int *nrecv_useful ) {
-	nsend = nsendmax = nrecv = nrecv_useful = 0;
+ double ParNetwork2BBS::spike_stat(int *nsend,int * nsendmax,int * nrecv, int *nrecv_useful ) {
+	*nsend = *nsendmax = *nrecv = *nrecv_useful = 0;
 	bbs->netpar_spanning_statistics(nsend, nsendmax, nrecv, nrecv_useful);
-	return double(nsendmax);
+	return double(*nsendmax);
 }
 
-static double ParNetwork2BBS::maxhist(std::vector<double> vec) {
+ double ParNetwork2BBS::maxhist(std::vector<double> vec) {
 	bbs->netpar_max_histogram(vec);
 	return 0.;
 }
 
-static double ParNetwork2BBS::source_var(void*) { // &source_variable, source_global_index
+ double ParNetwork2BBS::source_var(void*) { // &source_variable, source_global_index
 	// At BEFORE BREAKPOINT, the value of variable is sent to the
 	// target machine(s).  This can only be executed on the
 	// source machine (where source_variable exists).
-	nrnmpi_source_var();
+//	bbs->source_var();
 	return 0.;
 }
 
-static double ParNetwork2BBS::target_var(void*) { // &target_variable, source_global_index
+ double ParNetwork2BBS::target_var(void*) { // &target_variable, source_global_index
 	// At BEFORE BREAKPOINT, the value of the target_variable is set
 	// to the value of the source variable associated
 	// with the source_global_index.  This can only be executed on the
 	// target machine (where target_variable exists).
-	nrnmpi_target_var();
+//	bbs->target_var();
 	return 0.;
 }
 
-static double ParNetwork2BBS::setup_transfer(void*) { // after all source/target and before init and run
-	nrnmpi_setup_transfer();
+ double ParNetwork2BBS::setup_transfer(void*) { // after all source/target and before init and run
+//	bbs->setup_transfer();
 	return 0.;
 }
 
-static double ParNetwork2BBS::barrier(void*) {
+ double ParNetwork2BBS::barrier(void*) {
 	// return wait time
 	double t = 0.;
 
-	if (ParSpike::numprocs > 1) {
-		t = nrnmpi_wtime();
-		nrnmpi_barrier();
-		t = nrnmpi_wtime() - t;
+	if (bbs->numprocs > 1) {
+		t = bbs->wtime();
+		bbs->barrier();
+		t = bbs->wtime() - t;
 	}
 	errno = 0;
 	return t;
 }
 
-static double ParNetwork2BBS::allreduce(double val , int type) {
+ double ParNetwork2BBS::allreduce(double val , int type) {
 	// type 1,2,3 sum, max, min
-	double val = *getarg(1);
+//	double val = *getval(1);
 
-	if (ParSpike::numprocs > 1) {
-		int type = (int)chkarg(2, 1, 3);
-		val = nrnmpi_dbl_allreduce(val, type);
+	if (bbs->numprocs > 1) {
+//		int type = *getint(2);
+		val = bbs->dbl_allreduce(val, type);
 	}
 	errno = 0;
 	return val;
 }
 
-static double ParNetwork2BBS::allgather(double val, std::vector<double> vec) {
+ double ParNetwork2BBS::allgather(double val, std::vector<double> *vec) {
 	
-	vec.resize(ParSpike::numprocs);
+	vec->resize(bbs->numprocs);
 
-	if (ParSpike::numprocs > 1) {
-		nrnmpi_dbl_allgather(&val, vec, 1);
+	if (bbs->numprocs > 1) {
+		bbs->dbl_allgather(&val, &(*vec)[0], 1);
 		errno = 0;
 	}else{
-		vec[0] = val;
+		(*vec)[0] = val;
 	}
 
 	return 0.;
 }
 
-static double ParNetwork2BBS::alltoall( std::vector<double> vsrc, std::vector<double> vscnt, std::vector<double> vdest) {
-	int i, ns, np = ParSpike::numprocs;
-	ns = vsrc.capacity();
+ double ParNetwork2BBS::alltoall( std::vector<double> *vsrc, std::vector<double> *vscnt, std::vector<double> *vdest) {
+	int i, ns, np = bbs->numprocs;
+	ns = vsrc->capacity();
 	
-	if (vscnt.capacity() != np) {
+	if (vscnt->capacity() != np) {
 		throw ConfigError("alltoall(): size of source counts vector is not nhost");
 	}
 	
@@ -449,7 +465,7 @@ static double ParNetwork2BBS::alltoall( std::vector<double> vsrc, std::vector<do
 	int* sdispl = new int[np+1];
 	sdispl[0] = 0;
 	for (i=0; i < np; ++i) {
-		scnt[i] = int(vscnt[i]);
+		scnt[i] = int((*vscnt)[i]);
 		sdispl[i+1] = sdispl[i] + scnt[i];
 	}
 	if (ns != sdispl[np]) {
@@ -465,14 +481,13 @@ static double ParNetwork2BBS::alltoall( std::vector<double> vsrc, std::vector<do
 		c[i] = 1;
 		rdispl[i+1] = i+1;
 	}
-	ParSpike::int_alltoallv(scnt, c, rdispl, rcnt, c, rdispl);
+	bbs->int_alltoallv(scnt, c, rdispl, rcnt, c, rdispl);
 	delete [] c;
 	for (i=0; i < np; ++i) {
 		rdispl[i+1] = rdispl[i] + rcnt[i];
 	}
-	vdest.resize(rdispl[np]);
-	double* r = vector_vec(vdest);
-	ParSpike::dbl_alltoallv(vsrc, scnt, sdispl, r, rcnt, rdispl);
+	vdest->resize(rdispl[np]);
+	bbs->dbl_alltoallv(&(*vsrc)[0], scnt, sdispl, &(*vdest)[0], rcnt, rdispl);
 	delete [] rcnt;
 	delete [] rdispl;
 	delete [] scnt;
@@ -480,50 +495,52 @@ static double ParNetwork2BBS::alltoall( std::vector<double> vsrc, std::vector<do
 	return 0.;
 }
 
-static double ParNetwork2BBS::broadcast(std::string &s, int srcid) {
-	if (srcid >=  ParSpike::numprocs || srcid < 0) {
+ double ParNetwork2BBS::broadcast(std::string s, int srcid) {
+	if (srcid >=  bbs->numprocs || srcid < 0) {
 		throw ConfigError("broadcast(): srcid is not in numprocs range");
 	}
 	int cnt = 0;
-
-    if (ParSpike::numprocs > 1) {
-		if (srcid == ParSpike::my_rank) {
+	std::string *ss;
+    if (bbs->numprocs > 1) {
+		if (srcid == bbs->my_rank) {
 			cnt = s.size();
 		}
-		ParSpike::int_broadcast(&cnt, 1, srcid);
-		if (srcid != ParSpike::my_rank) {
+		bbs->int_broadcast(&cnt, 1, srcid);
+		if (srcid != bbs->my_rank) {
 			s.resize(cnt);
 		}
-		ParSpike::char_broadcast(s, cnt, srcid);
-		if (srcid != ParSpike::my_rank) {
+		bbs->char_broadcast(&s[0], cnt, srcid);
+		if (srcid != bbs->my_rank  && (ss = boost::any_cast<std::string>(&hocbuf[1]))) {
+			*ss = s; //copy data across
 		//	hoc_assign_str(hoc_pgargstr(1), s);
 			s.resize(0);
 		}
+	}
     return double(s.size());
 }
 
-static double ParNetwork2BBS::broadcast(std::vector<double> &vec, int srcid) {
-	if (srcid >=  ParSpike::numprocs || srcid < 0) {
+ double ParNetwork2BBS::broadcast(std::vector<double> vec, int srcid) {
+	if (srcid >=  bbs->numprocs || srcid < 0) {
 		throw ConfigError("broadcast(): srcid is not in numprocs range");
 	}
 	int cnt = 0;
 
-    if (ParSpike::numprocs > 1) {
+    if (bbs->numprocs > 1) {
 
-		if (srcid == ParSpike::my_rank) {
+		if (srcid == bbs->my_rank) {
 			cnt = vec.capacity();
 		}
-		ParSpike::int_broadcast(&cnt, 1, srcid);
-		if (srcid != ParSpike::my_rank) {
+		bbs->int_broadcast(&cnt, 1, srcid);
+		if (srcid != bbs->my_rank) {
 			vec.resize(cnt);
 		}
-		ParSpike::dbl_broadcast(vec, cnt, srcid);
+		bbs->dbl_broadcast(&vec[0], cnt, srcid);
 	}
 	return double(cnt);
 }
 
 /*
-static double checkpoint(void*) {
+ double checkpoint(void*) {
 #if BLUEGENE_CHECKPOINT
 	int i = BGLCheckpoint();
 	return double(i);
@@ -533,18 +550,18 @@ static double checkpoint(void*) {
 }
 
 
-static double nthrd(void*) {
+ double nthrd(void*) {
 	int ip = 1;
 	if (ifarg(1)) {
-		if (ifarg(2)) { ip = int(chkarg(2, 0, 1)); }
-		nrn_threads_create(int(chkarg(1, 1, 1e5)), ip);
+		if (ifarg(2)) { ip = *getint(2)); }
+		nrn_threads_create(*getint(1), ip);
 	}
 	return double(nrn_nthread);
 }
 */
 
 /*
-static double partition(void*) {
+ double partition(void*) {
 	Object* ob = 0;
 	int it;
 	if (ifarg(2)) {
@@ -554,7 +571,7 @@ static double partition(void*) {
 		}
 	}
 	if (ifarg(1)) {
-		it = (int)chkarg(1, 0, nrn_nthread - 1);
+		it = (int)(*getint(1));
 		nrn_thread_partition(it, ob);
 	}else{
 		for (it = 0; it < nrn_nthread; ++it) {
@@ -564,27 +581,27 @@ static double partition(void*) {
 	return 0.0;
 }
 
-static double thread_stat(void*) {
+ double thread_stat(void*) {
 	nrn_thread_stat();
 	return 0.0;
 }
 
-static double thread_busywait(void*) {
-	int old = nrn_allow_busywait(int(chkarg(1,0,1)));
+ double thread_busywait(void*) {
+	int old = nrn_allow_busywait(*getint(1));
 	return double(old);
 }
 
-static double thread_how_many_proc(void*) {
+ double thread_how_many_proc(void*) {
 	int i = nrn_how_many_processors();
 	return double(i);
 }
 
-static double sec_in_thread(void*) {
+ double sec_in_thread(void*) {
 	Section* sec = chk_access();
 	return double(sec->pnode[0]->_nt->id);
 }
 
-static double thread_ctime(void*) {
+ double thread_ctime(void*) {
 	int i;
 #if 1
 	if (ifarg(1)) {
@@ -601,16 +618,16 @@ static double thread_ctime(void*) {
 */
 
 /* Must convert these to Synaptic interface */
-static SynapseInterface* ParNetwork2BBS::gid2obj(int gid) {
-	return bbs->gid2obj(gid);
+ SynapseInterface* ParNetwork2BBS::gid2obj(int gid) {
+	return (SynapseInterface*)bbs->gid2obj(gid);
 }
 
-static NeuronInterface* ParNetwork2BBS::gid2cell(int gid) {
-	return bbs->gid2cell(gid);
+ NeuronInterface* ParNetwork2BBS::gid2cell(int gid) {
+	return (NeuronInterface*)bbs->gid2cell(gid);
 }
 
-static SynapseInterface* ParNetwork2BBS::gid_connect(int gid) {
-	return bbs->gid_connect(gid);
+ SynapseInterface* ParNetwork2BBS::gid_connect(int gid) {
+	return (SynapseInterface*)bbs->gid_connect(gid);
 }
 
 

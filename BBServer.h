@@ -37,7 +37,7 @@
 #define PendingList MpiPendingList
 #define LookingToDoList MpiLookingToDoList
 
-int bbs_poll_;
+extern int bbs_poll_;
 #define BBSPOLL if (--bbs_poll_ == 0) { bbs_handle(); }
 
 

@@ -28,7 +28,7 @@
 extern int nrn_use_selfqueue_;
 //extern void nrn_pending_selfqueue(double, NrnThread*);
 extern void ncs2nrn_integrate(double tstop);
-extern void nrn_fake_fire(int gid, double firetime, int fake_out);
+ void nrn_fake_fire(int gid, double firetime, int fake_out);
 extern void nrn_partrans_clear();
 
 typedef std::map<int, SynapseInterface*> Gid2PreSyn;
@@ -43,9 +43,9 @@ public:
 //	const DataCommonNeuron::ListSynMechType & DataCommonNeuron::presynmechlist_impl();
 //	const ListSynMechType & presynmechlist_impl() const {return presyn_mech_list_;};
 	static void alloc_space();
-	int spike_compress(int nspike, boolean gid_compress, int xchng_meth);
+	static int spike_compress(int nspike, bool gid_compress, int xchng_meth);
 	static void nrn_spike_exchange_compressed();	
-	void gid_clear();
+	static void gid_clear();
 	void spike_exchange_init();
 	static double set_mindelay(double maxdelay);
 	void timeout(int);
@@ -91,16 +91,17 @@ public:
 
 
 inline static void sppk(std::vector<unsigned char> c, int gid) {
-	for (int i = localgid_size_-1; i >= 0; --i) {
+	for (int i = ParSpike::localgid_size_-1; i >= 0; --i) {
 		c[i] = gid & 255;
 		gid >>= 8;
 	}
 }
 inline static int spupk(std::vector<unsigned char> c) {
-	int gid = *c++;
-	for (int i = 1; i < localgid_size_; ++i) {
+	int i=0;
+	int gid = c[i];
+	for (i = 1; i < ParSpike::localgid_size_; ++i) {
 		gid <<= 8;
-		gid += *c++;
+		gid += c[i];
 	}
 	return gid;
 }

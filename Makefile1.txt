@@ -1,11 +1,12 @@
 
 
-CXX = /opt/gcc-3.4.4/bin/c++
+# CXX = /opt/gcc-3.4.4/bin/c++
 MPICXX = /opt/mpich/ch-p4/bin/mpicxx
+CXX = $(MPICXX)
 CXXFLAGS = -Wall -I/usr/local -I/opt/mpich/ch-p4/include -DPARALLELSIM
 # LDFLAGS = -L/opt/mpich/ch-p4/lib -lmpich
 SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
-ParSpikeSim_OBJECTS= ParNetwork.o BBS.o ParSpike.o BBServer.o BBClient.o BBS2MPI.o $(SpikeSim_OBJECTS)
+ParSpikeSim_OBJECTS= ParNetwork.o BBS.o ParSpike.o BBServer.o BBClient.o BBS2MPI.o $(SpikeSim_OBJECTS) ParNetwork2BBS.o ParallelNetManager.o
 
 # all: ParSpikeSim CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
 # BBS.o ParSpike.o BBServer.o BBClient.o BBS2MPI.o
@@ -47,6 +48,11 @@ ParNetwork.o: ParNetwork.h ParNetwork.cpp
 ParSpike.o: ParSpike.h ParSpike.cpp
 	$(MPICXX) $(CXXFLAGS)  -c ParSpike.cpp -o ParSpike.o
 
+ParNetwork2BBS.o:  ParNetwork2BBS.cpp #ParNetwork2BBS.h
+	$(MPICXX) $(CXXFLAGS)  -c ParNetwork2BBS.cpp -o ParNetwork2BBS.o
+
+ParallelNetManager.o: ParallelNetManager.h ParallelNetManager.cpp
+	$(MPICXX) $(CXXFLAGS)  -c ParallelNetManager.cpp -o ParallelNetManager.o
 
 BBS.o: BBS.h BBS.cpp ParSpike.h
 	$(MPICXX) $(CXXFLAGS)  -c BBS.cpp -o BBS.o

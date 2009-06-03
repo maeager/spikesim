@@ -28,8 +28,8 @@ ParNetwork::
 //   encapsulated in class constructors, so that only the overall process with the main tags are read here
 //   almost all the parameters are not known in this scope
 //----------ME------------
-// TODO: This needs to be split into a configurator and an implementor, so that one process does not decide to build everything
-// TODO: The master must be the hold of the network config and distribute them to the slaves
+// TODO: This needs to be split into a configurator and an implementor, so  one process does not decide to build everything
+
 void ParNetwork::build_from_file(std::string configfilename, std::string logfilename, bool no_output)
 {
 //	std::ofstream logoutfile;

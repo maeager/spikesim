@@ -2,24 +2,26 @@
 #include "ParSpike.h"
 #include "ParNetwork.h"
 #include "BBS.h"
-#include "NetPar.h"
+//#include "NetPar.h"
 
 #undef MD
 #define MD 2147483648.
 
-extern "C" {
+/*extern "C" {
 
 //	Symbol* hoc_which_template(Symbol*);
 
-	extern double t;
+//	extern double t;
 
 }
+*/
 
-class OcBBS : public BBS , public Resource {
+
+class OcBBS : public BBS {//, public Resource {
 public:
 	OcBBS(int nhost_request);
 	virtual ~OcBBS();
-public:
+
 	double retval_;
 	int userid_;
 	int next_local_;
@@ -37,59 +39,59 @@ public:
 	ParNetwork2BBS();
 	~ParNetwork2BBS();
 
-static int submit_help(OcBBS*);
-	static double submit(); 
-	static double working();
-	static double retval();
-	static double userid();
-	static double pack();
-	static double post();
-	static double unpack();
-	static double upkscalar();
-	static double take();
-	static double look();
-	static double look_take();
-	static double worker();
-	static double done();
+	int submit_help();
+	 double submit(); 
+	 double working();
+	 double retval();
+	 double userid();
+	 double pack();
+	 double post(std::string);
+	 double unpack();
+	 double upkscalar();
+	 double take();
+	 double look();
+	 double look_take();
+	 double worker();
+	 double done();
 
-	static double nhost();
-	static double context();
+	 double nhost();
+	 double context();
 
-	static double pctime();
-	static double wait_time();
-	static double step_time(); 
-	static double send_time();
-	static double event_time();  //empty
-	static double integ_time(); //empty
-	static double vtransfer_time(); //empty
+	 double pctime();
+	 double wait_time();
+	 double step_time(); 
+	 double send_time();
+	 double event_time();  //empty
+	 double integ_time(); //empty
+	 double vtransfer_time(); //empty
 //no	 mech_time
 
-	static double set_gid2node(int gid, int nid);
+	 double set_gid2node(int gid, int nid);
 	double gid_exists(int gid);
-	static double outputcell(int gid) ;
-	static double cell();
-	static double threshold();
-	static double spike_record(int gid, double* spikevec, double* gidvec) ;
-	static double psolve(double  step);
-	static double set_maxstep(double maxstep);
-	static double spike_stat(int *nsend,int * nsendmax,int * nrecv, int *nrecv_useful );
-	static double maxhist(std::vector<double> vec);
-	static double checkpoint(void*);
-	static double spcompress(int nspike=-1, int gid_compress=1,int xchng_meth = 0);
-	static double gid_clear() ;
+	 double outputcell(int gid) ;
+	 double cell();
+	 double threshold();
+//	 double spike_record(int gid, double* spikevec, double* gidvec) ;
+	 double psolve(double  step);
+	 double set_maxstep(double maxstep);
+	 double spike_stat(int *nsend,int * nsendmax,int * nrecv, int *nrecv_useful );
+	 double maxhist(std::vector<double> vec);
+	 double checkpoint(void*);
+	 double spcompress(int , int ,int );
+	 double gid_clear();
 
-	static double source_var(void*);  // &source_variable, source_global_index
-	static double target_var(void*) ; // &target_variable, source_global_index
-	static double setup_transfer(void*); // after all source/target and before init and run
+	 double source_var(void*);  // &source_variable, source_global_index
+	 double target_var(void*) ; // &target_variable, source_global_index
+	 double setup_transfer(void*); // after all source/target and before init and run
 //	"splitcell_connect", splitcell_connect,
 //	"multisplit", multisplit,
 
-	static double barrier(void*);
-	static double allreduce(double val , int type) ;
-	static double allgather(double val, std::vector<double> vec) ;
-	static double alltoall( std::vector<double> vsrc, std::vector<double> vscnt, std::vector<double> vdest); 
-	static double broadcast(std::string &s, int srcid) ;
-static double broadcast(std::vector<double> &vec, int srcid) ;
+	 double barrier(void*);
+	 double allreduce(double val , int type) ;
+	 double allgather(double val, std::vector<double> *vec) ;
+	 double alltoall( std::vector<double> *vsrc, std::vector<double> *vscnt, std::vector<double> *vdest); 
+	 double broadcast(std::string s, int srcid) ;
+ 	 double broadcast(std::vector<double> vec, int srcid) ;
 //	"nthread", nthrd,
 //	"partition", partition,
 //	"thread_stat", thread_stat,
@@ -99,21 +101,23 @@ static double broadcast(std::vector<double> &vec, int srcid) ;
 //	"thread_ctime", thread_ctime,
 
 
-	std::string upkstr() ;
-	std::vector<double> upkvec(std::vector<double>);
+	std::string upkstr();
+	double upkvec(std::vector<double>*);
 
 
-	static SynapseInterface* gid2obj(int gid);
-	static NeuronInterface* gid2cell(int gid);
-	static SynapseInterface* gid_connect(int gid);
+	 SynapseInterface* gid2obj(int gid);
+	 NeuronInterface* gid2cell(int gid);
+	 SynapseInterface* gid_connect(int gid);
 
 
 
-	static void pack_help(int, OcBBS*);
-	static void unpack_help(int, OcBBS*);
-	static char* key_help();
+	 void pack_help(int);
+	 void unpack_help(int);
+	 char* key_help();
+
+	
 
 public:
-	static bool posting_ = false;
+	static bool posting_;
 	OcBBS* bbs;
 };

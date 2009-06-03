@@ -11,6 +11,9 @@ ParSpike::ParSpike(void)
 
 
 */ 
+	MPI_Comm mpi_comm;
+	MPI_Comm bbs_comm;
+
 
  int ParSpike::mpi_use = 0;
  int ParSpike::numprocs = 1;

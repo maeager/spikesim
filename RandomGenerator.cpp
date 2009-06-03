@@ -18,8 +18,7 @@ bool RandomGenerator::probability_trial_for_time_step(volatile double & rate)
 }
 */
 
-bool RandomGenerator::
-+(const double & rate)
+bool RandomGenerator::probability_trial_for_time_step(const double & rate)
 {
 	if ( ran() < rate*SimEnv::timestep() )
 		return true;

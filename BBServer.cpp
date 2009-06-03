@@ -13,7 +13,7 @@
 #include <mpi.h>
 #define POLLCNT 300
 
-extern int bbs_poll_;
+int bbs_poll_;
 void bbs_handle();
 extern double hoc_cross_x_;
 static int bbs_poll_cnt_;

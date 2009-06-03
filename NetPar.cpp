@@ -1,4 +1,8 @@
+
+#include "ParSpike.h"
+#include "ParNetwork.h"
 #include "BBS.h"
+#include "ParNetwork2BBS.h"
 #include "NetPar.h"
 
 
@@ -7,7 +11,7 @@
 #define MD 2147483648.
 
 // hash table where buckets are binary search maps
-implementNrnHash(Gid2PreSyn, int, SynapseInterface*)
+//implementNrnHash(Gid2PreSyn, int, SynapseInterface*)
 
 NetPar::NetPar(void)
 {
@@ -53,43 +57,10 @@ void NetParEvent::pgvts_deliver(double tt, NetCvode* nc){
 }
 
 void NetParEvent::pr(const char* m, double tt, NetCvode* nc){
-	printf("%s NetParEvent %d t=%.15g tt-t=%g\n", m, ithread_, tt, tt - nrn_threads[ithread_]._t);
+	std::cout <<m<< " NetParEvent " << ithread_ <<" t= "<<setwidth(15) << tt << " tt-t= " << tt - nrn_threads[ithread_]._t << std::endl;
 }
 
-DiscreteEvent* NetParEvent::savestate_save(){
-	//pr("savestate_save", 0, net_cvode_instance);
-	NetParEvent* npe =  new NetParEvent();
-	npe->ithread_ = ithread_;
-	return npe;
-}
 
-DiscreteEvent* NetParEvent::savestate_read(FILE* f){
-	int i;
-	assert(fscanf(f, "%d", &i) == 1);
-	//printf("NetParEvent::savestate_read %d\n", i);
-	NetParEvent* npe = new NetParEvent();
-	npe->ithread_ = i;
-	return npe;
-}
-
-void NetParEvent::savestate_write(FILE* f){
-	//pr("savestate_write", 0, net_cvode_instance);
-	fprintf(f, "%d %d\n", NetParEventType, ithread_);
-}
-
-void NetParEvent::savestate_restore(double tt, NetCvode* nc){
-
-	if (use_compress_) {
-		t_exchange_ = t;
-	}
-	if (ithread_ == 0) {
-		//npe_->pr("savestate_restore", tt, nc);
-		for (int i=0; i < nrn_nthread; ++i) {
-			nc->event(tt, npe_+i, nrn_threads + i);
-		}
-	}
-
-}
 */
 
 
@@ -104,7 +75,7 @@ void NetPar::nrn_outputevent(unsigned char localgid, double firetime) {
 	}
 	spfixout_[i++] = (unsigned char)((firetime - t_exchange_)*dt1_ + .5);
 	spfixout_[i] = localgid;
-//printf("%d idx=%d lgid=%d firetime=%g t_exchange_=%g [0]=%d [1]=%d\n", ParSpike::myid, i, (int)localgid, firetime, t_exchange_, (int)spfixout_[i-1], (int)spfixout_[i]);
+//std::cout << "%d idx=%d lgid=%d firetime=%g t_exchange_=%g [0]=%d [1]=%d\n", ParSpike::myid, i, (int)localgid, firetime, t_exchange_, (int)spfixout_[i-1], (int)spfixout_[i]);
 }
 
 
@@ -118,12 +89,12 @@ void NetPar::nrn2ncs_outputevent(int gid, double firetime) {
 		spfixout_capacity_ *= 2;
 		spfixout_.resize(spfixout_capacity_);
 	}
-//printf("%d nrnncs_outputevent %d %.20g %.20g %d\n", ParSpike::myid, gid, firetime, t_exchange_,
+//std::cout << "%d nrnncs_outputevent %d %.20g %.20g %d\n", ParSpike::myid, gid, firetime, t_exchange_,
 //(int)((unsigned char)((firetime - t_exchange_)*dt1_ + .5)));
 	spfixout_[i++] = (unsigned char)((firetime - t_exchange_)*dt1_ + .5);
-//printf("%d idx=%d firetime=%g t_exchange_=%g spfixout=%d\n", ParSpike::myid, i, firetime, t_exchange_, (int)spfixout_[i-1]);
+//std::cout << "%d idx=%d firetime=%g t_exchange_=%g spfixout=%d\n", ParSpike::myid, i, firetime, t_exchange_, (int)spfixout_[i-1]);
 	sppk(spfixout_+i, gid);
-//printf("%d idx=%d gid=%d spupk=%d\n", ParSpike::myid, i, gid, spupk(spfixout_+i));
+//std::cout << "%d idx=%d gid=%d spupk=%d\n", ParSpike::myid, i, gid, spupk(spfixout_+i));
     }else{
 #if nrn_spikebuf_size == 0
 	int i = nout_++;
@@ -131,7 +102,7 @@ void NetPar::nrn2ncs_outputevent(int gid, double firetime) {
 		ocapacity_ *= 2;
 		spikeout_.resize(ocapacity_);
 	}		
-//printf("%d cell %d in slot %d fired at %g\n", ParSpike::myid, gid, i, firetime);
+//std::cout << "%d cell %d in slot %d fired at %g\n", ParSpike::myid, gid, i, firetime);
 	spikeout_[i].gid = gid;
 	spikeout_[i].spiketime = firetime;
 #else
@@ -150,7 +121,7 @@ void NetPar::nrn2ncs_outputevent(int gid, double firetime) {
 	}
 #endif
     }
-//printf("%d cell %d in slot %d fired at %g\n", ParSpike::myid, gid, i, firetime);
+//std::cout << "%d cell %d in slot %d fired at %g\n", ParSpike::myid, gid, i, firetime);
 }
 
 
@@ -174,7 +145,7 @@ int NetPar::nrn_need_npe() {
 	}
 	return b;
 }
-
+/*
 void NetPar::calc_actual_mindelay() {
 	//reasons why mindelay_ can be smaller than min_interprocessor_delay
 	// are use_bgpdma when BGP_INTERVAL == 2
@@ -186,14 +157,14 @@ void NetPar::calc_actual_mindelay() {
 	}
 #endif
 }
-
+*/
 void NetPar::spike_exchange_init() {
-//printf("nrn_spike_exchange_init\n");
+//std::cout << "nrn_spike_exchange_init\n");
 	if (!nrn_need_npe()) { return; }
 //	if (!active_ && !nrn_use_selfqueue_) { return; }
 	alloc_space();
-//printf("ParSpike::use=%d active=%d\n", ParSpike::use, active_);
-	calc_actual_mindelay();	
+//std::cout << "ParSpike::use=%d active=%d\n", ParSpike::use, active_);
+	//calc_actual_mindelay();	
 	usable_mindelay_ = mindelay_;
 	if (cvode_active_ == 0 && nrn_nthread > 1) {
 		usable_mindelay_ -= dt;
@@ -234,7 +205,7 @@ void NetPar::spike_exchange_init() {
 	nout_ = 0;
 	nsend_ = nsendmax_ = nrecv_ = nrecv_useful_ = 0;
 
-	//if (ParSpike::myid == 0){printf("usable_mindelay_ = %g\n", usable_mindelay_);}
+	//if (ParSpike::myid == 0){std::cout << "usable_mindelay_ = %g\n", usable_mindelay_);}
 }
 
 
@@ -257,7 +228,7 @@ void NetPar::spike_exchange() {
 	wt = ParSpike::wtime();
 	errno = 0;
 //if (n > 0) {
-//printf("%d nrn_spike_exchange sent %d received %d\n", ParSpike::myid, nout_, n);
+//std::cout << "%d nrn_spike_exchange sent %d received %d\n", ParSpike::myid, nout_, n);
 //}
 	nout_ = 0;
 	if (n == 0) {
@@ -317,7 +288,7 @@ void NetPar::spike_exchange() {
 	wt1_ = ParSpike::wtime() - wt;
 }
 		
-void nrn_spike_exchange_compressed() {
+void NetPar::nrn_spike_exchange_compressed() {
 	if (!active_) { return; }
 	assert(!cvode_active_);
 	double wt;
@@ -336,7 +307,7 @@ void nrn_spike_exchange_compressed() {
 	wt = ParSpike::wtime();
 	errno = 0;
 //if (n > 0) {
-//printf("%d nrn_spike_exchange sent %d received %d\n", ParSpike::myid, nout_, n);
+//std::cout << "%d nrn_spike_exchange sent %d received %d\n", ParSpike::myid, nout_, n);
 //}
 	nout_ = 0;
 	idxout_ = 2;
@@ -449,19 +420,19 @@ void nrn_spike_exchange_compressed() {
 }
 
 
-void mk_localgid_rep() {
+void NetPar::mk_localgid_rep() {
 	int i, j, k;
 	PreSyn* ps;
 
 	// how many gids are there on this machine
 	// and can they be compressed into one byte
 	int ngid = 0;
-	NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
+	/*NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
 		if (ps->output_index_ >= 0) {
 			++ngid;
 		}
 	}}}
-	int ngidmax = ParSpike::int_allmax(ngid);
+	*/int ngidmax = ParSpike::int_allmax(ngid);
 	if (ngidmax >= 256) {
 		//do not compress
 		return;
@@ -477,14 +448,14 @@ void mk_localgid_rep() {
 	++sbuf;
 	ngid = 0;
 	// define the local gid and fill with the gids on this machine
-	NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
+	/*NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
 		if (ps->output_index_ >= 0) {
 			ps->localgid_ = (unsigned char)ngid;
 			sbuf[ngid] = ps->output_index_;
 			++ngid;
 		}
 	}}}
-	--sbuf;
+	*/--sbuf;
 
 	// exchange everything
 	int_allgather(sbuf, rbuf, ngidmax+1);
@@ -537,19 +508,19 @@ void mk_localgid_rep() {
 // effects of output spikes from the simulated cells. In this case
 // set the third arg to 1 and set the output cell thresholds very
 // high so that they do not themselves generate spikes.
-void nrn_fake_fire(int gid, double spiketime, int fake_out) {
+void NetPar::nrn_fake_fire(int gid, double spiketime, int fake_out) {
 	assert(gid2in_);
 	PreSyn* ps;
 	if (gid2in_->find(gid, ps)) {
 		assert(ps);
-//printf("nrn_fake_fire %d %g\n", gid, spiketime);
+//std::cout << "nrn_fake_fire %d %g\n", gid, spiketime);
 		ps->send(spiketime, net_cvode_instance, nrn_threads);
 #if NRNSTAT
 		++nrecv_useful_;
 #endif
 	}else if (fake_out && gid2out_->find(gid, ps)) {
 		assert(ps);
-//printf("nrn_fake_fire fake_out %d %g\n", gid, spiketime);
+//std::cout << "nrn_fake_fire fake_out %d %g\n", gid, spiketime);
 		ps->send(spiketime, net_cvode_instance, nrn_threads);
 #if NRNSTAT
 		++nrecv_useful_;
@@ -558,7 +529,7 @@ void nrn_fake_fire(int gid, double spiketime, int fake_out) {
 
 }
 
-static void alloc_space() {
+static void NetPar::alloc_space() {
 	if (!gid2out_) {
 //		netcon_sym_ = hoc_lookup("NetCon");
 		gid2out_ = new Gid2PreSyn(211);
@@ -585,7 +556,7 @@ void BBS::set_gid2node(int gid, int nid) {
 
 	{
 
-//printf("gid %d defined on %d\n", gid, ParSpike::myid);
+//std::cout << "gid %d defined on %d\n", gid, ParSpike::myid);
 		PreSyn* ps;
 		assert(!(gid2in_->find(gid, ps)));
 		(*gid2out_)[gid] = nil;
@@ -601,7 +572,7 @@ void ParSpike::gid_clear() {
 	nrnmpi_multisplit_clear();
 	if (!gid2out_) { return; }
 	PreSyn* ps, *psi;
-	NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
+	/*NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
 		if (ps && !gid2in_->find(ps->gid_, psi)) {
 			ps->gid_ = -1;
 			ps->output_index_ = -1;
@@ -617,7 +588,7 @@ void ParSpike::gid_clear() {
 			delete ps;
 		}
 	}}}
-	int i;
+	*/int i;
 	for (i = gid2out_->size_ - 1; i >= 0; --i) {
 		gid2out_->at(i).clear();
 	}
@@ -630,7 +601,7 @@ int BBS::gid_exists(int gid) {
 	PreSyn* ps;
 	alloc_space();
 	if (gid2out_->find(gid, ps)) {
-//printf("%d gid %d exists\n", nrnmpi_myid, gid);
+//std::cout << "%d gid %d exists\n", ParSpike::my_rank, gid);
 		if (ps) {
 			return (ps->output_index_ >= 0 ? 3 : 2);
 		}else{
@@ -661,7 +632,7 @@ void BBS::cell() {
 	}
 	NetCon* nc = (NetCon*)ob->u.this_pointer;
 	ps = nc->src_;
-//printf("%d cell %d %s\n", nrnmpi_myid, gid, hoc_object_name(ps->ssrc_ ? ps->ssrc_->prop->dparam[6].obj : ps->osrc_));
+//std::cout << "%d cell %d %s\n", ParSpike::my_rank, gid, hoc_object_name(ps->ssrc_ ? ps->ssrc_->prop->dparam[6].obj : ps->osrc_));
 	(*gid2out_)[gid] = ps;
 	ps->gid_ = gid;
 	if (ifarg(3) && !chkarg(3, 0., 1.)) {
@@ -679,7 +650,7 @@ void BBS::outputcell(int gid) {
 	ps->gid_ = gid;
 }
 
-void BBS::spike_record(int gid, IvocVect* spikevec, IvocVect* gidvec) {
+void BBS::spike_record(int gid, std::vector<double>* spikevec, std::vector<double>* gidvec) {
 	PreSyn* ps;
 	assert(gid2out_->find(gid, ps));
 	assert(ps);
@@ -688,22 +659,22 @@ void BBS::spike_record(int gid, IvocVect* spikevec, IvocVect* gidvec) {
 
 Object** BBS::gid2obj(int gid) {
 	Object* cell = 0;
-//printf("%d gid2obj gid=%d\n", nrnmpi_myid, gid);
+//std::cout << "%d gid2obj gid=%d\n", ParSpike::my_rank, gid);
 	PreSyn* ps;
 	assert(gid2out_->find(gid, ps));
-//printf(" found\n");
+//std::cout << " found\n");
 	assert(ps);
 	cell = ps->ssrc_ ? ps->ssrc_->prop->dparam[6].obj : ps->osrc_;
-//printf(" return %s\n", hoc_object_name(cell));
+//std::cout << " return %s\n", hoc_object_name(cell));
 	return hoc_temp_objptr(cell);
 }
 
 Object** BBS::gid2cell(int gid) {
 	Object* cell = 0;
-//printf("%d gid2obj gid=%d\n", nrnmpi_myid, gid);
+//std::cout << "%d gid2obj gid=%d\n", ParSpike::my_rank, gid);
 	PreSyn* ps;
 	assert(gid2out_->find(gid, ps));
-//printf(" found\n");
+//std::cout << " found\n");
 	assert(ps);
 	if (ps->ssrc_) {
 		cell = ps->ssrc_->prop->dparam[6].obj;
@@ -716,11 +687,11 @@ Object** BBS::gid2cell(int gid) {
 			cell = sec->prop->dparam[6].obj;
 		}			
 	}
-//printf(" return %s\n", hoc_object_name(cell));
+//std::cout << " return %s\n", hoc_object_name(cell));
 	return hoc_temp_objptr(cell);
 }
 
-Object** BBS::gid_connect(int gid) {
+ConfigBase* BBS::gid_connect(int gid, ConfigBase* target, ) {
 	Object* target = *hoc_objgetarg(2);
 	if (!is_point_process(target)) {
 		hoc_execerror("arg 2 must be a point process", 0);
@@ -732,9 +703,9 @@ Object** BBS::gid_connect(int gid) {
 		assert(ps);
 	}else if (gid2in_->find(gid, ps)) {
 		// the gid stub already exists
-//printf("%d connect %s from already existing %d\n", nrnmpi_myid, hoc_object_name(target), gid);
+//std::cout << "%d connect %s from already existing %d\n", ParSpike::my_rank, hoc_object_name(target), gid);
 	}else{
-//printf("%d connect %s from new PreSyn for %d\n", nrnmpi_myid, hoc_object_name(target), gid);
+//std::cout << "%d connect %s from new PreSyn for %d\n", ParSpike::my_rank, hoc_object_name(target), gid);
 		ps = new PreSyn(nil, nil, nil);
 		net_cvode_instance->psl_append(ps);
 		(*gid2in_)[gid] = ps;
@@ -770,7 +741,7 @@ void BBS::netpar_solve(double tstop) {
 		mt = dt ; md = mindelay_ - 1e-10;
 	}
 	if (md < mt) {
-		if (nrnmpi_myid == 0) {
+		if (ParSpike::my_rank == 0) {
 			hoc_execerror("mindelay is 0", "(or less than dt for fixed step method)");
 		}else{
 			return;
@@ -798,7 +769,7 @@ void BBS::netpar_solve(double tstop) {
 		impl_->send_time_ += npe_[0].ws_;
 		npe_[0].wx_ = npe_[0].ws_ = 0.;
 	};
-//printf("%d netpar_solve exit t=%g tstop=%g mindelay_=%g\n",nrnmpi_myid, t, tstop, mindelay_);
+//std::cout << "%d netpar_solve exit t=%g tstop=%g mindelay_=%g\n",ParSpike::my_rank, t, tstop, mindelay_);
 
 	tstopunset;
 }
@@ -816,15 +787,15 @@ static double set_mindelay(double maxdelay) {
 		}
 	}
     }
-#if NRNMPI
+
     else{
-	NrnHashIterate(Gid2PreSyn, gid2in_, PreSyn*, ps) {
+/*	NrnHashIterate(Gid2PreSyn, gid2in_, PreSyn*, ps) {
 		double md = ps->mindelay();
 		if (mindelay > md) {
 			mindelay = md;
 		}
 	}}}
-    }
+  */  }
 	if (nrnmpi_use) {active_ = 1;}
 	if (use_compress_) {
 		if (mindelay/dt > 255) {
@@ -832,19 +803,19 @@ static double set_mindelay(double maxdelay) {
 		}
 	}
 
-//printf("%d netpar_mindelay local %g now calling nrnmpi_mindelay\n", nrnmpi_myid, mindelay);
+//std::cout << "%d netpar_mindelay local %g now calling nrnmpi_mindelay\n", ParSpike::my_rank, mindelay);
 //	double st = time();
 	mindelay_ = nrnmpi_mindelay(mindelay);
 	min_interprocessor_delay_ = mindelay_;
 //	add_wait_time(st);
-//printf("%d local min=%g  global min=%g\n", nrnmpi_myid, mindelay, mindelay_);
+//std::cout << "%d local min=%g  global min=%g\n", ParSpike::my_rank, mindelay, mindelay_);
 	if (mindelay_ < 1e-9 && nrn_use_selfqueue_) {
 		nrn_use_selfqueue_ = 0;
 		double od = mindelay_;
 		mindelay = set_mindelay(maxdelay);
-		if (nrnmpi_myid == 0) {
-printf("Notice: The global minimum NetCon delay is %g, so turned off the cvode.queue_mode\n", od);
-printf("   use_self_queue option. The interprocessor minimum NetCon delay is %g\n", mindelay);
+		if (ParSpike::my_rank == 0) {
+std::cout << "Notice: The global minimum NetCon delay is " << od<< ", so turned off the cvode.queue_mode\n"<<std:endl; 
+std::cout << "   use_self_queue option. The interprocessor minimum NetCon delay is " <<  mindelay <<std:endl;
 		}
 	}
 #if BGPDMA
@@ -854,11 +825,7 @@ printf("   use_self_queue option. The interprocessor minimum NetCon delay is %g\
 #endif
 	errno = 0;
 	return mindelay;
-#else
-	mindelay_ = mindelay;
-	min_interprocessor_delay_ = mindelay_;
-	return mindelay;
-#endif //NRNMPI
+
 }
 
 double BBS::netpar_mindelay(double maxdelay) {
@@ -886,12 +853,12 @@ std::vector<double>* BBS::netpar_max_histogram(std::vector<double>* mh) {
 
 }
 
-int nrnmpi_spike_compress(int nspike, boolean gid_compress, int xchng_meth) {
+int NetPar::spike_compress(int nspike, bool gid_compress, int xchng_meth) {
 
-	if (nrnmpi_numprocs < 2) { return 0; }
+	if (ParSpike::numprocs < 2) { return 0; }
 #if BGPDMA
-	use_bgpdma_ = (xchng_meth == 1) ? 1 : 0;
-	if (nrnmpi_myid == 0) {printf("use_bgpdma_ = %d\n", use_bgpdma_);}
+//	use_bgpdma_ = (xchng_meth == 1) ? 1 : 0;
+//	if (ParSpike::my_rank == 0) {std::cout << "use_bgpdma_ = " << use_bgpdma_;}
 #endif
 	if (nspike >= 0) {
 		ag_send_nspike_ = 0;
@@ -899,7 +866,7 @@ int nrnmpi_spike_compress(int nspike, boolean gid_compress, int xchng_meth) {
 		if (spfixin_) { spfixin_.resize(0); spfixin_ = 0; }
 		if (spfixin_ovfl_) { spfixin_ovfl_.resize(0); spfixin_ovfl_ = 0; }
 		if (localmaps_) {
-			for (int i=0; i < nrnmpi_numprocs; ++i) if (i != nrnmpi_myid) {
+			for (int i=0; i < ParSpike::numprocs; ++i) if (i != ParSpike::my_rank) {
 				if (localmaps_[i]) { delete localmaps_[i]; }
 			}
 			delete [] localmaps_;
@@ -911,7 +878,7 @@ int nrnmpi_spike_compress(int nspike, boolean gid_compress, int xchng_meth) {
 		nrn_use_localgid_ = false;
 	}else if (nspike > 0) { // turn on
 		if (cvode_active_) {
-if (nrnmpi_myid == 0) {printf("ParallelContext.spike_compress cannot be used with cvode active", 0);}
+if (ParSpike::my_rank == 0) {std::cout << "ParallelContext.spike_compress cannot be used with cvode active" <<std::endl;}
 			use_compress_ = false;
 			nrn_use_localgid_ = false;
 			return 0;
@@ -922,8 +889,8 @@ if (nrnmpi_myid == 0) {printf("ParallelContext.spike_compress cannot be used wit
 		if (gid_compress) {
 			// we can only do this after everything is set up
 			mk_localgid_rep();
-			if (!nrn_use_localgid_ && nrnmpi_myid == 0) {
-printf("Notice: gid compression did not succeed. Probably more than 255 cells on one cpu.\n");
+			if (!nrn_use_localgid_ && ParSpike::my_rank == 0) {
+std::cout << "Notice: gid compression did not succeed. Probably more than 255 cells on one cpu.\n" << std::endl;
 			}
 		}
 		if (!nrn_use_localgid_) {
