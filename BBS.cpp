@@ -21,7 +21,8 @@ BBS::BBS() {
 	init(-1);
 }
 
-BBS::BBS(int n) {
+BBS::BBS(int n, int* pargc, char*** pargv) {
+	ParSpike::init(1,pargc,pargv);
 	init(n);
 }
 

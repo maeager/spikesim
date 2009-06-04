@@ -37,6 +37,8 @@ class SynMechInterface
 	friend class DataCommonNeuron;
 public:
 	virtual ~SynMechInterface() {}
+	double weight;
+	double delay;
 protected:
 	virtual void send_updated_states(double & current) = 0;
 	virtual void send_updated_states(double & conductance, double & current) = 0;

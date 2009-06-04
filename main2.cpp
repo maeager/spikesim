@@ -17,10 +17,11 @@
 
 
 
-int main(int argc, char *argv[])
+int 
+main(int argc, char *argv[])
 {
 	
-	ParallelNetManager pnm(argc,argv);
+	ParallelNetManager pnm(&argc,&argv);
 	ParNetwork net;
 	if (pnm.my_rank==0){
 	std::cout << "[info] press any key at end of execution to close this window" << std::endl << std::endl;

@@ -1,6 +1,5 @@
 // from mpispike.c
 
-
 #include "ParSpike.h"
 #include <mpi.h>
 

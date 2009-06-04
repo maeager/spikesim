@@ -180,7 +180,7 @@ if (oldsize < r->pkposition + isize) {
 #endif
 }
 
-static void BBS2MPI::pack(void* inbuf, int incount, int my_datatype, bbsmpibuf* r, const char* e) {
+void BBS2MPI::pack(void* inbuf, int incount, int my_datatype, bbsmpibuf* r, const char* e) {
 	int type[2];
 	int dsize, isize, oldsize;
 #if debug

@@ -3,7 +3,7 @@
 #include "ParNetwork.h"
 //#include "NetPar.h"
 #include "ParNetwork2BBS.h"
-
+#include "AnyBuf.h"
 #include <list>
 #include <fstream>
 #include <string>
@@ -19,8 +19,10 @@
 class  ParallelNetManager
 {
 public:
+	ParallelNetManager(int* argc,char***argv);
+	~ParallelNetManager();
 	void register_cell();
-	void nc_append();
+	void synmech_append();
 	void set_gid2node();
 	bool gid_exists();
 	void create_cell();
@@ -30,11 +32,12 @@ public:
 	void gatherspikes();
 	void want_all_spikes();
 	void spike_record(int);
-	void prun(), pcontinue(), pinit(), psolve(); 
-
+	void doinit();
+	void prun(), pcontinue(double), pinit(), psolve(double); 
+	void postwait(int x);
 	void round_robin(); //simplistic partitioning
 
-
+SynMechInterface* cm2t(int precell_id, SynMechInterface* postcell_syn, double weight, double delay);
 // mostly for debugging
 	std::vector<double> spikevec;
 	std::vector<double> idvec;
@@ -46,6 +49,7 @@ int ncell;
 int nwork; 
 int nhost;
 int prstat;
+double tstop;
 SynapseInterface * nc;
 static int cell_cnt;
 //external stdinit, continuerun, cvode, tstop, hoc_sf_

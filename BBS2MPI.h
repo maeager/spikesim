@@ -33,7 +33,7 @@ namespace BBS2MPI {
 	void copy(bbsmpibuf* dest, bbsmpibuf* src);
 	void ref(bbsmpibuf* buf);
 	void unref(bbsmpibuf* buf);
- void pack(void* inbuf, int incount, int my_datatype, bbsmpibuf* r, const char* e);
+ 	void pack(void* inbuf, int incount, int my_datatype, bbsmpibuf* r, const char* e);
 	void unpack(void* buf, int count, int my_datatype, bbsmpibuf* r, const char* errmes);
 	void upkbegin(bbsmpibuf* buf);
 	char* getkey(bbsmpibuf* buf);

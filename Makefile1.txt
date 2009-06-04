@@ -6,7 +6,7 @@ CXX = $(MPICXX)
 CXXFLAGS = -Wall -I/usr/local -I/opt/mpich/ch-p4/include -DPARALLELSIM
 # LDFLAGS = -L/opt/mpich/ch-p4/lib -lmpich
 SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
-ParSpikeSim_OBJECTS= ParNetwork.o BBS.o ParSpike.o BBServer.o BBClient.o BBS2MPI.o $(SpikeSim_OBJECTS) ParNetwork2BBS.o ParallelNetManager.o
+ParSpikeSim_OBJECTS= ParNetwork.o BBS.o ParSpike.o BBServer.o BBClient.o BBS2MPI.o  ParNetwork2BBS.o ParallelNetManager.o  CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main2.o 
 
 # all: ParSpikeSim CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
 # BBS.o ParSpike.o BBServer.o BBClient.o BBS2MPI.o
@@ -39,40 +39,43 @@ SimulationEnvironment.o: SimulationEnvironment.cpp   SimulationEnvironment.h   G
 main.o: main.cpp   TypeDefs.h Macros.h CreatedTypeMaps.h Error.h ConfigBase.h Visitor.h   InterfaceBase.h   GlobalDefs.h 
 	$(MPICXX) $(CXXFLAGS)  -c main.cpp -o main.o
 
-SpikeSim.exe: $(SpikeSim_OBJECTS)
-	$(MPICXX) $(CXXFLAGS) -o SpikeSim.exe $(SpikeSim_OBJECTS)
+main2.o: main2.cpp   ParNetwork.h BBS.h ParSpike.h BBServer.h  BBS2MPI.h ParNetwork2BBS.h ParallelNetManager.h  AnyBuf.h
+	$(MPICXX) $(CXXFLAGS)  -c main2.cpp -o main2.o
 
-ParNetwork.o: ParNetwork.h ParNetwork.cpp
+
+ParNetwork.o: ParNetwork.h ParNetwork.cpp  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c ParNetwork.cpp -o ParNetwork.o
 
-ParSpike.o: ParSpike.h ParSpike.cpp
+ParSpike.o: ParSpike.h ParSpike.cpp  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c ParSpike.cpp -o ParSpike.o
 
-ParNetwork2BBS.o:  ParNetwork2BBS.cpp #ParNetwork2BBS.h
+ParNetwork2BBS.o:  ParNetwork2BBS.cpp ParNetwork2BBS.h  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c ParNetwork2BBS.cpp -o ParNetwork2BBS.o
 
-ParallelNetManager.o: ParallelNetManager.h ParallelNetManager.cpp
+ParallelNetManager.o: ParallelNetManager.h ParallelNetManager.cpp ParNetwork.h BBS.h ParSpike.h BBServer.h BBS2MPI.h ParNetwork2BBS.h  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c ParallelNetManager.cpp -o ParallelNetManager.o
 
-BBS.o: BBS.h BBS.cpp ParSpike.h
+BBS.o: BBS.h BBS.cpp ParSpike.h  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c BBS.cpp -o BBS.o
 
-BBS2MPI.o: BBS2MPI.h BBS2MPI.cpp ParSpike.h
+BBS2MPI.o: BBS2MPI.h BBS2MPI.cpp ParSpike.h  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c BBS2MPI.cpp -o BBS2MPI.o
 	
-BBServer.o: BBS.h BBServer.cpp BBServer.h ParSpike.h
+BBServer.o: BBS.h BBServer.cpp BBServer.h ParSpike.h  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c BBServer.cpp -o BBServer.o
 
-BBClient.o: BBS.h BBClient.cpp BBServer.h ParSpike.h
+BBClient.o: BBS.h BBClient.cpp BBServer.h ParSpike.h  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c BBClient.cpp -o BBClient.o
 
-NetPar.o: NetPar.h NetPar.cpp
+NetPar.o: NetPar.h NetPar.cpp  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c NetPar.cpp -o NetPar.o
 
 
 ParSpikeSim.exe: $(ParSpikeSim_OBJECTS)
 	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.exe $(ParSpikeSim_OBJECTS)
 
+SpikeSim.exe: $(SpikeSim_OBJECTS)
+	$(MPICXX) $(CXXFLAGS) -o SpikeSim.exe $(SpikeSim_OBJECTS)
 
 clean:
 	rm -f *.o *.exe *.bak *.sav *~

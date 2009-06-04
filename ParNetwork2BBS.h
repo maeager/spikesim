@@ -3,9 +3,13 @@
 #include "ParNetwork.h"
 #include "BBS.h"
 //#include "NetPar.h"
-
+#include "AnyBuf.h"
 #undef MD
 #define MD 2147483648.
+
+
+
+
 
 /*extern "C" {
 
@@ -19,7 +23,7 @@
 
 class OcBBS : public BBS {//, public Resource {
 public:
-	OcBBS(int nhost_request);
+	OcBBS(int nhost_request, int* pargc, char***pargv);
 	virtual ~OcBBS();
 
 	double retval_;
@@ -27,7 +31,7 @@ public:
 	int next_local_;
 };
 
-OcBBS::OcBBS(int n) : BBS(n) {
+OcBBS::OcBBS(int n, int* pargc, char***pargv) : BBS(n,pargc,pargv) {
 	next_local_ = 0;
 }
 
@@ -36,7 +40,7 @@ OcBBS::~OcBBS() {
 
 class ParNetwork2BBS {
 public:
-	ParNetwork2BBS();
+	ParNetwork2BBS(int* pargc, char***pargv);
 	~ParNetwork2BBS();
 
 	int submit_help();

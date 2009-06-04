@@ -10,24 +10,17 @@
 #include <boost/any.hpp>
 
 int errno=0;
-typedef std::deque<boost::any> AnyBuffer;
 
-AnyBuffer hocbuf;
-#define ifarg(i) (int)(hocbuf.size()) <= i 
-int * getint(int arg){  return boost::any_cast<int >(&hocbuf[arg]);}
-//double * getarg(int arg) { if (hocbuf.at(arg)) return boost::any_cast<double>(&hocbuf[arg]); else return 0. ;}
-double * getval(int arg) { return boost::any_cast<double >(&hocbuf[arg]);}
-std::vector<double> * getvec(int arg){ return boost::any_cast<std::vector<double> >(&hocbuf[arg]);}
-std::string * getstr(int arg){ return boost::any_cast<std::string>(&hocbuf[arg]);}
 bool ParNetwork2BBS::posting_ = false;
 
-ParNetwork2BBS::ParNetwork2BBS(){//Object*) {
+ParNetwork2BBS::ParNetwork2BBS(int* pargc, char*** pargv){//Object*) {
 	// not clear at moment what is best way to handle nested context
 	int i = -1;
 //	if (ifarg(1)) {
 //		i = int(chkarg(1, 0, 10000));
 //	}
-	bbs = new OcBBS(1);
+	bbs = new OcBBS(1,pargc,pargv);
+	
 	//bbs->ref();
 }
 
@@ -43,20 +36,20 @@ int ParNetwork2BBS::submit_help() {
 	posting_ = true;
 	bbs->pkbegin();
 	i = 1;
-	if (double *d = boost::any_cast<double> (&hocbuf[i])) {
+	if (double *d = boost::any_cast<double> (&bbsbuf[i])) {
 		bbs->pkint((id = (int)(*d)));i++;
 	}else{
 		bbs->pkint((id = --bbs->next_local_));
 	}
 /*	
-	if (hocbuf.at(i+1)) {
+	if (bbsbuf.at(i+1)) {
 		int argtypes = 0;
 		int ii = 1;
 		//if (hoc_is_str_arg(i)) {
-		if (char **c = boost::any_cast<char*> (&hocbuf[i]))
+		if (char **c = boost::any_cast<char*> (&bbsbuf[i]))
 			style = 1;
 			bbs->pkint(style); // "fname", arg1, ... style
-		}else if(ConfigBase *b = boost::any_cast<ConfigBase> (&hocbuf[i])) {
+		}else if(ConfigBase *b = boost::any_cast<ConfigBase> (&bbsbuf[i])) {
 			style = 2;
 			bbs->pkint(style); // [object],"fname", arg1, ... style
 			//Object* ob = *hoc_objgetarg(i++);
@@ -65,14 +58,14 @@ int ParNetwork2BBS::submit_help() {
 			bbs->pkint(b->index);
 //printf("ob=%s\n", hoc_object_name(ob));
 		}
-		std::string *s = boost::any_cast<std::string> (&hocbuf[i++])
+		std::string *s = boost::any_cast<std::string> (&bbsbuf[i++])
 		bbs->pkstr(s->c_str());
 		firstarg = i;
 		for (; ifarg(i); ++i) { // first is least significant
 //			if (hoc_is_double_arg(i)) {
-	if (double *d = boost::any_cast<double> (&hocbuf[i])) {
+	if (double *d = boost::any_cast<double> (&bbsbuf[i])) {
 				argtypes += 1*ii;
-			}else if (std::string *s = boost::any_cast<std::string> (&hocbuf[i++])){//hoc_is_str_arg(i)) {
+			}else if (std::string *s = boost::any_cast<std::string> (&bbsbuf[i++])){//hoc_is_str_arg(i)) {
 				argtypes += 2*ii;
 			}else{ // must be a Vector
 				argtypes += 3*ii;
@@ -85,7 +78,7 @@ int ParNetwork2BBS::submit_help() {
 
 	}else{
 		bbs->pkint(0); // hoc statement style
-		bbs->pkstr(std::string *s = boost::any_cast<std::string> (&hocbuf[i++]));//gargstr(i));
+		bbs->pkstr(std::string *s = boost::any_cast<std::string> (&bbsbuf[i++]));//gargstr(i));
 	}
 	posting_ = false;
 	return id;
@@ -147,12 +140,14 @@ int ParNetwork2BBS::submit_help() {
 	}
 	for (; ifarg(i); ++i) {
 		//if (hoc_is_double_arg(i)) {
-		if (double *d = boost::any_cast<double> (&hocbuf[i])){
+		if (int *a = getint(i)){
+			bbs->pkint(*a);
+		}else if (double *d = getval(i)){
 			bbs->pkdouble(*d);
-		}else if (std::string *s = boost::any_cast<std::string> (&hocbuf[i])) {//if (hoc_is_str_arg(i)) {
+		}else if (std::string *s = getstr(i)) {//if (hoc_is_str_arg(i)) {
 			bbs->pkstr(s->c_str());
 		}else{
-			if (std::vector<double> *vec = boost::any_cast<std::vector<double> > (&hocbuf[i])){
+			if (std::vector<double> *vec = getvec(i)){
 			int n = vec->size();
 			bbs->pkint(n);
 			bbs->pkvec(n, &(*vec)[0]);
@@ -177,11 +172,11 @@ int ParNetwork2BBS::submit_help() {
  void ParNetwork2BBS::unpack_help(int i) {
 	std::vector<double> *vec;
 	for (; ifarg(i); ++i) {
-		if (double *pdouble = boost::any_cast<double> (&hocbuf[i])){
+		if (double *pdouble = getval(i)){
 //		if (hoc_is_pdouble_arg(i)) {
 			*pdouble = bbs->upkdouble();
 //			*hoc_pgetarg(i) = bbs->upkdouble();
-		}else if (std::string *ps = boost::any_cast<std::string> (&hocbuf[i])) {
+		}else if (std::string *ps = getstr(i)) {
 //		}else if (hoc_is_str_arg(i)) {
 			char* s = bbs->upkstr();
 //			char** ps = hoc_pgargstr(i);
@@ -189,10 +184,10 @@ int ParNetwork2BBS::submit_help() {
 //			hoc_assign_str(ps, s);
 			delete [] s;
 		}else{
-			if ((vec = boost::any_cast<std::vector<double> > (&hocbuf[i]))){
+			if ((vec = getvec(i))){
 			int n = bbs->upkint();
 			vec->resize(n);
-			bbs->upkvec(n, vec);
+			bbs->upkvec(n, &(*vec)[0]);
 			}
 /**/		}
 	}
@@ -219,17 +214,17 @@ double ParNetwork2BBS::upkvec(std::vector<double>* vec) {
 
 	int n = bbs->upkint();
 	vec->resize(n);
-	bbs->upkvec(n,vec);
+	bbs->upkvec(n,&(*vec)[0]);
 	return 1.;
 }
 
  char* ParNetwork2BBS::key_help() {
 	
 //	if (hoc_is_str_arg(1)) {
-	if (std::string *s = boost::any_cast<std::string>(&hocbuf[1])){
+	if (std::string *s = getstr(1)){
 		return &(*s)[0]; //sgargstr(1);
 	}else{
-	if (char **c = boost::any_cast<char*>(&hocbuf[1])) return *c;
+	if (char **c = boost::any_cast<char*>(&bbsbuf[1])) return *c;
 	}
 	std::cout << "key_help Error" << std::endl;
 	return 0;
@@ -510,7 +505,7 @@ double ParNetwork2BBS::upkvec(std::vector<double>* vec) {
 			s.resize(cnt);
 		}
 		bbs->char_broadcast(&s[0], cnt, srcid);
-		if (srcid != bbs->my_rank  && (ss = boost::any_cast<std::string>(&hocbuf[1]))) {
+		if (srcid != bbs->my_rank  && (ss = boost::any_cast<std::string>(&bbsbuf[1]))) {
 			*ss = s; //copy data across
 		//	hoc_assign_str(hoc_pgargstr(1), s);
 			s.resize(0);

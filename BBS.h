@@ -8,6 +8,7 @@
 #include "BBS2MPI.h"
 #include "GlobalDefs.h"
 #include "ConfigBase.h"
+#include "InterfaceBase.h"
 
 void bbs_done();
 
@@ -75,7 +76,7 @@ protected:
 class BBS : public ParSpike {
 public:
 	BBS();
-	BBS(int nhost);
+	BBS(int nhost,int*,char***);
 	virtual ~BBS();
 
 	bool look(const char*);
@@ -85,7 +86,7 @@ public:
 	// after taking use these
 	int upkint();
 	double upkdouble();
-	void upkvec(int n, std::vector<double>* px); // n input px space must exist
+	void upkvec(int n, double* px); // n input px space must exist
 	char* upkstr(); // delete [] char* when finished
 
 	// before posting use these
@@ -122,9 +123,9 @@ public:
 	void outputcell(int);
 	void spike_record(int, std::vector<double>,std::vector<double>);
 	void netpar_solve(double);
-	SynapseInterface* gid2obj(int);
+	SynMechInterface* gid2obj(int);
 	NeuronInterface* gid2cell(int);
-	SynapseInterface* gid_connect(int);
+	SynMechInterface* gid_connect(int);
 	double netpar_mindelay(double maxdelay);
 	void netpar_spanning_statistics(int*, int*, int*, int*);
 	std::vector<double> netpar_max_histogram(std::vector<double>);

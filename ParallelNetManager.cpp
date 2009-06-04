@@ -11,8 +11,19 @@
 
 static int cell_cnt=0;
 
+
+ParallelNetManager::ParallelNetManager()
+{
+}
+
+ParallelNetManager::ParallelNetManager(int *argc, char*** argv)
+{
+	pc = new ParNetwork2BBS(argc,argv);
+}
+
+
 void ParallelNetManager::init(int ncells) {
-	pc = new ParNetwork2BBS;
+	
 	nhost = pc->nhost;
 	if (nhost < 2) { // for no PVM or MPI and for 1 host
 		nhost = 1;
@@ -119,8 +130,8 @@ SynMechInterface* ParallelNetManager::cm2t(int precell_id, SynMechInterface* pos
 	} /*else{
 		nc = pc->gid_connect($1, $o2.synlist.object($3))
 	} */
-	nc.weight = weight;
-	nc.delay = delay;
+	nc->weight = weight;
+	nc->delay = delay;
 	return nc;
 }
 
@@ -135,7 +146,10 @@ void ParallelNetManager::maxstepsize() {
 	if (!maxstepsize_called_) {
 		maxstepsize_called_ = 1;
 		if (nwork > 1) {
-			pc->context(this, "set_maxstep");
+			bbsbuf.clear();
+			append_str("ParallelNetManager");
+			append_str("set_maxstep");
+			pc->context();//this, "set_maxstep");
 		}
 		set_maxstep();
 	}
@@ -158,13 +172,15 @@ void ParallelNetManager::maxstepsize() {
 */
 
 void ParallelNetManager::doinit() {
-	stdinit();
+	//stdinit();
 }
 
 void ParallelNetManager::pinit() {
 	maxstepsize();
 	if (nwork > 1) {
-	        pc->context(this, "doinit");
+		append_str(bbsbuf,"ParallelNetManager");
+		append_str(bbsbuf,"psolve");
+	        pc->context();
 	}
 	doinit(); // the master does one also
 }
@@ -175,7 +191,11 @@ void ParallelNetManager::psolve(double x) {
 
 void ParallelNetManager::pcontinue(double x) {
 	if (nwork > 1) {
-		pc->context(this, "psolve", x);
+		bbsbuf.clear();
+		append_str(bbsbuf,"ParallelNetManager");
+		append_str(bbsbuf,"psolve");
+		append_double(bbsbuf,x);
+		pc->context();
 	}
 	psolve(x);
 }
@@ -186,13 +206,23 @@ void ParallelNetManager::prun() {
 }
 
 void ParallelNetManager::postwait(int x) {
-	int w, sm, s, r, ru;
+	double w;
+	int sm, s, r, ru;
 	if (x == 0) {
-		pc->post("waittime", myid, pc->wait_time());
+		bbsbuf.clear();
+		append_int(bbsbuf,myid);
+		append_double(bbsbuf,pc->wait_time());
+		pc->post("waittime");//, myid, pc->wait_time());
 	}else{
-		w = pc->wait_time()
-		sm = pc->spike_statistics(&s, &r, &ru);
-		pc->post("poststat", ParSpike::my_rank, w, sm, s, r, ru);
+		w = pc->wait_time();
+		sm = pc->spike_stat(&s,&sm, &r, &ru);
+		bbsbuf.clear();
+		append_int(bbsbuf,myid);
+		append_double(bbsbuf,w);
+		append_int(bbsbuf,sm);
+		append_int(bbsbuf,s);
+		append_int(bbsbuf,r); append_int(bbsbuf,ru);
+		pc->post("poststat");//, myid, w, sm, s, r, ru);
 	}
 }
 /*
