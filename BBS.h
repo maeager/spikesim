@@ -123,9 +123,9 @@ public:
 	void outputcell(int);
 	void spike_record(int, std::vector<double>,std::vector<double>);
 	void netpar_solve(double);
-	SynMechInterface* gid2obj(int);
+	ConfigBase* gid2obj(int);
 	NeuronInterface* gid2cell(int);
-	SynMechInterface* gid_connect(int);
+	ConfigBase* gid_connect(int,ConfigBase*);
 	double netpar_mindelay(double maxdelay);
 	void netpar_spanning_statistics(int*, int*, int*, int*);
 	std::vector<double> netpar_max_histogram(std::vector<double>);

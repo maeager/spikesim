@@ -29,12 +29,14 @@ Network.o: Network.cpp StringFormatters.h   Network.h   GlobalDefs.h Error.h   D
 NeuronActivationFunction.o: NeuronActivationFunction.cpp   NeuronActivationFunction.h   
 NoThreading.o: NoThreading.cpp NoThreading.h Network.h   GlobalDefs.h Error.h   DataCommonNeuron.h Visitor.h ConfigBase.h InterfaceBase.h   DataRecordNeuron.h   SimulationEnvironment.h TypeDefs.h CreatedTypeMaps.h NeuronTemplate.h   SynapseTemplate.h DataPlastNeuron.h   Threading.h   DistributionManager.h RandomGenerator.h   PoissonMech.h NeuronActivationFunction.h SpikeTimeGenerator.h   PoissonParameters.h ManageableInput.h CorrInputMech.h   DeltaCorrInputRefs.h ShortTimeCorrInputRefs.h   OscillatoryCorrInputRefs.h DataIndivSynapse.h DataLightSynapse.h   DataPlastSynapse.h DoubleExpSynMech.h CondSynMech.h InstantSynMech.h   NoPlastMech.h STDPMech.h STDPFunction.h ConnectivityManager.h   OutputManager.h   StringFormatters.h   AsciiFileWrapper.h
 OscillatoryCorrInputRefs.o: OscillatoryCorrInputRefs.cpp   OscillatoryCorrInputRefs.h   CorrInputMech.h SimulationEnvironment.h GlobalDefs.h ConfigBase.h   Visitor.h Error.h   SpikeTimeGenerator.h DistributionManager.h RandomGenerator.h  
-OutputManager.o: OutputManager.cpp   StringFormatters.h   SimulationEnvironment.h GlobalDefs.h Network.h   Error.h DataCommonNeuron.h Visitor.h ConfigBase.h InterfaceBase.h   DataRecordNeuron.h   CreatedTypeMaps.h NeuronTemplate.h SynapseTemplate.h DataPlastNeuron.h   Threading.h   DistributionManager.h RandomGenerator.h   PoissonMech.h NeuronActivationFunction.h SpikeTimeGenerator.h   PoissonParameters.h ManageableInput.h CorrInputMech.h   DeltaCorrInputRefs.h ShortTimeCorrInputRefs.h   OscillatoryCorrInputRefs.h DataIndivSynapse.h DataLightSynapse.h   DataPlastSynapse.h DoubleExpSynMech.h CondSynMech.h InstantSynMech.h   NoPlastMech.h STDPMech.h STDPFunction.h ConnectivityManager.h   AsciiFileWrapper.h SpikeListOperations.h WeightOperations.h   OutputGroupHandlers.h
 PoissonMech.o: PoissonMech.cpp   PoissonMech.h SimulationEnvironment.h GlobalDefs.h ConfigBase.h   Visitor.h Error.h   RandomGenerator.h   SpikeTimeGenerator.h DistributionManager.h
 RandomGenerator.o: RandomGenerator.cpp RandomGenerator.h   SimulationEnvironment.h   GlobalDefs.h
 STDPMech.o: STDPMech.cpp   STDPMech.h   SimulationEnvironment.h GlobalDefs.h ConfigBase.h Visitor.h Error.h   STDPFunction.h
 ShortTimeCorrInputRefs.o: ShortTimeCorrInputRefs.cpp   ShortTimeCorrInputRefs.h   CorrInputMech.h SimulationEnvironment.h GlobalDefs.h ConfigBase.h   Visitor.h Error.h   SpikeTimeGenerator.h DistributionManager.h RandomGenerator.h   
 SimulationEnvironment.o: SimulationEnvironment.cpp   SimulationEnvironment.h   GlobalDefs.h SpikeTimeGenerator.h DistributionManager.h   RandomGenerator.h  IdCounter.h NeuronTemplate.h SynapseTemplate.h   DataCommonNeuron.h   DataRecordNeuron.h   SimulationEnvironment.h DataPlastNeuron.h   Threading.h   DistributionManager.h RandomGenerator.h   PoissonMech.h NeuronActivationFunction.h SpikeTimeGenerator.h   PoissonParameters.h ManageableInput.h CorrInputMech.h   DeltaCorrInputRefs.h ShortTimeCorrInputRefs.h   OscillatoryCorrInputRefs.h DataIndivSynapse.h DataLightSynapse.h   DataPlastSynapse.h DoubleExpSynMech.h CondSynMech.h InstantSynMech.h   NoPlastMech.h STDPMech.h STDPFunction.h Network.h Group.h   ConnectivityManager.h OutputManager.h   StringFormatters.h   AsciiFileWrapper.h NoThreading.h Engine.h
+
+OutputManager.o: OutputManager.cpp   StringFormatters.h   SimulationEnvironment.h GlobalDefs.h Network.h   Error.h DataCommonNeuron.h Visitor.h ConfigBase.h InterfaceBase.h   DataRecordNeuron.h   CreatedTypeMaps.h NeuronTemplate.h SynapseTemplate.h DataPlastNeuron.h    DistributionManager.h RandomGenerator.h   PoissonMech.h NeuronActivationFunction.h SpikeTimeGenerator.h   PoissonParameters.h ManageableInput.h CorrInputMech.h   DeltaCorrInputRefs.h ShortTimeCorrInputRefs.h   OscillatoryCorrInputRefs.h DataIndivSynapse.h DataLightSynapse.h   DataPlastSynapse.h DoubleExpSynMech.h CondSynMech.h InstantSynMech.h   NoPlastMech.h STDPMech.h STDPFunction.h ConnectivityManager.h   AsciiFileWrapper.h SpikeListOperations.h WeightOperations.h   OutputGroupHandlers.h
+	$(CXX)  -Wall -I/usr/local   -c -o OutputManager.o OutputManager.cpp
 
 main.o: main.cpp   TypeDefs.h Macros.h CreatedTypeMaps.h Error.h ConfigBase.h Visitor.h   InterfaceBase.h   GlobalDefs.h 
 	$(MPICXX) $(CXXFLAGS)  -c main.cpp -o main.o
@@ -49,11 +51,7 @@ ParNetwork.o: ParNetwork.h ParNetwork.cpp  AnyBuf.h
 ParSpike.o: ParSpike.h ParSpike.cpp  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c ParSpike.cpp -o ParSpike.o
 
-ParNetwork2BBS.o:  ParNetwork2BBS.cpp ParNetwork2BBS.h  AnyBuf.h
-	$(MPICXX) $(CXXFLAGS)  -c ParNetwork2BBS.cpp -o ParNetwork2BBS.o
 
-ParallelNetManager.o: ParallelNetManager.h ParallelNetManager.cpp ParNetwork.h BBS.h ParSpike.h BBServer.h BBS2MPI.h ParNetwork2BBS.h  AnyBuf.h
-	$(MPICXX) $(CXXFLAGS)  -c ParallelNetManager.cpp -o ParallelNetManager.o
 
 BBS.o: BBS.h BBS.cpp ParSpike.h  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c BBS.cpp -o BBS.o
@@ -70,6 +68,11 @@ BBClient.o: BBS.h BBClient.cpp BBServer.h ParSpike.h  AnyBuf.h
 NetPar.o: NetPar.h NetPar.cpp  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c NetPar.cpp -o NetPar.o
 
+ParNetwork2BBS.o:  ParNetwork2BBS.cpp ParNetwork2BBS.h  AnyBuf.h
+	$(MPICXX) $(CXXFLAGS)  -c ParNetwork2BBS.cpp -o ParNetwork2BBS.o
+
+ParallelNetManager.o: ParallelNetManager.h ParallelNetManager.cpp ParNetwork.h BBS.h ParSpike.h BBServer.h BBS2MPI.h ParNetwork2BBS.h  AnyBuf.h
+	$(MPICXX) $(CXXFLAGS)  -c ParallelNetManager.cpp -o ParallelNetManager.o
 
 ParSpikeSim.exe: $(ParSpikeSim_OBJECTS)
 	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.exe $(ParSpikeSim_OBJECTS)

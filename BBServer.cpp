@@ -4,7 +4,7 @@
 #include <map>
 #include <set>
 #include <utility>
-
+#include <errno.h>
 #include "ParSpike.h"
 #include "BBS.h"
 #include "BBServer.h"

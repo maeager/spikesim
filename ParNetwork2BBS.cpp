@@ -3,13 +3,15 @@
 #include "BBS.h"
 #include "ParNetwork2BBS.h"
 #include "NetPar.h"
+#include "AnyBuf.h"
 
 #include <string>
 #include <vector>
 #include <deque>
 #include <boost/any.hpp>
+#include <errno.h>
 
-int errno=0;
+extern int errno;
 
 bool ParNetwork2BBS::posting_ = false;
 
@@ -28,21 +30,22 @@ ParNetwork2BBS::~ParNetwork2BBS(){
 	//bbs->unref();
 }
 
-
-
+ int ParNetwork2BBS::id() {
+	return int(bbs->myid());
+}
 
 int ParNetwork2BBS::submit_help() {
 	int id, i, firstarg, style;
 	posting_ = true;
 	bbs->pkbegin();
 	i = 1;
-	if (double *d = boost::any_cast<double> (&bbsbuf[i])) {
+	if (double *d = getval(i)) {
 		bbs->pkint((id = (int)(*d)));i++;
 	}else{
 		bbs->pkint((id = --bbs->next_local_));
 	}
 /*	
-	if (bbsbuf.at(i+1)) {
+	if (ifarg(i+1)) {
 		int argtypes = 0;
 		int ii = 1;
 		//if (hoc_is_str_arg(i)) {
@@ -86,7 +89,6 @@ int ParNetwork2BBS::submit_help() {
 */
 }
 
-
  double ParNetwork2BBS::submit() {
 	int id;
 	id = submit_help();
@@ -119,8 +121,8 @@ int ParNetwork2BBS::submit_help() {
 	return (double)bbs->userid_;
 }
 
- double ParNetwork2BBS::nhost() {
-	return double(bbs->nhost());
+ int ParNetwork2BBS::nhost() {
+	return int(bbs->nhost());
 }
 
  double ParNetwork2BBS::worker() {
@@ -274,8 +276,6 @@ double ParNetwork2BBS::upkvec(std::vector<double>* vec) {
 //#endif
 	
 }
-
-
 
  double ParNetwork2BBS::wait_time() {
 	return bbs->wait_time();
@@ -613,20 +613,20 @@ double ParNetwork2BBS::upkvec(std::vector<double>* vec) {
 */
 
 /* Must convert these to Synaptic interface */
- SynapseInterface* ParNetwork2BBS::gid2obj(int gid) {
-	return (SynapseInterface*)bbs->gid2obj(gid);
+ ConfigBase* ParNetwork2BBS::gid2obj(int gid) {
+	return (ConfigBase*)bbs->gid2obj(gid);
 }
 
  NeuronInterface* ParNetwork2BBS::gid2cell(int gid) {
 	return (NeuronInterface*)bbs->gid2cell(gid);
 }
 
- SynapseInterface* ParNetwork2BBS::gid_connect(int gid) {
-	return (SynapseInterface*)bbs->gid_connect(gid);
+ ConfigBase* ParNetwork2BBS::gid_connect(int gid, ConfigBase* syn) {
+	return (ConfigBase*)bbs->gid_connect(gid,syn);
 }
 
 
-/*
+
 void BBSImpl::execute_helper() {
 	char* s;
 	int style = upkint();
@@ -639,7 +639,7 @@ void BBSImpl::execute_helper() {
 		break;
 	case 1:
 	case 2: {
-		int i, j;
+/*		int i, j;
 		Symbol* fname;
 		Object* ob = nil;
 		char* sarg[20]; // upto 20 argument may be strings
@@ -708,42 +708,8 @@ hoc_execerror("ParallelContext execution error", 0);
 			delete [] sarg[i];
 		}
 
-	    }
+*/	    }
 		break;
 	}
-}
-*/
-
-void BBSImpl::return_args(int id) {
-	// the message has been set up by the subclass
-	// perhaps it would be better to do this directly
-	// and avoid the meaningless create and delete.
-	// but then they all would have to know this format
-	int i;
-	char* s;
-//printf("BBSImpl::return_args(%d):\n", id);
-	i = upkint(); // userid
-	int style = upkint();
-//printf("message userid=%d style=%d\n", i, style);
-	switch (style) {
-	case 0:
-		s = upkstr(); // the statement
-//printf("statement |%s|\n", s);
-		delete [] s;
-		break;
-	case 2: // obj first
-		s = upkstr(); // template name
-		i = upkint();	// instance index
-//printf("object %s[%d]\n", s, i);
-		delete [] s;
-		//fall through
-	case 1:
-		s = upkstr(); //fname
-		i = upkint(); // arg manifest
-//printf("fname=|%s| manifest=%o\n", s, i);
-		delete [] s;
-		break;
-	}
-	// now only args are left and ready to unpack.
 }
 

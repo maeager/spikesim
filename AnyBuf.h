@@ -1,4 +1,8 @@
+#ifndef ANYBUF_H
+#define  ANYBUF_H
+
 #include <deque>
+#include <string>
 #include <boost/any.hpp>
 
 using boost::any_cast;
@@ -6,37 +10,71 @@ typedef std::deque<boost::any> many;
 
 
 
-many bbsbuf;
-int ifarg(int i) { return bbsbuf.size() <= i; }
-int* getint(int i){ return  boost::any_cast<int>(&bbsbuf[i]); }
-double* getarg(int i){ return  (double*)boost::any_cast<double>(&bbsbuf[i]); }
-double* getval(int i) { return  (double*)boost::any_cast<double>(&bbsbuf[i]); }
-std::vector<double> * getvec(int i) { return boost::any_cast<std::vector<double> >(&bbsbuf[i]);}
-std::string * getstr(int i){ return boost::any_cast<std::string>(&bbsbuf[i]); }
+static many bbsbuf;
+//int ifarg(int i) { return (int)bbsbuf.size() <= i; }
+//int* getint(int i){ return  boost::any_cast<int>(&bbsbuf[i]); }
+// double* getarg(int i){ return  (double*)boost::any_cast<double>(&bbsbuf[i]); }
+// double* getval(int i) { return  (double*)boost::any_cast<double>(&bbsbuf[i]); }
+// std::vector<double> * getvec(int i) { return boost::any_cast<std::vector<double> >(&bbsbuf[i]);}
+// std::string * getstr(int i){ return boost::any_cast<std::string>(&bbsbuf[i]); }
+
+#define  ifarg(i) ((int)bbsbuf.size() <= i)
+#define  getint(i) boost::any_cast<int>(&bbsbuf[i])
+#define getarg(i) (double*)boost::any_cast<double>(&bbsbuf[i])
+#define  getval(i)  (double*)boost::any_cast<double>(&bbsbuf[i])
+#define getvec(i)  boost::any_cast<std::vector<double> >(&bbsbuf[i])
+#define  getstr(i) boost::any_cast<std::string>(&bbsbuf[i])
+
+// #define append_int(value); \
+// {\
+//     boost::any to_append = value;\
+//     bbsbuf.push_back(to_append);\
+// }
+// #define append_double(value); \
+// {\
+//     boost::any to_append = value;\
+//     bbsbuf.push_back(to_append);\
+// }
+// 
+// #define append_string(value); \
+// {\
+//    boost::any to_append = value;\
+//     bbsbuf.push_back(to_append);\
+// }
+// 
+// #define append_char_ptr(value); \
+// {\
+//    boost::any to_append = value;\
+//     bbsbuf.push_back(to_append);\
+// }
 
 
-void append_int(many & values, int value)
+
+
+static void append_int( int value)
 {
     boost::any to_append = value;
-    values.push_back(to_append);
+    bbsbuf.push_back(to_append);
 }
-void append_double(many & values, double value)
+static void append_double( double value)
 {
     boost::any to_append = value;
-    values.push_back(to_append);
+    bbsbuf.push_back(to_append);
 }
 
-void append_string(many & values, const std::string & value)
+static void append_string( std::string value)
 {
-    values.push_back(value);
+   boost::any to_append = value;
+    bbsbuf.push_back(to_append);
 }
 
-void append_char_ptr(many & values, const char * value)
+static void append_char_ptr( const char * value)
 {
-    values.push_back(value);
+   boost::any to_append = value;
+    bbsbuf.push_back(to_append);
 }
 
-void append_any(many & values, const boost::any & value)
+/*void append_any(many & values, const boost::any & value)
 {
     values.push_back(value);
 }
@@ -73,7 +111,7 @@ bool is_string(const boost::any & operand)
 {
     return any_cast<std::string>(&operand);
 }
-/*
+
 void count_all(many & values, std::ostream & out)
 {
     out << "#empty == "
@@ -96,3 +134,5 @@ struct property
 
 typedef std::list<property> properties;
 */
+
+#endif

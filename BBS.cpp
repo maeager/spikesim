@@ -1,7 +1,7 @@
 
 #include "BBS.h"
 #include "BBServer.h"
-
+#include <errno.h>
 
 bool BBSImpl::is_master_ = false;
 bool BBSImpl::started_ = false;
@@ -402,3 +402,39 @@ void BBSImpl::start() {
 	starttime = times(&tms_start_);
 #endif
 }
+
+
+void BBSImpl::return_args(int id) {
+	// the message has been set up by the subclass
+	// perhaps it would be better to do this directly
+	// and avoid the meaningless create and delete.
+	// but then they all would have to know this format
+	int i;
+	char* s;
+//printf("BBSImpl::return_args(%d):\n", id);
+	i = upkint(); // userid
+	int style = upkint();
+//printf("message userid=%d style=%d\n", i, style);
+	switch (style) {
+	case 0:
+		s = upkstr(); // the statement
+//printf("statement |%s|\n", s);
+		delete [] s;
+		break;
+	case 2: // obj first
+		s = upkstr(); // template name
+		i = upkint();	// instance index
+//printf("object %s[%d]\n", s, i);
+		delete [] s;
+		//fall through
+	case 1:
+		s = upkstr(); //fname
+		i = upkint(); // arg manifest
+//printf("fname=|%s| manifest=%o\n", s, i);
+		delete [] s;
+		break;
+	}
+	// now only args are left and ready to unpack.
+}
+
+

@@ -1,9 +1,13 @@
+#ifndef PARNETWORK2BBS_H
+#define PARNETWORK2BBS_H
+
+
 
 #include "ParSpike.h"
 #include "ParNetwork.h"
 #include "BBS.h"
 //#include "NetPar.h"
-#include "AnyBuf.h"
+
 #undef MD
 #define MD 2147483648.
 
@@ -23,20 +27,15 @@
 
 class OcBBS : public BBS {//, public Resource {
 public:
-	OcBBS(int nhost_request, int* pargc, char***pargv);
-	virtual ~OcBBS();
+	OcBBS(int n, int* pargc, char***pargv): BBS(n,pargc,pargv){next_local_ = 0;}
+	virtual ~OcBBS(){}
 
 	double retval_;
 	int userid_;
 	int next_local_;
 };
 
-OcBBS::OcBBS(int n, int* pargc, char***pargv) : BBS(n,pargc,pargv) {
-	next_local_ = 0;
-}
 
-OcBBS::~OcBBS() {
-}
 
 class ParNetwork2BBS {
 public:
@@ -57,8 +56,8 @@ public:
 	 double look_take();
 	 double worker();
 	 double done();
-
-	 double nhost();
+	 int id();
+	 int nhost();
 	 double context();
 
 	 double pctime();
@@ -109,9 +108,9 @@ public:
 	double upkvec(std::vector<double>*);
 
 
-	 SynapseInterface* gid2obj(int gid);
+	 ConfigBase* gid2obj(int gid);
 	 NeuronInterface* gid2cell(int gid);
-	 SynapseInterface* gid_connect(int gid);
+	 ConfigBase* gid_connect(int gid, ConfigBase*);
 
 
 
@@ -125,3 +124,5 @@ public:
 	static bool posting_;
 	OcBBS* bbs;
 };
+
+#endif

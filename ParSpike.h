@@ -55,14 +55,14 @@ public:
 	void init(int under_control, int* pargc, char*** pargv);
 	static void terminate();
 	void mpiabort(int errcode);
-	double wtime();
+	static double wtime();
 	void make_spikebuf_type();
 	void make_spike_type();
 	/*inline */void spike_initialize() {
 		make_spike_type();
 	}
-	int spike_exchange();
-	int spike_exchange_compressed();
+	static int spike_exchange();
+	static int spike_exchange_compressed();
 	double mindelay(double m);
 	int int_allmax(int x);
 	void int_gather(int* s, int* r, int cnt, int root);
@@ -101,19 +101,19 @@ public:
 #endif	
 
 	
-	int nout_; 
-	int* nin_;
-	int icapacity_;
+	static int nout_; 
+	static int* nin_;
+	static int icapacity_;
 //	SpikePacket_* spikeout_;
 //	SpikePacket_* spikein_;
 	
-	int ag_send_size_;
-	int ag_send_nspike_;
-	int ovfl_capacity_;
-	int ovfl_;
-	unsigned char* spfixout_;
-	unsigned char* spfixin_;
-	unsigned char* spfixin_ovfl_;
+	static int ag_send_size_;
+	static int ag_send_nspike_;
+	static int ovfl_capacity_;
+	static int ovfl_;
+	static std::vector<unsigned char> spfixout_;
+	static std::vector<unsigned char> spfixin_;
+	static std::vector<unsigned char> spfixin_ovfl_;
 	static int localgid_size_;
 	static int mpi_use; /* are we using MPI? */
 	static int under_mpi_control_;

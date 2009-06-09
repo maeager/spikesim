@@ -32,11 +32,15 @@ extern void ncs2nrn_integrate(double tstop);
 extern void nrn_partrans_clear();
 
 typedef std::map<int, SynapseInterface*> Gid2PreSyn;
+class NetParEvent;
 
-class NetPar
+#define PreSyn SynapseInterface
+
+class NetPar : public ParSpike
 {
 private:
-	static void sppk(std::vector<unsigned char> c, int gid);
+	//static void sppk(std::vector<unsigned char> c, int gid);
+	static void sppk(unsigned char* c, int gid);
 	static int spupk(std::vector<unsigned char> c);
 public:
 	NetPar(void);
@@ -44,7 +48,8 @@ public:
 //	const ListSynMechType & presynmechlist_impl() const {return presyn_mech_list_;};
 	static void alloc_space();
 	static int spike_compress(int nspike, bool gid_compress, int xchng_meth);
-	static void nrn_spike_exchange_compressed();	
+	static void spike_exchange_compressed();	
+	int nrn_need_npe();
 	static void gid_clear();
 	void spike_exchange_init();
 	static double set_mindelay(double maxdelay);
@@ -52,13 +57,13 @@ public:
 	void spike_exchange();
 	void nrn2ncs_outputevent(int netcon_output_index, double firetime);
 	void outputevent(unsigned char localgid, double firetime);
-
+	void nrn_outputevent(unsigned char localgid, double firetime);
 //	static Symbol* netcon_sym_;
 	static Gid2PreSyn* gid2out_;
 	static Gid2PreSyn* gid2in_;
 	static double t_exchange_;
 	static double dt1_; // 1/dt
-
+	void mk_localgid_rep();
 // for compressed gid info during spike exchange
 	bool nrn_use_localgid_;
 
@@ -83,23 +88,24 @@ public:
 	static double min_interprocessor_delay_;	
 	static double mindelay_; // the one actually used. Some of our optional algorithms
 	static double last_maxstep_arg_;
-//	static NetParEvent* npe_; // nrn_nthread of them
+	static NetParEvent* npe_; // nrn_nthread of them
 	static int n_npe_; // just to compare with nrn_nthread
 
 
 };
 
 
-inline static void sppk(std::vector<unsigned char> c, int gid) {
-	for (int i = ParSpike::localgid_size_-1; i >= 0; --i) {
+//inline static void sppk(std::vector<unsigned char> c, int gid) {
+inline static void sppk(unsigned char* c, int gid) {
+	for (register int i = ParSpike::localgid_size_-1; i >= 0; --i) {
 		c[i] = gid & 255;
 		gid >>= 8;
 	}
 }
 inline static int spupk(std::vector<unsigned char> c) {
-	int i=0;
-	int gid = c[i];
-	for (i = 1; i < ParSpike::localgid_size_; ++i) {
+
+	int gid = c[0];
+	for (register int i = 1; i < ParSpike::localgid_size_; ++i) {
 		gid <<= 8;
 		gid += c[i];
 	}

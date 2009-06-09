@@ -21,8 +21,10 @@ ParSpike::ParSpike(void)
  int ParSpike::np;	//automatically set the other static variables to zero
  int* ParSpike::displs;
  int* ParSpike::byteovfl; 
-
-
+int ParSpike::localgid_size_=sizeof(unsigned char);
+	 std::vector<unsigned char> ParSpike::spfixout_;
+	 std::vector<unsigned char> ParSpike::spfixin_;
+	 std::vector<unsigned char> ParSpike::spfixin_ovfl_;
 static MPI_Datatype spike_type;
 extern void bbs_context_wait();
 

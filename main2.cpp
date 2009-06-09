@@ -6,16 +6,11 @@
 
 #include "TypeDefs.h"
 
-
-#include "ParNetwork.h"
-#include <mpi.h>
-
-
 #include "SimulationEnvironment.h"
 #include "OutputManager.h"
 #include "ParallelNetManager.h"
-
-
+#include "ParNetwork.h"
+#include <mpi.h>
 
 int 
 main(int argc, char *argv[])
@@ -23,7 +18,7 @@ main(int argc, char *argv[])
 	
 	ParallelNetManager pnm(&argc,&argv);
 	ParNetwork net;
-	if (pnm.my_rank==0){
+	if (pnm.myid==0){
 	std::cout << "[info] press any key at end of execution to close this window" << std::endl << std::endl;
 	// construction of the network, initialisation of the simulation environment, etc.
 	try {
@@ -78,7 +73,7 @@ main(int argc, char *argv[])
 	}
 	// memory cleaning
 
-	std::cout << "Hello World! I am " << pnm.my_rank << " of " << size <<
+	std::cout << "Hello World! I am " << pnm.myid << " of " << pnm.nhost <<
 	std::endl;
 	
 	pnm.terminate();

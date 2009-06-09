@@ -3,18 +3,22 @@
 
 
 //#include "NetPar.h"
+#include <errno.h>
 #include "Group.h"
 #include "GlobalDefs.h"
-
+#include "AnyBuf.h"
 #include "ParallelNetManager.h"
 #include "ParNetwork2BBS.h"
+
+#define nil 0
 
 static int cell_cnt=0;
 
 
-ParallelNetManager::ParallelNetManager()
+/*ParallelNetManager::ParallelNetManager()
 {
 }
+*/
 
 ParallelNetManager::ParallelNetManager(int *argc, char*** argv)
 {
@@ -24,12 +28,12 @@ ParallelNetManager::ParallelNetManager(int *argc, char*** argv)
 
 void ParallelNetManager::init(int ncells) {
 	
-	nhost = pc->nhost;
+	nhost = pc->nhost();
 	if (nhost < 2) { // for no PVM or MPI and for 1 host
 		nhost = 1;
 		myid = 0;
 	}else{
-		myid = pc->id;
+		myid = pc->id();
 	}
 	nwork = nhost;
 	ncell = ncells;
@@ -44,6 +48,11 @@ void ParallelNetManager::init(int ncells) {
 	idvec.resize(1000) ;
 }
 
+
+void ParallelNetManager::terminate() {
+ 	pc->done();
+}
+
 // originally
 // the gid <-> cell map was constructed in two phases.
 // first we specify which gids will exist on this machine.
@@ -55,8 +64,9 @@ void ParallelNetManager::init(int ncells) {
 // register_cell(gid, cellobject) and that will both call gid_exists (if it
 // does not already exist), and make the mapping.
 
-void ParallelNetManager::set_gid2node(int cell_id) {
-		pc->set_gid2node(cell_id, myid);
+void ParallelNetManager::set_gid2node(int cell_id, int pcid=-1) {
+	if (pcid==-1) pcid = myid; //default to myid
+	pc->set_gid2node(cell_id, pcid);
 }
 
 void ParallelNetManager::round_robin() { // simplistic partitioning
@@ -68,8 +78,8 @@ void ParallelNetManager::round_robin() { // simplistic partitioning
 bool ParallelNetManager::gid_exists(int cell_id) {
 	return pc->gid_exists(cell_id);
 }
-
-void  ParallelNetManager::want_all_spikes() {local i
+/*
+void  ParallelNetManager::want_all_spikes() {
 	for(register int i=0; i<ncell;++i) {
 		spike_record(i);
 	}
@@ -80,20 +90,20 @@ void ParallelNetManager::spike_record(int cell_id) {
 		pc->spike_record(cell_id, spikevec, idvec);
 	}
 }
-
+*/
 // arg is gid and string that creates a cell such as "new Cell(x, y, z)"
 // return the cell object (usually nil)
 // this is deprecated
-void ParallelNetManager::create_cell(int cell_id, ConfigBase * nt) {
+void ParallelNetManager::create_cell(int cell_id, Group * gr) {
 	if (gid_exists(cell_id)) {
-		register_cell(cell_id, nt);
+		register_cell(cell_id, gr);
 	}
 
 }
 
-void ParallelNetManager::register_cell(int cell_id, void* cell) { 
-	SynMechInterface * nc;
-	if (!pc->gid_exists(cell_id)) { pc->set_gid2node(cell_id, pc->id); }
+void ParallelNetManager::register_cell(int cell_id, Group* gr) { 
+//TODO	ConfigBase * nc;
+	if (!pc->gid_exists(cell_id)) { pc->set_gid2node(cell_id, myid); }
 	// all existing cells must have an associated gid which
 	// is stored in the cell's PreSyn. The nc below will be
 	// unreffed but the PreSyn will continue
@@ -101,9 +111,9 @@ void ParallelNetManager::register_cell(int cell_id, void* cell) {
 	// to find the PreSyn and from that the Cell
 	// we force the cell to be an outputcell due to the danger of
 	// user error
-	cells.push_back(cell_count++,cell);
-	nc = new SynapseInterface(cell, nil);
-	pc->cell(cell_id, nc, 1);
+//TODO	cells.push_back(cell_cnt++,cell);
+//TODO	nc = new SynapseInterface(cell, nil);
+//TODO	pc->cell(cell_id, nc, 1);
 }
 
 void ParallelNetManager::synmech_append(int precell_id, int postcell_id) {
@@ -111,9 +121,9 @@ void ParallelNetManager::synmech_append(int precell_id, int postcell_id) {
 	if (gid_exists(postcell_id)) {
 		// target in this subset
 		// source may be on this or another machine
-		nc = cm2t(precell_id, pc->gid2cell(postcell_id), $3, weight, delay)
-		i = nclist.size();
-		nclist.push_back(nc);
+//TODO		nc = cm2t(precell_id, pc->gid2cell(postcell_id), threshold, weight, delay)
+//TODO		i = synlist.size();
+//TODO		synlist.push_back(nc);
 	} else if ((se = gid_exists(precell_id)) > 0) {
 		// source exists but not the target
 		if (se != 3){ // output to another machine and it is
@@ -124,14 +134,14 @@ void ParallelNetManager::synmech_append(int precell_id, int postcell_id) {
 
 }
 
-SynMechInterface* ParallelNetManager::cm2t(int precell_id, SynMechInterface* postcell_syn, double weight, double delay) {
+ConfigBase* ParallelNetManager::cm2t(int precell_id, ConfigBase* postcell_syn, double weight, double delay) {
 	if (postcell_syn) {
 		nc = pc->gid_connect(precell_id, postcell_syn);
 	} /*else{
 		nc = pc->gid_connect($1, $o2.synlist.object($3))
 	} */
-	nc->weight = weight;
-	nc->delay = delay;
+//	nc->weight = weight;
+//	nc->delay = delay;
 	return nc;
 }
 
@@ -143,12 +153,13 @@ void ParallelNetManager::set_maxstep() {
 
 void ParallelNetManager::maxstepsize() {
 	int i, m;
+	std::string s;
 	if (!maxstepsize_called_) {
 		maxstepsize_called_ = 1;
 		if (nwork > 1) {
 			bbsbuf.clear();
-			append_str("ParallelNetManager");
-			append_str("set_maxstep");
+			append_string(s="ParallelNetManager");
+			append_string(s="set_maxstep");
 			pc->context();//this, "set_maxstep");
 		}
 		set_maxstep();
@@ -178,8 +189,8 @@ void ParallelNetManager::doinit() {
 void ParallelNetManager::pinit() {
 	maxstepsize();
 	if (nwork > 1) {
-		append_str(bbsbuf,"ParallelNetManager");
-		append_str(bbsbuf,"psolve");
+		append_string("ParallelNetManager");
+		append_string("doinit");
 	        pc->context();
 	}
 	doinit(); // the master does one also
@@ -190,11 +201,12 @@ void ParallelNetManager::psolve(double x) {
 }
 
 void ParallelNetManager::pcontinue(double x) {
+	
 	if (nwork > 1) {
 		bbsbuf.clear();
-		append_str(bbsbuf,"ParallelNetManager");
-		append_str(bbsbuf,"psolve");
-		append_double(bbsbuf,x);
+		append_string("ParallelNetManager");
+		append_string("psolve");
+		append_double(x);
 		pc->context();
 	}
 	psolve(x);
@@ -210,18 +222,18 @@ void ParallelNetManager::postwait(int x) {
 	int sm, s, r, ru;
 	if (x == 0) {
 		bbsbuf.clear();
-		append_int(bbsbuf,myid);
-		append_double(bbsbuf,pc->wait_time());
+		append_int(myid);
+		append_double(pc->wait_time());
 		pc->post("waittime");//, myid, pc->wait_time());
 	}else{
 		w = pc->wait_time();
 		sm = pc->spike_stat(&s,&sm, &r, &ru);
 		bbsbuf.clear();
-		append_int(bbsbuf,myid);
-		append_double(bbsbuf,w);
-		append_int(bbsbuf,sm);
-		append_int(bbsbuf,s);
-		append_int(bbsbuf,r); append_int(bbsbuf,ru);
+		append_int(myid);
+		append_double(w);
+		append_int(sm);
+		append_int(s);
+		append_int(r); append_int(ru);
 		pc->post("poststat");//, myid, w, sm, s, r, ru);
 	}
 }

@@ -5,7 +5,7 @@
 #include <errno.h>
 #include "BBS2MPI.h"
 #include <mpi.h>
-
+#include <errno.h>
 #define debugleak 0
 #define debug 0
 

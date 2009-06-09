@@ -61,6 +61,7 @@ void Group::populate(std::ifstream & is)
 		nrn_act_cfg_ = new InstantIFMechConfig(is);
 	} else throw ConfigError("Group: unknown neural activation mechanism, got '" + test + "'");
 
+	//Create Neurons
 	if ((! nrn_act_cfg_) || (! data_cfg_))
 		throw ConfigError("Group: void group or neuron configurator");
 	else

@@ -44,7 +44,7 @@ protected:
 	typedef std::list<boost::shared_ptr<NeuronInterface> > ListNrnType;
 	typedef std::list<boost::shared_ptr<Group> > ListGroupType;
    	//typedef std::map<int, boost::shared_ptr<ConfigBase> > MapConfigType;
-	typedef std::list<boost::shared_ptr<ConfigBase> > ListConfigType;
+	typedef std::list<boost::shared_ptr<0> > ListConfigType;
 	ListGroupType gp_list_; // list of pointers to the groups of the network
 	ListConfigType cfg_list_; // list of pointers to the configurators for the connections to keep
 //	const DataCommonNeuron::ListSynMechType & DataCommonNeuron
