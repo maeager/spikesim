@@ -136,6 +136,7 @@ inline void DataCommonNeuron::add_postsynapse_impl(SynapseInterface * const syn)
 // called when the neuron fires a spike (activation mechanism)
 inline void DataCommonNeuron::notify_firing_impl(const Time & time_to_spike) 
 {
+//TODO add parallel send or 
 	// notify the post synapses
 	for (ListPostSynType::const_iterator i = list_postsynapses_.begin();
 		 i != list_postsynapses_.end();

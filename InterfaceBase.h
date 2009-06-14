@@ -4,7 +4,7 @@
 #ifndef INTERFACEBASE_H
 #define INTERFACEBASE_H
 
-
+#include <deque>
 #include <boost/noncopyable.hpp>
 
 #include "Visitor.h"
@@ -62,6 +62,16 @@ public:
 	virtual ~SynapseInterface() {}
 	virtual const double & weight() = 0;
 	const NeuronInterface & post_nrn() const {return *post_nrn_;}
+#ifdef PARALLELSIM
+	void send(double sendtime, ConfigBase*);
+	void deliver(double, ConfigBase*);
+	void record(double t);
+	int gid_;
+	unsigned char localgid_; // compressed gid for spike transfer
+	std::deque<double> tqe_; //stores delivered events
+
+
+#endif
 protected:
 	virtual void on_preneuron_fire_update(const double & spike_time) = 0;
 	virtual void on_preneuron_fire_plast_update(const double & spike_time) = 0;

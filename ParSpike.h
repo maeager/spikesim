@@ -63,7 +63,7 @@ public:
 	}
 	static int spike_exchange();
 	static int spike_exchange_compressed();
-	double mindelay(double m);
+	static double mindelay(double m);
 	int int_allmax(int x);
 	void int_gather(int* s, int* r, int cnt, int root);
 	void int_gatherv(int* s, int scnt,
@@ -93,11 +93,13 @@ public:
 	double dbl_allreduce(double x, int type);
 	void dbl_allgather(double* s, double* r, int n) ;
 
-	SpikePacket_* spikeout_;
-	SpikePacket_* spikein_;
+
+//TODO Try Vector of SpikePackets??
+	static std::vector<SpikePacket_> spikeout_;
+	static std::vector<SpikePacket_> spikein_;
 #if _spikebuf_size > 0
-	SpikeBuffer_* spbufout_;;
-	SpikeBuffer_* spbufin_;;
+	static std::vector<SpikeBuffer_> spbufout_;;
+	static std::vector<SpikeBuffer_> spbufin_;;
 #endif	
 
 	
@@ -128,6 +130,8 @@ public:
 };
 
 //class ParSpike GlobalSpikeConfig;
+
+
 
 
 #endif  /* PARSPIKE_H */

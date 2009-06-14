@@ -124,7 +124,7 @@ public:
 	void spike_record(int, std::vector<double>,std::vector<double>);
 	void netpar_solve(double);
 	ConfigBase* gid2obj(int);
-	NeuronInterface* gid2cell(int);
+	ConfigBase* gid2cell(int);
 	ConfigBase* gid_connect(int,ConfigBase*);
 	double netpar_mindelay(double maxdelay);
 	void netpar_spanning_statistics(int*, int*, int*, int*);

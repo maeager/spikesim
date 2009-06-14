@@ -11,8 +11,8 @@
 #include "GlobalDefs.h"
 
 
-//#include "ParSpike.h"
-
+#include "ParSpike.h"
+#include "NetPar.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Network class definition
@@ -38,13 +38,13 @@ public:
 	static Gid2PreSyn* gid2in_;
 
 	int network_size();
-
+	//void psl_append(PreSynPtr p){ presyn_list.push_back(p);}
 protected:
-    	typedef std::list<boost::shared_ptr<SynMechInterface> > ListSynType;
+    	typedef std::list<boost::shared_ptr<PreSyn> > ListSynType;//SynMechInterface
 	typedef std::list<boost::shared_ptr<NeuronInterface> > ListNrnType;
 	typedef std::list<boost::shared_ptr<Group> > ListGroupType;
    	//typedef std::map<int, boost::shared_ptr<ConfigBase> > MapConfigType;
-	typedef std::list<boost::shared_ptr<0> > ListConfigType;
+	typedef std::list<boost::shared_ptr<ConfigBase> > ListConfigType;
 	ListGroupType gp_list_; // list of pointers to the groups of the network
 	ListConfigType cfg_list_; // list of pointers to the configurators for the connections to keep
 //	const DataCommonNeuron::ListSynMechType & DataCommonNeuron
@@ -86,8 +86,8 @@ inline void ParNetwork::clear_past_of_spike_list(const Time & time_end_past)
 
 
 ///////////////////////////////////////////////////////////////////////////
-// Method to gather all neurons
-
+// Method to 
+// all the groups are updates from #0 to last one
 inline void ParNetwork::build_network()
 {
 	for (ListGroupType::const_iterator i = gp_list_.begin(); 
@@ -104,5 +104,7 @@ inline int ParNetwork::network_size()
 {
 	return cell_list.size();
 }
+
+
 
 #endif // !defined(NETWORK_H)
