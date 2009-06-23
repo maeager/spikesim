@@ -22,7 +22,7 @@ void Group::populate(std::ifstream & is)
 	std::string test;
 
 	// read the number of neurons, and the optional recordings of activity
-	unsigned n;
+
 	READ_FROM_FILE(is, n, "n", "Group")
 
 	// read data configurator
@@ -157,4 +157,103 @@ void Group::connect_to(Group & targetgroup
 	// output the neuron id to file
 	OutputManager::do_output_connectivity(list_nb_pre_nrn, list_nb_post_nrn, 0);
 }
+
+#ifdef PARALLELSIM
+/////////////////////////////////////////////////
+// Group populator
+// parses the input stream (std::ifstream is) to build the right neuron configurators and calls the factory
+void Group::populate_config(std::ifstream & is)
+{
+	std::string test;
+
+	// read the number of neurons, and the optional recordings of activity
+	unsigned n;
+	READ_FROM_FILE(is, n, "n", "Group")
+
+	// read data configurator
+	if (is.eof()) 
+		throw ConfigError("Group: expected type of neuron data");
+	is >> test;
+	if (test == "LIGHT_NRN") {
+		data_cfg_ = new DataCommonNeuronConfig();
+	} else if (test == "RECORD_NRN") {
+		data_cfg_ = new DataRecordNeuronConfig();
+	} else if (test == "PLAST_NRN") {
+		data_cfg_ = new DataPlastNeuronConfig();
+	} else throw ConfigError("Group: unknown type of neuron data, got '" + test + "'");
+
+	// read activation mechanism configurator
+	if (is.eof()) 
+		throw ConfigError("Group: expected type of activation mechanism");
+	is >> test;
+	if (test == "LINEAR_POISSON_MECH_CFG") {
+		nrn_act_cfg_ = new PoissonMechConfig<ConstantPoissonParameter, FuncIdentity>(is);
+	} else if (test == "SIGMOID_POISSON_MECH_CFG") {
+		nrn_act_cfg_ = new PoissonMechConfig<ConstantPoissonParameter, FuncSigmoid>(is);
+	} else if (test == "OSCILLATORY_LINEAR_POISSON_MECH_CFG") {
+		nrn_act_cfg_ = new PoissonMechConfig<OscillatoryPoissonParameter, FuncIdentity>(is);
+	} else if (test == "OSCILLATORY_SIGMOID_POISSON_MECH_CFG") {
+		nrn_act_cfg_ = new PoissonMechConfig<OscillatoryPoissonParameter, FuncSigmoid>(is);
+	} else if (test == "DELTA_CORR_INPUT_REF") {
+		nrn_act_cfg_ = new DeltaCorrInputRef(is);
+	} else if (test == "SHORT_CORR_INPUT_REF") {
+		nrn_act_cfg_ = new ShortTimeCorrInputRef(is);
+	} else if (test == "CORR_INPUT_SHIFTED_COPY") {
+		nrn_act_cfg_ = new CorrInputRefShiftedCopy(is);
+	} else if (test == "IF_MECH_CFG") {
+		nrn_act_cfg_ = new IFMechConfig(is);
+	} else if (test == "INSTANT_IF_MECH_CFG") {
+		nrn_act_cfg_ = new InstantIFMechConfig(is);
+	} else throw ConfigError("Group: unknown neural activation mechanism, got '" + test + "'");
+
+	//Check Configs 
+	if ((! nrn_act_cfg_) || (! data_cfg_))
+		throw ConfigError("Group: void group or neuron configurator");
+
+	// outputs
+	if (is.eof())
+		throw ConfigError("Group: unexpected end of file, expected END_CREATE_GROUP");
+	is >> test;
+	while (test != "END_CREATE_GROUP")
+	{
+		if (test == "OUTPUT_KEY") {
+			std::string key;
+			Size outputter_id;
+			if (is.eof())
+				throw ConfigError("Group: unexpected end of file, expected two values of the OUTPUT_KEY tag");
+			is >> key;
+			if (is.eof())
+				throw ConfigError("Group: unexpected end of file, expected two values of the OUTPUT_KEY tag");
+			is >> outputter_id;
+			if (key == "group")
+				OutputManager::add_group_to_outputter(outputter_id, this);
+			else
+				throw ConfigError("Group: after the OUTPUT_KEY tag, 2nd argument (key) must be 'group' or a list of neurons [1,2,...]");
+		} else throw ConfigError("Group: expected optional outputting information or 'END_CREATE_GROUP', got '" + test + "'");
+
+		if (is.eof())
+			throw ConfigError("Group: unexpected end of file, expected END_CREATE_GROUP");
+		else
+			is >> test;
+	}				
+}
+
+
+/////////////////////////////////////////////////
+// Group populator creator
+// calls the factory
+void Group::populate_create()
+{
+	
+	//Create Neurons
+	if ((! nrn_act_cfg_) || (! data_cfg_))
+		throw ConfigError("Group: void group or neuron configurator");
+	else
+	{
+		NeuronFactory nrnfactory(data_cfg_, nrn_act_cfg_);
+		for (Size i = 0; i < n; ++i)
+			list_.push_back( boost::shared_ptr<NeuronInterface>(nrnfactory.create()) );
+	}
+}
+#endif
 

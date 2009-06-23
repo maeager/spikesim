@@ -12,7 +12,7 @@
 
 #define nil 0
 
-static int cell_cnt=0;
+int ParallelNetManager::cell_cnt=0;
 
 
 /*ParallelNetManager::ParallelNetManager()
@@ -20,13 +20,22 @@ static int cell_cnt=0;
 }
 */
 
-ParallelNetManager::ParallelNetManager(int *argc, char*** argv)
-{
+#ifdef CPPMPI
+	ParallelNetManager::ParallelNetManager(int& argc,char**&argv){
+#else
+	ParallelNetManager::ParallelNetManager(int* argc,char***argv){
+#endif
 	pc = new ParNetwork2BBS(argc,argv);
+	init(1,1);
+	
+}
+
+ParallelNetManager::~ParallelNetManager()
+{
 }
 
 
-void ParallelNetManager::init(int ncells) {
+void ParallelNetManager::init(int ncells, int ngroups) {
 	
 	nhost = pc->nhost();
 	if (nhost < 2) { // for no PVM or MPI and for 1 host
@@ -37,7 +46,8 @@ void ParallelNetManager::init(int ncells) {
 	}
 	nwork = nhost;
 	ncell = ncells;
-	
+	ngroup = ngroups;
+	ncellgrp = (int) ncells / ngroups;
 	//cells = new List() // the worker cells
 	//nclist = new List() // the netcons connecting to cells in this subset
 
@@ -50,7 +60,7 @@ void ParallelNetManager::init(int ncells) {
 
 
 void ParallelNetManager::terminate() {
- 	pc->done();
+ 	if( myid == 0) pc->done();
 }
 
 // originally
@@ -65,13 +75,34 @@ void ParallelNetManager::terminate() {
 // does not already exist), and make the mapping.
 
 void ParallelNetManager::set_gid2node(int cell_id, int pcid=-1) {
-	if (pcid==-1) pcid = myid; //default to myid
+	if (pcid==-1) pcid = myid; //default to myid, master generally calls this.
 	pc->set_gid2node(cell_id, pcid);
+#ifdef DEBUG
+	if( pcid == myid) std::cout << "Cell " << cell_id << " set by me " << myid << std::endl;
+#endif
 }
 
-void ParallelNetManager::round_robin() { // simplistic partitioning
+void ParallelNetManager::load_balance_round_robin() { // simplistic partitioning
 	for(register int i=0; i<ncell;++i) {
 		set_gid2node(i, i%nwork);
+	}
+}
+
+void ParallelNetManager::load_balance_roulette() { // in order partitioning
+	for(register int i=0; i<ncell;++i) {
+			set_gid2node(i, floor(i*nwork/ncell));
+	}
+}
+
+void ParallelNetManager::load_balance_by_group() { // group partitioning
+	if ( ngroup > nwork){
+	for(register int gr=0; gr<ngroup;++gr) {
+		for (register int nc=0;nc<ncellgrp;++nc)	
+			set_gid2node(nc + gr*ncellgrp, gr%nwork);
+	}}
+	else {
+		for (register int nc=0;nc<ncell;++nc)	
+			set_gid2node(nc, floor(nc*nwork/ncell));
 	}
 }
 

@@ -3,10 +3,17 @@
 
 //#include "nrnhash.h"
 //#include "ParNetwork.h"
+#ifdef CPPMPI 
+#include "ParSpike.2.h"
+#else
 #include "ParSpike.h"
+#endif
 #include "BBS.h"
 
+#include <utility>
 #include <list>
+#include <deque>
+#include <map>
 #include <fstream>
 #include <string>
 #include<boost/shared_ptr.hpp>
@@ -23,13 +30,13 @@
 #undef MD
 #define MD 2147483648.
 
-#include "ParNetwork.h"
+//#include "ParNetwork.h"
 
 extern int nrn_use_selfqueue_;
 //extern void nrn_pending_selfqueue(double, NrnThread*);
-extern void ncs2nrn_integrate(double tstop);
+//extern void ncs2nrn_integrate(double tstop);
  
-extern void nrn_partrans_clear();
+//extern void nrn_partrans_clear();
 
 class ParNetwork;
 
@@ -93,21 +100,34 @@ public:
 */
 };
 
-typedef boost::shared_ptr<PreSyn> PreSynPtr;
-typedef std::map<int, PreSynPtr > Gid2PreSyn; //SynapseInterface
+typedef boost::shared_ptr< PreSyn > PreSynPtr;
+typedef std::map<int,boost::shared_ptr<PreSyn > > Gid2PreSyn; //SynapseInterface
+typedef std::map<int,boost::shared_ptr<PreSyn > >::iterator iterG2PS; 
+
 
 class NetPar : public ParSpike
 {
 private:
 	//static void sppk(std::vector<unsigned char> c, int gid);
-	static void sppk(unsigned char* c, int gid);
-	static int spupk(unsigned char* c);
+	inline static void sppk(unsigned char* c, int gid) {
+	for (register int i = ParSpike::localgid_size_-1; i >= 0; --i) {
+		c[i] = gid & 255;
+		gid >>= 8;}
+}
+	inline static int spupk(unsigned char* c) {
+	int gid = c[0];
+	for (register int i = 1; i < ParSpike::localgid_size_; ++i) {
+		gid <<= 8;
+		gid += c[i];
+	}
+	return gid;
+}
 public:
 	NetPar(void);
 //	const DataCommonNeuron::ListSynMechType & DataCommonNeuron::presynmechlist_impl();
 //	const ListSynMechType & presynmechlist_impl() const {return presyn_mech_list_;};
 	static void alloc_space();
-	int spike_compress(int nspike, bool gid_compress, int xchng_meth);
+	static int spike_compress(int nspike, bool gid_compress, int xchng_meth);
 	static void spike_exchange_compressed();	
 	int nrn_need_npe();
 	static void gid_clear();
@@ -118,18 +138,19 @@ public:
 	void nrn2ncs_outputevent(int netcon_output_index, double firetime);
 	void outputevent(unsigned char localgid, double firetime);
 	void nrn_outputevent(unsigned char localgid, double firetime);
-void nrn_fake_fire(int gid, double firetime, int fake_out);
+	void nrn_fake_fire(int gid, double firetime, int fake_out);
 //	static Symbol* netcon_sym_;
 	static Gid2PreSyn* gid2out_;
 	static Gid2PreSyn* gid2in_;
 	static double t_exchange_;
 	static double dt1_; // 1/dt
-	void mk_localgid_rep();
+	static void mk_localgid_rep();
 // for compressed gid info during spike exchange
 	static bool nrn_use_localgid_;
 
 	static Gid2PreSyn** localmaps_;
 
+	static std::deque< std::pair<int,double> > tq;
 #define NRNSTAT 1
 	static int nsend_, nsendmax_, nrecv_, nrecv_useful_;
 #if NRNSTAT
@@ -155,7 +176,7 @@ void nrn_fake_fire(int gid, double firetime, int fake_out);
 
 };
 
-
+/*
 //inline static void sppk(std::vector<unsigned char> c, int gid) {
 inline static void sppk(unsigned char* c, int gid) {
 	for (register int i = ParSpike::localgid_size_-1; i >= 0; --i) {
@@ -163,7 +184,8 @@ inline static void sppk(unsigned char* c, int gid) {
 		gid >>= 8;
 	}
 }
-inline static int spupk(unsigned char* c) {
+
+inline int spupk(unsigned char* c) {
 
 	int gid = c[0];
 	for (register int i = 1; i < ParSpike::localgid_size_; ++i) {
@@ -172,6 +194,6 @@ inline static int spupk(unsigned char* c) {
 	}
 	return gid;
 }
-
+*/
 
 #endif

@@ -64,15 +64,12 @@ public:
 	static int spike_exchange();
 	static int spike_exchange_compressed();
 	static double mindelay(double m);
-	int int_allmax(int x);
+	static int int_allmax(int x);
 	void int_gather(int* s, int* r, int cnt, int root);
-	void int_gatherv(int* s, int scnt,
-    int* r, int* rcnt, int* rdispl, int root);
-	void int_alltoallv(int* s, int* scnt, int* sdispl,
-    int* r, int* rcnt, int* rdispl) ;
-	void dbl_alltoallv(double* s, int* scnt, int* sdispl,
-    double* r, int* rcnt, int* rdispl);
-	void int_allgather(int* s, int* r, int n);
+	void int_gatherv(int* s, int scnt, int* r, int* rcnt, int* rdispl, int root);
+	void int_alltoallv(int* s, int* scnt, int* sdispl, int* r, int* rcnt, int* rdispl) ;
+	void dbl_alltoallv(double* s, int* scnt, int* sdispl, double* r, int* rcnt, int* rdispl);
+	static void int_allgather(int* s, int* r, int n);
 	void int_allgatherv(int* s, int* r, int* n, int* dspl) ;
 	void dbl_allgatherv(double* s, double* r, int* n, int* dspl);
 	void dbl_broadcast(double* buf, int cnt, int root);
@@ -98,8 +95,8 @@ public:
 	static std::vector<SpikePacket_> spikeout_;
 	static std::vector<SpikePacket_> spikein_;
 #if _spikebuf_size > 0
-	static std::vector<SpikeBuffer_> spbufout_;;
-	static std::vector<SpikeBuffer_> spbufin_;;
+	static std::vector<SpikeBuffer_> spbufout_;
+	static std::vector<SpikeBuffer_> spbufin_;
 #endif	
 
 	

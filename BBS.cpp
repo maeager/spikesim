@@ -7,8 +7,8 @@ bool BBSImpl::is_master_ = false;
 bool BBSImpl::started_ = false;
 bool BBSImpl::done_ = false;
 
-#undef debug
-#define debug BBSImpl::debug_
+#undef DEBUG
+#define DEBUG BBSImpl::debug_
 
 int BBSImpl::debug_ = 0;
 int BBSImpl::mytid_;
@@ -21,7 +21,11 @@ BBS::BBS() {
 	init(-1);
 }
 
-BBS::BBS(int n, int* pargc, char*** pargv) {
+#ifdef CPPMPI
+	BBS::BBS(int n, int& pargc,char**&pargv){
+#else
+	BBS::BBS(int n,int* pargc,char***pargv){
+#endif
 	ParSpike::init(1,pargc,pargv);
 	init(n);
 }
@@ -99,7 +103,7 @@ double BBS::time() {
 }
 
 double BBSImpl::time() {
-	return MPI_Wtime();
+	return ParSpike::wtime();
 
 }
 
@@ -125,67 +129,67 @@ void BBSImpl::perror(const char*) {
 
 int BBS::upkint() {
 	int i = impl_->upkint();
-	if (debug) {
+#ifdef DEBUG 
 		std::cout <<  " upkint " <<  i << std::endl;
-	}
+#endif
 	return i;
-}
+} 
 
 double BBS::upkdouble() {
 	double d = impl_->upkdouble();
-	if (debug) {
+#ifdef DEBUG 
 		std::cout <<  " upkdouble " <<  d << std::endl;
-	}
+#endif
 	return d;
 }
 
 void BBS::upkvec(int n, double* px) {
 	impl_->upkvec(n, px);
-	if (debug) {
+#ifdef DEBUG 
 		std::cout <<  " upkvec " <<  n << std::endl;
-	}
+#endif
 }
 
 char* BBS::upkstr() {
 	char* s = impl_->upkstr();
-	if (debug) {
+#ifdef DEBUG 
 		std::cout <<  " upkstr " <<  s << std::endl;
-	}
+#endif
 	return s;
 }
 
 void BBS::pkbegin() {
-	if (debug) {
+#ifdef DEBUG 
 		std::cout << "pkbegin\n";
-	}
+#endif
 	impl_->pkbegin();
 }
 
 void BBS::pkint(int i) {
-	if (debug) {
+#ifdef DEBUG 
 		std::cout <<  " pkint " <<  i << std::endl;
-	}
+#endif
 	impl_->pkint(i);
 }
 
 void BBS::pkdouble(double x) {
-	if (debug) {
+#ifdef DEBUG 
 		std::cout <<  " pkdouble " <<  x << std::endl;
-	}
+#endif
 	impl_->pkdouble(x);
 }
 
 void BBS::pkvec(int n, double* px) {
-	if (debug) {
+#ifdef DEBUG 
 		std::cout <<  " pkdouble " <<  n << std::endl;
-	}
+#endif
 	impl_->pkvec(n, px);
 }
 
 void BBS::pkstr(const char* s) {
-	if (debug) {
+#ifdef DEBUG 
 		std::cout <<  " pkstr " <<  s << std::endl;
-	}
+#endif
 	impl_->pkstr(s);
 }
 
@@ -238,9 +242,9 @@ std::cout <<  " execute begin " << st << " : working_id_= " <<  working_id_ <<  
 	//	execute_helper(); //builds and execute hoc statement
 		et = time() - st;
 		total_exec_time += et;
-		if (debug) {
+#ifdef DEBUG 
 std::cout <<  " execute end elapsed " << et << " : working_id_= " <<  working_id_ << "  ac_= " <<  ac_ <<  std::endl;
-		}
+#endif
 		pkbegin();
 		pkint(userid);
 		pkdouble(ac_);
@@ -255,9 +259,9 @@ int BBS::submit(int userid) {
 int BBSImpl::submit(int userid) {
 	// userid was the first item packed
 	++n_;
-	if (debug) {
+#ifdef DEBUG 
 std::cout <<  " submit n_= " << n_ << "  for working_id= " <<  working_id_ << "  userid= " <<  userid <<  std::endl;
-	}
+#endif
 	if (userid < 0) {
 		save_args(-userid);
 	}else{
@@ -283,32 +287,32 @@ bool BBSImpl::working(int& id, double& x, int& userid) {
 	int cnt=0;
 	double t;
 	if (n_ <= 0) {
-		if (debug) {
+#ifdef DEBUG 
 			std::cout <<  " working n_= " <<  n_ << " : return false " << std::endl;
-		}
+#endif
 		return false;
 	}
-	if(debug) {
+#ifdef DEBUG 
 		t = time();
-	}
+#endif
 	for (;;) {
 		++cnt;
 		if ((id = look_take_result(working_id_)) != 0) {
 			userid = upkint();
 			x = upkdouble();
 			--n_;
-			if (debug) {
-				std::cout << "working n_=" << n_ << ": after " <<  cnt<< " try elapsed " <<  time()-t<< " sec got result for " << working_id_ << " id=" <<  id<< " x=" << x << std::endl;
-			}
+#ifdef DEBUG 
+	std::cout << "working n_=" << n_ << ": after " <<  cnt<< " try elapsed " <<  time()-t<< " sec got result for " << working_id_ << " id=" <<  id<< " x=" << x << std::endl;
+#endif
 			if (userid < 0) {
 				userid = -userid;
 				return_args(userid);
 			}
 			return true;
 		}else if ( (id = look_take_todo()) != 0) {
-			if (debug) {
+#ifdef DEBUG 
 std::cout <<  " working: no result for " <<  working_id_ << "  but did get _todo id=" << id  << " " << std::endl;
-			}
+#endif
 			execute(id);
 		}
 	}
@@ -334,40 +338,40 @@ void BBSImpl::worker() {
 }
 
 void BBS::post(const char* key) {
-	if (debug) {
+#ifdef DEBUG 
 		std::cout <<  " post: " <<  key << std::endl;
-	}
+#endif
 	impl_->post(key);
 }
 
 bool BBS::look_take(const char* key) {
 	bool b = impl_->look_take(key);
-	if (debug) {
+#ifdef DEBUG 
 		std::cout <<  " look_take |" << key << "| return " <<  b << std::endl;
-	}
+#endif
 	return b;
 }
 
 bool BBS::look(const char* key) {
 	bool b = impl_->look(key);
-	if (debug) {
+#ifdef DEBUG 
 		std::cout <<  " look |" << key << "| return " <<  b << std::endl;
-	}
+#endif
 	return b;
 }
 
 void BBS::take(const char* key) { // blocking
 	double t;
-	if (debug) {
+#ifdef DEBUG 
 		t = time();
 		std::cout <<  " begin take |" << key << "| at " 
 			<<  t << std::endl;
-	}
+#endif
 	impl_->take(key);
-	if (debug) {
+#ifdef DEBUG 
 		std::cout <<  " end take |" << key << "| elapsed " 
 			<<  time()-t << " from " << t << std::endl;
-	}
+#endif
 }
 
 void BBS::done() {

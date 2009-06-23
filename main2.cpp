@@ -16,9 +16,14 @@ int
 main(int argc, char *argv[])
 {
 	
+#ifdef CPPMPI
+	ParallelNetManager pnm(argc,argv);
+#else
 	ParallelNetManager pnm(&argc,&argv);
-	ParNetwork net;
-	if (pnm.myid==0){
+#endif
+/*	
+	if (pnm.myid==5){
+		ParNetwork net;
 	std::cout << "[info] press any key at end of execution to close this window" << std::endl << std::endl;
 	// construction of the network, initialisation of the simulation environment, etc.
 	try {
@@ -38,6 +43,9 @@ main(int argc, char *argv[])
 
 	net.build_network();
 	pnm.ncell = net.network_size();
+
+//Round robin is probably the most inefficient way to distribute the neurons
+//Guy from IBM said that halding all the synapse on CPUs would be better
 	pnm.round_robin();
 
 	std::cout << std::endl << "ParNetwork size " << net.network_size() << std::endl;
@@ -71,14 +79,18 @@ main(int argc, char *argv[])
 	OutputManager::do_output("end_sim");
 	OutputManager::close_all();
 	}
+*/
 	// memory cleaning
 
-	std::cout << "Hello World! I am " << pnm.myid << " of " << pnm.nhost <<
-	std::endl;
-	
-	pnm.terminate();
+	std::cout << "Hello World! I am " << pnm.myid << " of " << pnm.nhost << std::endl;
 
+	/* TEST ParallelNetManager */
+	pnm.init(100,5); std::cout << "ncellgrp = " << pnm.ncellgrp << std::endl;
+	pnm.load_balance_roulette();
+	
+	pnm.pc->barrier(); 
+	if( pnm.myid == 0) {std::cin.get();pnm.terminate();}
+	
 	// wait for key pressed
-//	std::cin.get();
 	return 0;
 }

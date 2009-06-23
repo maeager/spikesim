@@ -1,9 +1,11 @@
-#include "SimulationEnvironment.h"
-#include "ParSpike.h"
-//#include "ParNetwork.h"
-#include "BBS.h"
-#include "ParNetwork2BBS.h"
+
 #include "NetPar.h"
+#include "SimulationEnvironment.h"
+//#include "ParSpike.h"
+//#include "ParNetwork.h"
+//#include "BBS.h"
+//#include "ParNetwork2BBS.h"
+
 #include "AnyBuf.h"
 #include <errno.h>
 #include <algorithm>
@@ -23,7 +25,7 @@ int cvode_active_=0;
 	 bool NetPar::use_compress_;
 	 int NetPar::spfixout_capacity_;
 	 int NetPar::idxout_;
-
+	Gid2PreSyn** NetPar::localmaps_ = new Gid2PreSyn*[1];
 	 int NetPar::active_;
 	 double NetPar::usable_mindelay_;
 	 double NetPar::min_interprocessor_delay_;	
@@ -36,7 +38,14 @@ int cvode_active_=0;
 	 double NetPar::t_exchange_;
 	 double NetPar::dt1_; // 1/dt
 	 bool NetPar::nrn_use_localgid_;
-int nsend_=0, nsendmax_=0, nrecv_=0, nrecv_useful_=0;
+	int NetPar::nsend_=0;
+	int NetPar::nsendmax_=0;
+	int NetPar::nrecv_=0;
+	int NetPar::nrecv_useful_=0;
+	int nrn_use_selfqueue_;
+#if NRNSTAT
+	 std::vector<double> NetPar::max_histogram_;
+#endif 
 
 NetPar::NetPar(void)
 {
@@ -585,11 +594,11 @@ void NetPar::alloc_space() {
 //		if (!gid2in_) gid2in_= boost::shared_ptr<Gid2PreSyn>();//(2311);
 
 		ocapacity_  = 100;
-		spikeout_.clear(); spikeout_.reserve(ocapacity_);
+		spikeout_.clear(); spikeout_.resize(ocapacity_);
 		//if (spikeout_) delete [] spikeout_;
 		//spikeout_ = new SpikePacket_[ocapacity_];
 		icapacity_  = 100;
-		spikein_.clear();spikein_.reserve(icapacity_);
+		spikein_.clear();spikein_.resize(icapacity_);
 		//if (spikein_) 
 		//	delete [] spikein_;
 		//spikein_ = new  SpikePacket_[icapacity_];
@@ -622,7 +631,7 @@ void BBS::set_gid2node(int gid, int nid) {
 }
 
 void NetPar::gid_clear() {
-	nrn_partrans_clear();
+//TODO	nrn_partrans_clear();
 #if PARANEURON
 	nrnmpi_split_clear();
 #endif
@@ -638,14 +647,18 @@ void NetPar::gid_clear() {
 			}
 		}
 	}}}
-	NrnHashIterate(Gid2PreSyn, gid2in_, PreSyn*, ps) {
+*/
+	for (Gid2PreSyn::const_iterator i = gid2in_->begin();
+		 i != gid2in_->end();
+		 ++i) {
+		PreSynPtr ps = i->second;
 		ps->gid_ = -1;
 		ps->output_index_ = -1;
-		if (ps->dil_.count() == 0) {
-			delete ps;
-		}
-	}}}
-	*/
+	//	if (ps->dil_.count() == 0) { //No synaptic connections
+	//	delete ps;
+	//	}
+	}
+	
 //	int i;
 //	for (i = gid2out_->size_ - 1; i >= 0; --i) {
 //		gid2out_->at(i).clear();
@@ -670,22 +683,21 @@ int BBS::gid_exists(int gid) {
 //	}
 	return 0;
 }
-/*
+
 double BBS::threshold(int gid, double threshold) {
-	int gid = int(chkarg(1, 0., MD));
-	PreSyn* ps;
-	assert(ps = NetPar::gid2out_->find(gid, ps));
-	assert(ps);
-	if (ifarg(2)) {
-		ps->threshold_ = *getarg(2);
+	PreSynPtr ps = NetPar::gid2out_->find(gid)->second;
+	
+	if (threshold ==-1.0) {
+		ps->threshold_ = threshold;
 	}
 	return ps->threshold_;
-}
-*/
 
-/*TODO
+}
+
+
+
 void BBS::cell() {
-	int gid = int(chkarg(1, 0., MD));
+/*TODO	int gid = int(chkarg(1, 0., MD));
 	PreSyn* ps;
 	assert(gid2out_->find(gid, ps));
 	Object* ob = *hoc_objgetarg(2);
@@ -702,8 +714,9 @@ void BBS::cell() {
 	}else{
 		ps->output_index_ = gid;
 	}
-}
 */
+}
+
 
 void BBS::outputcell(int gid) {
 	PreSyn* ps;
@@ -770,7 +783,7 @@ ConfigBase* BBS::gid_connect(int gid, ConfigBase* target) {
 //std::cout << "%d connect %s from already existing %d\n", my_rank, hoc_object_name(target), gid);
 	}else{
 //std::cout << "%d connect %s from new PreSyn for %d\n", my_rank, hoc_object_name(target), gid);
-		ps = new PreSyn(nil, nil, nil);
+//		ps = new PreSyn; //(nil, nil, nil);
 //TODO		net_cvode_instance->psl_append(ps);
 //TODO		(*NetPar::gid2in_)[gid] = ps;
 		ps->gid_ = gid;
@@ -818,9 +831,9 @@ void BBS::netpar_solve(double tstop) {
 //TODO	nrn_timeout(20);
 	wt = wtime();
 	if (cvode_active_) {
-		ncs2nrn_integrate(tstop);
+//TODO		ncs2nrn_integrate(tstop);
 	}else{
-		ncs2nrn_integrate(tstop+1e-11);
+//TODO		ncs2nrn_integrate(tstop+1e-11);
 	}
 	impl_->integ_time_ += wtime() - wt;
 	impl_->integ_time_ -= (NetPar::npe_ ? (NetPar::npe_[0].wx_ + NetPar::npe_[0].ws_) : 0.);
@@ -899,10 +912,10 @@ double BBS::netpar_mindelay(double maxdelay) {
 }
 
 void BBS::netpar_spanning_statistics(int* nsend, int* nsendmax, int* nrecv, int* nrecv_useful) {
-	*nsend = nsend_;
-	*nsendmax = nsendmax_;
-	*nrecv = nrecv_;
-	*nrecv_useful = nrecv_useful_;
+	*nsend = NetPar::nsend_;
+	*nsendmax = NetPar::nsendmax_;
+	*nrecv = NetPar::nrecv_;
+	*nrecv_useful = NetPar::nrecv_useful_;
 }
 
 // unfortunately, ivocvect.h conflicts with STL

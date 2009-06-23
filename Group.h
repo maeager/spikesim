@@ -45,17 +45,28 @@ public:
 	typedef std::list<boost::shared_ptr<NeuronInterface> > ListNrnType; /*!< Type redefinition for the list of pointers to the neurons. */
 	ListNrnType list_; /*!< List of pointers to the neurons of the group. */
 
+	unsigned n;
 private:
 	ConfigBase * data_cfg_; /*!< Common configurator for the neural data shared by all the neurons of this group. */
 	ConfigBase * nrn_act_cfg_; /*!< Common configurator for the activation mechanism shared by all the neurons of this group. */
-
-
 
 // accessors to information about the group
 public:
 	const ConfigBase * const neuronconfigurator() const {return nrn_act_cfg_;}
 	Size size() const {return (Size) list_.size();}
 	void clear_past_of_spike_list(const Time & time_end_past);
+
+#ifdef PARALLELSIM	
+	typedef std::list<boost::shared_ptr<ConfigBase> > ListBaseType; /*!< Type redefinition for the list of pointers to base class. */
+	typedef std::list<boost::shared_ptr<ConnectivityManager> > ListConnType; /*!< Type redefinition for the list of pointers to base class. */
+	typedef std::list<boost::shared_ptr<DistributionManager> > ListDistrType; /*!< Type redefinition for the list of pointers to base class. */
+	ListBaseType syn_mech_cfg_, plast_mech_cfg_;
+	ListConnType connectivity_cfg_;
+	ListDistrType weight_distrib_cfg_, delay_distrib_cfg_;
+	void populate_config(std::ifstream & is);
+	void populate_create(); 
+#endif
+
 };
 
 

@@ -1,5 +1,9 @@
 
+#ifdef CPPMPI 
+#include "ParSpike.2.h"
+#else
 #include "ParSpike.h"
+#endif
 #include "BBS.h"
 #include "ParNetwork2BBS.h"
 #include "NetPar.h"
@@ -13,15 +17,19 @@
 
 extern int errno;
 
-bool ParNetwork2BBS::posting_ = false;
 
-ParNetwork2BBS::ParNetwork2BBS(int* pargc, char*** pargv){//Object*) {
+bool ParNetwork2BBS::posting_ = false;
+#ifdef CPPMPI
+	ParNetwork2BBS::ParNetwork2BBS(int& argc,char**&argv){
+#else
+	ParNetwork2BBS::ParNetwork2BBS(int* argc,char***argv){
+#endif
 	// not clear at moment what is best way to handle nested context
 	int i = -1;
 //	if (ifarg(1)) {
 //		i = int(chkarg(1, 0, 10000));
 //	}
-	bbs = new OcBBS(1,pargc,pargv);
+	bbs = new OcBBS(1,argc,argv);
 	
 	//bbs->ref();
 }
@@ -319,8 +327,8 @@ double ParNetwork2BBS::upkvec(std::vector<double>* vec) {
 	return 0.;
 }
 
- double ParNetwork2BBS::threshold() {
-	return bbs->threshold();
+ double ParNetwork2BBS::threshold(int id,double thd=-1.0) {
+	return bbs->threshold(id,thd);
 }
 
  double ParNetwork2BBS::spcompress(int nspike=-1, int gid_compress=1,int xchng_meth = 0) {
@@ -409,7 +417,7 @@ double ParNetwork2BBS::upkvec(std::vector<double>* vec) {
 	return 0.;
 }
 
- double ParNetwork2BBS::barrier(void*) {
+ double ParNetwork2BBS::barrier() {
 	// return wait time
 	double t = 0.;
 

@@ -1,6 +1,7 @@
 // from mpispike.c
 
 #include "ParSpike.h"
+
 #include <mpi.h>
 
 ParSpike::ParSpike(void)
@@ -12,24 +13,35 @@ ParSpike::ParSpike(void)
 */ 
 	MPI_Comm mpi_comm;
 	MPI_Comm bbs_comm;
+	 int ParSpike::ag_send_size_;
+	 int ParSpike::ag_send_nspike_;
+	 int ParSpike::ovfl_capacity_;
+	 int ParSpike::icapacity_;
+	 int ParSpike::ovfl_;
+	int ParSpike::nout_ = 0;
+	int ParSpike::mpi_use = 0;
+	int ParSpike::numprocs = 1;
+	int ParSpike::under_mpi_control_ = 1;
+	int ParSpike::my_rank = 0; /* rank */
+	int ParSpike::np;	//automatically set the other static variables to zero
+	int* ParSpike::displs;
+	int* ParSpike::nin_;
+	int* ParSpike::byteovfl; 
+	int ParSpike::localgid_size_=sizeof(unsigned char);
+	std::vector<unsigned char> ParSpike::spfixout_;
+	std::vector<unsigned char> ParSpike::spfixin_;
+	std::vector<unsigned char> ParSpike::spfixin_ovfl_;
+	std::vector<SpikePacket_> ParSpike::spikeout_;
+	std::vector<SpikePacket_> ParSpike::spikein_;
+#if _spikebuf_size > 0
+	std::vector<SpikeBuffer_> ParSpike::spbufout_;;
+	std::vector<SpikeBuffer_> ParSpike::spbufin_;;
+#endif	
 
-
- int ParSpike::mpi_use = 0;
- int ParSpike::numprocs = 1;
- int ParSpike::under_mpi_control_ = 1;
- int ParSpike::my_rank = 0; /* rank */
- int ParSpike::np;	//automatically set the other static variables to zero
- int* ParSpike::displs;
- int* ParSpike::byteovfl; 
-int ParSpike::localgid_size_=sizeof(unsigned char);
-	 std::vector<unsigned char> ParSpike::spfixout_;
-	 std::vector<unsigned char> ParSpike::spfixin_;
-	 std::vector<unsigned char> ParSpike::spfixin_ovfl_;
 static MPI_Datatype spike_type;
 extern void bbs_context_wait();
 
 void ParSpike::init(int mpi_control, int* pargc, char*** pargv) {
-
 
 	int i, b, flag;
 	mpi_use = 1;
@@ -67,7 +79,7 @@ for (i=0; i < *pargc; ++i) {
 if (my_rank == 0) {
 std::cout << "init: argc=" << *pargc << std::endl;
 for (i=0; i < *pargc; ++i) {
-	std::cout << "%d |%s|", i, (*pargv)[i] << std::endl;
+	std::cout <<  i <<" " <<  (*pargv)[i] << std::endl;
 }
 }
 }
@@ -149,14 +161,14 @@ double ParSpike::wtime() {
 void ParSpike::terminate() {
 
 #if DEBUG
-		std::cout << "%d terminate", my_rank << std::endl;
+		std::cout << "terminate: rank " <<my_rank << std::endl;
 #endif
 		if( under_mpi_control_ ) {
 			MPI_Finalize();
 		}
 		mpi_use = 0;
 #if DEBUG
-		checkbufleak();
+//		BBS2MPI::checkbufleak();
 #endif
 	
 
@@ -201,13 +213,16 @@ int ParSpike::spike_exchange() {
 	if (n) {
 		if (icapacity_ < n) {
 			icapacity_ = n + 10;
-			if (spikein_) delete spikein_;
-			spikein_ = new SpikePacket_[icapacity_];// (NRNMPI_Spike*)hoc_Emalloc(icapacity_ * sizeof(NRNMPI_Spike));  
+			//if (spikein_) delete spikein_;
+			spikein_.clear();
+			spikein_.resize(icapacity_);
+
+// (NRNMPI_Spike*)hoc_Emalloc(icapacity_ * sizeof(NRNMPI_Spike));  
 		}
-		MPI_Allgatherv(spikeout_, nout_, spike_type, spikein_, nin_, displs, spike_type, mpi_comm);
+		MPI_Allgatherv(&spikeout_[0], nout_, spike_type, &spikein_[0], nin_, displs, spike_type, mpi_comm);
 	}
 #else
-	MPI_Allgather(spbufout_, 1, spikebuf_type, spbufin_, 1, spikebuf_type, mpi_comm);
+	MPI_Allgather(&spbufout_[0], 1, spikebuf_type, &spbufin_[0], 1, spikebuf_type, mpi_comm);
 	novfl = 0;
 	n = spbufin_[0].nspike;
 	if (n > spikebuf_size) {
@@ -230,11 +245,11 @@ int ParSpike::spike_exchange() {
 	if (novfl) {
 		if (icapacity_ < novfl) {
 			icapacity_ = novfl + 10;
-			if(spikein_) delete [] spikein_;
-			spikein_ = new SpikePacket_[icapacity_];// (NRNMPI_Spike*)hoc_Emalloc(icapacity_ * sizeof(NRNMPI_Spike));  
+			spikein_.clear();//if(spikein_) delete [] spikein_;
+			spikein_.resize(icapacity_);// (NRNMPI_Spike*)hoc_Emalloc(icapacity_ * sizeof(NRNMPI_Spike));  
 		}
 		n1 = (nout_ > spikebuf_size) ? nout_ - spikebuf_size : 0;
-		MPI_Allgatherv(spikeout_, n1, spike_type, spikein_, nin_, displs, spike_type, mpi_comm);
+		MPI_Allgatherv(&spikeout_[0], n1, spike_type, &spikein_[0], nin_, displs, spike_type, mpi_comm);
 	}
 	ovfl_ = novfl;
 #endif
@@ -273,7 +288,7 @@ int ParSpike::spike_exchange_compressed() {
 	}
 	bbs_context_wait();
 
-	MPI_Allgather(spfixout_, ag_send_size_, MPI_BYTE, spfixin_, ag_send_size_, MPI_BYTE, mpi_comm);
+	MPI_Allgather(&spfixout_[0], ag_send_size_, MPI_BYTE, &spfixin_[0], ag_send_size_, MPI_BYTE, mpi_comm);
 	novfl = 0;
 	ntot = 0;
 	bstot = 0;
@@ -296,8 +311,8 @@ int ParSpike::spike_exchange_compressed() {
 	if (novfl) {
 		if (ovfl_capacity_ < novfl) {
 			ovfl_capacity_ = novfl + 10;
-			if(spfixin_ovfl_) delete [] spfixin_ovfl_;
-			spfixin_ovfl_ = new unsigned char[ovfl_capacity_ * (1 + localgid_size_)];//(unsigned char*)hoc_Emalloc(ovfl_capacity_ * (1 + localgid_size_)*sizeof(unsigned char));  
+			spfixin_ovfl_.clear();//if(spfixin_ovfl_) delete [] spfixin_ovfl_;
+			spfixin_ovfl_.resize(ovfl_capacity_ * (1 + localgid_size_)); //= new unsigned char[ovfl_capacity_ * (1 + localgid_size_)];//(unsigned char*)hoc_Emalloc(ovfl_capacity_ * (1 + localgid_size_)*sizeof(unsigned char));  
 		}
 		bs = byteovfl[my_rank];
 		/*
@@ -306,7 +321,7 @@ int ParSpike::spike_exchange_compressed() {
 		completely separate from the spfixin_ since the latter
 		dynamically changes its size during a run.
 		*/
-		MPI_Allgatherv(spfixout_ + ag_send_size_, bs, MPI_BYTE, spfixin_ovfl_, byteovfl, displs, MPI_BYTE, mpi_comm);
+		MPI_Allgatherv(&spfixout_[ag_send_size_], bs, MPI_BYTE, &spfixin_ovfl_[0], byteovfl, displs, MPI_BYTE, mpi_comm);
 	}
 	ovfl_ = novfl;
 	return ntot;

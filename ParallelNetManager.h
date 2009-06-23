@@ -1,7 +1,11 @@
 #ifndef PARALLELNETMANAGER_H
 #define PARALLELNETMANAGER_H
 
+#ifdef CPPMPI 
+#include "ParSpike.2.h"
+#else
 #include "ParSpike.h"
+#endif
 #include "ParNetwork.h"
 //#include "NetPar.h"
 #include "ParNetwork2BBS.h"
@@ -23,9 +27,13 @@
 class  ParallelNetManager
 {
 public:
+#ifdef CPPMPI
+	ParallelNetManager(int& argc,char**&argv);
+#else
 	ParallelNetManager(int* argc,char***argv);
+#endif
 	~ParallelNetManager();
-	void init(int ncells);
+	void init(int, int);
 	void register_cell(int, Group*);
 	void synmech_append(int, int);
 	void set_gid2node(int,int);
@@ -40,7 +48,9 @@ public:
 	void doinit();
 	void prun(), pcontinue(double), pinit(), psolve(double); 
 	void postwait(int x);
-	void round_robin(); //simplistic partitioning
+	void load_balance_round_robin(); //simplistic partitioning
+	void load_balance_roulette();
+	void load_balance_by_group();
 	void terminate();
 
 ConfigBase* cm2t(int precell_id, ConfigBase* postcell_syn, double weight, double delay);
@@ -50,7 +60,7 @@ ConfigBase* cm2t(int precell_id, ConfigBase* postcell_syn, double weight, double
 	std::map<int,boost::shared_ptr<NeuronInterface> >  cells;
 	std::list<boost::shared_ptr<ConfigBase*>  >  synlist; 
 	void maxstepsize(),set_maxstep();
-int myid,ncell,nwork, nhost;
+int myid,ncell,nwork, nhost,ngroup,ncellgrp;
 int prstat,maxstepsize_called_,want_graph_,edgecount_;
 double localmaxstep_;
 double tstop;

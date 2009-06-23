@@ -11,7 +11,11 @@
 #include "GlobalDefs.h"
 
 
+#ifdef CPPMPI 
+#include "ParSpike.2.h"
+#else
 #include "ParSpike.h"
+#endif
 #include "NetPar.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,7 +23,18 @@
 // to handle a collection groups of neurons, create them from a configuration file, the outputs, etc.
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+class Conn
+{
+public:	
+	Size source_id, target_id;
+	typedef std::list<boost::shared_ptr<ConfigBase> > ListBaseType; /*!< Type redefinition for the list of pointers to base class. */
+	typedef std::list<boost::shared_ptr<ConnectivityManager> > ListConnType; /*!< Type redefinition for the list of pointers to base class. */
+	typedef std::list<boost::shared_ptr<DistributionManager> > ListDistrType; /*!< Type redefinition for the list of pointers to base class. */
+	ListBaseType syn_mech_cfg_, plast_mech_cfg_;
+	ListConnType connectivity_cfg_;
+	ListDistrType weight_distrib_cfg_, delay_distrib_cfg_;
+	
+};
 
 class ParNetwork 
 {
@@ -36,11 +51,12 @@ public:
 	typedef	std::map< int, SynMechInterface> Gid2PreSyn;  //Similar to NEURON's hash table for parallel program
 	static Gid2PreSyn* gid2out_;
 	static Gid2PreSyn* gid2in_;
-
+	void config_from_file(std::string filename, std::string logfilename = "log.dat", bool no_output = false);
+	void create();
 	int network_size();
 	//void psl_append(PreSynPtr p){ presyn_list.push_back(p);}
 protected:
-    	typedef std::list<boost::shared_ptr<PreSyn> > ListSynType;//SynMechInterface
+    	typedef std::list< PreSynPtr > ListSynType;//SynMechInterface
 	typedef std::list<boost::shared_ptr<NeuronInterface> > ListNrnType;
 	typedef std::list<boost::shared_ptr<Group> > ListGroupType;
    	//typedef std::map<int, boost::shared_ptr<ConfigBase> > MapConfigType;

@@ -6,10 +6,10 @@
 #include <utility>
 #include <errno.h>
 
-#include "ParSpike.h"
+
 #include "BBS.h"
 #include "BBServer.h"
-#include "BBS2MPI.h"
+
 
 struct ltint {
 	bool operator() (int i, int j) const {
@@ -98,7 +98,7 @@ void BBSClient::pkstr(const char* s) {
 }
 
 void BBSClient::post(const char* key) {
-#if debug
+#if DEBUG
 std::cout <<  ParSpike::my_rank << ": " 
 	<<  key << " BBSClient::post |" 
 	<< key << "|" << std::endl; 
@@ -111,7 +111,7 @@ std::cout <<  ParSpike::my_rank << ": "
 }
 
 void BBSClient::post_todo(int parentid) {
-#if debug
+#if DEBUG
 std::cout <<  ParSpike::my_rank << ": " << parentid << " BBSClient::post_todo for %d " << std::endl; 
  
 #endif
@@ -123,7 +123,7 @@ std::cout <<  ParSpike::my_rank << ": " << parentid << " BBSClient::post_todo fo
 }
 
 void BBSClient::post_result(int id) {
-#if debug
+#if DEBUG
 std::cout <<  ParSpike::my_rank << ": " << id << " BBSClient::post_result %d " << std::endl; 
  
 #endif
@@ -135,8 +135,8 @@ std::cout <<  ParSpike::my_rank << ": " << id << " BBSClient::post_result %d " <
 }
 
 int BBSClient::get(const char* key, int type) {
-#if debug
-std::cout <<  ParSpike::my_rank << ": " << key, type << " BBSClient::get |%s| type=%d " << std::endl; 
+#if DEBUG
+std::cout <<  ParSpike::my_rank << ": BBSClient::get |" << key<< " %s| type= " << type << std::endl; 
  
 #endif
 	BBS2MPI::pkbegin(request_);
@@ -146,8 +146,8 @@ std::cout <<  ParSpike::my_rank << ": " << key, type << " BBSClient::get |%s| ty
 }
 
 int BBSClient::get(int key, int type) {
-#if debug
-std::cout <<  ParSpike::my_rank << ": " << key, type << " BBSClient::get %d type=%d " << std::endl; 
+#if DEBUG
+std::cout <<  ParSpike::my_rank << ": BBSClient::get" << key<<" type=%d " << type <<  std::endl; 
  
 #endif
 	BBS2MPI::pkbegin(request_);
@@ -166,7 +166,7 @@ fflush(stderr);
 	int msgtag = BBS2MPI::bbssendrecv(sid_, type, request_, recvbuf_);
 	errno = 0;
 	wait_time_ += time() - ts;
-#if debug
+#if DEBUG
 std::cout <<  ParSpike::my_rank << ": " << msgtag << " BBSClient::get return msgtag=%d " << std::endl; 
  
 #endif
@@ -177,7 +177,7 @@ std::cout <<  ParSpike::my_rank << ": " << msgtag << " BBSClient::get return msg
 }
 	
 bool BBSClient::look_take(const char* key) {
-#if debug
+#if DEBUG
 std::cout <<  ParSpike::my_rank << ": " << key << " BBSClient::look_take %s " << std::endl; 
 #endif
 	int type = get(key, LOOK_TAKE);
@@ -189,7 +189,7 @@ std::cout <<  ParSpike::my_rank << ": " << key << " BBSClient::look_take %s " <<
 }
 
 bool BBSClient::look(const char* key) {
-#if debug
+#if DEBUG
 std::cout <<  ParSpike::my_rank << ": " << key << " BBSClient::look %s " << std::endl; 
 #endif
 	int type = get(key, LOOK);
@@ -219,8 +219,8 @@ int BBSClient::take_todo() {
 	while((type = get(0, TAKE_TODO)) == CONTEXT) {
 		upkbegin();
 		upkint(); // throw away userid
-#if debug
-std::cout <<  BBS2MPI::myid << " execute context " << std::endl; 
+#if DEBUG
+std::cout <<  ParSpike::my_rank << " execute context " << std::endl; 
  
 #endif
 		execute_helper();
@@ -264,8 +264,8 @@ void BBSClient::return_args(int userid) {
 }
 
 void BBSClient::done() {
-#if debug
-std::cout <<  BBS2MPI::myid << " BBSClient::done " << std::endl; 
+#if DEBUG
+std::cout <<  ParSpike::my_rank << " BBSClient::done " << std::endl; 
  
 #endif
 	BBSImpl::done();
@@ -278,8 +278,8 @@ void BBSClient::start() {
 	int tid;
 	int n;
 	if (started_) { return; }
-#if debug
-std::cout <<  BBS2MPI::myid << " BBSClient start " << std::endl; 
+#if DEBUG
+std::cout <<  ParSpike::my_rank  << " BBSClient start " << std::endl; 
 #endif
 	BBSImpl::start();
 	sid_ = 0;

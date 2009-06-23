@@ -3,10 +3,14 @@
 
 
 
+#ifdef CPPMPI 
+#include "ParSpike.2.h"
+#else
 #include "ParSpike.h"
+#endif
 #include "ParNetwork.h"
 #include "BBS.h"
-//#include "NetPar.h"
+#include "NetPar.h"
 
 #undef MD
 #define MD 2147483648.
@@ -27,7 +31,12 @@
 
 class OcBBS : public BBS {//, public Resource {
 public:
+#ifdef CPPMPI
+	OcBBS(int n, int& pargc, char**&pargv): BBS(n,pargc,pargv){next_local_ = 0;}
+#else
 	OcBBS(int n, int* pargc, char***pargv): BBS(n,pargc,pargv){next_local_ = 0;}
+#endif
+	
 	virtual ~OcBBS(){}
 
 	double retval_;
@@ -39,7 +48,11 @@ public:
 
 class ParNetwork2BBS {
 public:
-	ParNetwork2BBS(int* pargc, char***pargv);
+#ifdef CPPMPI
+	ParNetwork2BBS(int& argc,char**&argv);
+#else
+	ParNetwork2BBS(int* argc,char***argv);
+#endif
 	~ParNetwork2BBS();
 
 	int submit_help();
@@ -73,7 +86,7 @@ public:
 	double gid_exists(int gid);
 	 double outputcell(int gid) ;
 	 double cell();
-	 double threshold();
+	 double threshold(int,double);
 //	 double spike_record(int gid, double* spikevec, double* gidvec) ;
 	 double psolve(double  step);
 	 double set_maxstep(double maxstep);
@@ -89,7 +102,7 @@ public:
 //	"splitcell_connect", splitcell_connect,
 //	"multisplit", multisplit,
 
-	 double barrier(void*);
+	 double barrier();
 	 double allreduce(double val , int type) ;
 	 double allgather(double val, std::vector<double> *vec) ;
 	 double alltoall( std::vector<double> *vsrc, std::vector<double> *vscnt, std::vector<double> *vdest); 

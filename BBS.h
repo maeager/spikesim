@@ -4,8 +4,14 @@
 #include <iostream>
 #include <vector>
 
+#ifdef CPPMPI 
+#include "ParSpike.2.h"
+#include "BBS2MPI.2.h"
+#else
 #include "ParSpike.h"
 #include "BBS2MPI.h"
+#endif
+
 #include "GlobalDefs.h"
 #include "ConfigBase.h"
 #include "InterfaceBase.h"
@@ -76,7 +82,11 @@ protected:
 class BBS : public ParSpike {
 public:
 	BBS();
-	BBS(int nhost,int*,char***);
+#ifdef CPPMPI
+	BBS(int, int& argc,char**&argv);
+#else
+	BBS(int,int* argc,char***argv);
+#endif
 	virtual ~BBS();
 
 	bool look(const char*);
@@ -118,7 +128,7 @@ public:
 	// netpar interface
 	void set_gid2node(int, int);
 	int gid_exists(int);
-	double threshold();
+	double threshold(int,double);
 	void cell();
 	void outputcell(int);
 	void spike_record(int, std::vector<double>,std::vector<double>);

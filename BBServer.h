@@ -2,7 +2,6 @@
 #define bbssrvcli_h
 
 #include <map>
-#include "ParSpike.h"
 #include "BBS.h"
 
 #define debug 0
