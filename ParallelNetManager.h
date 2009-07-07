@@ -22,7 +22,8 @@
 #include "DataRecordNeuron.h"
 #include "TypeDefs.h"
 #include "GlobalDefs.h"
-#include "Group.h"
+
+class Group;
 
 class  ParallelNetManager
 {

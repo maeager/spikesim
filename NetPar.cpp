@@ -568,15 +568,15 @@ void NetPar::mk_localgid_rep() {
 // high so that they do not themselves generate spikes.
 void NetPar::nrn_fake_fire(int gid, double spiketime, int fake_out) {
 	assert(gid2in_);
-	PreSyn* ps;
-	if (ps /*TODO =gid2in_->find(gid)->second*/) {
+	PreSynPtr ps=gid2in_->find(gid)->second;
+	if (ps) {
 		assert(ps);
 //std::cout << "nrn_fake_fire %d %g\n", gid, spiketime);
 //TODO		ps->send(spiketime, net_cvode_instance);//, nrn_threads);
 #if NRNSTAT
 		++nrecv_useful_;
 #endif
-	}else if (fake_out && ps /*TODO =gid2out_->find(gid)->second*/) {
+	}else if (fake_out && ps) {
 		assert(ps);
 //std::cout << "nrn_fake_fire fake_out %d %g\n", gid, spiketime);
 //TODO		ps->send(spiketime, net_cvode_instance);//, nrn_threads);
@@ -621,12 +621,12 @@ void BBS::set_gid2node(int gid, int nid) {
 
 	if (nid == my_rank)
 	{
-
 		//std::cout << "gid %d defined on %d\n", gid, my_rank);
-//TODO		//PreSyn* ps;
-		if (NetPar::gid2in_->find(gid)->first) NetPar::gid2in_->erase(gid);//assert(!(ps = NetPar::gid2in_->find(gid)));
-		(*NetPar::gid2out_)[gid] = PreSynPtr();
-//		NetPar::gid2out_->insert(pair<const int, PreSyn*>(gid, nil));
+	//PreSyn* ps;
+		if (NetPar::gid2in_->find(gid)->first) 
+			NetPar::gid2in_->erase(gid);//assert(!(ps = NetPar::gid2in_->find(gid)));
+		(*NetPar::gid2out_)[gid] = PreSynPtr(); //temporary - TODO change this so that it points to the presynapse
+//TODO		NetPar::gid2out_->insert(pair<const int, PreSynPtr>(gid, nil));
 	}
 }
 
@@ -637,21 +637,25 @@ void NetPar::gid_clear() {
 #endif
 //	nrnmpi_multisplit_clear();
 	if (!gid2out_) { return; }
-	PreSyn* ps, *psi;
-/*TODO NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
-		if (ps && !gid2in_->find(ps->gid_, psi)) {
+	PreSynPtr ps, psi;
+// NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
+	for (Gid2PreSyn::const_iterator i = NetPar::gid2out_->begin();
+		 i != NetPar::gid2out_->end();
+		 ++i) {
+		ps = i->second;
+		if (ps && !(psi = NetPar::gid2in_->find(ps->gid_)->second)) {
 			ps->gid_ = -1;
 			ps->output_index_ = -1;
-			if (ps->dil_.count() == 0) {
-				delete ps;
-			}
+			//if (ps->dil_.count() == 0) {
+			//	delete ps;
+			//}
 		}
-	}}}
-*/
+	}
+
 	for (Gid2PreSyn::const_iterator i = gid2in_->begin();
 		 i != gid2in_->end();
 		 ++i) {
-		PreSynPtr ps = i->second;
+		ps = i->second;
 		ps->gid_ = -1;
 		ps->output_index_ = -1;
 	//	if (ps->dil_.count() == 0) { //No synaptic connections
@@ -671,16 +675,16 @@ void NetPar::gid_clear() {
 }
 
 int BBS::gid_exists(int gid) {
-	PreSyn* ps;
+	PreSynPtr ps;
 	NetPar::alloc_space();
-//TODO	if (ps = Netpar::gid2out_->find(gid)) {
+	if (ps = NetPar::gid2out_->find(gid)->second) {
 //std::cout << "%d gid %d exists\n", my_rank, gid);
 		if (ps) {
 			return (ps->output_index_ >= 0 ? 3 : 2);
 		}else{
 			return 1;
 		}
-//	}
+	}
 	return 0;
 }
 
@@ -714,12 +718,17 @@ void BBS::cell() {
 	}else{
 		ps->output_index_ = gid;
 	}
-*/
+*/}
+void BBS::cell(int gid){//, NetCon* nc) {
+	PreSynPtr   ps = NetPar::gid2out_->find(gid)->second;
+	(*NetPar::gid2out_)[gid] = ps;
+	ps->gid_ = gid;
+	ps->output_index_ = gid;
 }
 
 
 void BBS::outputcell(int gid) {
-	PreSyn* ps;
+	PreSynPtr ps = NetPar::gid2out_->find(gid)->second;
 //TODO	assert(ps = NetPar::gid2out_->find(gid));
 	assert(ps);
 	ps->output_index_ = gid;
@@ -770,22 +779,23 @@ ConfigBase* BBS::gid2cell(int gid) {
 }
 
 ConfigBase* BBS::gid_connect(int gid, ConfigBase* target) {
-/*TODO	if (!is_point_process(target)) {
+/*	if (!is_point_process(target)) {
 		hoc_execerror("arg 2 must be a point process", 0);
 	}
 */	NetPar::alloc_space();
-	PreSyn* ps;
-	if (ps /*TODO =NetPar::gid2out_->find(gid)->second*/) {
+	PreSynPtr ps;
+	if (ps  =NetPar::gid2out_->find(gid)->second/*TODO*/) {
 		// the gid is owned by this machine so connect directly
 		assert(ps);
-	}else if ((ps/*TODO =NetPar::gid2in_->find(gid)->second*/)) {
+	}else if ((ps =NetPar::gid2in_->find(gid)->second/*TODO*/)) {
 		// the gid stub already exists
 //std::cout << "%d connect %s from already existing %d\n", my_rank, hoc_object_name(target), gid);
 	}else{
 //std::cout << "%d connect %s from new PreSyn for %d\n", my_rank, hoc_object_name(target), gid);
-//		ps = new PreSyn; //(nil, nil, nil);
-//TODO		net_cvode_instance->psl_append(ps);
-//TODO		(*NetPar::gid2in_)[gid] = ps;
+		PreSyn* ps_ = new PreSyn(gid,target);
+		ps = PreSynPtr(ps_); //(nil, nil, nil);
+//TODO?		net_cvode_instance->psl_append(ps);
+		(*NetPar::gid2in_)[gid] = ps;
 		ps->gid_ = gid;
 	}
 	ConfigBase** po;

@@ -70,7 +70,6 @@ public:
 	unsigned char localgid_; // compressed gid for spike transfer
 	std::deque<double> tqe_; //stores delivered events
 
-
 #endif
 protected:
 	virtual void on_preneuron_fire_update(const double & spike_time) = 0;
@@ -105,6 +104,12 @@ public:
 	//{return(itLHS == itRHS);} 	
 	//bool operator!=(const std::list<NeuronInterface*>::const_iterator& itRHS)
 	//{return(!(this->itLHS == itRHS));} 
+#ifdef PARALLELSIM
+	void set_gid(int id) { gid_ = id;}
+	const int gid(){ return gid_;}
+protected: 
+	int gid_;
+#endif
 
 protected:
 	//std::list<NeuronInterface*>::iterator itLHS;

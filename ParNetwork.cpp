@@ -335,9 +335,9 @@ void ParNetwork::config_from_file(std::string configfilename, std::string logfil
 				} else if (test == "WEIGHT_GAUSSIAN") {
 					weight_distrib_cfg = new GaussianDistribution(config_file);
 				} else throw ConfigError("Network: unknown type of weight distribution" + error_tag + ", got '" + test + "'");
-				
+#ifdef PARALLELSIM				
 				if (weight_distrib_cfg) (**gp_source).weight_distrib_cfg_.push_back(boost::shared_ptr<DistributionManager>(weight_distrib_cfg));
-
+#endif
 				// get the delay distribution
 				if (config_file.eof()) 
 					throw ConfigError("Network: expected the type of delay distribution" + error_tag);
@@ -351,9 +351,9 @@ void ParNetwork::config_from_file(std::string configfilename, std::string logfil
 				} else if (test == "DELAY_GAUSSIAN") {
 					delay_distrib_cfg = new GaussianDistribution(config_file);
 				} else throw ConfigError("Network: unknown type of delay distribution" + error_tag + ", got '" + test + "'");
-
+#ifdef PARALLELSIM
 				if (delay_distrib_cfg) (**gp_source).delay_distrib_cfg_.push_back(boost::shared_ptr<DistributionManager>(delay_distrib_cfg));
-
+#endif
 				// get the synaptic activation mechanism
 				if (config_file.eof()) 
 					throw ConfigError("Network: expecting the type of plasticity mechanism" + error_tag);
@@ -369,8 +369,9 @@ void ParNetwork::config_from_file(std::string configfilename, std::string logfil
 					cfg_list_.push_back(boost::shared_ptr<ConfigBase>(syn_mech_cfg));
 				} else throw ConfigError("Network: unknown type of synaptic activation mechanism" + error_tag + ", got '" + test + "'");
 				
+#ifdef PARALLELSIM
 				if (syn_mech_cfg) (**gp_source).syn_mech_cfg_.push_back(boost::shared_ptr<ConfigBase>(syn_mech_cfg));
-
+#endif
 				// get the synaptic plasticity mechanism
 				if (config_file.eof()) 
 					throw ConfigError("Network: expecting the type of plasticity mechanism" + error_tag);
@@ -381,9 +382,9 @@ void ParNetwork::config_from_file(std::string configfilename, std::string logfil
 				} else if (test == "NON_PLASTIC") {
 					plast_mech_cfg = new NoPlastMechConfig();
 				} else throw ConfigError("Network: unknown type of plasticity mechanism" + error_tag + ", got '" + test + "'");
-
+#ifdef PARALLELSIM
 				if (plast_mech_cfg) (**gp_source).plast_mech_cfg_.push_back(boost::shared_ptr<ConfigBase>(plast_mech_cfg));
-				
+#endif				
 				// get the connectivity type
 				if (config_file.eof()) 
 					throw ConfigError("Network: expecting the type of connectivity" + error_tag);
@@ -406,9 +407,9 @@ void ParNetwork::config_from_file(std::string configfilename, std::string logfil
 					if (gp_source != gp_target) throw ConfigError("Network: LOOP pattern connectivity only with the same group as source and target");
 					connectivity_cfg = new LoopConnectivity(config_file, (*gp_target)->size());
 				} else throw ConfigError("Network: unknown type of connectivity" + error_tag + ", got '" + test + "'");
-					
+#ifdef PARALLELSIM					
 				if (connectivity_cfg) (**gp_source).connectivity_cfg_.push_back(boost::shared_ptr<ConnectivityManager>(connectivity_cfg));
-			
+#endif			
 				// connect the groups
 				//(**gp_source).connect_to(**gp_target, weight_distrib_cfg, delay_distrib_cfg, syn_mech_cfg, plast_mech_cfg, connectivity_cfg, cfg_list_, nb_con);
 

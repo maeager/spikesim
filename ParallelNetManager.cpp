@@ -21,10 +21,11 @@ int ParallelNetManager::cell_cnt=0;
 */
 
 #ifdef CPPMPI
-	ParallelNetManager::ParallelNetManager(int& argc,char**&argv){
+	ParallelNetManager::ParallelNetManager(int& argc,char**&argv)
 #else
-	ParallelNetManager::ParallelNetManager(int* argc,char***argv){
+	ParallelNetManager::ParallelNetManager(int* argc,char***argv)
 #endif
+{
 	pc = new ParNetwork2BBS(argc,argv);
 	init(1,1);
 	
@@ -78,7 +79,7 @@ void ParallelNetManager::set_gid2node(int cell_id, int pcid=-1) {
 	if (pcid==-1) pcid = myid; //default to myid, master generally calls this.
 	pc->set_gid2node(cell_id, pcid);
 #ifdef DEBUG
-	if( pcid == myid) std::cout << "Cell " << cell_id << " set by me " << myid << std::endl;
+	std::cout << "Cell " << cell_id << " set by me " << myid << std::endl;
 #endif
 }
 

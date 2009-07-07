@@ -86,7 +86,9 @@ main(int argc, char *argv[])
 
 	/* TEST ParallelNetManager */
 	pnm.init(100,5); std::cout << "ncellgrp = " << pnm.ncellgrp << std::endl;
-	pnm.load_balance_roulette();
+//	pnm.load_balance_roulette();pnm.pc->gid_clear();
+//	pnm.load_balance_round_robin();pnm.pc->gid_clear();
+//	pnm.load_balance_by_group();pnm.pc->gid_clear();
 	
 	pnm.pc->barrier(); 
 	if( pnm.myid == 0) {std::cin.get();pnm.terminate();}

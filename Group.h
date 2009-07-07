@@ -18,6 +18,10 @@
 #include "ConnectivityManager.h"
 #include "DistributionManager.h"
 
+#ifdef PARALLELSIM
+	class ParallelNetManager;
+	//#include "ParallelNetManager.h"
+#endif
 
 //! Group of neurons sharing similar properties.
 /*!	All the neurons of the group share the same configurators for the neural data (\link Group::data_cfg_ \endlink) 
@@ -57,6 +61,7 @@ public:
 	void clear_past_of_spike_list(const Time & time_end_past);
 
 #ifdef PARALLELSIM	
+void par_connect_to(ParallelNetManager * const pnm, Group & targetgroup, DistributionManager * const weight_distrib_cfg, DistributionManager * const delay_distrib_cfg,ConfigBase * const syn_mech_cfg, ConfigBase * const plast_mech_cfg, ConnectivityManager * const connectivity_mgr, std::list<boost::shared_ptr<ConfigBase> > & cfg_list, Size &nb_con);
 	typedef std::list<boost::shared_ptr<ConfigBase> > ListBaseType; /*!< Type redefinition for the list of pointers to base class. */
 	typedef std::list<boost::shared_ptr<ConnectivityManager> > ListConnType; /*!< Type redefinition for the list of pointers to base class. */
 	typedef std::list<boost::shared_ptr<DistributionManager> > ListDistrType; /*!< Type redefinition for the list of pointers to base class. */

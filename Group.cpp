@@ -9,7 +9,9 @@
 #include "OutputManager.h"
 #include "AsciiFileWrapper.h"
 
-
+#ifdef PARALLELSIM
+#include "ParallelNetManager.h"
+#endif
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Group function definitions
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -255,5 +257,62 @@ void Group::populate_create()
 			list_.push_back( boost::shared_ptr<NeuronInterface>(nrnfactory.create()) );
 	}
 }
+
+/////////////////////////////////////////////////
+// connect to another group with STDP synapses
+void Group::par_connect_to(ParallelNetManager * const pnm, Group & targetgroup
+					, DistributionManager * const weight_distrib_cfg
+					, DistributionManager * const delay_distrib_cfg
+					, ConfigBase * const syn_mech_cfg
+					, ConfigBase * const plast_mech_cfg
+					, ConnectivityManager * const connectivity_mgr
+					, std::list<boost::shared_ptr<ConfigBase> > & cfg_list
+					, Size & nb_con)
+{
+	// creation of the synapse factory that will combine suitably the mechanisms (synaptic activation, plasticity, etc.)
+	SynapseFactory synfactory(weight_distrib_cfg, delay_distrib_cfg, syn_mech_cfg, plast_mech_cfg, cfg_list);
+
+	Size postnrn_counter = 0,
+		 prenrn_counter = 0;
+	std::list<NeuronInterface *> preneuron_list;
+	// list of pre- and post-neurons for outputting
+	std::list<Size> list_nb_pre_nrn, list_nb_post_nrn;
+	// 'i' is an iterator on the target group (postneuron)
+	for (ListNrnType::iterator i = targetgroup.list_.begin(); i != targetgroup.list_.end(); ++i)
+	{
+		if(pnm->gid_exists((*i)->gid())){ //Is the target post neuron on this computer?
+		// reset the list of neurons to connect
+		preneuron_list.clear();
+		// fill up the list
+		prenrn_counter = 0;
+
+		// 'j' is an iterator on the source group (preneuron)
+		for (ListNrnType::const_iterator j = list_.begin(); j != list_.end(); ++j)
+		{
+			if ((*i) != (*j))
+			{
+				if (connectivity_mgr->do_connect(prenrn_counter, postnrn_counter))
+				{
+					preneuron_list.push_back((*j).operator->());
+					++nb_con; // only for output on the console screen
+					// add to output the neuron id to file
+					list_nb_pre_nrn.push_back((*j)->id());
+					list_nb_post_nrn.push_back((*i)->id());
+				}
+			}
+			++prenrn_counter;
+		}
+
+		// create the connections with postneuron i and the list of preneurons
+		synfactory.create(preneuron_list, (*i).operator->());
+		++postnrn_counter;
+		}
+	}
+
+	// output the neuron id to file
+	OutputManager::do_output_connectivity(list_nb_pre_nrn, list_nb_post_nrn, 0);
+}
+
+
 #endif
 

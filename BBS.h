@@ -129,7 +129,7 @@ public:
 	void set_gid2node(int, int);
 	int gid_exists(int);
 	double threshold(int,double);
-	void cell();
+	void cell(); 	void cell(int);
 	void outputcell(int);
 	void spike_record(int, std::vector<double>,std::vector<double>);
 	void netpar_solve(double);

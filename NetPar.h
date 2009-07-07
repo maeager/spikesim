@@ -102,7 +102,7 @@ public:
 
 typedef boost::shared_ptr< PreSyn > PreSynPtr;
 typedef std::map<int,boost::shared_ptr<PreSyn > > Gid2PreSyn; //SynapseInterface
-typedef std::map<int,boost::shared_ptr<PreSyn > >::iterator iterG2PS; 
+typedef std::map<int,boost::shared_ptr<PreSyn > >::iterator Gid2PreSynItr; 
 
 
 class NetPar : public ParSpike

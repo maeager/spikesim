@@ -23,18 +23,20 @@
 // to handle a collection groups of neurons, create them from a configuration file, the outputs, etc.
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-class Conn
-{
-public:	
-	Size source_id, target_id;
-	typedef std::list<boost::shared_ptr<ConfigBase> > ListBaseType; /*!< Type redefinition for the list of pointers to base class. */
-	typedef std::list<boost::shared_ptr<ConnectivityManager> > ListConnType; /*!< Type redefinition for the list of pointers to base class. */
-	typedef std::list<boost::shared_ptr<DistributionManager> > ListDistrType; /*!< Type redefinition for the list of pointers to base class. */
-	ListBaseType syn_mech_cfg_, plast_mech_cfg_;
-	ListConnType connectivity_cfg_;
-	ListDistrType weight_distrib_cfg_, delay_distrib_cfg_;
-	
-};
+// class Conn
+// {
+// public:	
+// 	Size source_id, target_id;
+// 	typedef std::list<boost::shared_ptr<ConfigBase> > ListBaseType; /*!< Type redefinition for the list of pointers to base class. */
+// 	typedef std::list<boost::shared_ptr<ConnectivityManager> > ListConnType; /*!< Type redefinition for the list of pointers to base class. */
+// 	typedef std::list<boost::shared_ptr<DistributionManager> > ListDistrType; /*!< Type redefinition for the list of pointers to base class. */
+// 	ListBaseType syn_mech_cfg_, plast_mech_cfg_;
+// 	ListConnType connectivity_cfg_;
+// 	ListDistrType weight_distrib_cfg_, delay_distrib_cfg_;
+// 	
+// };
+
+//extern class Group;
 
 class ParNetwork 
 {
