@@ -76,10 +76,10 @@ void ParallelNetManager::terminate() {
 // does not already exist), and make the mapping.
 
 void ParallelNetManager::set_gid2node(int cell_id, int pcid=-1) {
-	if (pcid==-1) pcid = myid; //default to myid, master generally calls this.
+	if (pcid==-1) pcid = myid; //default to myid
 	pc->set_gid2node(cell_id, pcid);
 #ifdef DEBUG
-	std::cout << "Cell " << cell_id << " set by me " << myid << std::endl;
+	if ( myid == 0) std::cout << "Cell " << cell_id << " set by me to host " << pcid << std::endl;
 #endif
 }
 
@@ -363,3 +363,51 @@ $o1.printf
 }
 
 */
+
+
+void ParallelNetManager::create_network(ParNetwork&net){
+//TODO
+//Try this
+//------
+//	net.create();
+//------
+//Or
+	for (ParNetwork::ListGroupType::const_iterator i = net.gp_list_.begin(); 
+		 i != net.gp_list_.end(); 
+		 ++i)
+		(*i)->create_population(); 
+	
+}
+
+void ParallelNetManager::connect_network(ParNetwork&net, bool no_output= false){
+
+//TODO
+//Try this
+//------
+//	net.connect_groups();
+//------
+//Or
+/*	Size nb_con=0;
+	for (ParNetwork::ListConnType::const_iterator i = net.conn_list_.begin(); 
+		 i != net.conn_list_.end(); 
+		 ++i){
+		//(*i)->connect_to(); 
+// connect the groups
+		(*i).gp_source->par_connect_to(this,(*i).gp_target,
+			(*i).weight_distrib_cfg_,
+			(*i).delay_distrib_cfg_,
+			(*i).syn_mech_cfg_,
+			(*i).plast_mech_cfg_,
+			(*i).connectivity_cfg_,
+			(*i).cfg_list_,
+			nb_con);
+	// output on screen: write out the size of the constructed group
+		if (! no_output)
+		{
+			std::cout << nb_con << " connections from group #" << (*i).gp_source->id << " to group #" << (*i).gp_target->id  << std::endl;
+		}
+		nb_con=0;
+	}
+		//(**gp_source).par_connect_to(**gp_target, weight_distrib_cfg, delay_distrib_cfg, syn_mech_cfg, plast_mech_cfg, connectivity_cfg, cfg_list_, nb_con);
+*/
+}

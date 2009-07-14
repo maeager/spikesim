@@ -244,9 +244,8 @@ void Group::populate_config(std::ifstream & is)
 /////////////////////////////////////////////////
 // Group populator creator
 // calls the factory
-void Group::populate_create()
-{
-	
+void Group::create_population()
+{	
 	//Create Neurons
 	if ((! nrn_act_cfg_) || (! data_cfg_))
 		throw ConfigError("Group: void group or neuron configurator");
@@ -280,7 +279,7 @@ void Group::par_connect_to(ParallelNetManager * const pnm, Group & targetgroup
 	// 'i' is an iterator on the target group (postneuron)
 	for (ListNrnType::iterator i = targetgroup.list_.begin(); i != targetgroup.list_.end(); ++i)
 	{
-		if(pnm->gid_exists((*i)->gid())){ //Is the target post neuron on this computer?
+		if(pnm->gid_exists((*i)->gid())){ //Is the target postneuron on this computer?
 		// reset the list of neurons to connect
 		preneuron_list.clear();
 		// fill up the list

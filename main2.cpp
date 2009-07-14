@@ -21,13 +21,29 @@ main(int argc, char *argv[])
 #else
 	ParallelNetManager pnm(&argc,&argv);
 #endif
-/*	
-	if (pnm.myid==5){
-		ParNetwork net;
+
+	// TEST ParallelNetManager
+	pnm.init(100,5); 
+	if (pnm.myid == 0) {
+	std::cout << "ncell = " << pnm.ncell << std::endl;
+	std::cout << "nhost = " << pnm.nhost << std::endl;
+	std::cout << "ngroup = " << pnm.ngroup << std::endl;
+	std::cout << "ncellgrp = " << pnm.ncellgrp << std::endl;
+	}
+	// TESTING load balances 
+	pnm.load_balance_roulette();pnm.pc->gid_clear();pnm.pc->barrier(); if( pnm.myid == 0) std::cin.get();
+	pnm.load_balance_round_robin();pnm.pc->gid_clear();pnm.pc->barrier(); if( pnm.myid == 0) std::cin.get();
+	pnm.load_balance_by_group();pnm.pc->gid_clear();
+	
+	/*TESTING ParNetwork*/
+	ParNetwork net;
+	
+	Size ncells=0,ngroups=0;
+		
 	std::cout << "[info] press any key at end of execution to close this window" << std::endl << std::endl;
 	// construction of the network, initialisation of the simulation environment, etc.
 	try {
-		net.build_from_file("./script.txt");
+		net.config_from_file("./script.txt",ncells,ngroups);
 	} catch (ConfigError & err) {
 		std::cout << err.what();
 		// terminates the execution
@@ -35,18 +51,22 @@ main(int argc, char *argv[])
 		std::cin.get();
 		return EXIT_FAILURE;
 	} catch(...) {
-		std::cout << "Network: unknown error when building from script file";
+		std::cout << "ParNetwork: unknown error when building from script file";
 		// terminates the execution
 		std::cin.get();
 		return EXIT_FAILURE;
 	}
+	/*End testing*/ pnm.pc->barrier(); if( pnm.myid == 0) {std::cout << "Hit Enter to continue" << std::endl; std::cin.get();}
 
-	net.build_network();
-	pnm.ncell = net.network_size();
+//	net.build_network();
+//s	pnm.ncell = net.network_size();
+	pnm.init(ncells,ngroups);
+	pnm.load_balance_roulette();
+	pnm.create_network(net);
 
 //Round robin is probably the most inefficient way to distribute the neurons
 //Guy from IBM said that halding all the synapse on CPUs would be better
-	pnm.round_robin();
+	
 
 	std::cout << std::endl << "ParNetwork size " << net.network_size() << std::endl;
 
@@ -78,17 +98,15 @@ main(int argc, char *argv[])
 	// additional outputs
 	OutputManager::do_output("end_sim");
 	OutputManager::close_all();
-	}
-*/
+	
+
 	// memory cleaning
 
 	std::cout << "Hello World! I am " << pnm.myid << " of " << pnm.nhost << std::endl;
 
-	/* TEST ParallelNetManager */
-	pnm.init(100,5); std::cout << "ncellgrp = " << pnm.ncellgrp << std::endl;
-//	pnm.load_balance_roulette();pnm.pc->gid_clear();
-//	pnm.load_balance_round_robin();pnm.pc->gid_clear();
-//	pnm.load_balance_by_group();pnm.pc->gid_clear();
+
+
+
 	
 	pnm.pc->barrier(); 
 	if( pnm.myid == 0) {std::cin.get();pnm.terminate();}

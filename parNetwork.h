@@ -23,18 +23,24 @@
 // to handle a collection groups of neurons, create them from a configuration file, the outputs, etc.
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-// class Conn
-// {
-// public:	
-// 	Size source_id, target_id;
-// 	typedef std::list<boost::shared_ptr<ConfigBase> > ListBaseType; /*!< Type redefinition for the list of pointers to base class. */
-// 	typedef std::list<boost::shared_ptr<ConnectivityManager> > ListConnType; /*!< Type redefinition for the list of pointers to base class. */
-// 	typedef std::list<boost::shared_ptr<DistributionManager> > ListDistrType; /*!< Type redefinition for the list of pointers to base class. */
-// 	ListBaseType syn_mech_cfg_, plast_mech_cfg_;
-// 	ListConnType connectivity_cfg_;
-// 	ListDistrType weight_distrib_cfg_, delay_distrib_cfg_;
-// 	
-// };
+class Conn
+{
+	typedef boost::shared_ptr<Group> GroupType;
+	typedef boost::shared_ptr<ConfigBase> BaseType; /*!< Type redefinition for the list of pointers to base class. */
+	typedef boost::shared_ptr<ConnectivityManager>  ConnType; /*!< Type redefinition for the list of pointers to base class. */
+	typedef boost::shared_ptr<DistributionManager> DistrType; /*!< Type redefinition for the list of pointers to base class. */
+public:	
+	Conn(GroupType gps, GroupType gpt, BaseType sm_cfg, BaseType pm_cfg,ConnType c_cfg,DistrType wd_cfg, DistrType dd_cfg) :
+		gp_source(gps), gp_target(gpt), syn_mech_cfg_(sm_cfg), plast_mech_cfg_(pm_cfg),connectivity_cfg_(c_cfg),
+		weight_distrib_cfg_(wd_cfg), delay_distrib_cfg_(dd_cfg){}
+	Size gid_, source_id, target_id;
+
+	GroupType gp_source, gp_target;
+	BaseType syn_mech_cfg_, plast_mech_cfg_;
+	ConnType connectivity_cfg_;
+	DistrType weight_distrib_cfg_, delay_distrib_cfg_;
+	
+};
 
 //extern class Group;
 
@@ -53,11 +59,16 @@ public:
 	typedef	std::map< int, SynMechInterface> Gid2PreSyn;  //Similar to NEURON's hash table for parallel program
 	static Gid2PreSyn* gid2out_;
 	static Gid2PreSyn* gid2in_;
-	void config_from_file(std::string filename, std::string logfilename = "log.dat", bool no_output = false);
+
+	void config_from_file(std::string filename, std::string logfilename = "log.dat", bool no_output = false, Size & ncells, Size &ngroups);
 	void create();
+	void connect_groups();
 	int network_size();
 	//void psl_append(PreSynPtr p){ presyn_list.push_back(p);}
-protected:
+	typedef std::list< boost::shared_ptr<Conn> > ListConnType;//SynMechInterface
+	ListConnType conn_list_;
+
+//protected:
     	typedef std::list< PreSynPtr > ListSynType;//SynMechInterface
 	typedef std::list<boost::shared_ptr<NeuronInterface> > ListNrnType;
 	typedef std::list<boost::shared_ptr<Group> > ListGroupType;
@@ -108,6 +119,7 @@ inline void ParNetwork::clear_past_of_spike_list(const Time & time_end_past)
 // all the groups are updates from #0 to last one
 inline void ParNetwork::build_network()
 {
+//TODO Check this
 	for (ListGroupType::const_iterator i = gp_list_.begin(); 
 		 i != gp_list_.end(); 
 		 ++i)

@@ -13,6 +13,7 @@
 #undef MD
 #define MD 2147483648.
 
+
 // hash table where buckets are binary search maps
 //implementNrnHash(Gid2PreSyn, int, SynapseInterface*)
 extern ParNetwork* net_cvode_instance;
@@ -46,6 +47,35 @@ int cvode_active_=0;
 #if NRNSTAT
 	 std::vector<double> NetPar::max_histogram_;
 #endif 
+
+
+PreSyn::PreSyn(double* src, ConfigBase* osrc, ConfigBase* ssrc) {
+
+//	hi_index_ = -1;
+//	hi_th_ = nil;
+	flag_ = false;
+	valthresh_ = 0;
+	thvar_ = src;
+	osrc_ = osrc;
+	ssrc_ = ssrc;
+	threshold_ = 10.;
+	use_min_delay_ = 0;
+	tvec_ = nil;
+	idvec_ = nil;
+//	stmt_ = nil;
+	gid_ = -1;
+
+	output_index_ = -1;
+
+#if BGPDMA
+	bgp.dma_send_ = 0;
+#endif
+
+}
+
+PreSyn::~PreSyn() {
+
+}
 
 NetPar::NetPar(void)
 {
@@ -320,8 +350,8 @@ void NetPar::spike_exchange() {
 		int nn = spbufin_[i].nspike;
 		if (nn > nrn_spikebuf_size) { nn = nrn_spikebuf_size; }
 		for (j=0; j < nn; ++j) {
-			PreSyn* ps;
-			if (ps=/*TODO gid2in_->find(spbufin_[i].gid[j])->second*/)) {
+			PreSynPtr ps;
+			if (ps= gid2in_->find(spbufin_[i].gid[j])->second)) {
 //TODO				ps->send(spbufin_[i].spiketime[j], net_cvode_instance);//, nrn_threads);
 #if NRNSTAT
 				++nrecv_useful_;
@@ -332,8 +362,8 @@ void NetPar::spike_exchange() {
 	n = ovfl_;
 #endif // nrn_spikebuf_size > 0
 	for (i = 0; i < n; ++i) {
-		PreSyn* ps;
-		if (ps /*TODO = gid2in_->find(spikein_[i].gid)->second*/) {
+		PreSynPtr ps;
+		if (ps = gid2in_->find(spikein_[i].gid)->second) {
 //TODO			ps->send(spikein_[i].spiketime, net_cvode_instance));//, nrn_threads);
 #if NRNSTAT
 			++nrecv_useful_;
@@ -414,8 +444,8 @@ void NetPar::spike_exchange_compressed() {
 			double firetime = spfixin_[idx++]*SimEnv::timestep() + t_exchange_;
 			int lgid = (int)spfixin_[idx];
 			idx += localgid_size_;
-			PreSyn* ps;
-			if (ps /*TODO= gps->find(lgid)->second*/) {
+			PreSynPtr ps= gps->find(lgid)->second;
+			if (ps ) {
 //TODO				ps->send(firetime + 1e-10, net_cvode_instance);//, nrn_threads);
 #if NRNSTAT
 				++nrecv_useful_;
@@ -426,8 +456,8 @@ void NetPar::spike_exchange_compressed() {
 			double firetime = spfixin_ovfl_[idxov++]*SimEnv::timestep() + t_exchange_;
 			int lgid = (int)spfixin_ovfl_[idxov];
 			idxov += localgid_size_;
-			PreSyn* ps;
-			if (ps /*TODO = gps->find(lgid)->second*/) {
+			PreSynPtr ps;
+			if (ps  = gps->find(lgid)->second) {
 //TODO				ps->send(firetime+1e-10, net_cvode_instance);//, nrn_threads);
 #if NRNSTAT
 				++nrecv_useful_;
@@ -447,8 +477,8 @@ void NetPar::spike_exchange_compressed() {
 			double firetime = spfixin_[idx++]*SimEnv::timestep() + t_exchange_;
 			int gid = spupk(&spfixin_ovfl_[idx]);//(spfixin_ + idx);
 			idx += localgid_size_;
-			PreSyn* ps;
-			if (ps /*TODO = gid2in_->find(gid)->second*/) {
+			PreSynPtr ps;
+			if (ps  = gid2in_->find(gid)->second) {
 //TODO				ps->send(firetime+1e-10, net_cvode_instance);//, nrn_threads);
 #if NRNSTAT
 				++nrecv_useful_;
@@ -462,8 +492,8 @@ void NetPar::spike_exchange_compressed() {
 		double firetime = spfixin_ovfl_[idx++]*SimEnv::timestep() + t_exchange_;
 		int gid = spupk(&spfixin_ovfl_[idx]);//(spfixin_ovfl_ + idx);
 		idx += localgid_size_;
-		PreSyn* ps;
-		if (ps /*TODO =gid2in_->find(gid)->second*/) {
+		PreSynPtr ps;
+		if (ps =gid2in_->find(gid)->second) {
 //TODO			ps->send(firetime+1e-10, net_cvode_instance);//, nrn_threads);
 #if NRNSTAT
 			++nrecv_useful_;
@@ -478,18 +508,22 @@ void NetPar::spike_exchange_compressed() {
 
 void NetPar::mk_localgid_rep() {
 	int i, j, k;
-	PreSyn* ps;
+	PreSynPtr ps;
 
 	// how many gids are there on this machine
 	// and can they be compressed into one byte
 	int ngid = 0;
 //TODO	
-/*NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
+//NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
+	for (Gid2PreSyn::const_iterator i = NetPar::gid2out_->begin();
+		 i != NetPar::gid2out_->end();
+		 ++i) {
+		ps = i->second;
 		if (ps->output_index_ >= 0) {
 			++ngid;
 		}
-	}}}
-	*/int ngidmax = int_allmax(ngid);
+	}
+int ngidmax = int_allmax(ngid);
 	if (ngidmax >= 256) {
 		//do not compress
 		return;
@@ -506,14 +540,18 @@ void NetPar::mk_localgid_rep() {
 	ngid = 0;
 	// define the local gid and fill with the gids on this machine
 //TODO	
-/*NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
+//NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
+	for (Gid2PreSyn::const_iterator i = NetPar::gid2out_->begin();
+		 i != NetPar::gid2out_->end();
+		 ++i) {
+		ps = i->second;
 		if (ps->output_index_ >= 0) {
 			ps->localgid_ = (unsigned char)ngid;
 			sbuf[ngid] = ps->output_index_;
 			++ngid;
 		}
-	}}}
-	*/--sbuf;
+	}
+	--sbuf;
 
 	// exchange everything
 	int_allgather(sbuf, rbuf, ngidmax+1);
@@ -635,7 +673,7 @@ void NetPar::gid_clear() {
 #if PARANEURON
 	nrnmpi_split_clear();
 #endif
-//	nrnmpi_multisplit_clear();
+
 	if (!gid2out_) { return; }
 	PreSynPtr ps, psi;
 // NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
@@ -719,6 +757,7 @@ void BBS::cell() {
 		ps->output_index_ = gid;
 	}
 */}
+
 void BBS::cell(int gid){//, NetCon* nc) {
 	PreSynPtr   ps = NetPar::gid2out_->find(gid)->second;
 	(*NetPar::gid2out_)[gid] = ps;
@@ -746,8 +785,8 @@ void BBS::spike_record(int gid, std::vector<double>* spikevec, std::vector<doubl
 ConfigBase* BBS::gid2obj(int gid) {
 	ConfigBase* cell = 0;
 //std::cout << "%d gid2obj gid=%d\n", my_rank, gid);
-	PreSyn* ps;
-	assert(ps /*TODO =NetPar::gid2out_->find(gid)->second*/);
+	PreSynPtr ps;
+	assert(ps =NetPar::gid2out_->find(gid)->second);
 //std::cout << " found\n");
 //	assert(ps);
 //TODO	cell = ps->ssrc_ ? ps->ssrc_->prop->dparam[6].obj : ps->osrc_;
@@ -758,11 +797,11 @@ ConfigBase* BBS::gid2obj(int gid) {
 ConfigBase* BBS::gid2cell(int gid) {
 	ConfigBase* cell = 0;
 //std::cout << "%d gid2obj gid=%d\n", my_rank, gid);
-/*TODO	PreSyn* ps;
-	assert(NetPar::gid2out_->find(gid, ps));
+	PreSynPtr ps;
+	assert(ps =NetPar::gid2out_->find(gid)->second);
 //std::cout << " found\n");
 	assert(ps);
-	if (ps->ssrc_) {
+/*TODO	if (ps->ssrc_) {
 		cell = ps->ssrc_->prop->dparam[6].obj;
 	}else{
 		cell = ps->osrc_;
@@ -784,15 +823,15 @@ ConfigBase* BBS::gid_connect(int gid, ConfigBase* target) {
 	}
 */	NetPar::alloc_space();
 	PreSynPtr ps;
-	if (ps  =NetPar::gid2out_->find(gid)->second/*TODO*/) {
+	if (ps  =NetPar::gid2out_->find(gid)->second) {
 		// the gid is owned by this machine so connect directly
 		assert(ps);
-	}else if ((ps =NetPar::gid2in_->find(gid)->second/*TODO*/)) {
+	}else if ((ps =NetPar::gid2in_->find(gid)->second)) {
 		// the gid stub already exists
 //std::cout << "%d connect %s from already existing %d\n", my_rank, hoc_object_name(target), gid);
 	}else{
 //std::cout << "%d connect %s from new PreSyn for %d\n", my_rank, hoc_object_name(target), gid);
-		PreSyn* ps_ = new PreSyn(gid,target);
+		PreSyn* ps_ = new PreSyn(nil, nil, nil);//,target);
 		ps = PreSynPtr(ps_); //(nil, nil, nil);
 //TODO?		net_cvode_instance->psl_append(ps);
 		(*NetPar::gid2in_)[gid] = ps;
@@ -838,7 +877,7 @@ void BBS::netpar_solve(double tstop) {
 	}
 	double wt;
 
-//TODO	nrn_timeout(20);
+	NetPar::timeout(20);
 	wt = wtime();
 	if (cvode_active_) {
 //TODO		ncs2nrn_integrate(tstop);
@@ -850,7 +889,7 @@ void BBS::netpar_solve(double tstop) {
 
 	NetPar::spike_exchange();
 
-//	nrn_timeout(0);
+	NetPar::timeout(0);
 	impl_->wait_time_ += NetPar::wt_;
 	impl_->send_time_ += NetPar::wt1_;
 	if (NetPar::npe_) {
@@ -861,6 +900,19 @@ void BBS::netpar_solve(double tstop) {
 //std::cout << "%d netpar_solve exit t=%g tstop=%g mindelay_=%g\n",my_rank, t, tstop, mindelay_);
 
 //	tstopunset;
+}
+
+double PreSyn::mindelay() {
+	double md = 1e9;
+/*TODO	int i;
+	for (i=dil_.count()-1; i >= 0; --i) {
+		NetCon* d = dil_.item(i);
+		if (md > d->delay_) {
+			md = d->delay_;
+		}
+	}
+*/	return md;
+
 }
 
 double NetPar::set_mindelay(double maxdelay) {
@@ -877,15 +929,20 @@ double NetPar::set_mindelay(double maxdelay) {
 // 	}
 //     }
 
-/*    else{
-	NrnHashIterate(Gid2PreSyn, gid2in_, PreSyn*, ps) {
+//    else{
+//	NrnHashIterate(Gid2PreSyn, gid2in_, PreSyn*, ps) {
+	PreSynPtr ps;
+	for (Gid2PreSyn::const_iterator i = NetPar::gid2in_->begin();
+		 i != NetPar::gid2in_->end();
+		 ++i) {
+		ps = i->second;
 		double md = ps->mindelay();
 		if (mindelay > md) {
 			mindelay = md;
 		}
-	}}}
-    }
-*/	if (mpi_use) {active_ = 1;}
+	}
+//    }
+	if (mpi_use) {active_ = 1;}
 	if (use_compress_) {
 		if (mindelay_/SimEnv::timestep() > 255) {
 			mindelay_ = 255*SimEnv::timestep();
@@ -996,4 +1053,63 @@ std::cout << "Notice: gid compression did not succeed. Probably more than 255 ce
 	return ag_send_nspike_;
 
 }
+
+#include <signal.h>
+#include <sys/time.h>
+
+
+static double told;
+static struct itimerval value;
+#if !defined(BLUEGENE)
+static struct sigaction act, oact;
+#endif
+
+static void timed_out(int sig) {
+#if 0
+printf("timed_out told=%g t=%g\n", told, t);
+#endif
+	if (SimEnv::sim_time() == told) { /* nothing has been accomplished since last signal*/
+		printf("nrn_timeout t=%g\n", SimEnv::sim_time());
+		ParSpike::mpiabort(0);
+	}
+	told = SimEnv::sim_time();
+}
+
+void NetPar::timeout(int seconds) {
+	if (ParSpike::my_rank!= 0) { return; } //only the Master continues
+#if 0
+printf("nrn_timeout %d\n", seconds);
+#endif
+#if BLUEGENE
+	if (seconds) {
+		//t = told;
+		signal(SIGALRM, timed_out);
+	}else{
+		signal(SIGALRM, SIG_DFL);
+	}
+#else
+	if (seconds) {
+		//t = told;
+		act.sa_handler = timed_out;
+		act.sa_flags = SA_RESTART;
+		if(sigaction(SIGALRM, &act, &oact)) {
+			std::cout<< "sigaction failed\n" <<std::endl;
+			ParSpike::mpiabort(0);
+		}
+	}else{
+		sigaction(SIGALRM, &oact, (struct sigaction*)0);
+	}
+#endif
+	value.it_interval.tv_sec = seconds;
+	value.it_interval.tv_usec = 0;
+	value.it_value.tv_sec = seconds;
+	value.it_value.tv_usec = 0;
+	if(setitimer(ITIMER_REAL, &value, (struct itimerval*)0)) {
+		std::cout <<"setitimer failed\n" << std::endl;
+		ParSpike::mpiabort(0);
+	}
+	
+}
+
+
 

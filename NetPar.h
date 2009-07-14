@@ -48,13 +48,15 @@ public:
 	~PreSyn();
 	void send(double sendtime, ParNetwork*);
 	void deliver(double, ParNetwork*);
+	double value() { return *thvar_ - threshold_; }
+	double mindelay();
 /*	void pr(const char*, double t, NetCvode*);
 	void asf_err();
 
 	int type() { return PreSynType; }
 
 
-	double value() { return *thvar_ - threshold_; }
+	
 
 	void update();
 	void disconnect(Observable*);
@@ -63,7 +65,7 @@ public:
 	void record(IvocVect*, IvocVect* idvec = nil, int rec_id = 0);
 	void record(double t);
 	void init();
-	double mindelay();
+	
 
 	NetConPList dil_;
 */	double threshold_;
@@ -81,7 +83,8 @@ public:
 	int rec_id_;
 	int output_index_;
 	int gid_;
-
+	bool flag_;
+	double valthresh_;
 	unsigned char localgid_; // compressed gid for spike transfer
 
 #if BGPDMA
@@ -133,7 +136,7 @@ public:
 	static void gid_clear();
 	void spike_exchange_init();
 	static double set_mindelay(double maxdelay);
-	void timeout(int);
+	static void timeout(int);
 	static void spike_exchange();
 	void nrn2ncs_outputevent(int netcon_output_index, double firetime);
 	void outputevent(unsigned char localgid, double firetime);
@@ -145,6 +148,7 @@ public:
 	static double t_exchange_;
 	static double dt1_; // 1/dt
 	static void mk_localgid_rep();
+
 // for compressed gid info during spike exchange
 	static bool nrn_use_localgid_;
 

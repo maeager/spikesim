@@ -54,7 +54,7 @@ public:
 
 	void init(int under_control, int* pargc, char*** pargv);
 	static void terminate();
-	void mpiabort(int errcode);
+	static void mpiabort(int errcode);
 	static double wtime();
 	void make_spikebuf_type();
 	void make_spike_type();
