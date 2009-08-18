@@ -112,18 +112,18 @@ inline void PlasticityManager::plast_update_general()
 		(*i)->plasticity_update();
 }
 
-#ifdef PARALLELSIM
-/////////////////////////////////////////////////
-// call the plasticity update for all the neurons with the DataPlastNeuron class
-//   (supposedly all the pneurons with plastic synapses)
-inline void PlasticityManager::par_plast_update_general(ParallelNetManager *const  pnm)
-{
- 	for (ListPlastNrnType::const_iterator i = list_.begin();
-		 i != list_.end();
-		 ++ i)
-		if ( pnm.gid_exists( (*i)->gid ) ) (*i)->plasticity_update();
-}
-#endif
+// #ifdef PARALLELSIM
+// /////////////////////////////////////////////////
+// // call the plasticity update for all the neurons with the DataPlastNeuron class
+// //   (supposedly all the pneurons with plastic synapses)
+// inline void PlasticityManager::par_plast_update_general(ParallelNetManager *const  pnm)
+// {
+//  	for (ListPlastNrnType::const_iterator i = list_.begin();
+// 		 i != list_.end();
+// 		 ++ i)
+// 		if ( pnm.gid_exists( (*i)->gid ) ) (*i)->plasticity_update();
+// }
+// #endif
 
 /////////////////////////////////////////////////
 // config constructor
@@ -174,25 +174,25 @@ inline void DataPlastNeuron::plasticity_update()
 	}
 }
 
-/////////////////////////////////////////////////
-// called by the neuron after a spike to do the plasticity update on pre- and post-synapses (plasticity mechanism)
-inline void DataPlastNeuron::par_plasticity_update(ParallelNetManager* pnm_)
-{
-	// called only when this neuron fired a spike during the timestep
-	if (has_fired_)
-	{
-		// update all synapses
-		for (ListPreSynType::const_iterator i = list_presynapses_impl().begin();
-             i != list_presynapses_impl().end();
-             ++i)
-			if(pnm_.gid_exists((*i)->gid)) (*i)->on_postneuron_fire_plast_update(spike_time_list_impl().back());
-		for (ListPostSynType::const_iterator i = list_postsynapses_impl().begin(); 
-             i != list_postsynapses_impl().end(); 
-             ++i)
-			if(pnm_.gid_exists((*i)->gid)) (*i)->on_preneuron_fire_plast_update(spike_time_list_impl().back());
-		has_fired_ = false;
-	}
-}
+// /////////////////////////////////////////////////
+// // called by the neuron after a spike to do the plasticity update on pre- and post-synapses (plasticity mechanism)
+// inline void DataPlastNeuron::par_plasticity_update(ParallelNetManager* pnm_)
+// {
+// 	// called only when this neuron fired a spike during the timestep
+// 	if (has_fired_)
+// 	{
+// 		// update all synapses
+// 		for (ListPreSynType::const_iterator i = list_presynapses_impl().begin();
+//              i != list_presynapses_impl().end();
+//              ++i)
+// 			if(pnm_.gid_exists((*i)->gid)) (*i)->on_postneuron_fire_plast_update(spike_time_list_impl().back());
+// 		for (ListPostSynType::const_iterator i = list_postsynapses_impl().begin(); 
+//              i != list_postsynapses_impl().end(); 
+//              ++i)
+// 			if(pnm_.gid_exists((*i)->gid)) (*i)->on_preneuron_fire_plast_update(spike_time_list_impl().back());
+// 		has_fired_ = false;
+// 	}
+// }
 
 
 

@@ -237,7 +237,8 @@ void Group::populate_config(std::ifstream & is)
 			throw ConfigError("Group: unexpected end of file, expected END_CREATE_GROUP");
 		else
 			is >> test;
-	}				
+	}
+
 }
 
 

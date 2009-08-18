@@ -60,7 +60,7 @@ public:
 	static Gid2PreSyn* gid2out_;
 	static Gid2PreSyn* gid2in_;
 
-	void config_from_file(std::string filename, std::string logfilename = "log.dat", bool no_output = false, Size & ncells, Size &ngroups);
+	void config_from_file(std::string filename, Size & ncells, Size &ngroups, std::string logfilename = "log.dat", bool no_output = false);
 	void create();
 	void connect_groups();
 	int network_size();

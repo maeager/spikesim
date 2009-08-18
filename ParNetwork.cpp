@@ -229,7 +229,7 @@ void ParNetwork::build_from_file(std::string configfilename, std::string logfile
 
 }
 
-void ParNetwork::config_from_file(std::string configfilename, std::string logfilename, bool no_output, Size & ncells, Size &ngroups)
+void ParNetwork::config_from_file(std::string configfilename, Size & ncells, Size &ngroups, std::string logfilename, bool no_output)
 {
 //	std::ofstream logoutfile;
 //	logoutfile.open(logfilename.c_str());
