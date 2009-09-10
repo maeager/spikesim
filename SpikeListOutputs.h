@@ -19,92 +19,89 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class IndivSpikeOutputter
-	: public Outputter
+        : public Outputter
 {
 public:
-	IndivSpikeOutputter() {}
+    IndivSpikeOutputter() {}
 protected:
-	void do_operation(const Time & , const Time & )
-	{
-		// one file per group
-		pmat_ = matOpen(file_name().c_str(), "w");
-		matClose(pmat_);
+    void do_operation(const Time & , const Time &) {
+        // one file per group
+        pmat_ = matOpen(file_name().c_str(), "w");
+        matClose(pmat_);
 
-		DataRecordNeuronVisitor vis;
-		for (std::list<Group * const>::const_iterator i = group_list().begin();
-			 i != group_list().end();
-			 ++i)
-		{
-			std::string varname;
-			char tmp[3];
-			_itoa_s((*i)->id(),tmp,3,10);
-			varname = std::string("Group") + tmp;
-std::cout << "writing spikes for " << varname << std::endl;
-			
-			Size numSpikeVecs = (Size) (*i)->size();
+        DataRecordNeuronVisitor vis;
+        for (std::list<Group * const>::const_iterator i = group_list().begin();
+                i != group_list().end();
+                ++i) {
+            std::string varname;
+            char tmp[3];
+            _itoa_s((*i)->id(), tmp, 3, 10);
+            varname = std::string("Group") + tmp;
+            std::cout << "writing spikes for " << varname << std::endl;
 
-			mxArray * mxArr = 0
-				, * mxCell = mxCreateCellMatrix((mwSize)numSpikeVecs,1);
-			double * data = 0;
-			//-------
-			mwIndex jstruct = 0;
-			Size count = 1;
+            Size numSpikeVecs = (Size)(*i)->size();
 
-			for (std::list<NeuronInterfaceBase * const>::const_iterator j = get_neuron_list(*i).begin();
-				 j != get_neuron_list(*i).end(); 
-				 ++j)
-			{
-				(*j)->apply_visitor(vis);
+            mxArray * mxArr = 0
+                              , * mxCell = mxCreateCellMatrix((mwSize)numSpikeVecs, 1);
+            double * data = 0;
+            //-------
+            mwIndex jstruct = 0;
+            Size count = 1;
 
-				if (vis.spike_time_list_pointer() != 0)
-				{
-					// init the array where to put the spike times
-					if (mxArr) mxDestroyArray(mxArr);
-					mxArr = mxCreateDoubleMatrix(1, (Size) vis.spike_time_list_pointer()->size(), mxREAL);
-					data = mxGetPr(mxArr);
-					// test if initialisation went well
-					if (!data) {
-						// not enough memory suppposedly
-						mxDestroyArray(mxCell);
-						mxDestroyArray(mxArr);
-						return;
-std::cout << "prob when writing spike times for " << varname << std::endl;
-					}
+            for (std::list<NeuronInterfaceBase * const>::const_iterator j = get_neuron_list(*i).begin();
+                    j != get_neuron_list(*i).end();
+                    ++j) {
+                (*j)->apply_visitor(vis);
 
-					// write the spike times in the array of doubles
-					Size pos = 0;
-					for (std::deque<Time>::const_iterator k = vis.spike_time_list_pointer()->begin();
-						 k != vis.spike_time_list_pointer()->end();
-						 ++k, ++pos)
-					{
-//					file_ << (*k) << "\t";
-						data[pos] =  (*k);
-					}
+                if (vis.spike_time_list_pointer() != 0) {
+                    // init the array where to put the spike times
+                    if (mxArr) mxDestroyArray(mxArr);
+                    mxArr = mxCreateDoubleMatrix(1, (Size) vis.spike_time_list_pointer()->size(), mxREAL);
+                    data = mxGetPr(mxArr);
+                    // test if initialisation went well
+                    if (!data) {
+                        // not enough memory suppposedly
+                        mxDestroyArray(mxCell);
+                        mxDestroyArray(mxArr);
+                        return;
+                        std::cout << "prob when writing spike times for " << varname << std::endl;
+                    }
 
-					// append the array in the cell structure
-					mxSetCell(mxCell, jstruct++, mxDuplicateArray(mxArr));
+                    // write the spike times in the array of doubles
+                    Size pos = 0;
+                    for (std::deque<Time>::const_iterator k = vis.spike_time_list_pointer()->begin();
+                            k != vis.spike_time_list_pointer()->end();
+                            ++k, ++pos) {
+//                  file_ << (*k) << "\t";
+                        data[pos] = (*k);
+                    }
 
-				} else std::cout<< "prob: empty spikelist";
-				vis.reset();
-			}
+                    // append the array in the cell structure
+                    mxSetCell(mxCell, jstruct++, mxDuplicateArray(mxArr));
 
-			// write the cell structure in the file
-			pmat_ = matOpen(file_name().c_str(), "u"); 
-			if (pmat_) {
-				 //Write the Cell Array to the MATfile
+                } else std::cout << "prob: empty spikelist";
+                vis.reset();
+            }
 
-				 int retFlag = matPutVariable(pmat_, varname.c_str(), mxCell);
-				 matClose(pmat_);
-				 //Free memory
-				 mxDestroyArray(mxCell);
+            // write the cell structure in the file
+            pmat_ = matOpen(file_name().c_str(), "u");
+            if (pmat_) {
+                //Write the Cell Array to the MATfile
 
-				 if (retFlag != 0){std::cout << "error writing spike trains in matlab file: " + retFlag;}
-			}
+                int retFlag = matPutVariable(pmat_, varname.c_str(), mxCell);
+                matClose(pmat_);
+                //Free memory
+                mxDestroyArray(mxCell);
 
-		}
-	}
+                if (retFlag != 0) {
+                    std::cout << "error writing spike trains in matlab file: " + retFlag;
+                }
+            }
+
+        }
+    }
 private:
-	MATFile * pmat_;
+    MATFile * pmat_;
 };
 
 
@@ -117,27 +114,25 @@ private:
 
 template <class Operation>
 class SingleSpikeListOperationOutputter
-	: public Outputter
+        : public Outputter
 {
 protected:
-	void do_operation(const Time & t_start, const Time & t_stop)
-	{
-		DataRecordNeuronVisitor vis;
-		for (std::list<Group * const>::const_iterator i = group_list().begin();
-			 i != group_list().end();
-			 ++i)
-			for (std::list<NeuronInterfaceBase * const>::const_iterator j = get_neuron_list(*i).begin();
-				 j != get_neuron_list(*i).end(); 
-				 ++j)
-			{
-				(*j)->apply_visitor(vis);
-				file_ << op(vis.spike_time_list(), t_start, t_stop) << "\t";
-				vis.reset();
-			}
-		file_ << std::endl;
-	}
+    void do_operation(const Time & t_start, const Time & t_stop) {
+        DataRecordNeuronVisitor vis;
+        for (std::list<Group * const>::const_iterator i = group_list().begin();
+                i != group_list().end();
+                ++i)
+            for (std::list<NeuronInterfaceBase * const>::const_iterator j = get_neuron_list(*i).begin();
+                    j != get_neuron_list(*i).end();
+                    ++j) {
+                (*j)->apply_visitor(vis);
+                file_ << op(vis.spike_time_list(), t_start, t_stop) << "\t";
+                vis.reset();
+            }
+        file_ << std::endl;
+    }
 private:
-	Operation op;
+    Operation op;
 };
 
 
@@ -150,38 +145,35 @@ private:
 
 template <class Operation>
 class CrossSpikeListOperationOutputter
-	: public Outputter
+        : public Outputter
 {
 protected:
-	void do_operation(const Time & t_start, const Time & t_stop)
-	{
-		DataRecordNeuronVisitor vis1, vis2;
-		for (std::list<Group * const>::const_iterator i1 = group_list().begin();
-			 i1 != group_list().end();
-			 ++i1)
-			for (std::list<NeuronInterfaceBase * const>::const_iterator j1 = get_neuron_list(*i1).begin();
-				 j1 != get_neuron_list(*i1).end(); 
-				 ++j1)
-			{
-				(*j1)->apply_visitor(vis1);
-				for (std::list<Group * const>::const_iterator i2 = group_list().begin();
-					 i2 != group_list().end();
-					 ++i2)
-					for (std::list<NeuronInterfaceBase * const>::const_iterator j2 = get_neuron_list(*i2).begin();
-						 j2 != get_neuron_list(*i2).end(); 
-						 ++j2)
-					{
-						(*j2)->apply_visitor(vis2);
-						file_ << op_(vis1.spike_time_list(), vis2.spike_time_list(), t_start, t_stop) << "\t";
-						vis2.reset();
-					}
-				vis1.reset();
-				file_ << std::endl;
-			}
-		file_ << std::endl;
-	}
+    void do_operation(const Time & t_start, const Time & t_stop) {
+        DataRecordNeuronVisitor vis1, vis2;
+        for (std::list<Group * const>::const_iterator i1 = group_list().begin();
+                i1 != group_list().end();
+                ++i1)
+            for (std::list<NeuronInterfaceBase * const>::const_iterator j1 = get_neuron_list(*i1).begin();
+                    j1 != get_neuron_list(*i1).end();
+                    ++j1) {
+                (*j1)->apply_visitor(vis1);
+                for (std::list<Group * const>::const_iterator i2 = group_list().begin();
+                        i2 != group_list().end();
+                        ++i2)
+                    for (std::list<NeuronInterfaceBase * const>::const_iterator j2 = get_neuron_list(*i2).begin();
+                            j2 != get_neuron_list(*i2).end();
+                            ++j2) {
+                        (*j2)->apply_visitor(vis2);
+                        file_ << op_(vis1.spike_time_list(), vis2.spike_time_list(), t_start, t_stop) << "\t";
+                        vis2.reset();
+                    }
+                vis1.reset();
+                file_ << std::endl;
+            }
+        file_ << std::endl;
+    }
 private:
-	Operation op_;
+    Operation op_;
 };
 
 

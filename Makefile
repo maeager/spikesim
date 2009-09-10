@@ -3009,7 +3009,12 @@ download-dryrun:
 
 remake:
 	head -5 Makefile > Makefile.tmp
-	for i in `ls *.cpp`; do $(CXX) $(CXXFLAGS) -M $i >> Makefile.tmp; done	
+	for i in `ls *.cpp`; 
+	do 
+		$(CXX) $(CXXFLAGS) -M $i | \
+		sed -e 's,/.* ,,g' -e 's/\\//g' | \
+		sed '/^[ ]*$/d' >> Makefile.tmp;
+	done	
 	(echo "SpikeSim_OBJECTS=";echo "`basename *.cpp .cpp`.o") >> Makefile.tmp
 	tail -30 Makefile > Makefile.tmp
 	# 296- to end

@@ -18,9 +18,8 @@
 // ConnectivityManager mother class definition
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct ConnectivityManager
-{
-	virtual bool do_connect(const Size & n_prenrn, const Size & n_postnrn) = 0;
+struct ConnectivityManager {
+    virtual bool do_connect(const Size & n_prenrn, const Size & n_postnrn) = 0;
 };
 
 
@@ -30,11 +29,13 @@ struct ConnectivityManager
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class FullConnectivity
-	: public ConnectivityManager
+        : public ConnectivityManager
 {
 public:
-	FullConnectivity(std::ifstream & is) {}
-	bool do_connect(const Size & n_prenrn, const Size & n_postnrn) {return true;}
+    FullConnectivity(std::ifstream & is) {}
+    bool do_connect(const Size & n_prenrn, const Size & n_postnrn) {
+        return true;
+    }
 };
 
 
@@ -45,13 +46,13 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class RandomFullPreConnectivity
-	: public ConnectivityManager
+        : public ConnectivityManager
 {
 public:
-	RandomFullPreConnectivity(std::ifstream & is, const Size & size_gp_postnrn);
-	bool do_connect(const Size & n_prenrn, const Size & n_postnrn);
+    RandomFullPreConnectivity(std::ifstream & is, const Size & size_gp_postnrn);
+    bool do_connect(const Size & n_prenrn, const Size & n_postnrn);
 protected:
-	std::vector<bool> post_neuron_list_;
+    std::vector<bool> post_neuron_list_;
 };
 
 
@@ -62,13 +63,13 @@ protected:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class RandomFixedPreConnectivity
-	: public ConnectivityManager
+        : public ConnectivityManager
 {
 public:
-	RandomFixedPreConnectivity(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn);
-	bool do_connect(const Size & n_prenrn, const Size & n_postnrn);
+    RandomFixedPreConnectivity(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn);
+    bool do_connect(const Size & n_prenrn, const Size & n_postnrn);
 protected:
-	std::vector<std::vector<bool> > con_list_;
+    std::vector<std::vector<bool> > con_list_;
 };
 
 
@@ -80,13 +81,13 @@ protected:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class FullByBlockConnectivity
-	: public ConnectivityManager
+        : public ConnectivityManager
 {
 public:
-	FullByBlockConnectivity(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn);
-	bool do_connect(const Size & n_prenrn, const Size & n_postnrn);
+    FullByBlockConnectivity(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn);
+    bool do_connect(const Size & n_prenrn, const Size & n_postnrn);
 protected:
-	unsigned num_subgp_pre_, nb_division_pre_, num_subgp_post_, nb_division_post_, size_gp_prenrn_, size_gp_postnrn_;
+    unsigned num_subgp_pre_, nb_division_pre_, num_subgp_post_, nb_division_post_, size_gp_prenrn_, size_gp_postnrn_;
 };
 
 
@@ -99,14 +100,14 @@ protected:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class RandomByBlockConnectivity
-	: public ConnectivityManager
+        : public ConnectivityManager
 {
 public:
-	RandomByBlockConnectivity(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn);
-	bool do_connect(const Size & n_prenrn, const Size & n_postnrn);
+    RandomByBlockConnectivity(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn);
+    bool do_connect(const Size & n_prenrn, const Size & n_postnrn);
 protected:
-	unsigned num_subgp_pre_, nb_division_pre_, num_subgp_post_, nb_division_post_, size_gp_prenrn_, size_gp_postnrn_;
-	double proba_connection_;
+    unsigned num_subgp_pre_, nb_division_pre_, num_subgp_post_, nb_division_post_, size_gp_prenrn_, size_gp_postnrn_;
+    double proba_connection_;
 };
 
 
@@ -117,13 +118,15 @@ protected:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class RandomConnectivity
-	: public ConnectivityManager
+        : public ConnectivityManager
 {
 public:
-	RandomConnectivity(std::ifstream & is);
-	bool do_connect(const Size & n_prenrn, const Size & n_postnrn) {return (RandomGenerator::dran(1.) < proba_connection_);}
+    RandomConnectivity(std::ifstream & is);
+    bool do_connect(const Size & n_prenrn, const Size & n_postnrn) {
+        return (RandomGenerator::dran(1.) < proba_connection_);
+    }
 protected:
-	double proba_connection_;
+    double proba_connection_;
 };
 
 
@@ -133,13 +136,13 @@ protected:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class ListConnectivity
-	: public ConnectivityManager
+        : public ConnectivityManager
 {
 public:
-	ListConnectivity(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn);
-	bool do_connect(const Size & n_prenrn, const Size & n_postnrn);
+    ListConnectivity(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn);
+    bool do_connect(const Size & n_prenrn, const Size & n_postnrn);
 protected:
-	std::vector<std::vector<bool> > con_list_;
+    std::vector<std::vector<bool> > con_list_;
 };
 
 
@@ -152,14 +155,14 @@ protected:
 // each step a random neuron is drawn, checking it hasn't been picked up previously
 
 class LoopConnectivity
-	: public ConnectivityManager
+        : public ConnectivityManager
 {
 public:
-	LoopConnectivity(std::ifstream & is, const Size & size_gp);
-	bool do_connect(const Size & n_prenrn, const Size & n_postnrn);
+    LoopConnectivity(std::ifstream & is, const Size & size_gp);
+    bool do_connect(const Size & n_prenrn, const Size & n_postnrn);
 protected:
-	Size number_of_loops_, length_of_loops_;
-	std::vector<std::vector<bool> > con_list_;
+    Size number_of_loops_, length_of_loops_;
+    std::vector<std::vector<bool> > con_list_;
 };
 
 
@@ -169,14 +172,14 @@ protected:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class SparseRandomConnectivityTypeII
-	: public ConnectivityManager
+        : public ConnectivityManager
 {
 public:
-	SparseRandomConnectivityTypeII(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn);
-	bool do_connect(const Size & n_prenrn, const Size & n_postnrn);
+    SparseRandomConnectivityTypeII(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn);
+    bool do_connect(const Size & n_prenrn, const Size & n_postnrn);
 protected:
-	std::vector<std::vector<bool> > con_list_;
-	double num_connections_;
+    std::vector<std::vector<bool> > con_list_;
+    double num_connections_;
 };
 
 

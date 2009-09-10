@@ -18,25 +18,29 @@ class DataLightSynapse;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class DataLightSynapseConfig
-	: public ConfigBase
+        : public ConfigBase
 {
 public:
-	//! Type related to this configurator type.
-	/*!	Used for automated construction of neurons from configurators.
-		See NeuronFactory and SynapseFactory.
-	 */
-	typedef DataLightSynapse related_component;
+    //! Type related to this configurator type.
+    /*! Used for automated construction of neurons from configurators.
+        See NeuronFactory and SynapseFactory.
+     */
+    typedef DataLightSynapse related_component;
 
-	//! Accept method for visitor (see class template Visitor).
-	MAKE_VISITABLE(DataLightSynapseConfig)
+    //! Accept method for visitor (see class template Visitor).
+    MAKE_VISITABLE(DataLightSynapseConfig)
 
 public:
-	DataLightSynapseConfig(DistributionManager * weightdistrib, DistributionManager * delaydistrib);
-	inline const double & weight() const {return weight_;}
-	inline const double & delay() const {return delay_;}
+    DataLightSynapseConfig(DistributionManager * weightdistrib, DistributionManager * delaydistrib);
+    inline const double & weight() const {
+        return weight_;
+    }
+    inline const double & delay() const {
+        return delay_;
+    }
 private:
-	const double weight_
-			   , delay_;
+    const double weight_
+    , delay_;
 };
 
 
@@ -51,14 +55,18 @@ class DataLightSynapse
 {
 // construction
 protected:
-	explicit DataLightSynapse(ConfigBase * const configurator);
+    explicit DataLightSynapse(ConfigBase * const configurator);
 
 // members and accessors
 protected:
-	inline const double & weight_impl() const {return data_ref_->weight();}
-	inline const double & delay_impl() const {return data_ref_->delay();}
+    inline const double & weight_impl() const {
+        return data_ref_->weight();
+    }
+    inline const double & delay_impl() const {
+        return data_ref_->delay();
+    }
 private:
-	const DataLightSynapseConfig * const data_ref_;
+    const DataLightSynapseConfig * const data_ref_;
 };
 
 
@@ -70,9 +78,9 @@ private:
 /////////////////////////////////////////////////
 // config constructor
 inline DataLightSynapse::DataLightSynapse(ConfigBase * const configurator)
-	: data_ref_(dynamic_cast<DataLightSynapseConfig *>(configurator))
+        : data_ref_(dynamic_cast<DataLightSynapseConfig *>(configurator))
 {
-	if (! data_ref_) throw ConfigError("DataLightSynapse: data_ref_ not initialised");
+    if (! data_ref_) throw ConfigError("DataLightSynapse: data_ref_ not initialised");
 }
 
 

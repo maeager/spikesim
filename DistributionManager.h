@@ -15,9 +15,8 @@
 // DistributionManager mother class definition
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct DistributionManager
-{
-	virtual double generate_value() = 0; 
+struct DistributionManager {
+    virtual double generate_value() = 0;
 };
 
 
@@ -28,13 +27,15 @@ struct DistributionManager
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class DeltaDistribution
-	: public DistributionManager
+        : public DistributionManager
 {
 public:
-	DeltaDistribution(std::ifstream & is);
-	double generate_value() {return value_;}
+    DeltaDistribution(std::ifstream & is);
+    double generate_value() {
+        return value_;
+    }
 protected:
-	double value_;
+    double value_;
 };
 
 
@@ -45,14 +46,16 @@ protected:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class UniformDistribution
-	: public DistributionManager
+        : public DistributionManager
 {
 public:
-	UniformDistribution(double mean, double spread) : mean_(mean), spread_(spread) {}
-	UniformDistribution(std::ifstream & is);
-	double generate_value() {return mean_ - spread_ + 2 * spread_ * RandomGenerator::dran(1.);}
+    UniformDistribution(double mean, double spread) : mean_(mean), spread_(spread) {}
+    UniformDistribution(std::ifstream & is);
+    double generate_value() {
+        return mean_ - spread_ + 2 * spread_ * RandomGenerator::dran(1.);
+    }
 protected:
-	double mean_, spread_;
+    double mean_, spread_;
 };
 
 
@@ -63,13 +66,15 @@ protected:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class BimodalDistribution
-	: public DistributionManager
+        : public DistributionManager
 {
 public:
-	BimodalDistribution(std::ifstream & is);
-	double generate_value() {return (RandomGenerator::dran(1.) < proba_)? a_ : b_;}
+    BimodalDistribution(std::ifstream & is);
+    double generate_value() {
+        return (RandomGenerator::dran(1.) < proba_) ? a_ : b_;
+    }
 protected:
-	double a_, b_, proba_;
+    double a_, b_, proba_;
 };
 
 
@@ -80,13 +85,15 @@ protected:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class GaussianDistribution
-	: public DistributionManager
+        : public DistributionManager
 {
 public:
-	GaussianDistribution(std::ifstream & is);
-	double generate_value() {return mean_ + RandomGenerator::gran(variance_);}
+    GaussianDistribution(std::ifstream & is);
+    double generate_value() {
+        return mean_ + RandomGenerator::gran(variance_);
+    }
 protected:
-	double mean_, variance_;
+    double mean_, variance_;
 };
 
 

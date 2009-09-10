@@ -2996,10 +2996,10 @@ clean:
 	rm -f *.o *.exe *.bak *.sav *~
 
 upload:
-	rsync -Cavuzb --exclude='ncb' --exclude='*.o' --exclude='*.exe' . meager@soma:~/dmf/ParSpikeSim
+	rsync -Cavuzb --exclude='ncb' --exclude='.hg*' --exclude='*.o' --exclude='*.exe' . meager@soma:~/dmf/ParSpikeSim
 
 upload-dryrun:
-	rsync -Cavuzb -n --exclude='*.o' --exclude='ncb' --exclude='*.exe' . meager@soma:~/dmf/ParSpikeSim
+	rsync -Cavuzb -n --exclude='.hg*' --exclude='*.o' --exclude='ncb' --exclude='*.exe' . meager@soma:~/dmf/ParSpikeSim
 
 download:
 	rsync -Cavuzb --exclude='*.o' --exclude='*.exe' meager@soma:~/dmf/ParSpikeSim/ ./

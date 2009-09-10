@@ -12,5 +12,5 @@ std::list<ManageableInput *> ManageableInputManager::list_inputs_primary_;
 
 void ManageableInputManager::append(ManageableInput * const pmi)
 {
-	list_inputs_primary_.push_back(pmi);
+    list_inputs_primary_.push_back(pmi);
 }

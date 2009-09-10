@@ -9,7 +9,7 @@
 
 /*
 
-//!	Constant pointer encapsulation.
+//! Constant pointer encapsulation.
 template <class T>
 class Handle
 {
@@ -24,7 +24,7 @@ private:
     T * const pt_;
 };
 
-//!	Constant pointer encapsulation.
+//! Constant pointer encapsulation.
 template <class T>
 class HandleArray
 {
@@ -33,7 +33,7 @@ public:
     ~HandleArray() {delete[] array;}
     void resize(const Size & size) {if (array_) delete[] array_; array_ = new Handle<T>[size];}
     const Handle<T> & operator[](const Size & i) {return array_[i];}
-    
+
     typedef Handle<T> * iterator;
     static const L = sizeof(Handle<T>);
     const iterator & begin() {return & array[0];}

@@ -13,8 +13,8 @@
 /////////////////////////////////////////////////
 // constructor
 DataIndivSynapseConfig::DataIndivSynapseConfig(DistributionManager * weightdistrib
-											 , DistributionManager * delaydistrib)
-	: weightdistrib_(weightdistrib)
-	, delaydistrib_(delaydistrib)
+        , DistributionManager * delaydistrib)
+        : weightdistrib_(weightdistrib)
+        , delaydistrib_(delaydistrib)
 {
 }

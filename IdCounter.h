@@ -17,12 +17,14 @@ template <class CountedType>
 class IdCounter
 {
 public:
-	const Size & id() const {return id_;}
+    const Size & id() const {
+        return id_;
+    }
 protected:
-	IdCounter() : id_(static_counter_++) {}
+    IdCounter() : id_(static_counter_++) {}
 private:
-	static Size static_counter_;
-	const Size id_;
+    static Size static_counter_;
+    const Size id_;
 };
 
 template <class CountedType> Size IdCounter<CountedType>::static_counter_ = 0;

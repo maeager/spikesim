@@ -8,12 +8,11 @@
 class TestUnit
 {
 public:
-	static void launch_tests()
-	{
-		file_.open()
-	}
+    static void launch_tests() {
+        file_.open()
+    }
 private:
-	static std::ofstream file_;
+    static std::ofstream file_;
 };
 
 

@@ -11,7 +11,7 @@
 
 class NullType
 {
-	NullType() {}
+    NullType() {}
 };
 
 
@@ -22,8 +22,8 @@ class NullType
 template <class T, class U = NullType>
 struct TypeList
 {
-	typedef T head;
-	typedef U tail;
+    typedef T head;
+    typedef U tail;
 };
 
 
@@ -33,17 +33,17 @@ struct TypeList
 template <class TL>
 struct length
 {
-	enum {
-		value = 1,
-	};
+    enum {
+        value = 1,
+    };
 };
 
 template <class T, class U>
 struct length<TypeList<T,U> >
 {
-	enum {
-		value = 1 + length<U>::value,
-	};
+    enum {
+        value = 1 + length<U>::value,
+    };
 };
 
 
@@ -54,14 +54,14 @@ struct length<TypeList<T,U> >
 template <bool Test, class T, class U>
 struct selector
 {
-	typedef T result;
+    typedef T result;
 };
 
 
 template <class T, class U>
 struct selector<false, T, U>
 {
-	typedef U result;
+    typedef U result;
 };
 
 
@@ -72,17 +72,17 @@ struct selector<false, T, U>
 template <class T, class U>
 struct is_same
 {
-	enum {
-		value = 0,
-	};
+    enum {
+        value = 0,
+    };
 };
 
 template <class T>
 struct is_same<T,T>
 {
-	enum {
-		value = 1,
-	};
+    enum {
+        value = 1,
+    };
 };
 
 
@@ -94,28 +94,28 @@ struct is_same<T,T>
 template <class TL, int Index>
 struct get
 {
-	typedef NullType result;
+    typedef NullType result;
 };
 
 
 template <class T, class U, int Index>
 struct get<TypeList<T, U>, Index>
 {
-	typedef typename get<U, Index-1>::result result;
+    typedef typename get<U, Index-1>::result result;
 };
 
 
 template <class T>
 struct get<T, 0>
 {
-	typedef T result;
+    typedef T result;
 };
 
 
 template <class T, class U>
 struct get<TypeList<T, U>, 0>
 {
-	typedef T result;
+    typedef T result;
 };
 
 
@@ -126,7 +126,7 @@ struct get<TypeList<T, U>, 0>
 template <class TL>
 struct getrt
 {
-//	static 
+//  static
 };
 
 /*
@@ -137,18 +137,18 @@ struct getrt
 template <class TL, class T>
 struct find
 {
-	enum {
-		index = -1,
-	};
+    enum {
+        index = -1,
+    };
 };
 
 
 template <class T, class U>
 struct find<TypeList<T, U>, T>
 {
-	enum {
-		index = 0,
-	};
+    enum {
+        index = 0,
+    };
 };
 
 
@@ -157,13 +157,13 @@ template <class U, class V, class T>
 struct find<TypeList<U, V>, T>
 {
 private:
-	enum {
-		temp = find<V, T>::index,
-	};
+    enum {
+        temp = find<V, T>::index,
+    };
 public:
-	enum {
-		index = temp == -1 ? -1 : 1 + temp,
-	};
+    enum {
+        index = temp == -1 ? -1 : 1 + temp,
+    };
 };
 
 
@@ -175,18 +175,18 @@ public:
 template <class TL, class T>
 struct append
 {
-	enum {
-		index = -1,
-	};
+    enum {
+        index = -1,
+    };
 };
 
 
 template <class T, class U>
 struct append<TypeList<T, U>, T>
 {
-	enum {
-		index = 0,
-	};
+    enum {
+        index = 0,
+    };
 };
 
 
@@ -195,13 +195,13 @@ template <class U, class V, class T>
 struct append<TypeList<U, V>, T>
 {
 private:
-	enum {
-		temp = find<V, T>::index,
-	};
+    enum {
+        temp = find<V, T>::index,
+    };
 public:
-	enum {
-		index = temp == -1 ? -1 : 1 + temp,
-	};
+    enum {
+        index = temp == -1 ? -1 : 1 + temp,
+    };
 };
 
 */

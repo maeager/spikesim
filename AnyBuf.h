@@ -35,13 +35,13 @@ static many bbsbuf;
 //     boost::any to_append = value;\
 //     bbsbuf.push_back(to_append);\
 // }
-// 
+//
 // #define append_string(value); \
 // {\
 //    boost::any to_append = value;\
 //     bbsbuf.push_back(to_append);\
 // }
-// 
+//
 // #define append_char_ptr(value); \
 // {\
 //    boost::any to_append = value;\
@@ -51,26 +51,26 @@ static many bbsbuf;
 
 
 
-static void append_int( int value)
+static void append_int(int value)
 {
     boost::any to_append = value;
     bbsbuf.push_back(to_append);
 }
-static void append_double( double value)
+static void append_double(double value)
 {
     boost::any to_append = value;
     bbsbuf.push_back(to_append);
 }
 
-static void append_string( std::string value)
+static void append_string(std::string value)
 {
-   boost::any to_append = value;
+    boost::any to_append = value;
     bbsbuf.push_back(to_append);
 }
 
-static void append_char_ptr( const char * value)
+static void append_char_ptr(const char * value)
 {
-   boost::any to_append = value;
+    boost::any to_append = value;
     bbsbuf.push_back(to_append);
 }
 

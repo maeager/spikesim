@@ -9,19 +9,19 @@
 #define NUM_THREADS 1
 
 #if (NUM_THREADS > 1)
-	#define THREADED_ENGINE
+#define THREADED_ENGINE
 #endif
 
-//!	Time in time steps (long unsigned).
+//! Time in time steps (long unsigned).
 typedef long unsigned DiscreteTime;
 
-//!	Time in seconds (double).
+//! Time in seconds (double).
 typedef double Time;
 
-//!	Size for arrays and lists (redefinition of unsigned integers).
+//! Size for arrays and lists (redefinition of unsigned integers).
 typedef unsigned Size;
 
-//!	Neuron potential.
+//! Neuron potential.
 typedef double Volt;
 
 

@@ -11,15 +11,14 @@ class ParNetwork;
 class Network;
 #endif
 
-struct NoThreading
-{
+struct NoThreading {
 
 #ifdef PARALLELSIM
-	static void init(const ParNetwork & net) {}
-	static void launch_sim(ParNetwork & net);
+    static void init(const ParNetwork & net) {}
+    static void launch_sim(ParNetwork & net);
 #else
-	static void init(const Network & net) {}
-	static void launch_sim(Network & net);
+    static void init(const Network & net) {}
+    static void launch_sim(Network & net);
 #endif
 
 };
