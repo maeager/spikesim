@@ -222,9 +222,7 @@ int ParSpike::spike_exchange()
             icapacity_ = n + 10;
             //if (spikein_) delete spikein_;
             spikein_.clear();
-            spikein_.resize(icapacity_);
-
-// (NRNMPI_Spike*)hoc_Emalloc(icapacity_ * sizeof(NRNMPI_Spike));
+            spikein_.resize(icapacity_);// (NRNMPI_Spike*)hoc_Emalloc(icapacity_ * sizeof(NRNMPI_Spike));
         }
         MPI_Allgatherv(&spikeout_[0], nout_, spike_type, &spikein_[0], nin_, displs, spike_type, mpi_comm);
     }
@@ -439,7 +437,7 @@ void ParSpike::assert_opstep(int opstep, double t, int comm)
         std::cout << my_rank << " opstep=" << opstep << " "
                   << (int)buf[0] << "  t=" << t << " t-troot="
                   << t - buf[1] << std::endl;
-        std::cerr << "mpi_assert_opstep failed"; std::cerr.flush();
+        std::cerr << "ParSpike::assert_opstep failed"; std::cerr.flush();
     }
 }
 

@@ -91,7 +91,6 @@ public:
     void dbl_allgather(double* s, double* r, int n) ;
 
 
-//TODO Try Vector of SpikePackets??
     static std::vector<SpikePacket_> spikeout_;
     static std::vector<SpikePacket_> spikein_;
 #if _spikebuf_size > 0

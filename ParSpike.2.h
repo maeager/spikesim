@@ -92,14 +92,12 @@ public:
     void dbl_allgather(double* s, double* r, int n) ;
 
 
-//TODO Try Vector of SpikePackets??
     static std::vector<SpikePacket_> spikeout_;
     static std::vector<SpikePacket_> spikein_;
 #if _spikebuf_size > 0
     static std::vector<SpikeBuffer_> spbufout_;
     static std::vector<SpikeBuffer_> spbufin_;
 #endif
-
 
     static int nout_;
     static int* nin_;
@@ -122,8 +120,6 @@ public:
     static int np;
     static int* displs;
     static int* byteovfl; /* for the compressed transfer method */
-
-
 
 };
 
