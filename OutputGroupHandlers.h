@@ -188,17 +188,17 @@ void AllCrossPairsThroughSameGroups::iterate(const Time & t_start, const Time & 
         , FileWrapper * const file_wrapper)
 {
     DataRecordNeuronVisitor vis1, vis2;
-    for (std::list<Group *>::const_iterator i1 = group_list_.begin();
+    for (GroupListType::const_iterator i1 = group_list_.begin();
             i1 != group_list_.end();
             ++i1)
-        for (std::list<NeuronInterface *>::const_iterator j1 = (*i1)->list_.begin();
+        for (Group::ListNrnType::const_iterator j1 = (*i1)->list_.begin();
                 j1 != (*i1)->list_.end();
                 ++j1) {
             (*j1)->apply_visitor(vis1);
-            for (std::list<Group *>::const_iterator i2 = group_list_.begin();
+            for (GroupListType::const_iterator i2 = group_list_.begin();
                     i2 != group_list_.end();
                     ++i2)
-                for (std::list<NeuronInterface *>::const_iterator j2 = (*i2)->list_.begin();
+                for (Group::ListNrnType::const_iterator j2 = (*i2)->list_.begin();
                         j2 != (*i2)->list_.end();
                         ++j2) {
                     (*j2)->apply_visitor(vis2);
@@ -219,16 +219,16 @@ template <class OutputOperation, class FileWrapper>
 void AllCrossPairsThroughSameGroups::send_info_to_file_wrapper(OutputOperation * const output_operation, FileWrapper * const file_wrapper)
 {
     Size count = 0;
-    for (std::list<Group *>::const_iterator i1 = group_list_.begin();
+    for (GroupListType::const_iterator i1 = group_list_.begin();
             i1 != group_list_.end();
             ++i1)
-        for (std::list<NeuronInterface *>::const_iterator j1 = (*i1)->list_.begin();
+        for (Group::ListNrnType::const_iterator j1 = (*i1)->list_.begin();
                 j1 != (*i1)->list_.end();
                 ++j1) {
-            for (std::list<Group *>::const_iterator i2 = group_list_.begin();
+            for (GroupListType::const_iterator i2 = group_list_.begin();
                     i2 != group_list_.end();
                     ++i2)
-                for (std::list<NeuronInterface *>::const_iterator j2 = (*i2)->list_.begin();
+                for (Group::ListNrnType::const_iterator j2 = (*i2)->list_.begin();
                         j2 != (*i2)->list_.end();
                         ++j2)
                     count += output_operation->nb_outputs_for_pair(*j1, *j2);
