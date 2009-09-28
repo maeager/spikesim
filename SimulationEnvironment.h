@@ -31,6 +31,9 @@ public:
     static inline const Time & timestep() {
         return timestep_;
     }
+    static inline const Time & tstop() {
+      return timestep_*((double)i_duration_);
+    }
     static inline const DiscreteTime & i_duration() {
         return i_duration_;
     }

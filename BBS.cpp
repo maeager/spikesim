@@ -468,26 +468,26 @@ void BBSImpl::return_args(int id)
     // but then they all would have to know this format
     int i;
     char* s;
-//printf("BBSImpl::return_args(%d):\n", id);
+printf("BBSImpl::return_args(%d):\n", id);
     i = upkint(); // userid
     int style = upkint();
-//printf("message userid=%d style=%d\n", i, style);
+printf("message userid=%d style=%d\n", i, style);
     switch (style) {
     case 0:
         s = upkstr(); // the statement
-//printf("statement |%s|\n", s);
+printf("statement |%s|\n", s);
         delete [] s;
         break;
     case 2: // obj first
         s = upkstr(); // template name
         i = upkint();   // instance index
-//printf("object %s[%d]\n", s, i);
+printf("object %s[%d]\n", s, i);
         delete [] s;
         //fall through
     case 1:
         s = upkstr(); //fname
         i = upkint(); // arg manifest
-//printf("fname=|%s| manifest=%o\n", s, i);
+printf("fname=|%s| manifest=%o\n", s, i);
         delete [] s;
         break;
     }

@@ -8,7 +8,7 @@
 
 // file handlers
 #include "AsciiFileWrapper.h"
-//XXX #include "MatlabFileWrapper.h"
+// #include "MatlabFileWrapper.h"
 
 // operations
 #include "SpikeListOperations.h"

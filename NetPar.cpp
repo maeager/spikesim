@@ -158,30 +158,30 @@ void NetPar::nrn_outputevent(unsigned char localgid, double firetime)
     }
     spfixout_[i++] = (unsigned char)((firetime - t_exchange_) * dt1_ + .5);
     spfixout_[i] = localgid;
-//std::cout << "%d idx=%d lgid=%d firetime=%g t_exchange_=%g [0]=%d [1]=%d\n", my_rank, i, (int)localgid, firetime, t_exchange_, (int)spfixout_[i-1], (int)spfixout_[i]);
+printf("%d idx=%d lgid=%d firetime=%g t_exchange_=%g [0]=%d [1]=%d\n", my_rank, i, (int)localgid, firetime, t_exchange_, (int)spfixout_[i-1], (int)spfixout_[i]);
 }
 
 
 void NetPar::nrn2ncs_outputevent(int gid, double firetime)
 {
+  int i;
     if (!active_) {
         return;
     }
     SpikePacket_* temp;
     if (use_compress_) {
         nout_++;
-        int i = idxout_;
+        i = idxout_;
         idxout_ += 1 + localgid_size_;
         if (idxout_ >= spfixout_capacity_) {
             spfixout_capacity_ *= 2;
             spfixout_.resize(spfixout_capacity_);
         }
-//std::cout << "%d nrnncs_outputevent %d %.20g %.20g %d\n", my_rank, gid, firetime, t_exchange_,
-//(int)((unsigned char)((firetime - t_exchange_)*dt1_ + .5)));
+	printf("%d nrnncs_outputevent %d %.20g %.20g %d\n", my_rank, gid, firetime, t_exchange_,(int)((unsigned char)((firetime - t_exchange_)*dt1_ + .5)));
         spfixout_[i++] = (unsigned char)((firetime - t_exchange_) * dt1_ + .5);
-//std::cout << "%d idx=%d firetime=%g t_exchange_=%g spfixout=%d\n", my_rank, i, firetime, t_exchange_, (int)spfixout_[i-1]);
+	printf("%d idx=%d firetime=%g t_exchange_=%g spfixout=%d\n", my_rank, i, firetime, t_exchange_, (int)spfixout_[i-1]); 
         sppk(&spfixout_[i], gid); //sppk(spfixout_+i, gid);
-//std::cout << "%d idx=%d gid=%d spupk=%d\n", my_rank, i, gid, spupk(&spfixin_ovfl_[idx]);//(spfixout_+i));
+	//printf("%d idx=%d gid=%d spupk=%d\n", my_rank, i, gid, spupk(&spfixin_ovfl_[i]) );//(spfixout_+i));
     } else {
 #if nrn_spikebuf_size == 0
         int i = nout_++;
@@ -193,7 +193,7 @@ void NetPar::nrn2ncs_outputevent(int gid, double firetime)
             //  spikeout_ =temp;temp=0;
             spikeout_.resize(ocapacity_);
         }
-//std::cout << "%d cell %d in slot %d fired at %g\n", my_rank, gid, i, firetime);
+printf("%d cell %d in slot %d fired at %g\n", my_rank, gid, i, firetime);
         spikeout_[i].gid = gid;
         spikeout_[i].spiketime = firetime;
 #else
@@ -216,7 +216,7 @@ void NetPar::nrn2ncs_outputevent(int gid, double firetime)
         }
 #endif
     }
-//std::cout << "%d cell %d in slot %d fired at %g\n", my_rank, gid, i, firetime);
+printf("%d cell %d in slot %d fired at %g\n", my_rank, gid, i, firetime);
 }
 
 
@@ -260,13 +260,13 @@ void NetPar::calc_actual_mindelay() {
 */
 void NetPar::spike_exchange_init()
 {
-//std::cout << "nrn_spike_exchange_init\n");
+printf("nrn_spike_exchange_init\n");
     if (!nrn_need_npe()) {
         return;
     }
 //  if (!active_ && !nrn_use_selfqueue_) { return; }
     alloc_space();
-//std::cout << "use=%d active=%d\n", use, active_);
+    //printf("use=%d active=%d\n", use, active_);
     //calc_actual_mindelay();
     usable_mindelay_ = mindelay_;
     if (cvode_active_ == 0) {//&& nrn_nthread > 1) {
@@ -308,7 +308,7 @@ void NetPar::spike_exchange_init()
     nout_ = 0;
     nsend_ = nsendmax_ = nrecv_ = nrecv_useful_ = 0;
 
-    //if (my_rank == 0){std::cout << "usable_mindelay_ = %g\n", usable_mindelay_);}
+    //if (my_rank == 0){printf("usable_mindelay_ = %g\n", usable_mindelay_);}
 }
 
 
@@ -338,7 +338,7 @@ void NetPar::spike_exchange()
     wt = wtime();
     errno = 0;
 //if (n > 0) {
-//std::cout << "%d nrn_spike_exchange sent %d received %d\n", my_rank, nout_, n);
+printf("%d nrn_spike_exchange sent %d received %d\n", my_rank, nout_, n);
 //}
     nout_ = 0;
     if (n == 0) {
@@ -425,7 +425,7 @@ void NetPar::spike_exchange_compressed()
     wt = wtime();
     errno = 0;
 //if (n > 0) {
-//std::cout << "%d nrn_spike_exchange sent %d received %d\n", my_rank, nout_, n);
+printf("%d nrn_spike_exchange sent %d received %d\n", my_rank, nout_, n);
 //}
     nout_ = 0;
     idxout_ = 2;
@@ -646,14 +646,14 @@ void NetPar::nrn_fake_fire(int gid, double spiketime, int fake_out)
     PreSynPtr ps = gid2in_->find(gid)->second;
     if (ps) {
         assert(ps);
-//std::cout << "nrn_fake_fire %d %g\n", gid, spiketime);
+printf("nrn_fake_fire %d %g\n", gid, spiketime);
 //TODO      ps->send(spiketime, net_cvode_instance);//, nrn_threads);
 #if NRNSTAT
         ++nrecv_useful_;
 #endif
     } else if (fake_out && ps) {
         assert(ps);
-//std::cout << "nrn_fake_fire fake_out %d %g\n", gid, spiketime);
+printf("nrn_fake_fire fake_out %d %g\n", gid, spiketime);
 //TODO      ps->send(spiketime, net_cvode_instance);//, nrn_threads);
 #if NRNSTAT
         ++nrecv_useful_;
@@ -697,7 +697,7 @@ void BBS::set_gid2node(int gid, int nid)
     NetPar::alloc_space();
 
     if (nid == my_rank) {
-        //std::cout << "gid %d defined on %d\n", gid, my_rank);
+        printf("gid %d defined on %d\n", gid, my_rank);
         //PreSyn* ps;
         if (NetPar::gid2in_->find(gid)->first)
             NetPar::gid2in_->erase(gid);//assert(!(ps = NetPar::gid2in_->find(gid)));
@@ -758,7 +758,7 @@ int BBS::gid_exists(int gid)
     PreSynPtr ps;
     NetPar::alloc_space();
     if (ps = NetPar::gid2out_->find(gid)->second) {
-//std::cout << "%d gid %d exists\n", my_rank, gid);
+printf("%d gid %d exists\n", my_rank, gid);
         if (ps) {
             return (ps->output_index_ >= 0 ? 3 : 2);
         } else {
@@ -792,7 +792,7 @@ void BBS::cell()
         }
         NetCon* nc = (NetCon*)ob->u.this_pointer;
         ps = nc->src_;
-    //std::cout << "%d cell %d %s\n", my_rank, gid, hoc_object_name(ps->ssrc_ ? ps->ssrc_->prop->dparam[6].obj : ps->osrc_));
+    printf("%d cell %d %s\n", my_rank, gid, (ps->ssrc_ ? ps->ssrc_->prop->dparam[6].obj : ps->osrc_));
         (*gid2out_)[gid] = ps;
         ps->gid_ = gid;
         if (ifarg(3) && !chkarg(3, 0., 1.)) {
@@ -800,7 +800,8 @@ void BBS::cell()
         }else{
             ps->output_index_ = gid;
         }
-    */}
+    */
+}
 
 void BBS::cell(int gid) //, NetCon* nc) {
 {
@@ -831,23 +832,23 @@ void BBS::spike_record(int gid, std::vector<double>* spikevec, std::vector<doubl
 ConfigBase* BBS::gid2obj(int gid)
 {
     ConfigBase* cell = 0;
-//std::cout << "%d gid2obj gid=%d\n", my_rank, gid);
+printf("%d gid2obj gid=%d\n", my_rank, gid);
     PreSynPtr ps;
     assert(ps = NetPar::gid2out_->find(gid)->second);
-//std::cout << " found\n");
+printf(" found\n");
 //  assert(ps);
 //TODO  cell = ps->ssrc_ ? ps->ssrc_->prop->dparam[6].obj : ps->osrc_;
-//std::cout << " return %s\n", hoc_object_name(cell));
+printf(" return %s\n", (cell));
     return cell;
 }
 
 ConfigBase* BBS::gid2cell(int gid)
 {
     ConfigBase* cell = 0;
-//std::cout << "%d gid2obj gid=%d\n", my_rank, gid);
+printf("%d gid2obj gid=%d\n", my_rank, gid);
     PreSynPtr ps;
     assert(ps = NetPar::gid2out_->find(gid)->second);
-//std::cout << " found\n");
+printf(" found\n");
     assert(ps);
     /*TODO  if (ps->ssrc_) {
             cell = ps->ssrc_->prop->dparam[6].obj;
@@ -861,7 +862,7 @@ ConfigBase* BBS::gid2cell(int gid)
             }
         }
     */
-//std::cout << " return %s\n", hoc_object_name(cell));
+    //printf(" return %s\n", (cell));
     return cell;
 }
 
@@ -878,9 +879,9 @@ ConfigBase* BBS::gid_connect(int gid, ConfigBase* target)
         assert(ps);
     } else if ((ps = NetPar::gid2in_->find(gid)->second)) {
         // the gid stub already exists
-//std::cout << "%d connect %s from already existing %d\n", my_rank, hoc_object_name(target), gid);
+printf("%d connect %s from already existing %d\n", my_rank, (target), gid);
     } else {
-//std::cout << "%d connect %s from new PreSyn for %d\n", my_rank, hoc_object_name(target), gid);
+printf("%d connect %s from new PreSyn for %d\n", my_rank, (target), gid);
         PreSyn* ps_ = new PreSyn(nil, nil, nil);//,target);
         ps = PreSynPtr(ps_); //(nil, nil, nil);
 //TODO?     net_cvode_instance->psl_append(ps);
@@ -948,7 +949,7 @@ void BBS::netpar_solve(double tstop)
         impl_->send_time_ += NetPar::npe_[0].ws_;
         NetPar::npe_[0].wx_ = NetPar::npe_[0].ws_ = 0.;
     };
-//std::cout << "%d netpar_solve exit t=%g tstop=%g mindelay_=%g\n",my_rank, t, tstop, mindelay_);
+    printf("%d netpar_solve exit t=%g tstop=%g mindelay_=%g\n",my_rank, SimEnv::sim_time(), SimEnv::tstop(), NetPar::mindelay_);
 
 //  tstopunset;
 }
@@ -1004,12 +1005,12 @@ double NetPar::set_mindelay(double maxdelay)
         }
     }
 
-//std::cout << "%d netpar_mindelay local %g now calling nrnmpi_mindelay\n", my_rank, mindelay);
+printf("%d netpar_mindelay local %g now calling nrnmpi_mindelay\n", my_rank, mindelay);
 //  double st = time();
     mindelay_ = ParSpike::mindelay(mindelay_);
     min_interprocessor_delay_ = mindelay_;
 //  add_wait_time(st);
-//std::cout << "%d local min=%g  global min=%g\n", my_rank, mindelay, mindelay_);
+printf("%d local min=%g  global min=%g\n", my_rank, mindelay, mindelay_);
     if (mindelay_ < 1e-9 && nrn_use_selfqueue_) {
         nrn_use_selfqueue_ = 0;
         double od = mindelay_;
@@ -1066,7 +1067,7 @@ int NetPar::spike_compress(int nspike, bool gid_compress, int xchng_meth)
     }
 #if BGPDMA
 //  use_bgpdma_ = (xchng_meth == 1) ? 1 : 0;
-//  if (my_rank == 0) {std::cout << "use_bgpdma_ = " << use_bgpdma_;}
+//  if (my_rank == 0) {printf("use_bgpdma_ = " << use_bgpdma_;}
 #endif
     if (nspike >= 0) {
         ag_send_nspike_ = 0;

@@ -73,7 +73,7 @@ void BBS2SpikeSim::upkbegin(bbsmpibuf* r)
     assert(p <= r->size);
     MPI_Unpack(&(r->buf[0]), r->size, &p, &type, 1, MPI_INT, bbs_comm);
 #if debug
-//printf("%d BBS2SpikeSim::upkbegin type=%d keypos=%d\n", mpi_rank, type, p);
+ std::cout <<  mpi_rank << "BBS2SpikeSim::upkbegin type=" <<  type << " keypos=" <<  p<< std::endl;
 #endif
     assert(type == 0);
     r->keypos = p;
@@ -86,7 +86,7 @@ char* BBS2SpikeSim::getkey(bbsmpibuf* r)
     type = r->upkpos;
     r->upkpos = r->keypos;
 #if debug
-//printf("%d BBS2SpikeSim::getkey %lx keypos=%d\n", mpi_rank, (long)r, r->keypos);
+ std::cout <<  mpi_rank << " BBS2SpikeSim::getkey " <<  (long)r << " keypos=" <<  r->keypos  << std::endl;
 #endif
     s = BBS2SpikeSim::upkstr(r);
     assert(r->pkposition == 0 || r->pkposition == r->upkpos);
@@ -104,7 +104,7 @@ int BBS2SpikeSim::getid(bbsmpibuf* r)
     type = r->upkpos;
     r->upkpos = r->keypos;
 #if debug
-//printf("%d BBS2SpikeSim::getid %lx keypos=%d\n", mpi_rank, (long)r, r->keypos);
+ std::cout <<  mpi_rank << " BBS2SpikeSim::getid " <<  (long)r << " keypos=" <<  r->keypos  << std::endl;
 #endif
     i = BBS2SpikeSim::upkint(r);
     r->upkpos = type;
@@ -160,7 +160,7 @@ void BBS2SpikeSim::pkbegin(bbsmpibuf* r)
     r->pkposition = 0;
     type = 0;
 #if debug
-//printf("%d BBS2SpikeSim::pkbegin %lx size=%d pkposition=%d\n", mpi_rank, (long)r, r->size, r->pkposition);
+ std::cout <<  mpi_rank << " BBS2SpikeSim::pkbegin " <<  (long)r << " size=" <<  r->size << " pkposition=" <<  r->pkposition << std::endl;
 #endif
     MPI_Pack(&type, 1, MPI_INT, &(r->buf[0]), r->size, &r->pkposition, bbs_comm);
 }
@@ -171,23 +171,23 @@ void BBS2SpikeSim::enddata(bbsmpibuf* r)
     p = r->pkposition;
     type = 0;
 #if debug
-//printf("%d BBS2SpikeSim::enddata %lx size=%d pkposition=%d\n", mpi_rank, (long)r, r->size, p);
+ std::cout <<  mpi_rank << " BBS2SpikeSim::enddata " <<  (long)r << " size=" <<  r->size << " pkposition=" <<  p << std::endl;
 #endif
     MPI_Pack_size(1, MPI_INT, bbs_comm, &isize);
     oldsize = r->size;
     resize(r, r->pkposition + isize);
 #if debug
     if (oldsize < r->pkposition + isize) {
-        //printf("%d %lx need %d more. end up with total of %d\n", mpi_rank, (long)r, isize, r->size);
+         std::cout <<  mpi_rank << " " <<  (long)r << " need " <<  isize << " more. end up with total of " <<  r->size << std::endl;
     }
 #endif
     MPI_Pack(&type, 1, MPI_INT, &(r->buf[0]), r->size, &r->pkposition, bbs_comm);
 #if debug
-//printf("%d BBS2SpikeSim::enddata buf=%lx size=%d pkposition=%d\n", mpi_rank, r->buf, r->size, r->pkposition);
+ std::cout <<  mpi_rank << " BBS2SpikeSim::enddata buf=" <<  r->buf << " size=" <<  r->size << " pkposition=" <<  r->pkposition << std::endl;
 #endif
     MPI_Pack(&p, 1, MPI_INT, &(r->buf[0]), r->size, &type, bbs_comm);
 #if debug
-//printf("%d after BBS2SpikeSim::enddata, %d was packed at beginning and 0 was packed before %d\n", mpi_rank, p, r->pkposition);
+ std::cout <<  mpi_rank << "after BBS2SpikeSim::enddata, " <<  p << " was packed at beginning and 0 was packed before " <<  r->pkposition<< std::endl;
 #endif
 }
 
@@ -204,14 +204,14 @@ static void pack(void* inbuf, int incount, int my_datatype, bbsmpibuf* r, const 
     resize(r, r->pkposition + dsize + isize);
 #if debug
     if (oldsize < r->pkposition + dsize + isize) {
-        //printf("%d %lx need %d more. end up with total of %d\n", mpi_rank, (long)r, dsize+isize, r->size);
+         std::cout <<  mpi_rank << " " <<  (long)r << " need " <<  dsize+isize << " more. end up with total of " <<  r->size << std::endl;
     }
 #endif
     type[0] = my_datatype;  type[1] = incount;
     MPI_Pack(type, 2, MPI_INT, &(r->buf[0]), r->size, &r->pkposition, bbs_comm);
     MPI_Pack(inbuf, incount, mytypes[my_datatype], &(r->buf[0]), r->size, &r->pkposition, bbs_comm);
 #if debug
-//printf("%d pack done pkposition=%d\n", mpi_rank, r->pkposition);
+ std::cout <<  mpi_rank << " pack done pkposition=" <<  r->pkposition << std::endl;
 #endif
 }
 
@@ -245,7 +245,7 @@ void BBS2SpikeSim::pkstr(const char* s, bbsmpibuf* r)
 void BBS2SpikeSim::bbssend(int dest, int tag, bbsmpibuf* r)
 {
 #if debug
-//printf("%d BBS2SpikeSim::bbssend %lx dest=%d tag=%d size=%d\n", mpi_rank, (long)r, dest, tag, (r)?r->upkpos:0);
+std::cout <<  mpi_rank << " BBS2SpikeSim::bbssend " <<  (long)r << " dest=" <<  dest << " tag=" <<  tag << " size=" <<  (r)?r->upkpos:0  << std::endl;
 #endif
     if (r) {
         assert(r->keypos <= r->size);
@@ -255,7 +255,7 @@ void BBS2SpikeSim::bbssend(int dest, int tag, bbsmpibuf* r)
     }
     errno = 0;
 #if debug
-//printf("%d return from send\n", mpi_rank);
+ std::cout <<  mpi_rank << "return from send" << std::endl;
 #endif
 }
 
@@ -267,12 +267,12 @@ int BBS2SpikeSim::bbsrecv(int source, bbsmpibuf* r)
         source = MPI_ANY_SOURCE;
     }
 #if debug
-//printf("%d BBS2SpikeSim::bbsrecv %lx\n", mpi_rank, (long)r);
+ std::cout <<  mpi_rank << " BBS2SpikeSim::bbsrecv " <<  (long)r << std::endl;
 #endif
     MPI_Probe(source, MPI_ANY_TAG, bbs_comm, &status);
     MPI_Get_count(&status, MPI_PACKED, &size);
 #if debug
-//printf("%d BBS2SpikeSim::bbsrecv probe size=%d source=%d tag=%d\n", mpi_rank, size, status.MPI_SOURCE, status.MPI_TAG);
+ std::cout <<  mpi_rank << "BBS2SpikeSim::bbsrecv probe size=" <<  size << "source=" <<  status.MPI_SOURCE << "tag=" <<  status.MPI_TAG << std::endl;
 #endif
     resize(r, size);
     MPI_Recv(&(r->buf[0]), r->size, MPI_PACKED, source, MPI_ANY_TAG, bbs_comm, &status);
@@ -286,11 +286,11 @@ int BBS2SpikeSim::bbssendrecv(int dest, int tag, bbsmpibuf* s, bbsmpibuf* r)
     int msgtag;
     MPI_Status status;
 #if debug
-//printf("%d BBS2SpikeSim::bbssendrecv dest=%d tag=%d\n", mpi_rank, dest, tag);
+ std::cout <<  mpi_rank << "BBS2SpikeSim::bbssendrecv dest=" <<  dest << " tag=" <<  tag<< std::endl;
 #endif
     if (!BBS2SpikeSim::iprobe(&size, &itag, &source) || source != dest) {
 #if debug
-//printf("%d BBS2SpikeSim::bbssendrecv nothing available so send\n", mpi_rank);
+ std::cout <<  mpi_rank << "BBS2SpikeSim::bbssendrecv nothing available so send" << std::endl;
 #endif
         BBS2SpikeSim::bbssend(dest, tag, s);
     }
@@ -315,7 +315,7 @@ bbsmpibuf* BBS2SpikeSim::newbuf(int size)
 
     bbsmpibuf* buf = new bbsmpibuf;
 #if debug
-//printf("%d BBS2SpikeSim::newbuf %lx\n", mpi_rank, (long)buf);
+ std::cout <<  mpi_rank << " BBS2SpikeSim::newbuf " <<  (long)buf << std::endl;
 #endif
 //  buf->buf = (char*)0;
     buf->buf.resize(size);
@@ -346,7 +346,7 @@ void BBS2SpikeSim::copy(bbsmpibuf* dest, bbsmpibuf* src)
 void BBS2SpikeSim::free(bbsmpibuf* buf)
 {
 #if debug
-//printf("%d BBS2SpikeSim::free %lx\n", mpi_rank, (long)buf);
+ std::cout <<  mpi_rank << " BBS2SpikeSim::free " <<  (long)buf << std::endl;
 #endif
 //  if (buf->buf) {
 //      free(buf->buf);     /* STL vector automatic deletion */
@@ -378,7 +378,7 @@ void BBS2SpikeSim::unref(bbsmpibuf* buf)
 void BBS2SpikeSim::checkbufleak()
 {
     if (BBS2SpikeSim::bufcnt_ > 0) {
-        //printf("%d BBS2SpikeSim::bufcnt=%d\n", mpi_rank, bufcnt_);
+         std::cout <<  mpi_rank << " BBS2SpikeSim::bufcnt=" <<  bufcnt_ << std::endl;
     }
 }
 #endif

@@ -19,7 +19,7 @@
 /*! Used to generate compile-time errors for non-compatible neural or synaptic mechanisms.
  */
 class NullType
-        : public NeuronInterface //XXX
+        : public NeuronInterface //
 {
     NullType() {}
 public:

@@ -196,7 +196,7 @@ char* BBSDirect::upkstr()
 void BBSDirect::pkbegin()
 {
 #if DEBUG
-//printf("%d BBSDirect::pkbegin\n", ParSpike::my_rank);
+ std::cout <<  ParSpike::my_rank << "BBSDirect::pkbegin" << std::endl;
 #endif
     BBS2MPI::unref(sendbuf_);
     sendbuf_ = BBS2MPI::newbuf(100);
@@ -207,7 +207,7 @@ void BBSDirect::pkbegin()
 void BBSDirect::pkint(int i)
 {
 #if DEBUG
-//printf("%d BBSDirect::pkint %d\n", ParSpike::my_rank, i);
+ std::cout <<  ParSpike::my_rank << " BBSDirect::pkint " <<  i << std::endl;
 #endif
     BBS2MPI::pkint(i, sendbuf_);
 }
@@ -215,7 +215,7 @@ void BBSDirect::pkint(int i)
 void BBSDirect::pkdouble(double x)
 {
 #if DEBUG
-//printf("%d BBSDirect::pkdouble\n", ParSpike::my_rank, x);
+ std::cout <<  ParSpike::my_rank << "BBSDirect::pkdouble"  <<  x << std::endl;
 #endif
     BBS2MPI::pkdouble(x, sendbuf_);
 }
@@ -223,7 +223,7 @@ void BBSDirect::pkdouble(double x)
 void BBSDirect::pkvec(int n, double* x)
 {
 #if DEBUG
-//printf("%d BBSDirect::pkvec n=%d\n", ParSpike::my_rank, n);
+ std::cout <<  ParSpike::my_rank << " BBSDirect::pkvec n=" <<  n << std::endl;
 #endif
     BBS2MPI::pkvec(n, x, sendbuf_);
 }
@@ -231,7 +231,7 @@ void BBSDirect::pkvec(int n, double* x)
 void BBSDirect::pkstr(const char* s)
 {
 #if DEBUG
-//printf("%d BBSDirect::pkstr %s\n", ParSpike::my_rank, s);
+ std::cout <<  ParSpike::my_rank << "BBSDirect::pkstr" << std::endl;
 #endif
     BBS2MPI::pkstr(s, sendbuf_);
 }
@@ -287,7 +287,7 @@ int BBSDirect::look_take_todo()
 #endif
     }
 #if DEBUG
-//printf("%d BBSDirect::look_take_todo id=%d\n", ParSpike::my_rank, id);
+ std::cout <<  ParSpike::my_rank << " BBSDirect::look_take_todo id=" <<  id << std::endl;
 #endif
     return id;
 }
@@ -316,7 +316,7 @@ int BBSDirect::look_take_result(int pid)
         BBS2MPI::upkbegin(recvbuf_);
     }
 #if DEBUG
-//printf("%d look_take_result return id=%d\n", ParSpike::my_rank, id);
+ std::cout <<  ParSpike::my_rank << " look_take_result return id=" <<  id << std::endl;
 #endif
     return id;
 }
@@ -412,7 +412,7 @@ void BBSDirect::done()
 #endif
     for (i = 1; i < ParSpike::numprocs; ++i) {
         BBS2MPI::bbssend(i, QUIT, sendbuf_);
-//printf("kill %d\n", i);
+printf("kill %d\n", i);
     }
     BBSDirectServer::server_->done();
 }

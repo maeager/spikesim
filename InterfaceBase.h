@@ -100,7 +100,7 @@ public:
     virtual ~NeuronInterface() {}
     virtual const Volt & potential() const = 0;
     virtual void apply_visitor(AbstractVisitor & vis) = 0;
-    virtual void update() = 0; // XXX passer en protected
+    virtual void update() = 0; //  passer en protected
     // bool operator==( const std::list<NeuronInterface*>::const_iterator& itRHS)
     //{return(itLHS == itRHS);}
     //bool operator!=(const std::list<NeuronInterface*>::const_iterator& itRHS)

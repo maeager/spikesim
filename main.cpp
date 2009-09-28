@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
             RandomGenerator::reinit();
 
         // start of the simulation
-        Engine<NoThreading> engine;
+        Engine<MPIEngine> engine;
 
         engine.init(net);
         engine.launch_sim(net);

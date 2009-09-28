@@ -73,7 +73,7 @@ protected:
         group_list_.push_back(gp);
     }
 
-    //! Do nothing - called for SingleWayThroughGroups so far XXX
+    //! Do nothing - called for SingleWayThroughGroups so far 
     template <class OutputOperation, class FileWrapper>
     void export_ID(OutputOperation * const output_operation, FileWrapper * const file_wrapper) {
     }
