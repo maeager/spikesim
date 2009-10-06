@@ -21,6 +21,7 @@ DiscreteTime SimEnv::i_duration_ = 1;
 unsigned SimEnv::i_max_delay_ = 1;
 DiscreteTime SimEnv::i_time_ = 0;
 Time SimEnv::sim_time_ = 0.;
+Time SimEnv::tstop_ = 1;
 Time SimEnv::plasticity_effective_start_time_ = 0.;
 long SimEnv::random_init_seed_ = 1;
 bool SimEnv::reinit_random_before_sim_ = false;
@@ -42,6 +43,7 @@ void SimEnv::set(std::ifstream & is)
     READ_FROM_FILE(is, duration, "duration", "SimEnv")
     if (duration <= 0) throw ConfigError("SimEnv: duration must be >0");
     i_duration_ = (DiscreteTime)(ceil(duration / timestep_));
+	tstop_ = timestep_ *  (Time)(i_duration_); 
 
     // max value for the synaptic delays
     // the '+1' is incoporated

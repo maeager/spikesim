@@ -427,10 +427,10 @@ if (!isdir("/usr/lib/python2.5")) {
     }
     delete [] buf;
     delete [] path;
-    //printf("PYTHONHOME %s\n", getenv("PYTHONHOME"));
+    std::cout<< " PYTHONHOME  " <<  getenv("PYTHONHOME")<< std::endl;
 }
 #endif
-//printf("p_nrnpython_start = %lx\n", p_nrnpython_start);
+std::cout<< " p_nrnpython_start =  " <<  p_nrnpython_start<< std::endl;
 if (p_nrnpython_start) {
     (*p_nrnpython_start)(1);
 }

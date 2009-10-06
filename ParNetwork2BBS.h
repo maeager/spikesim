@@ -132,12 +132,9 @@ public:
     ConfigBase* gid_connect(int gid, ConfigBase*);
 
 
-
     void pack_help(int);
     void unpack_help(int);
     char* key_help();
-
-
 
 public:
     static bool posting_;

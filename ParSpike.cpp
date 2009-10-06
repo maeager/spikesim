@@ -48,13 +48,12 @@ void ParSpike::init(int mpi_control, int* pargc, char*** pargv)
     mpi_use = 1;
     under_mpi_control_ = mpi_control;
     if (under_mpi_control_) {
-#if DEBUG
-        {int i;
+#ifdef DEBUG
+
             std::cout << "init: argc=" << *pargc << std::endl;
             for (i = 0; i < *pargc; ++i) {
                 std::cout << i << "|" << (*pargv)[i] << "|" << std::endl;
             }
-        }
 #endif
 
         MPI_Initialized(&flag);
@@ -75,7 +74,7 @@ void ParSpike::init(int mpi_control, int* pargc, char*** pargv)
     spike_initialize();
     /*begin instrumentation*/
 
-#if DEBUG
+#ifdef DEBUG
     {int i;
         if (my_rank == 0) {
             std::cout << "init: argc=" << *pargc << std::endl;
@@ -165,14 +164,14 @@ double ParSpike::wtime()
 void ParSpike::terminate()
 {
 
-#if DEBUG
+#ifdef DEBUG
     std::cout << "terminate: rank " << my_rank << std::endl;
 #endif
     if (under_mpi_control_) {
         MPI_Finalize();
     }
     mpi_use = 0;
-#if DEBUG
+#ifdef DEBUG
 //      BBS2MPI::checkbufleak();
 #endif
 

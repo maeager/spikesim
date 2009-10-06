@@ -199,7 +199,6 @@ void ParallelNetManager::set_maxstep()
 
 void ParallelNetManager::maxstepsize()
 {
-    int i, m;
     std::string s;
     if (!maxstepsize_called_) {
         maxstepsize_called_ = 1;
@@ -398,7 +397,7 @@ void ParallelNetManager::create_network(ParNetwork&net)
             i != net.gp_list_.end();
             ++i)
         (*i)->create_population();
-
+    net.build_cell_list();
 }
 
 void ParallelNetManager::connect_network(ParNetwork&net, bool no_output = false)

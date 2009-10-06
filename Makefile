@@ -1,6 +1,6 @@
 
-CXX = /opt/gcc-3.4.4/bin/c++
-MPICXX = /opt/mpich/ch-p4/bin/mpicxx
+#CXX = /opt/gcc-3.4.4/bin/c++
+MPICXX = /home/eagerm/mpich2-1/bin/mpicxx
 CXX = $(MPICXX)
 CXXFLAGS = -Wall -I/usr/local -I/opt/mpich/ch-p4/include -DPARALLELSIM -DDEBUG  -DCPPMPI
 # LDFLAGS = -L/opt/mpich/ch-p4/lib -lmpich

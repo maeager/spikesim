@@ -7,6 +7,7 @@
 
 #include "Visitor.h"
 
+#include <string>
 
 //! ConfigBase: common interface for all configurators.
 /*! Abstract class. It is visitable (method apply_vis to define in all the derived classes) and non copyable.
@@ -18,6 +19,8 @@ public:
     virtual ~ConfigBase() {}
     //! Accept method for visitors (cf. AbstractVisitor and Visitor).
     virtual void apply_vis(AbstractVisitor &) = 0;
+    int gid,index;
+    std::string name;
 protected:
     //! Constructor.
     /*! Protected constructor, can only be called by derived classes.

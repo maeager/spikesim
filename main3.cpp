@@ -21,7 +21,7 @@ main(int argc, char *argv[])
     Size ncells = 0, ngroups = 0;
     ParallelNetManager pnm(argc, argv);
     ParNetwork net;
-
+    /*
 
     std::cout << "[info] press any key at end of execution to close this window" << std::endl << std::endl;
     // construction of the network, initialisation of the simulation environment, etc.
@@ -39,7 +39,7 @@ main(int argc, char *argv[])
         std::cin.get();
         return EXIT_FAILURE;
     }
-    /*testing*/ pnm.pc->barrier(); if (pnm.myid == 0) {
+     pnm.pc->barrier(); if (pnm.myid == 0) {
         std::cout << "Hit Enter to continue" << std::endl; std::cin.get();
     }
 
@@ -82,7 +82,7 @@ main(int argc, char *argv[])
     OutputManager::do_output("end_sim");
     OutputManager::close_all();
 
-
+*/
     // memory cleaning
 
     std::cout << "Hello World! I am " << pnm.myid << " of " << pnm.nhost << std::endl;

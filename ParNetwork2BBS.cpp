@@ -1,3 +1,7 @@
+/*
+  This file is based directly on NEURON's "src/parallel/ocbbs.cpp"
+  */
+
 
 #ifdef CPPMPI
 #include "ParSpike.2.h"
@@ -57,31 +61,28 @@ int ParNetwork2BBS::submit_help()
     } else {
         bbs->pkint((id = --bbs->next_local_));
     }
-    /*
-        if (ifarg(i+1)) {
-            int argtypes = 0;
-            int ii = 1;
-            //if (hoc_is_str_arg(i)) {
-            if (char **c = boost::any_cast<char*> (&bbsbuf[i]))
-                style = 1;
-                bbs->pkint(style); // "fname", arg1, ... style
-            }else if(ConfigBase *b = boost::any_cast<ConfigBase> (&bbsbuf[i])) {
-                style = 2;
-                bbs->pkint(style); // [object],"fname", arg1, ... style
-                //Object* ob = *hoc_objgetarg(i++);
-                i++;
-                bbs->pkstr(b->name);
-                bbs->pkint(b->index);
-    //printf("ob=%s\n", hoc_object_name(ob));
-            }
-            std::string *s = boost::any_cast<std::string> (&bbsbuf[i++])
+    if (ifarg(i+1)) {
+	int argtypes = 0;
+	int ii = 1;
+	if (char **c = boost::any_cast<char*> (&bbsbuf[i])){
+	     style = 1;
+	     bbs->pkint(style); // "fname", arg1, ... style
+	}else if(ConfigBase *b = boost::any_cast<ConfigBase> (&bbsbuf[i])) {
+	     style = 2;
+	     bbs->pkint(style); // [object],"fname", arg1, ... style
+	    //Object* ob = *hoc_objgetarg(i++);
+	     i++;
+	    bbs->pkstr(b->name.c_str());
+	    bbs->pkint(b->index);
+    //std::cout<< " ob= " <<  hoc_object_name(ob)<< std::endl;
+	}
+	std::string *s = boost::any_cast<std::string> (&bbsbuf[i++]);
             bbs->pkstr(s->c_str());
             firstarg = i;
             for (; ifarg(i); ++i) { // first is least significant
-    //          if (hoc_is_double_arg(i)) {
-        if (double *d = boost::any_cast<double> (&bbsbuf[i])) {
+		if (double *d = boost::any_cast<double> (&bbsbuf[i])) {
                     argtypes += 1*ii;
-                }else if (std::string *s = boost::any_cast<std::string> (&bbsbuf[i++])){//hoc_is_str_arg(i)) {
+		}else if (std::string *s = boost::any_cast<std::string> (&bbsbuf[i++])){
                     argtypes += 2*ii;
                 }else{ // must be a Vector
                     argtypes += 3*ii;
@@ -89,17 +90,18 @@ int ParNetwork2BBS::submit_help()
                 ii *= 4;
             }
     //printf("submit style %d %s argtypes=%o\n", style, gargstr(firstarg-1), argtypes);
-            bbs->pkint(argtypes);
-            pack_help(firstarg, bbs);
+    //        bbs->pkint(argtypes);
+    //        pack_help(firstarg, bbs);
 
+	    bbs->pkint(argtypes);
+	    pack_help(firstarg);
         }else{
             bbs->pkint(0); // hoc statement style
-            bbs->pkstr(std::string *s = boost::any_cast<std::string> (&bbsbuf[i++]));//gargstr(i));
+	    std::string* s = boost::any_cast<std::string> (&bbsbuf[i++]);
+	    bbs->pkstr(s->c_str());//gargstr(i));
         }
-        posting_ = false;
-        return id;
-        }
-    */
+    posting_ = false;
+    return id;
 }
 
 double ParNetwork2BBS::submit()
@@ -113,8 +115,10 @@ double ParNetwork2BBS::submit()
 double ParNetwork2BBS::context()
 {
     submit_help();
-//  printf("%d context %s %s\n", bbs->myid(), hoc_object_name(*hoc_objgetarg(1)), gargstr(2));
-    bbs->context();
+#ifdef DEBUG
+std::cout << bbs->myid() <<" ParNetwork2BBS::context " <<std::endl; //<<gargstr(2)
+#endif
+bbs->context();
     return 1.;
 }
 
@@ -163,12 +167,11 @@ void ParNetwork2BBS::pack_help(int i)
         posting_ = true;
     }
     for (; ifarg(i); ++i) {
-        //if (hoc_is_double_arg(i)) {
         if (int *a = getint(i)) {
             bbs->pkint(*a);
         } else if (double *d = getval(i)) {
             bbs->pkdouble(*d);
-        } else if (std::string *s = getstr(i)) {//if (hoc_is_str_arg(i)) {
+	} else if (std::string *s = getstr(i)) {
             bbs->pkstr(s->c_str());
         } else {
             if (std::vector<double> *vec = getvec(i)) {
@@ -200,15 +203,10 @@ void ParNetwork2BBS::unpack_help(int i)
     std::vector<double> *vec;
     for (; ifarg(i); ++i) {
         if (double *pdouble = getval(i)) {
-//      if (hoc_is_pdouble_arg(i)) {
             *pdouble = bbs->upkdouble();
-//          *hoc_pgetarg(i) = bbs->upkdouble();
         } else if (std::string *ps = getstr(i)) {
-//      }else if (hoc_is_str_arg(i)) {
             char* s = bbs->upkstr();
-//          char** ps = hoc_pgargstr(i);
             *ps = s;
-//          hoc_assign_str(ps, s);
             delete [] s;
         } else {
             if ((vec = getvec(i))) {
@@ -216,7 +214,6 @@ void ParNetwork2BBS::unpack_help(int i)
                 vec->resize(n);
                 bbs->upkvec(n, &(*vec)[0]);
             }
-            /**/
         }
     }
 
@@ -253,13 +250,12 @@ double ParNetwork2BBS::upkvec(std::vector<double>* vec)
 char* ParNetwork2BBS::key_help()
 {
 
-//  if (hoc_is_str_arg(1)) {
     if (std::string *s = getstr(1)) {
         return &(*s)[0]; //sgargstr(1);
     } else {
         if (char **c = boost::any_cast<char*>(&bbsbuf[1])) return * c;
     }
-    std::cout << "key_help Error" << std::endl;
+    std::cout << id() << " key_help Error" << std::endl;
     return 0;
 }
 
@@ -460,7 +456,7 @@ double ParNetwork2BBS::target_var(void*)   // &target_variable, source_global_in
 
 double ParNetwork2BBS::setup_transfer(void*)   // after all source/target and before init and run
 {
-//  bbs->setup_transfer();
+//    bbs->setup_transfer();
     return 0.;
 }
 
@@ -481,10 +477,8 @@ double ParNetwork2BBS::barrier()
 double ParNetwork2BBS::allreduce(double val , int type)
 {
     // type 1,2,3 sum, max, min
-//  double val = *getval(1);
 
     if (bbs->numprocs > 1) {
-//      int type = *getint(2);
         val = bbs->dbl_allreduce(val, type);
     }
     errno = 0;
@@ -495,14 +489,12 @@ double ParNetwork2BBS::allgather(double val, std::vector<double> *vec)
 {
 
     vec->resize(bbs->numprocs);
-
     if (bbs->numprocs > 1) {
         bbs->dbl_allgather(&val, &(*vec)[0], 1);
         errno = 0;
     } else {
         (*vec)[0] = val;
     }
-
     return 0.;
 }
 
@@ -512,7 +504,7 @@ double ParNetwork2BBS::alltoall(std::vector<double> *vsrc, std::vector<double> *
     ns = vsrc->capacity();
 
     if (vscnt->capacity() != np) {
-        throw ConfigError("alltoall(): size of source counts vector is not nhost");
+	throw ConfigError("ParNetwork2BBS::alltoall(): size of source counts vector is not nhost");
     }
 
     int* scnt = new int[np];
@@ -523,7 +515,7 @@ double ParNetwork2BBS::alltoall(std::vector<double> *vsrc, std::vector<double> *
         sdispl[i+1] = sdispl[i] + scnt[i];
     }
     if (ns != sdispl[np]) {
-        throw ConfigError("alltoall(): sum of source counts is not the size of the src vector");
+	throw ConfigError("ParNetwork2BBS::alltoall(): sum of source counts is not the size of the src vector");
     }
 
 
@@ -552,7 +544,7 @@ double ParNetwork2BBS::alltoall(std::vector<double> *vsrc, std::vector<double> *
 double ParNetwork2BBS::broadcast(std::string s, int srcid)
 {
     if (srcid >=  bbs->numprocs || srcid < 0) {
-        throw ConfigError("broadcast(): srcid is not in numprocs range");
+	throw ConfigError("ParNetwork2BBS::broadcast(): srcid is not in numprocs range");
     }
     int cnt = 0;
     std::string *ss;
@@ -713,7 +705,7 @@ void BBSImpl::execute_helper()
                 if (style == 2) { // object first
                     s = upkstr(); // template name
                     i = upkint(); // object index
-        //printf("template |%s| index=%d\n", s, i);
+        std::cout<< " template | " <<  s<< " | index=" <<  i<< std::endl;
                     Symbol* sym = hoc_lookup(s);
                     if (sym) {
                         sym = hoc_which_template(sym);
@@ -741,7 +733,7 @@ void BBSImpl::execute_helper()
                     s = upkstr();
                     fname = hoc_lookup(s);
                 }
-        //printf("execute helper style %d fname=%s obj=%s\n", style, fname->name, hoc_object_name(ob));
+        std::cout<< " execute helper style  " <<  style<< "  fname=" <<  fname->name << " obj=" <<  hoc_object_name(ob)<< std::endl;
                 if (!fname) {
         fprintf(stderr, "%s not a function in %s\n", s, hoc_object_name(ob));
         hoc_execerror("ParallelContext execution error", 0);
@@ -751,18 +743,18 @@ void BBSImpl::execute_helper()
                     ++narg;
                     if (i == 1) {
                         double x = upkdouble();
-        //printf("arg %d scalar %g\n", narg, x);
+        std::cout<< " arg  " <<  narg<< "  scalar " <<  x<< std::endl;
                         hoc_pushx(x);
                     }else if (i == 2) {
                         sarg[ns] = upkstr();
-        //printf("arg %d string |%s|\n", narg, sarg[ns]);
+        std::cout<< " arg  " <<  narg<< "  string |" <<  sarg[ns] << "|"<< std::endl;
                         hoc_pushstr(sarg+ns);
                         ns++;
                     }else{
                         int n;
                         n = upkint();
                         std::vector<double> vec(n);
-        //printf("arg %d vector size=%d\n", narg, n);
+        std::cout<< " arg  " <<  narg<< "  vector size=" <<  n<< std::endl;
                         upkvec(n, vec);
                         hoc_pushobj(vec->temp_objvar());
                     }

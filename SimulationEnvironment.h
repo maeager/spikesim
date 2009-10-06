@@ -32,7 +32,7 @@ public:
         return timestep_;
     }
     static inline const Time & tstop() {
-      return timestep_*((double)i_duration_);
+      return tstop_;
     }
     static inline const DiscreteTime & i_duration() {
         return i_duration_;
@@ -60,6 +60,7 @@ public:
 private:
     // sim time related constants
     static Time timestep_; // time step of the simulation (in seconds)
+    static Time tstop_; // duration of the simulation (in seconds)
     static DiscreteTime i_duration_; // duration of the simulation in timesteps
     static unsigned i_max_delay_; // maximum delay in timesteps
     static DiscreteTime i_time_; // current discretised time during the simulation in timesteps

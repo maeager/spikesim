@@ -3,7 +3,7 @@
 #include "SimulationEnvironment.h"
 //#include "ParSpike.h"
 //#include "ParNetwork.h"
-//#include "BBS.h"
+#include "BBS.h"
 //#include "ParNetwork2BBS.h"
 
 #include "AnyBuf.h"
@@ -158,17 +158,19 @@ void NetPar::nrn_outputevent(unsigned char localgid, double firetime)
     }
     spfixout_[i++] = (unsigned char)((firetime - t_exchange_) * dt1_ + .5);
     spfixout_[i] = localgid;
-printf("%d idx=%d lgid=%d firetime=%g t_exchange_=%g [0]=%d [1]=%d\n", my_rank, i, (int)localgid, firetime, t_exchange_, (int)spfixout_[i-1], (int)spfixout_[i]);
+#ifdef DEBUG
+    std::cout << ParSpike::my_rank << " idx="<< i<<" lgid="<< (int)localgid<<" firetime="<<firetime<<" t_exchange_="<<t_exchange_<<" [0]="<<(int)spfixout_[i-1]<<" [1]="<< (int)spfixout_[i] << std::endl;
+#endif
 }
 
 
 void NetPar::nrn2ncs_outputevent(int gid, double firetime)
 {
-  int i;
     if (!active_) {
         return;
     }
     SpikePacket_* temp;
+    int i,idx;
     if (use_compress_) {
         nout_++;
         i = idxout_;
@@ -177,14 +179,16 @@ void NetPar::nrn2ncs_outputevent(int gid, double firetime)
             spfixout_capacity_ *= 2;
             spfixout_.resize(spfixout_capacity_);
         }
-	printf("%d nrnncs_outputevent %d %.20g %.20g %d\n", my_rank, gid, firetime, t_exchange_,(int)((unsigned char)((firetime - t_exchange_)*dt1_ + .5)));
-        spfixout_[i++] = (unsigned char)((firetime - t_exchange_) * dt1_ + .5);
-	printf("%d idx=%d firetime=%g t_exchange_=%g spfixout=%d\n", my_rank, i, firetime, t_exchange_, (int)spfixout_[i-1]); 
+#ifdef DEBUG
+std::cout << ParSpike::my_rank << " nrnncs_outputevent "<<gid<<" " << firetime <<" "<< t_exchange_ <<" "<<(int)((unsigned char)((firetime - t_exchange_)*dt1_ + .5))<< std::endl;
+#endif
+	spfixout_[i++] = (unsigned char)((firetime - t_exchange_) * dt1_ + .5);
+std::cout<<  my_rank <<" idx= " <<  i<< "  firetime=" <<  firetime <<" t_exchange_="<<  t_exchange_ << " spfixout="<< (int)spfixout_[i-1] << std::endl;
         sppk(&spfixout_[i], gid); //sppk(spfixout_+i, gid);
-	//printf("%d idx=%d gid=%d spupk=%d\n", my_rank, i, gid, spupk(&spfixin_ovfl_[i]) );//(spfixout_+i));
+//std::cout<<  my_rank <<" idx= " <<  i<< "  gid=" <<  gid <<" spupk="<<  spupk(&spfixin_ovfl_[idx]) << std::endl;//(spfixout_+i));
     } else {
 #if nrn_spikebuf_size == 0
-        int i = nout_++;
+	i = nout_++;
         if (i >= ocapacity_) {
             ocapacity_ *= 2;
             //  temp = SpikePacket_[ocapacity_];
@@ -193,11 +197,11 @@ void NetPar::nrn2ncs_outputevent(int gid, double firetime)
             //  spikeout_ =temp;temp=0;
             spikeout_.resize(ocapacity_);
         }
-printf("%d cell %d in slot %d fired at %g\n", my_rank, gid, i, firetime);
+std::cout<<  my_rank <<" cell  " <<  gid<< "  in slot " <<  i <<" fired at "<<  firetime << std::endl;
         spikeout_[i].gid = gid;
         spikeout_[i].spiketime = firetime;
 #else
-        int i = nout_++;
+	i = nout_++;
         if (i >= nrn_spikebuf_size) {
             i -= nrn_spikebuf_size;
             if (i >= ocapacity_) {
@@ -216,7 +220,7 @@ printf("%d cell %d in slot %d fired at %g\n", my_rank, gid, i, firetime);
         }
 #endif
     }
-printf("%d cell %d in slot %d fired at %g\n", my_rank, gid, i, firetime);
+std::cout<<  my_rank <<" cell  " <<  gid<< "  in slot " <<  i <<" fired at "<<  firetime << std::endl;
 }
 
 
@@ -260,13 +264,15 @@ void NetPar::calc_actual_mindelay() {
 */
 void NetPar::spike_exchange_init()
 {
-printf("nrn_spike_exchange_init\n");
+#ifdef DEBUG
+std::cout <<"NetPar::spike_exchange_init" <<std::endl;
+#endif
     if (!nrn_need_npe()) {
         return;
     }
 //  if (!active_ && !nrn_use_selfqueue_) { return; }
     alloc_space();
-    //printf("use=%d active=%d\n", use, active_);
+//std::cout<< " use= " <<  use<< "  active=" <<  active_<< std::endl;
     //calc_actual_mindelay();
     usable_mindelay_ = mindelay_;
     if (cvode_active_ == 0) {//&& nrn_nthread > 1) {
@@ -274,7 +280,7 @@ printf("nrn_spike_exchange_init\n");
     }
     if ((usable_mindelay_ < 1e-9) || (cvode_active_ == 0 && usable_mindelay_ < SimEnv::timestep())) {
         if (my_rank == 0) {
-            std::cerr << "usable mindelay is 0 (or less than dt for fixed step method) \n";
+	    std::cerr << "usable mindelay is 0 (or less than dt for fixed step method \n";
         } else {
             return;
         }
@@ -308,7 +314,9 @@ printf("nrn_spike_exchange_init\n");
     nout_ = 0;
     nsend_ = nsendmax_ = nrecv_ = nrecv_useful_ = 0;
 
-    //if (my_rank == 0){printf("usable_mindelay_ = %g\n", usable_mindelay_);}
+    if (my_rank == 0){
+    std::cout <<"usable_mindelay_ = "<< usable_mindelay_<<std::endl;
+    }
 }
 
 
@@ -337,9 +345,11 @@ void NetPar::spike_exchange()
     NetPar::wt_ = wtime() - wt;
     wt = wtime();
     errno = 0;
-//if (n > 0) {
-printf("%d nrn_spike_exchange sent %d received %d\n", my_rank, nout_, n);
-//}
+#ifdef DEBUG
+if (n > 0) {
+std::cout<<  my_rank <<" spike_exchange sent  " <<  nout_<< "  received "<<  n<< std::endl;
+}
+#endif
     nout_ = 0;
     if (n == 0) {
 #if NRNSTAT
@@ -425,7 +435,7 @@ void NetPar::spike_exchange_compressed()
     wt = wtime();
     errno = 0;
 //if (n > 0) {
-printf("%d nrn_spike_exchange sent %d received %d\n", my_rank, nout_, n);
+std::cout<<  my_rank <<" nrn_spike_exchange sent  " <<  nout_<< "  received "<<  n<< std::endl;
 //}
     nout_ = 0;
     idxout_ = 2;
@@ -646,14 +656,18 @@ void NetPar::nrn_fake_fire(int gid, double spiketime, int fake_out)
     PreSynPtr ps = gid2in_->find(gid)->second;
     if (ps) {
         assert(ps);
-printf("nrn_fake_fire %d %g\n", gid, spiketime);
-//TODO      ps->send(spiketime, net_cvode_instance);//, nrn_threads);
+#ifdef DEBUG
+std::cout << "nrn_fake_fire "<< gid <<" "<< spiketime<<std::endl;
+#endif
+	//TODO      ps->send(spiketime, net_cvode_instance);//, nrn_threads);
 #if NRNSTAT
         ++nrecv_useful_;
 #endif
     } else if (fake_out && ps) {
         assert(ps);
-printf("nrn_fake_fire fake_out %d %g\n", gid, spiketime);
+#ifdef DEBUG
+std::cout << "nrn_fake_fire fake_out " << gid <<" "<<  spiketime<< std::endl;
+#endif
 //TODO      ps->send(spiketime, net_cvode_instance);//, nrn_threads);
 #if NRNSTAT
         ++nrecv_useful_;
@@ -697,7 +711,7 @@ void BBS::set_gid2node(int gid, int nid)
     NetPar::alloc_space();
 
     if (nid == my_rank) {
-        printf("gid %d defined on %d\n", gid, my_rank);
+        std::cout<< " gid  " <<  gid<< "  defined on " <<  my_rank<< std::endl;
         //PreSyn* ps;
         if (NetPar::gid2in_->find(gid)->first)
             NetPar::gid2in_->erase(gid);//assert(!(ps = NetPar::gid2in_->find(gid)));
@@ -758,7 +772,7 @@ int BBS::gid_exists(int gid)
     PreSynPtr ps;
     NetPar::alloc_space();
     if (ps = NetPar::gid2out_->find(gid)->second) {
-printf("%d gid %d exists\n", my_rank, gid);
+std::cout<<  my_rank <<" gid  " <<  gid<< "  exists"<< std::endl;
         if (ps) {
             return (ps->output_index_ >= 0 ? 3 : 2);
         } else {
@@ -792,7 +806,7 @@ void BBS::cell()
         }
         NetCon* nc = (NetCon*)ob->u.this_pointer;
         ps = nc->src_;
-    printf("%d cell %d %s\n", my_rank, gid, (ps->ssrc_ ? ps->ssrc_->prop->dparam[6].obj : ps->osrc_));
+    std::cout<<  my_rank <<" cell  " <<  gid<<" "<<  hoc_object_name(ps->ssrc_ ? ps->ssrc_->prop->dparam[6].obj : ps->osrc_) << std::endl;
         (*gid2out_)[gid] = ps;
         ps->gid_ = gid;
         if (ifarg(3) && !chkarg(3, 0., 1.)) {
@@ -832,23 +846,23 @@ void BBS::spike_record(int gid, std::vector<double>* spikevec, std::vector<doubl
 ConfigBase* BBS::gid2obj(int gid)
 {
     ConfigBase* cell = 0;
-printf("%d gid2obj gid=%d\n", my_rank, gid);
+std::cout<<  my_rank <<" gid2obj gid= " <<  gid<< std::endl;
     PreSynPtr ps;
     assert(ps = NetPar::gid2out_->find(gid)->second);
-printf(" found\n");
+std::cout<< "  found " << std::endl;
 //  assert(ps);
 //TODO  cell = ps->ssrc_ ? ps->ssrc_->prop->dparam[6].obj : ps->osrc_;
-printf(" return %s\n", (cell));
+std::cout<< "  return  " <<  (cell)<< std::endl;
     return cell;
 }
 
 ConfigBase* BBS::gid2cell(int gid)
 {
     ConfigBase* cell = 0;
-printf("%d gid2obj gid=%d\n", my_rank, gid);
+std::cout<<  my_rank <<" gid2obj gid= " <<  gid<< std::endl;
     PreSynPtr ps;
     assert(ps = NetPar::gid2out_->find(gid)->second);
-printf(" found\n");
+std::cout<< "  found " << std::endl;
     assert(ps);
     /*TODO  if (ps->ssrc_) {
             cell = ps->ssrc_->prop->dparam[6].obj;
@@ -862,7 +876,7 @@ printf(" found\n");
             }
         }
     */
-    //printf(" return %s\n", (cell));
+//std::cout<< "  return  " <<  hoc_object_name(cell)<< std::endl;
     return cell;
 }
 
@@ -879,9 +893,9 @@ ConfigBase* BBS::gid_connect(int gid, ConfigBase* target)
         assert(ps);
     } else if ((ps = NetPar::gid2in_->find(gid)->second)) {
         // the gid stub already exists
-printf("%d connect %s from already existing %d\n", my_rank, (target), gid);
+std::cout<<  my_rank <<" connect  " <<  target->gid<< "  from already existing "<<  gid<< std::endl;
     } else {
-printf("%d connect %s from new PreSyn for %d\n", my_rank, (target), gid);
+std::cout<<  my_rank <<" connect  " <<  target->gid  << "  from new PreSyn for "<<  gid<< std::endl;
         PreSyn* ps_ = new PreSyn(nil, nil, nil);//,target);
         ps = PreSynPtr(ps_); //(nil, nil, nil);
 //TODO?     net_cvode_instance->psl_append(ps);
@@ -949,7 +963,7 @@ void BBS::netpar_solve(double tstop)
         impl_->send_time_ += NetPar::npe_[0].ws_;
         NetPar::npe_[0].wx_ = NetPar::npe_[0].ws_ = 0.;
     };
-    printf("%d netpar_solve exit t=%g tstop=%g mindelay_=%g\n",my_rank, SimEnv::sim_time(), SimEnv::tstop(), NetPar::mindelay_);
+std::cout<< my_rank <<" netpar_solve exit t= " <<  SimEnv::sim_time()<< "  tstop=" << SimEnv::i_duration()*SimEnv::timestep() <<" mindelay_="<< NetPar::mindelay_ << std::endl;
 
 //  tstopunset;
 }
@@ -1005,12 +1019,12 @@ double NetPar::set_mindelay(double maxdelay)
         }
     }
 
-printf("%d netpar_mindelay local %g now calling nrnmpi_mindelay\n", my_rank, mindelay);
+std::cout<<  my_rank <<" netpar_mindelay local  " <<  mindelay<< "  now calling nrnmpi_mindelay"<< std::endl;
 //  double st = time();
     mindelay_ = ParSpike::mindelay(mindelay_);
     min_interprocessor_delay_ = mindelay_;
 //  add_wait_time(st);
-printf("%d local min=%g  global min=%g\n", my_rank, mindelay, mindelay_);
+std::cout<<  my_rank <<" local min= " <<  mindelay<< "   global min="<<  mindelay_<< std::endl;
     if (mindelay_ < 1e-9 && nrn_use_selfqueue_) {
         nrn_use_selfqueue_ = 0;
         double od = mindelay_;
@@ -1136,7 +1150,7 @@ static void timed_out(int sig)
     printf("timed_out told=%g t=%g\n", told, t);
 #endif
     if (SimEnv::sim_time() == told) { /* nothing has been accomplished since last signal*/
-        printf("nrn_timeout t=%g\n", SimEnv::sim_time());
+        std::cout << "nrn_timeout t= " << SimEnv::sim_time() << std::endl;
         ParSpike::mpiabort(0);
     }
     told = SimEnv::sim_time();
@@ -1163,7 +1177,7 @@ void NetPar::timeout(int seconds)
         act.sa_handler = timed_out;
         act.sa_flags = SA_RESTART;
         if (sigaction(SIGALRM, &act, &oact)) {
-            std::cout << "sigaction failed\n" << std::endl;
+            std::cout << "sigaction failed" << std::endl;
             ParSpike::mpiabort(0);
         }
     } else {
@@ -1175,7 +1189,7 @@ void NetPar::timeout(int seconds)
     value.it_value.tv_sec = seconds;
     value.it_value.tv_usec = 0;
     if (setitimer(ITIMER_REAL, &value, (struct itimerval*)0)) {
-        std::cout << "setitimer failed\n" << std::endl;
+        std::cout << "setitimer failed" << std::endl;
         ParSpike::mpiabort(0);
     }
 

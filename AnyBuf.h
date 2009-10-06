@@ -74,7 +74,19 @@ static void append_char_ptr(const char * value)
     bbsbuf.push_back(to_append);
 }
 
-/*void append_any(many & values, const boost::any & value)
+/*static void print_bbsbuf()
+{
+    int i=1;
+    boost::any elem;
+    std::cout <<"[bbsbuf] ";
+    while (ifarg(i)){
+
+    bbsbuf.push_back(to_append);
+}
+}
+
+
+void append_any(many & values, const boost::any & value)
 {
     values.push_back(value);
 }

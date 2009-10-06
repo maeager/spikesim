@@ -16,7 +16,7 @@
 #include <map>
 #include <fstream>
 #include <string>
-#include<boost/shared_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "IdCounter.h"
 #include "Error.h"

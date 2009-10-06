@@ -21,9 +21,10 @@ main(int argc, char *argv[])
 #else
     ParallelNetManager pnm(&argc, &argv);
 #endif
+    std::cout << "Hello World! I am " << pnm.myid << " of " << pnm.nhost << std::endl;
 
     // TEST ParallelNetManager
-    pnm.init(100, 5);
+    //pnm.init(100, 5);
     if (pnm.myid == 0) {
         std::cout << "ncell = " << pnm.ncell << std::endl;
         std::cout << "nhost = " << pnm.nhost << std::endl;
@@ -35,7 +36,7 @@ main(int argc, char *argv[])
     pnm.load_balance_round_robin(); pnm.pc->gid_clear(); pnm.pc->barrier(); if (pnm.myid == 0) std::cin.get();
     pnm.load_balance_by_group(); pnm.pc->gid_clear();
 
-    /*TESTING ParNetwork*/
+    //TESTING ParNetwork
     ParNetwork net;
 
     Size ncells = 0, ngroups = 0;
@@ -56,9 +57,15 @@ main(int argc, char *argv[])
         std::cin.get();
         return EXIT_FAILURE;
     }
-    /*End testing*/ pnm.pc->barrier(); if (pnm.myid == 0) {
+    //End testing
+     pnm.pc->barrier();
+     if (pnm.myid == 0) {
         std::cout << "Hit Enter to continue" << std::endl; std::cin.get();
     }
+    pnm.init(ncells, ngroups);
+    pnm.load_balance_round_robin();
+    // Start Creation of network cells
+    // net.create_population();
 
 //  net.build_network();
 //s pnm.ncell = net.network_size();
@@ -66,13 +73,15 @@ main(int argc, char *argv[])
     pnm.load_balance_roulette();
     pnm.create_network(net);
 
+
+
 //Round robin is probably the most inefficient way to distribute the neurons
 //Guy from IBM said that halding all the synapse on CPUs would be better
 
 
-    std::cout << std::endl << "ParNetwork size " << net.network_size() << std::endl;
+    std::cout << pnm.myid << " ParNetwork size " << net.network_size() << std::endl;
 
-    std::cout << "simulation duration: " << (SimEnv::i_duration() * SimEnv::timestep()) << std::endl;
+/*    std::cout << "simulation duration: " << (SimEnv::i_duration() * SimEnv::timestep()) << std::endl;
     std::cout << std::endl << "[info] press any key now to start the execution" << std::endl << std::endl;
     std::cin.get();
 
@@ -95,7 +104,7 @@ main(int argc, char *argv[])
 
     // stop time clock
     long actual_stop_time = (long) time(NULL);
-    std::cout << "real-time duration of the simulation: " << (actual_stop_time - actual_start_time) << " seconds" << std::endl;
+    if (pnm.myid == 0)  std::cout << "real-time duration of the simulation: " << (actual_stop_time - actual_start_time) << " seconds" << std::endl;
 
     // additional outputs
     OutputManager::do_output("end_sim");
@@ -103,12 +112,7 @@ main(int argc, char *argv[])
 
 
     // memory cleaning
-
-    std::cout << "Hello World! I am " << pnm.myid << " of " << pnm.nhost << std::endl;
-
-
-
-
+*/
 
     pnm.pc->barrier();
     if (pnm.myid == 0) {

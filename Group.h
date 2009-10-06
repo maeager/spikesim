@@ -65,16 +65,21 @@ public:
     void clear_past_of_spike_list(const Time & time_end_past);
 
 #ifdef PARALLELSIM
+
     void par_connect_to(ParallelNetManager * const pnm, Group & targetgroup, DistributionManager * const weight_distrib_cfg, DistributionManager * const delay_distrib_cfg, ConfigBase * const syn_mech_cfg, ConfigBase * const plast_mech_cfg, ConnectivityManager * const connectivity_mgr, std::list<boost::shared_ptr<ConfigBase> > & cfg_list, Size &nb_con);
+
     typedef std::list<boost::shared_ptr<ConfigBase> > ListBaseType; /*!< Type redefinition for the list of pointers to base class. */
     typedef std::list<boost::shared_ptr<ConnectivityManager> > ListConnType; /*!< Type redefinition for the list of pointers to Conn class. */
     typedef std::list<boost::shared_ptr<DistributionManager> > ListDistrType; /*!< Type redefinition for the list of pointers to Distr Manager class. */
     ListBaseType syn_mech_cfg_, plast_mech_cfg_;
     ListConnType connectivity_cfg_;
     ListDistrType weight_distrib_cfg_, delay_distrib_cfg_;
+
     void populate_config(std::ifstream & is);
     void create_population();
+
     int id;
+
 #endif
 
 };

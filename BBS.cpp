@@ -50,7 +50,9 @@ void BBS::init(int)
     if (!BBSImpl::started_) {
 
         BBSImpl::is_master_ = (my_rank == 0) ? true : false;
-//std::cout <<  " BBS::init is_master=" <<  << " " <<  << std::endl;
+#ifdef DEBUG
+        std::cout <<  " BBS::init is_master=" << BBSImpl::is_master_ << " " << std::endl;
+#endif
     }
     // Just as with PVM which stored buffers on the bulletin board
     // so we have the following files to store MPI_PACKED buffers
@@ -422,7 +424,7 @@ void BBS::take(const char* key)   // blocking
 void BBS::done()
 {
     impl_->done();
-    //terminate();
+    terminate();
 }
 
 void BBSImpl::done()
@@ -468,26 +470,26 @@ void BBSImpl::return_args(int id)
     // but then they all would have to know this format
     int i;
     char* s;
-printf("BBSImpl::return_args(%d):\n", id);
+std::cout<< " BBSImpl::return_args( " <<  id<< " ):" << std::endl;
     i = upkint(); // userid
     int style = upkint();
-printf("message userid=%d style=%d\n", i, style);
+std::cout<< " message userid= " <<  i<< "  style=" <<  style<< std::endl;
     switch (style) {
     case 0:
         s = upkstr(); // the statement
-printf("statement |%s|\n", s);
+std::cout<< " statement | " <<  s<< " |" << std::endl;
         delete [] s;
         break;
     case 2: // obj first
         s = upkstr(); // template name
         i = upkint();   // instance index
-printf("object %s[%d]\n", s, i);
+std::cout<< " object  " <<  s<< " [" <<  i << "]"<< std::endl;
         delete [] s;
         //fall through
     case 1:
         s = upkstr(); //fname
         i = upkint(); // arg manifest
-printf("fname=|%s| manifest=%o\n", s, i);
+std::cout<<" fname="<< s <<" manifest= "<< i <<std::endl;
         delete [] s;
         break;
     }

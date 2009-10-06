@@ -54,7 +54,7 @@ public:
     void build_from_file(std::string filename, std::string logfilename = "log.dat", bool no_output = false);
     void update();
     void clear_past_of_spike_list(const Time & time_end_past);
-    void build_network();
+    void build_cell_list();
 //  ParSpike * par_;
     typedef std::map< int, SynMechInterface> Gid2PreSyn;  //Similar to NEURON's hash table for parallel program
     static Gid2PreSyn* gid2out_;
@@ -63,6 +63,7 @@ public:
     void config_from_file(std::string filename, Size & ncells, Size &ngroups, std::string logfilename = "log.dat", bool no_output = false);
     void create();
     void connect_groups();
+    void create_population();
     int network_size();
     //void psl_append(PreSynPtr p){ presyn_list.push_back(p);}
     typedef std::list< boost::shared_ptr<Conn> > ListConnType;//SynMechInterface
@@ -117,7 +118,7 @@ inline void ParNetwork::clear_past_of_spike_list(const Time & time_end_past)
 ///////////////////////////////////////////////////////////////////////////
 // Method to
 // all the groups are updates from #0 to last one
-inline void ParNetwork::build_network()
+inline void ParNetwork::build_cell_list()
 {
 //TODO Check this
     for (ListGroupType::const_iterator i = gp_list_.begin();
@@ -128,6 +129,12 @@ inline void ParNetwork::build_network()
                 ++j)
             cell_list.push_back((*j));
 
+}
+inline void ParNetwork::create_population(){
+    for (ListGroupType::const_iterator i = gp_list_.begin();
+            i != gp_list_.end();
+            ++i)
+        (*i)->create_population();
 }
 
 inline int ParNetwork::network_size()

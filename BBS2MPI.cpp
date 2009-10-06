@@ -41,15 +41,15 @@ void BBS2MPI::unpack(void* buf, int count, int my_datatype, bbsmpibuf* r, const 
     int type[2];
     assert(r);
 #ifdef DEBUG
-    printf("%d unpack upkpos=%d pkposition=%d keypos=%d size=%d\n",  ParSpike::ParSpike::my_rank, r->upkpos, r->pkposition, r->keypos, r->size);
+    std::cout << ParSpike::my_rank<< " unpack upkpos=" << r->upkpos<< " pkposition=" << r->pkposition<< " keypos="<< r->keypos<<" size="<< r->size<< std::endl;
 #endif
     assert(r->upkpos >= 0 && r->size >= r->upkpos);
     MPI_Unpack(&(r->buf[0]), r->size, &r->upkpos, type, 2, MPI_INT, bbs_comm);
 #ifdef DEBUG
-printf("%d unpack r=%lx size=%d upkpos=%d type[0]=%d datatype=%d  type[1]=%d  count=%d\n", ParSpike::my_rank, (long)r, r->size, r->upkpos, type[0], my_datatype, type[1], count);
+std::cout<<ParSpike::my_rank<<" unpack r="<< (long)r<<" size="<< r->size<<" upkpos="<< r->upkpos<<" type[0]="<< type[0]<<" datatype="<< my_datatype<<"  type[1]="<< type[1]<<"  count="<< count<<std::endl;
 #endif
     if (type[0] != my_datatype || type[1] != count) {
-printf("%d unpack size=%d upkpos=%d type[0]=%d   datatype=%d  type[1]=%d  count=%d\n", ParSpike::my_rank, r->size, r->upkpos, type[0], my_datatype, type[1], count);
+std::cout<<ParSpike::my_rank<<" unpack size="<<r->size<<" upkpos="<<r->upkpos<<" type[0]="<<type[0]<<"   datatype="<<my_datatype<<"  type[1]="<< type[1]<<"  count="<<count<<std::cout;
     }
     assert(type[0] == my_datatype);
     assert(type[1] == count);
@@ -61,14 +61,14 @@ void BBS2MPI::upkbegin(bbsmpibuf* r)
     int type;
     int p;
 #ifdef DEBUG
-printf("%d BBS2MPI::upkbegin %lx (preunpack upkpos=%d keypos=%d)\n", ParSpike::my_rank, (long)r, r->upkpos, r->keypos);
+std::cout<< ParSpike::my_rank<<" BBS2MPI::upkbegin "<<(long)r<<" (preunpack upkpos="<< r->upkpos<<" keypos="<< r->keypos<< std::endl;
 #endif
     assert(r  && r->size > 0);
     r->upkpos = 0;
     MPI_Unpack(&r->buf[0], r->size, &r->upkpos,
                &p, 1, MPI_INT, bbs_comm);
     if (p > r->size) {
-printf("\n %d BBS2MPI::upkbegin keypos=%d size=%d\n", ParSpike::my_rank, p, r->size);
+std::cout <<  ParSpike::my_rank<< "  BBS2MPI::upkbegin keypos=" <<  p << " size=" <<  r->size<< std::endl;
     }
     assert(p <= r->size);
     MPI_Unpack(&(r->buf[0]), r->size, &p, &type, 1, MPI_INT, bbs_comm);
@@ -93,7 +93,7 @@ char* BBS2MPI::getkey(bbsmpibuf* r)
     r->pkposition = r->upkpos;
     r->upkpos = type;
 #ifdef DEBUG
-printf("getkey return %s\n", s);
+std::cout<< " getkey return  " <<  s<< std::endl;
 #endif
     return s;
 }
@@ -109,7 +109,7 @@ int BBS2MPI::getid(bbsmpibuf* r)
     i = BBS2MPI::upkint(r);
     r->upkpos = type;
 #ifdef DEBUG
-printf("getid return %d\n", i);
+std::cout<< " getid return  " <<  i<< std::endl;
 #endif
     return i;
 }
@@ -183,7 +183,9 @@ void BBS2MPI::enddata(bbsmpibuf* r)
 #endif
     MPI_Pack(&type, 1, MPI_INT, &(r->buf[0]), r->size, &r->pkposition, bbs_comm);
 #ifdef DEBUG
- std::cout <<  ParSpike::my_rank << " BBS2MPI::enddata buf=" <<  r->buf << " size=" <<  r->size << " pkposition=" <<  r->pkposition << std::endl;
+ std::cout <<  ParSpike::my_rank << " BBS2MPI::enddata buf=";
+for(register int i=0; i<r->buf.size(); i++) std::cout << r->buf[i];
+ std::cout<< " size=" <<  r->size << " pkposition=" <<  r->pkposition << std::endl;
 #endif
     MPI_Pack(&p, 1, MPI_INT, &(r->buf[0]), r->size, &type, bbs_comm);
 #ifdef DEBUG
@@ -196,7 +198,9 @@ void BBS2MPI::pack(void* inbuf, int incount, int my_datatype, bbsmpibuf* r, cons
     int type[2];
     int dsize, isize, oldsize;
 #ifdef DEBUG
-printf("%d pack %lx count=%d type=%d outbuf-%lx pkposition=%d %s\n", ParSpike::my_rank, (long)r, incount, my_datatype, r->buf, r->pkposition, e);
+std::cout<< ParSpike::my_rank<<" pack "<< (long)r<< " count="<<incount<<" type="<<my_datatype<<" outbuf-";
+for (register int i=0; i< r->buf.size();i++) std::cout<< r->buf[i];
+std::cout<<" pkposition=" << r->pkposition << " " << e << std::endl;
 #endif
     MPI_Pack_size(incount, mytypes[my_datatype], bbs_comm, &dsize);
     MPI_Pack_size(2, MPI_INT, bbs_comm, &isize);
@@ -245,7 +249,7 @@ void BBS2MPI::pkstr(const char* s, bbsmpibuf* r)
 void BBS2MPI::bbssend(int dest, int tag, bbsmpibuf* r)
 {
 #ifdef DEBUG
-std::cout <<  ParSpike::my_rank << " BBS2MPI::bbssend " <<  (long)r << " dest=" <<  dest << " tag=" <<  tag << " size=" <<  (r)?r->upkpos:0  << std::endl;
+std::cout <<  ParSpike::my_rank << " BBS2MPI::bbssend " <<  (long)r << " dest=" <<  dest << " tag=" <<  tag << " size=" <<  (int)((r)?r->upkpos:0)  << std::endl;
 #endif
     if (r) {
         assert(r->keypos <= r->size);
@@ -267,7 +271,7 @@ int BBS2MPI::bbsrecv(int source, bbsmpibuf* r)
         source = MPI_ANY_SOURCE;
     }
 #ifdef DEBUG
- std::cout <<  ParSpike::my_rank << " BBS2MPI::bbsrecv " <<  (long)r << std::endl;
+ std::cout <<  ParSpike::my_rank << " BBS2MPI::bbsrecv " << std::endl;
 #endif
     MPI_Probe(source, MPI_ANY_TAG, bbs_comm, &status);
     MPI_Get_count(&status, MPI_PACKED, &size);

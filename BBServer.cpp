@@ -4,6 +4,8 @@
 #include <map>
 #include <set>
 #include <utility>
+
+#include <string.h>
 #include <errno.h>
 
 #include "BBS.h"
@@ -412,7 +414,7 @@ void BBSDirect::done()
 #endif
     for (i = 1; i < ParSpike::numprocs; ++i) {
         BBS2MPI::bbssend(i, QUIT, sendbuf_);
-printf("kill %d\n", i);
+std::cout<< "BBSDirect::done killing  " <<  i<< std::endl;
     }
     BBSDirectServer::server_->done();
 }

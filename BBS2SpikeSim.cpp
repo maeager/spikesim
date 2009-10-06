@@ -40,8 +40,7 @@ void BBS2SpikeSim::unpack(void* buf, int count, int my_datatype, bbsmpibuf* r, c
     int type[2];
     assert(r);
 #if debug
-//printf("%d unpack upkpos=%d pkposition=%d keypos=%d size=%d\n",
-//  mpi_rank, r->upkpos, r->pkposition, r->keypos, r->size);
+std::cout<<  mpi_rank <<" unpack upkpos= " <<  r->upkpos<< "  pkposition=" <<  r->pkposition <<" keypos="<<  r->keypos << " size="<< r->size << std::endl;
 #endif
     assert(r->upkpos >= 0 && r->size >= r->upkpos);
     MPI_Unpack(&(r->buf[0]), r->size, &r->upkpos, type, 2, MPI_INT, bbs_comm);
@@ -68,7 +67,7 @@ void BBS2SpikeSim::upkbegin(bbsmpibuf* r)
     MPI_Unpack(&r->buf[0], r->size, &r->upkpos,
                &p, 1, MPI_INT, bbs_comm);
     if (p > r->size) {
-//printf("\n %d BBS2SpikeSim::upkbegin keypos=%d size=%d\n", mpi_rank, p, r->size);
+std::cout<< " \n  " <<  mpi_rank<< "  BBS2SpikeSim::upkbegin keypos=" <<  p << " size=" <<  r->size<< std::endl;
     }
     assert(p <= r->size);
     MPI_Unpack(&(r->buf[0]), r->size, &p, &type, 1, MPI_INT, bbs_comm);
@@ -93,7 +92,7 @@ char* BBS2SpikeSim::getkey(bbsmpibuf* r)
     r->pkposition = r->upkpos;
     r->upkpos = type;
 #if debug
-//printf("getkey return %s\n", s);
+std::cout<< " getkey return  " <<  s<< std::endl;
 #endif
     return s;
 }
@@ -109,7 +108,7 @@ int BBS2SpikeSim::getid(bbsmpibuf* r)
     i = BBS2SpikeSim::upkint(r);
     r->upkpos = type;
 #if debug
-//printf("getid return %d\n", i);
+std::cout<< " getid return  " <<  i<< std::endl;
 #endif
     return i;
 }

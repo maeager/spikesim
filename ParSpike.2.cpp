@@ -51,47 +51,43 @@ void ParSpike::init(int mpi_control, int& pargc, char**& pargv)
     mpi_use = 1;
     under_mpi_control_ = mpi_control;
     if (under_mpi_control_) {
-#if DEBUG
-        {int i;
+#ifdef DEBUG
             std::cout << "init: argc=" << pargc << std::endl;
             for (i = 0; i < pargc; ++i) {
                 std::cout << i << "|" << (pargv)[i] << "|" << std::endl;
             }
-        }
+            std::cout << "Starting MPI::Init" << std::endl;
 #endif
 
-        //MPI_Initialized(&flag);
-        //if (!flag && MPI_Init(pargc, pargv) != MPI_SUCCESS) {
         MPI::Init(pargc, pargv);
         flag = MPI::Is_initialized();
+
         if (flag == MPI::SUCCESS) {
-            std::cout << "MPI_INIT failed" << std::endl;
-        }
+            std::cout << "MPI::INIT failed, flag = "<<flag << std::endl;
+        }else {
+            std::cout << "MPI::Init succeeded, flag = "<<flag << std::endl;
+	}
         mpi_comm = MPI::COMM_WORLD;
         //MPI_Comm_dup(MPI_COMM_WORLD, &mpi_comm);
     }
     bbs_comm = mpi_comm.Dup();
-    //MPI_Comm_dup(mpi_comm, &bbs_comm);
-    //if (MPI_Comm_rank(mpi_comm, &my_rank) != MPI_SUCCESS) {
-    if ((my_rank = mpi_comm.Get_rank()) != MPI::SUCCESS) {
-        std::cout << "MPI_Comm_rank failed" << std::endl;
-    }
-    //if (MPI_Comm_size(mpi_comm, &numprocs) != MPI_SUCCESS) {
-    if ((numprocs = mpi_comm.Get_size()) != MPI::SUCCESS) {
-        std::cout << "MPI_Comm_size failed" << std::endl;
-    }
+    my_rank = mpi_comm.Get_rank();
+    std::cout << "MPI_Comm::Get_rank my_rank = " << my_rank << std::endl;
+    numprocs = mpi_comm.Get_size();
+    std::cout << "MPI_Comm::Get_size, numprocs = " << numprocs << std::endl;
+
     spike_initialize();
     /*begin instrumentation*/
 
-#if DEBUG
-    {int i;
+#ifdef DEBUG
+    
         if (my_rank == 0) {
             std::cout << "init2: argc=" << pargc << std::endl;
             for (i = 0; i < pargc; ++i) {
                 std::cout << i << " |" << (pargv)[i]  << "| " << std::endl;
             }
         }
-    }
+    
 #endif
 
     if (my_rank == 0) {
@@ -107,29 +103,10 @@ void ParSpike::init(int mpi_control, int& pargc, char**& pargv)
 
 void ParSpike::make_spike_type()
 {
-    /*      SpikePacket_ s;
-            int block_lengths[2];
-            MPI_Aint displacements[2];
-            MPI_Aint addresses[3];
-            MPI_Datatype typelist[2];
+#ifdef DEBUG
+    std::cout << my_rank << " : make_spike_type"  << std::endl;
+#endif
 
-            typelist[0] = MPI_INT;
-            typelist[1] = MPI_DOUBLE;
-
-            block_lengths[0] = block_lengths[1] = 1;
-
-            MPI_Address(&s, &addresses[0]);
-            MPI_Address(&(s.gid), &addresses[1]);
-            MPI_Address(&(s.spiketime), &addresses[2]);
-
-            displacements[0] = addresses[1] - addresses[0];
-            displacements[1] = addresses[2] - addresses[0];
-
-            MPI_Type_struct(2, block_lengths, displacements, typelist, &spike_type);
-            MPI_Type_commit(&spike_type);
-
-            MPI_Op_create((MPI_User_function*)pgvts_op, 1, &mpi_pgvts_op);
-    */
     SpikePacket_ s;
     int block_lengths[2];
     MPI::Aint displacements[2];
@@ -161,6 +138,10 @@ static MPI::Datatype spikebuf_type;
 
 void ParSpike::make_spikebuf_type()
 {
+#ifdef DEBUG
+    std::cout << my_rank << " : make_spikebuf_type"  << std::endl;
+#endif
+
     /*  SpikeBuffer_ s;
         int block_lengths[3];
         MPI_Aint displacements[3];
@@ -224,7 +205,7 @@ double ParSpike::wtime()
 void ParSpike::terminate()
 {
 
-#if DEBUG
+#ifdef DEBUG
     std::cout << my_rank << " : terminate"  << std::endl;
 #endif
     if (under_mpi_control_) {
@@ -232,7 +213,7 @@ void ParSpike::terminate()
         MPI::Finalize();
     }
     mpi_use = 0;
-#if DEBUG
+#ifdef DEBUG
     //checkbufleak();
 #endif
 

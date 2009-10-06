@@ -17,8 +17,9 @@
 
 
 typedef struct bbsmpibuf {
-    std::vector<char> buf;
-    int size;
+//    std::vector<char> buf;
+  std::string buf;
+  int size;
     int pkposition;
     int upkpos;
     int keypos;

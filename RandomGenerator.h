@@ -56,7 +56,7 @@ inline double RandomGenerator::ran()
     int i, ii, k;
     if (! initialised_) {
         // Initialization
-        mj = labs(MSEED - labs(SimEnv::random_init_seed()));
+        mj = fabs(MSEED - fabs(SimEnv::random_init_seed()));
         // Initialize ma_[55] using the seed idum and the large number MSEED
         mj %= MBIG;
         ma_[55] = mj;

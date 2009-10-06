@@ -168,7 +168,7 @@ boolean BBS_Server::look_take(const char* key, bbsmpibuf** recv)
     if (m != messages_->end()) {
         b = true;
         *recv = (*m).second;
-//printf("free %d\n", buf);
+std::cout<< " free  " <<  buf<< std::endl;
         char* s = (char*)((*m).first);
         messages_->erase(m);
         delete [] s;
@@ -337,11 +337,11 @@ void nrnbbs_context_wait()
 
 void BBS_Server::context_wait()
 {
-//printf("context_wait enter %d\n", remaining_context_cnt_);
+std::cout<< " context_wait enter  " <<  remaining_context_cnt_<< std::endl;
     while (remaining_context_cnt_) {
         handle();
     }
-//printf("context_wait exit %d\n", remaining_context_cnt_);
+std::cout<< " context_wait exit  " <<  remaining_context_cnt_<< std::endl;
 }
 
 boolean  BBS_Server::send_context(int cid)
