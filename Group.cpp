@@ -244,10 +244,17 @@ void Group::create_population()
     if ((! nrn_act_cfg_) || (! data_cfg_))
         throw ConfigError("Group: void group or neuron configurator");
     else {
+#ifdef DEBUG
+        std::cout << "Creating cells in Group " << std::endl;
+#endif
         NeuronFactory nrnfactory(data_cfg_, nrn_act_cfg_);
         for (Size i = 0; i < n; ++i)
             list_.push_back(boost::shared_ptr<NeuronInterface>(nrnfactory.create()));
     }
+#ifdef DEBUG
+        std::cout << "Completed creatings cells in Group: size = " << list_.size() << std::endl;
+#endif
+
 }
 
 /////////////////////////////////////////////////

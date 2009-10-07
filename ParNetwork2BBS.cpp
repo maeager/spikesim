@@ -67,7 +67,9 @@ int ParNetwork2BBS::submit_help()
 	if (char **c = boost::any_cast<char*> (&bbsbuf[i])){
 	     style = 1;
 	     bbs->pkint(style); // "fname", arg1, ... style
-	}else if(ConfigBase *b = boost::any_cast<ConfigBase> (&bbsbuf[i])) {
+        }
+/* TODO not sure what to do here just yet -- Assume arg is stringx
+       else if(ConfigBase *b = boost::any_cast<ConfigBase> (&bbsbuf[i])) {
 	     style = 2;
 	     bbs->pkint(style); // [object],"fname", arg1, ... style
 	    //Object* ob = *hoc_objgetarg(i++);
@@ -76,7 +78,7 @@ int ParNetwork2BBS::submit_help()
 	    bbs->pkint(b->index);
     //std::cout<< " ob= " <<  hoc_object_name(ob)<< std::endl;
 	}
-	std::string *s = boost::any_cast<std::string> (&bbsbuf[i++]);
+*/	std::string *s = boost::any_cast<std::string> (&bbsbuf[i++]);
             bbs->pkstr(s->c_str());
             firstarg = i;
             for (; ifarg(i); ++i) { // first is least significant

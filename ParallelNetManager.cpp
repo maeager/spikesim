@@ -1,7 +1,5 @@
 
 
-
-
 //#include "NetPar.h"
 #include <errno.h>
 #include "Group.h"

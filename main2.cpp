@@ -24,7 +24,7 @@ main(int argc, char *argv[])
     std::cout << "Hello World! I am " << pnm.myid << " of " << pnm.nhost << std::endl;
 
     // TEST ParallelNetManager
-    //pnm.init(100, 5);
+    pnm.init(100, 5);
     if (pnm.myid == 0) {
         std::cout << "ncell = " << pnm.ncell << std::endl;
         std::cout << "nhost = " << pnm.nhost << std::endl;
