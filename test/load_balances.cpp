@@ -56,10 +56,11 @@ main(int argc, char *argv[])
 		std::cin.get();
 		return EXIT_FAILURE;
 	}
-	/*End testing*/ pnm.pc->barrier(); if( pnm.myid == 0) {std::cout << "Hit Enter to continue" << std::endl; std::cin.get();}
+	/*End testing*/ 
+	pnm.pc->barrier(); if( pnm.myid == 0) {std::cout << "Hit Enter to continue" << std::endl; std::cin.get();}
 
 //	net.build_network();
-//s	pnm.ncell = net.network_size();
+//	pnm.ncell = net.network_size();
 	pnm.init(ncells,ngroups);
 	pnm.load_balance_roulette();
 	pnm.create_network(net);

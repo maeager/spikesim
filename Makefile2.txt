@@ -1,15 +1,17 @@
 
+CXX = c++
+MPIDIR = $(HOME)/mpich2-1.0
+MPICC = $(MPIDIR)/bin/mpicc
+MPICXX = $(MPIDIR)/bin/mpicxx
+CXX = $(MPICXX)
+CXXFLAGS = -Wall -DPARALLELSIM -DDEBUG -I$(MPIDIR)/src/include -I/usr/include/boost-1_33_1
+#CXXFLAGS=  -Wall -DPARALLELSIM -DDEBUG -I$(MPIDIR)/include -DCPPMPI -I/usr/include/boost-1_33_1
+# LDFLAGS = -L/opt/mpich/ch-p4/lib -lmpich
 
 SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
 
-MPICH_INCLUDE= -I/home/maeager/mpich2-1.0/src/include 
-MPILIBNAME = -L/home/maeager/mpich2-1.0/lib -lmpich
-MPICXX = /home/maeager/mpich2-1.0/bin/mpicxx # g++ 
-CXX = MPICXX # g++
-CXXFLAGS = -I/usr/include/boost-1_33_1 -I/home/maeager/mpich2-1.0/src/include -DPARELLELSIM -DDEBUG
-
-
 # SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
+
 ParSpikeSim_OBJECTS= ParNetwork.o BBS.o ParSpike.o BBServer.o BBClient.o BBS2MPI.o  ParNetwork2BBS.o ParallelNetManager.o  CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main2.o 
 
 ParSpikeSim_CXXOBJECTS= NetPar.o ParNetwork.o BBS.o ParSpike.2.o BBServer.o BBClient.o BBS2MPI.2.o  ParNetwork2BBS.o ParallelNetManager.o  CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o NeuronActivationFunction.o  OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o 
@@ -41,16 +43,15 @@ RandomGenerator.o: RandomGenerator.cpp RandomGenerator.h   SimulationEnvironment
 STDPMech.o: STDPMech.cpp   STDPMech.h   SimulationEnvironment.h GlobalDefs.h ConfigBase.h Visitor.h Error.h   STDPFunction.h
 ShortTimeCorrInputRefs.o: ShortTimeCorrInputRefs.cpp   ShortTimeCorrInputRefs.h   CorrInputMech.h SimulationEnvironment.h GlobalDefs.h ConfigBase.h   Visitor.h Error.h   SpikeTimeGenerator.h DistributionManager.h RandomGenerator.h   
 SimulationEnvironment.o: SimulationEnvironment.cpp   SimulationEnvironment.h   GlobalDefs.h SpikeTimeGenerator.h DistributionManager.h   RandomGenerator.h 
-
-
 main.o: main.cpp   TypeDefs.h Macros.h CreatedTypeMaps.h Error.h ConfigBase.h Visitor.h   InterfaceBase.h   GlobalDefs.h 
 	$(MPICXX) $(CXXFLAGS)  -c main.cpp -o main.o
 
 main2.o: main2.cpp   ParNetwork.h BBS.h ParSpike.h BBServer.h  BBS2MPI.h ParNetwork2BBS.h ParallelNetManager.h  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c main2.cpp -o main2.o
 
-main3.o: main3.cpp   ParNetwork.h BBS.h ParSpike.h BBServer.h  BBS2MPI.h ParNetwork2BBS.h ParallelNetManager.h  AnyBuf.h
+main3.o: main3.cpp   ParNetwork.h BBS.h ParSpike.2.h BBServer.h  BBS2MPI.2.h ParNetwork2BBS.h ParallelNetManager.h
 	$(MPICXX) $(CXXFLAGS)  -c main3.cpp -o main3.o
+
 
 ParNetwork.o: ParNetwork.h ParNetwork.cpp  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c ParNetwork.cpp -o ParNetwork.o
@@ -58,17 +59,18 @@ ParNetwork.o: ParNetwork.h ParNetwork.cpp  AnyBuf.h
 ParSpike.o: ParSpike.h ParSpike.cpp  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c ParSpike.cpp -o ParSpike.o
 
-ParNetwork2BBS.o:  ParNetwork2BBS.cpp ParNetwork2BBS.h  AnyBuf.h
-	$(MPICXX) $(CXXFLAGS)  -c ParNetwork2BBS.cpp -o ParNetwork2BBS.o
-
-ParallelNetManager.o: ParallelNetManager.h ParallelNetManager.cpp ParNetwork.h BBS.h ParSpike.h BBServer.h BBS2MPI.h ParNetwork2BBS.h  AnyBuf.h
-	$(MPICXX) $(CXXFLAGS)  -c ParallelNetManager.cpp -o ParallelNetManager.o
-
-BBS.o: BBS.h BBS.cpp ParSpike.h  AnyBuf.h
-	$(MPICXX) $(CXXFLAGS)  -c BBS.cpp -o BBS.o
+ParSpike.2.o: ParSpike.2.h ParSpike.2.cpp  AnyBuf.h
+	$(MPICXX) $(CXXFLAGS)  -c ParSpike.2.cpp -o ParSpike.2.o
 
 BBS2MPI.o: BBS2MPI.h BBS2MPI.cpp ParSpike.h  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c BBS2MPI.cpp -o BBS2MPI.o
+
+BBS2MPI.2.o: BBS2MPI.2.h BBS2MPI.2.cpp ParSpike.2.h  AnyBuf.h
+	$(MPICXX) $(CXXFLAGS)  -c BBS2MPI.2.cpp -o BBS2MPI.2.o
+
+BBS.o: BBS.h BBS.cpp ParSpike.h
+	$(MPICXX) $(CXXFLAGS)  -c BBS.cpp -o BBS.o
+
 	
 BBServer.o: BBS.h BBServer.cpp BBServer.h ParSpike.h  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c BBServer.cpp -o BBServer.o
@@ -76,28 +78,53 @@ BBServer.o: BBS.h BBServer.cpp BBServer.h ParSpike.h  AnyBuf.h
 BBClient.o: BBS.h BBClient.cpp BBServer.h ParSpike.h  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c BBClient.cpp -o BBClient.o
 
-NetPar.o: NetPar.h NetPar.cpp  AnyBuf.h
+NetPar.o: NetPar.h NetPar.cpp  AnyBuf.h ParSpike.h ParNetwork.h
 	$(MPICXX) $(CXXFLAGS)  -c NetPar.cpp -o NetPar.o
 
+ParNetwork2BBS.o:  ParNetwork2BBS.cpp ParNetwork2BBS.h  AnyBuf.h NetPar.h
+	$(MPICXX) $(CXXFLAGS)  -c ParNetwork2BBS.cpp -o ParNetwork2BBS.o
 
-ParSpikeSim.exe: $(ParSpikeSim_OBJECTS)
-	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.exe $(ParSpikeSim_OBJECTS)
+ParallelNetManager.o: ParallelNetManager.h ParallelNetManager.cpp NetPar.h ParNetwork.h BBS.h ParSpike.h BBServer.h BBS2MPI.h ParNetwork2BBS.h  AnyBuf.h
+	$(MPICXX) $(CXXFLAGS)  -c ParallelNetManager.cpp -o ParallelNetManager.o
 
-ParSpikeSim.2.exe: $(ParSpikeSim_CXXOBJECTS) main3.o
-	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.2.exe main3.o $(ParSpikeSim_CXXOBJECTS)
+ParSpikeSim.exe: $(ParSpikeSim_OBJECTS) main3.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.exe main3.o  $(ParSpikeSim_OBJECTS)
+
+ParSpikeSim.2.exe: $(ParSpikeSim_CXXOBJECTS) main2.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.2.exe main2.o $(ParSpikeSim_CXXOBJECTS)
 
 SpikeSim.exe: $(SpikeSim_OBJECTS)
 	$(MPICXX) $(CXXFLAGS) -o SpikeSim.exe $(SpikeSim_OBJECTS)
 
+main3: $(ParSpikeSim_OBJECTS) main3.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main3 main3.o $(ParSpikeSim_OBJECTS)
+
+main2: $(ParSpikeSim_OBJECTS) main2.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main2 main2.o $(ParSpikeSim_OBJECTS)
+
+
 clean:
-	rm -f *.o *.exe
-	
+	rm -f *.o *.exe *.bak *.sav *~ '#*'
+
+clean-style: clean
+	kdestyle `find -type f -name '*.cpp'` `find -type f -name '*.h'`
+
+upload:
+	rsync -Cavuzb --exclude='ncb' --exclude='.hg*' --exclude='*.o' --exclude='*.exe' . meager@soma:~/dmf/ParSpikeSim
+
+upload-dryrun:
+	rsync -Cavuzb -n --exclude='.hg*' --exclude='*.o' --exclude='ncb' --exclude='*.exe' . meager@soma:~/dmf/ParSpikeSim
+
+download:
+	rsync -Cavuzb --exclude='*.o' --exclude='*.exe' meager@soma:~/dmf/ParSpikeSim/ ./
+
+download-dryrun:
+	rsync -Cavuzb -n --exclude='*.o' --exclude='*.exe' meager@soma:~/dmf/ParSpikeSim/ ./
+
 remake:
-	head -5 Makefile > Makefile.tmp
-	for i in `ls *.cpp`; do $(CXX) $(CXXFLAGS) -M $i >> Makefile.tmp; done	
-	(echo "SpikeSim_OBJECTS=";echo "`basename *.cpp .cpp`.o") >> Makefile.tmp
-	tail -30 Makefile > Makefile.tmp
+	#head -12 Makefile > Makefile.tmp
+	#echo "\n\n" >> Makefile.tmp
+	for ii in `ls [^tm]*.cpp`;do $(MPICXX) $(CXXFLAGS) -M $ii | sed -e 's,/.* ,,g' -e 's/\\//g' | sed '/^[ ]*$/d' >> Makefile.tmp;done	
+	#tail -79 Makefile >> Makefile.tmp
 	# 296- to end
 	# 1 to 5
-
-	

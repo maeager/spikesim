@@ -1,0 +1,23 @@
+# python temporary files
+syntax: glob
+*.o
+*.png
+*.exe
+*.bak
+*.sav
+*.tmp
+
+#editor autosaves
+*~
+*\#*
+
+# temporary data
+syntax: regexp
+temp
+weight1.txt
+weight2.txt
+rate0.txt
+error
+tags
+test_mpi
+DEADJOE
