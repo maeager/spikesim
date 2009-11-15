@@ -23,6 +23,14 @@ main(int argc, char *argv[])
 #endif
 
     ParNetwork net;
+    // TEST ParallelNetManager
+    pnm.init(100, 5);
+    if (pnm.myid == 0) {
+        std::cout << "ncell = " << pnm.ncell << std::endl;
+        std::cout << "nhost = " << pnm.nhost << std::endl;
+        std::cout << "ngroup = " << pnm.ngroup << std::endl;
+        std::cout << "ncellgrp = " << pnm.ncellgrp << std::endl;
+    }
 
 
     std::cout << "[info] press any key at end of execution to close this window" << std::endl << std::endl;
@@ -41,14 +49,21 @@ main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    if (pnm.myid != 0) pnm.pc->barrier();
+    pnm.pc->barrier();
     if (pnm.myid == 0) {
         std::cout << "ncells " << ncells << ", ngroups " << ngroups << std::endl;
         std::cout << "Hit Enter to continue" << std::endl;
-       // std::cin.get();
-
+        std::cin.get();
+    }
 
     pnm.init(ncells, ngroups);
+    if (pnm.myid == 0) {
+        std::cout << "ncell = " << pnm.ncell << std::endl;
+        std::cout << "nhost = " << pnm.nhost << std::endl;
+        std::cout << "ngroup = " << pnm.ngroup << std::endl;
+        std::cout << "ncellgrp = " << pnm.ncellgrp << std::endl;
+    }
+
     pnm.load_balance_roulette();
     pnm.create_network(net);
 
@@ -86,7 +101,6 @@ main(int argc, char *argv[])
     OutputManager::do_output("end_sim");
     OutputManager::close_all();
 
-    }
     // memory cleaning
 
     std::cout << "Hello World! I am " << pnm.myid << " of " << pnm.nhost << std::endl;
