@@ -92,7 +92,7 @@ ParallelNetManager.o: ParallelNetManager.h ParallelNetManager.cpp NetPar.h ParNe
 ParSpikeSim.exe: $(ParSpikeSim_OBJECTS) main3.o
 	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.exe main3.o  $(ParSpikeSim_OBJECTS)
 
-ParSpikeSim.2.exe: $(ParSpikeSim_CXXOBJECTS) main2.o
+ParSpikeSim.2.exe: $(ParSpikeSim_CXXOBJECTS) main.o
 	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.2.exe main2.o $(ParSpikeSim_CXXOBJECTS)
 
 SpikeSim.exe: $(SpikeSim_OBJECTS)

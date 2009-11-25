@@ -62,8 +62,8 @@ main(int argc, char *argv[])
      if (pnm.myid == 0) {
         std::cout << "Hit Enter to continue" << std::endl; std::cin.get();
     }
-    pnm.init(ncells, ngroups);
-    pnm.load_balance_round_robin();
+     //    pnm.init(ncells, ngroups);
+     //pnm.load_balance_round_robin();
     // Start Creation of network cells
     // net.create_population();
 
@@ -72,6 +72,13 @@ main(int argc, char *argv[])
     pnm.init(ncells, ngroups);
     pnm.load_balance_roulette();
     pnm.create_network(net);
+
+    if (pnm.myid == 0) {
+        std::cout << "ncell = " << pnm.ncell << std::endl;
+        std::cout << "nhost = " << pnm.nhost << std::endl;
+        std::cout << "ngroup = " << pnm.ngroup << std::endl;
+        std::cout << "ncellgrp = " << pnm.ncellgrp << std::endl;
+    }
 
 
 
