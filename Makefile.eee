@@ -1,4 +1,4 @@
-
+#  -*-mode: Makefile; makefile-mode:t-*-
 CXX = c++
 MPIDIR = $(HOME)/mpich2-1
 MPICC = $(MPIDIR)/bin/mpicc
@@ -74,7 +74,6 @@ BBS2MPI.2.o: BBS2MPI.2.h BBS2MPI.2.cpp ParSpike.2.h  AnyBuf.h
 BBS.o: BBS.h BBS.cpp ParSpike.h
 	$(MPICXX) $(CXXFLAGS)  -c BBS.cpp -o BBS.o
 
-	
 BBServer.o: BBS.h BBServer.cpp BBServer.h ParSpike.h  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c BBServer.cpp -o BBServer.o
 
