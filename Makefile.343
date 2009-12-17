@@ -1,4 +1,4 @@
-
+#  -*-mode: Makefile; makefile-mode:t-*-
 CXX = c++
 MPIDIR = $(HOME)/mpich2-1.0
 MPICC = $(MPIDIR)/bin/mpicc
@@ -6,6 +6,7 @@ MPICXX = $(MPIDIR)/bin/mpicxx
 CXX = $(MPICXX)
 CXXFLAGS = -Wall -DPARALLELSIM -DDEBUG -I$(MPIDIR)/src/include -I/usr/include/boost-1_33_1
 #CXXFLAGS=  -Wall -DPARALLELSIM -DDEBUG -I$(MPIDIR)/include -DCPPMPI -I/usr/include/boost-1_33_1
+LDFLAGS = -lm
 # LDFLAGS = -L/opt/mpich/ch-p4/lib -lmpich
 
 SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
@@ -71,7 +72,6 @@ BBS2MPI.2.o: BBS2MPI.2.h BBS2MPI.2.cpp ParSpike.2.h  AnyBuf.h
 BBS.o: BBS.h BBS.cpp ParSpike.h
 	$(MPICXX) $(CXXFLAGS)  -c BBS.cpp -o BBS.o
 
-	
 BBServer.o: BBS.h BBServer.cpp BBServer.h ParSpike.h  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c BBServer.cpp -o BBServer.o
 
