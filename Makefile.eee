@@ -6,6 +6,7 @@ MPICXX = $(MPIDIR)/bin/mpicxx
 CXX = $(MPICXX)
 CXXFLAGS = -Wall -DPARALLELSIM -DDEBUG -I$(MPIDIR)/include
 #CXXFLAGS=  -Wall -DPARALLELSIM -DDEBUG -I$(MPIDIR)/include -DCPPMPI
+LDFLAGS = -lm
 # LDFLAGS = -L/opt/mpich/ch-p4/lib -lmpich
 
 SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
@@ -92,14 +93,14 @@ ParallelNetManager.o: ParallelNetManager.h ParallelNetManager.cpp NetPar.h ParNe
 ParSpikeSim.exe: $(ParSpikeSim_OBJECTS) main3.o
 	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.exe main3.o  $(ParSpikeSim_OBJECTS)
 
-ParSpikeSim.2.exe: $(ParSpikeSim_CXXOBJECTS) main.o
-	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.2.exe main2.o $(ParSpikeSim_CXXOBJECTS)
+ParSpikeSim.2.exe: $(ParSpikeSim_CXXOBJECTS) main2.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.2.exe main3.o $(ParSpikeSim_CXXOBJECTS)
 
 SpikeSim.exe: $(SpikeSim_OBJECTS)
 	$(MPICXX) $(CXXFLAGS) -o SpikeSim.exe $(SpikeSim_OBJECTS)
 
-main3: $(ParSpikeSim_OBJECTS) main3.o
-	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main3 main3.o $(ParSpikeSim_OBJECTS)
+main3: $(ParSpikeSim_CXXOBJECTS) main3.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main3 main3.o $(ParSpikeSim_CXXOBJECTS)
 
 main2: $(ParSpikeSim_OBJECTS) main2.o
 	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main2 main2.o $(ParSpikeSim_OBJECTS)

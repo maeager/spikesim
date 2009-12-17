@@ -48,7 +48,12 @@ main(int argc, char *argv[])
 		std::cin.get();
 		return EXIT_FAILURE;
 	}
-	/*testing*/ pnm.pc->barrier(); if( pnm.myid == 0) {std::cout << "Hit Enter to continue" << std::endl; std::cin.get();}
+	/*testing*/ 
+	pnm.pc->barrier(); 
+	if( pnm.myid == 0) {
+	  std::cout << "Hit Enter to continue" << std::endl; 
+	  std::cin.get();
+	}
 
 
 

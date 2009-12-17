@@ -83,7 +83,7 @@ main(int argc, char *argv[])
 
 
 //Round robin is probably the most inefficient way to distribute the neurons
-//Guy from IBM said that halding all the synapse on CPUs would be better
+//Guy from IBM said that holding all the synapse on CPUs would be better
 
 
     std::cout << pnm.myid << " ParNetwork size " << net.network_size() << std::endl;
@@ -123,7 +123,8 @@ main(int argc, char *argv[])
 
     pnm.pc->barrier();
     if (pnm.myid == 0) {
-        std::cin.get(); pnm.terminate();
+        std::cin.get(); 
+	pnm.terminate();
     }
 
     // wait for key pressed

@@ -6,12 +6,7 @@
 ParSpike::ParSpike(void)
 {
 }
-/*
-    MPI_Comm mpi_comm;
-    MPI_Comm bbs_comm;
 
-
-*/
 MPI::Intracomm mpi_comm;
 MPI::Intracomm bbs_comm;
 MPI::Op ParSpike::mpi_pgvts_op = 0;
@@ -142,32 +137,6 @@ void ParSpike::make_spikebuf_type()
     std::cout << my_rank << " : make_spikebuf_type"  << std::endl;
 #endif
 
-    /*  SpikeBuffer_ s;
-        int block_lengths[3];
-        MPI_Aint displacements[3];
-        MPI_Aint addresses[4];
-        MPI_Datatype typelist[3];
-
-        typelist[0] = MPI_INT;
-        typelist[1] = MPI_INT;
-        typelist[2] = MPI_DOUBLE;
-
-        block_lengths[0] = 1;
-        block_lengths[1] = spikebuf_size;
-        block_lengths[2] = spikebuf_size;
-
-        MPI_Address(&s, &addresses[0]);
-        MPI_Address(&(s.nspike), &addresses[1]);
-        MPI_Address(&(s.gid[0]), &addresses[2]);
-        MPI_Address(&(s.spiketime[0]), &addresses[3]);
-
-        displacements[0] = addresses[1] - addresses[0];
-        displacements[1] = addresses[2] - addresses[0];
-        displacements[2] = addresses[3] - addresses[0];
-
-        MPI_Type_struct(3, block_lengths, displacements, typelist, &spikebuf_type);
-        MPI_Type_commit(&spikebuf_type);
-    */
     SpikeBuffer_ s;
     int block_lengths[3];
     MPI::Aint displacements[3];
@@ -198,7 +167,6 @@ void ParSpike::make_spikebuf_type()
 
 double ParSpike::wtime()
 {
-    //  return MPI_Wtime();
     return MPI::Wtime();
 }
 
@@ -209,7 +177,6 @@ void ParSpike::terminate()
     std::cout << my_rank << " : terminate"  << std::endl;
 #endif
     if (under_mpi_control_) {
-        //MPI_Finalize();
         MPI::Finalize();
     }
     mpi_use = 0;
@@ -223,11 +190,8 @@ void ParSpike::terminate()
 void ParSpike::mpiabort(int errcode)
 {
 
-    //int flag;
-    //MPI_Initialized(&flag);
     bool flag = MPI::Is_initialized();
     if (flag) {
-        //MPI_Abort(MPI_COMM_WORLD, errcode);
         mpi_comm.Abort(errcode);
     } else {
         std::abort();
@@ -252,9 +216,10 @@ int ParSpike::spike_exchange()
         make_spikebuf_type();
 #endif
     }
-    bbs_context_wait();  /* runs BBSDirectServer::server_->context_wait() this process is the master */
+// runs BBSDirectServer::server_->context_wait() this process is the master 
+    bbs_context_wait();  
+
 #if spikebuf_size == 0
-    //MPI_Allgather(&nout_, 1, MPI_INT, nin_, 1, MPI_INT, mpi_comm);
     mpi_comm.Allgather(&nout_, 1, MPI::INT, nin_, 1, MPI::INT);
     n = nin_[0];
     for (i = 1; i < np; ++i) {
@@ -264,17 +229,12 @@ int ParSpike::spike_exchange()
     if (n) {
         if (icapacity_ < n) {
             icapacity_ = n + 10;
-            //if (spikein_) delete spikein_;
             spikein_.clear();
             spikein_.resize(icapacity_);
-
-// (NRNMPI_Spike*)hoc_Emalloc(icapacity_ * sizeof(NRNMPI_Spike));
         }
-        //MPI_Allgatherv(&spikeout_[0], nout_, spike_type, &spikein_[0], nin_, displs, spike_type, mpi_comm);
         mpi_comm.Allgatherv(&spikeout_[0], nout_, spike_type, &spikein_[0], nin_, displs, spike_type);
     }
 #else
-    //MPI_Allgather(&spbufout_[0], 1, spikebuf_type, &spbufin_[0], 1, spikebuf_type, mpi_comm);
     mpi_comm.Allgather(&spbufout_[0], 1, spikebuf_type, &spbufin_[0], 1, spikebuf_type);
     novfl = 0;
     n = spbufin_[0].nspike;
@@ -298,11 +258,10 @@ int ParSpike::spike_exchange()
     if (novfl) {
         if (icapacity_ < novfl) {
             icapacity_ = novfl + 10;
-            spikein_.clear();//if(spikein_) delete [] spikein_;
-            spikein_.resize(icapacity_);// (NRNMPI_Spike*)hoc_Emalloc(icapacity_ * sizeof(NRNMPI_Spike));
+            spikein_.clear();
+            spikein_.resize(icapacity_);
         }
         n1 = (nout_ > spikebuf_size) ? nout_ - spikebuf_size : 0;
-        //MPI_Allgatherv(&spikeout_[0], n1, spike_type, &spikein_[0], nin_, displs, spike_type, mpi_comm);
         mpi_comm.Allgatherv(&spikeout_[0], n1, spike_type, &spikein_[0], nin_, displs, spike_type);
     }
     ovfl_ = novfl;
@@ -337,13 +296,12 @@ int ParSpike::spike_exchange_compressed()
 
         //todo: change memory
         if (displs) delete displs;
-        displs = new int[np]; //(int*)hoc_Emalloc(np*sizeof(int));
+        displs = new int[np]; 
         displs[0] = 0;
-        byteovfl = new int[np]; //(int*)hoc_Emalloc(np*sizeof(int));
+        byteovfl = new int[np]; 
     }
     bbs_context_wait();
 
-    //MPI_Allgather(&spfixout_[0], ag_send_size_, MPI_BYTE, &spfixin_[0], ag_send_size_, MPI_BYTE, mpi_comm);
     mpi_comm.Allgather(&spfixout_[0], ag_send_size_, MPI::BYTE, &spfixin_[0], ag_send_size_, MPI::BYTE);
     novfl = 0;
     ntot = 0;
@@ -367,8 +325,8 @@ int ParSpike::spike_exchange_compressed()
     if (novfl) {
         if (ovfl_capacity_ < novfl) {
             ovfl_capacity_ = novfl + 10;
-            spfixin_ovfl_.clear();//if(spfixin_ovfl_) delete [] spfixin_ovfl_;
-            spfixin_ovfl_.resize(ovfl_capacity_ *(1 + localgid_size_));  //= new unsigned char[ovfl_capacity_ * (1 + localgid_size_)];//(unsigned char*)hoc_Emalloc(ovfl_capacity_ * (1 + localgid_size_)*sizeof(unsigned char));
+            spfixin_ovfl_.clear();
+            spfixin_ovfl_.resize(ovfl_capacity_ *(1 + localgid_size_));  
         }
         bs = byteovfl[my_rank];
         /*
@@ -377,7 +335,6 @@ int ParSpike::spike_exchange_compressed()
         completely separate from the spfixin_ since the latter
         dynamically changes its size during a run.
         */
-        //MPI_Allgatherv(&spfixout_[ag_send_size_], bs, MPI_BYTE, &spfixin_ovfl_[0], byteovfl, displs, MPI_BYTE, mpi_comm);
         mpi_comm.Allgatherv(&spfixout_[ag_send_size_], bs, MPI::BYTE, &spfixin_ovfl_[0], byteovfl, displs, MPI::BYTE);
     }
     ovfl_ = novfl;
@@ -391,7 +348,6 @@ double ParSpike::mindelay(double m)
         return m;
     }
     bbs_context_wait();
-    //MPI_Allreduce(&m, &result, 1, MPI_DOUBLE, MPI_MIN, mpi_comm);
     mpi_comm.Allreduce(&m, &result, 1, MPI::DOUBLE, MPI::MIN);
     return result;
 }
@@ -404,14 +360,12 @@ int ParSpike::int_allmax(int x)
         return x;
     }
     bbs_context_wait();
-    //MPI_Allreduce(&x, &result, 1, MPI_INT, MPI_MAX, mpi_comm);
     mpi_comm.Allreduce(&x, &result, 1, MPI::INT, MPI::MAX);
     return result;
 }
 
 void ParSpike::int_gather(int* s, int* r, int cnt, int root)
 {
-    //MPI_Gather(s, cnt, MPI_INT, r, cnt, MPI_INT, root, mpi_comm);
     mpi_comm.Gather(s, cnt, MPI::INT, r, cnt, MPI::INT, root);
 
 }
@@ -419,15 +373,12 @@ void ParSpike::int_gather(int* s, int* r, int cnt, int root)
 void ParSpike::int_gatherv(int* s, int scnt,
                            int* r, int* rcnt, int* rdispl, int root)
 {
-    //MPI_Gatherv(s, scnt, MPI_INT,r, rcnt, rdispl, MPI_INT, root, mpi_comm);
     mpi_comm.Gatherv(s, scnt, MPI::INT, r, rcnt, rdispl, MPI::INT, root);
 }
 
 void ParSpike::int_alltoallv(int* s, int* scnt, int* sdispl,
                              int* r, int* rcnt, int* rdispl)
 {
-    //MPI_Alltoallv(s, scnt, sdispl, MPI_INT,
-    //  r, rcnt, rdispl, MPI_INT, mpi_comm);
     mpi_comm.Alltoallv(s, scnt, sdispl, MPI::INT,
                        r, rcnt, rdispl, MPI::INT);
 }
@@ -435,8 +386,6 @@ void ParSpike::int_alltoallv(int* s, int* scnt, int* sdispl,
 void ParSpike::dbl_alltoallv(double* s, int* scnt, int* sdispl,
                              double* r, int* rcnt, int* rdispl)
 {
-    //MPI_Alltoallv(s, scnt, sdispl, MPI_DOUBLE,
-    //  r, rcnt, rdispl, MPI_DOUBLE, mpi_comm);
     mpi_comm.Alltoallv(s, scnt, sdispl, MPI::DOUBLE,
                        r, rcnt, rdispl, MPI::DOUBLE);
 }
@@ -445,49 +394,40 @@ void ParSpike::dbl_alltoallv(double* s, int* scnt, int* sdispl,
 
 void ParSpike::int_allgather(int* s, int* r, int n)
 {
-    //MPI_Allgather(s, n,  MPI_INT, r, n, MPI_INT, mpi_comm);
     mpi_comm.Allgather(s, n,  MPI::INT, r, n, MPI::INT);
 }
 
 void ParSpike::int_allgatherv(int* s, int* r, int* n, int* dspl)
 {
-    //MPI_Allgatherv(s, n[my_rank],  MPI_INT,
-    //  r, n, dspl, MPI_INT, mpi_comm);
     mpi_comm.Allgatherv(s, n[my_rank],  MPI::INT,
                         r, n, dspl, MPI::INT);
 }
 
 void ParSpike::dbl_allgatherv(double* s, double* r, int* n, int* dspl)
 {
-    //MPI_Allgatherv(s, n[my_rank],  MPI_DOUBLE,
-    //  r, n, dspl, MPI_DOUBLE, mpi_comm);
     mpi_comm.Allgatherv(s, n[my_rank],  MPI::DOUBLE,
                         r, n, dspl, MPI::DOUBLE);
 }
 
 void ParSpike::dbl_broadcast(double* buf, int cnt, int root)
 {
-    //MPI_Bcast(buf, cnt,  MPI_DOUBLE, root, mpi_comm);
     mpi_comm.Bcast(buf, cnt,  MPI::DOUBLE, root);
 }
 
 void ParSpike::int_broadcast(int* buf, int cnt, int root)
 {
 //std::cout << "%d int_broadcast %d buf[0]=%d\n", my_rank, cnt, my_rank == root ? buf[0]: -1);
-    //MPI_Bcast(buf, cnt,  MPI_INT, root, mpi_comm);
     mpi_comm.Bcast(buf, cnt,  MPI::INT, root);
 }
 
 void ParSpike::char_broadcast(char* buf, int cnt, int root)
-{
-    //MPI_Bcast(buf, cnt,  MPI_CHAR, root, mpi_comm);
+{ 
     mpi_comm.Bcast(buf, cnt,  MPI::CHAR, root);
 }
 
 int ParSpike::int_sum_reduce(int in, int comm)
 {
     int result;
-    //MPI_Allreduce(&in, &result, 1, MPI_INT, MPI_SUM, mpi_comm);
     mpi_comm.Allreduce(&in, &result, 1, MPI::INT, MPI::SUM);
 
     return result;
@@ -502,7 +442,6 @@ void ParSpike::assert_opstep(int opstep, double t, int comm)
     }
     buf[0] = (double)opstep;
     buf[1] = t;
-    //MPI_Bcast(buf, 2, MPI_DOUBLE, 0, mpi_comm);
     mpi_comm.Bcast(buf, 2, MPI::DOUBLE, 0);
 
     if (opstep != (int)buf[0]  || t != buf[1]) {
@@ -519,7 +458,6 @@ double ParSpike::dbl_allmin(double x, int comm)
     if (numprocs < 2) {
         return x;
     }
-    //MPI_Allreduce(&x, &result, 1, MPI_DOUBLE, MPI_MIN, mpi_comm);
     mpi_comm.Allreduce(&x, &result, 1, MPI::DOUBLE, MPI::MIN);
     return result;
 }
@@ -555,7 +493,6 @@ int ParSpike::pgvts_least(double* t, int* op, int* init)
     ibuf[1] = (double)(*op);
     ibuf[2] = (double)(*init);
     ibuf[3] = (double)my_rank;
-    //MPI_Allreduce(ibuf, obuf, 4, MPI_DOUBLE, mpi_pgvts_op, mpi_comm);
     mpi_comm.Allreduce(ibuf, obuf, 4, MPI::DOUBLE, mpi_pgvts_op);
     *t = obuf[0];
     *op = (int)obuf[1];
@@ -569,29 +506,23 @@ int ParSpike::pgvts_least(double* t, int* op, int* init)
 /* following for splitcell.cpp transfer */
 void ParSpike::send_doubles(double* pd, int cnt, int dest, int tag)
 {
-    //MPI_Send(pd, cnt, MPI_DOUBLE, dest, tag, mpi_comm);
     mpi_comm.Send(pd, cnt, MPI::DOUBLE, dest, tag);
 }
 
 void ParSpike::recv_doubles(double* pd, int cnt, int src, int tag)
 {
-    //MPI_Status status;
-    //MPI_Recv(pd, cnt, MPI_DOUBLE, src, tag, mpi_comm, &status);
     MPI::Status status;
     mpi_comm.Recv((void*)pd, cnt, MPI::DOUBLE, src, tag, status);
 }
 
 void ParSpike::postrecv_doubles(double* pd, int cnt, int src, int tag, void** request_)
 {
-    //MPI_Irecv(pd, cnt, MPI_DOUBLE, src, tag, mpi_comm, (MPI_Request*)request);
     MPI::Request* request = (MPI::Request*)request_;
     *request = mpi_comm.Irecv(pd, cnt, MPI::DOUBLE, src, tag);
 }
 
 void ParSpike::wait(void** request_)
 {
-    //MPI_Status status;
-    //MPI_Wait((MPI_Request*)request, &status);
     MPI::Status status;
     MPI::Request* request = (MPI::Request*)request_;
     request->Wait(status);
@@ -599,24 +530,12 @@ void ParSpike::wait(void** request_)
 
 void ParSpike::barrier()
 {
-    //MPI_Barrier(mpi_comm);
     mpi_comm.Barrier();
 }
 
 double ParSpike::dbl_allreduce(double x, int type)
 {
     double result;
-    /*  MPI_Op t;
-        if (numprocs < 2) { return x; }
-        if (type == 1) {
-            t = MPI_SUM;
-        }else if (type == 2) {
-            t = MPI_MAX;
-        }else{
-            t = MPI_MIN;
-        }
-        MPI_Allreduce(&x, &result, 1, MPI_DOUBLE, t, mpi_comm);
-    */
     MPI::Op t;
     if (numprocs < 2) {
         return x;
@@ -634,14 +553,11 @@ double ParSpike::dbl_allreduce(double x, int type)
 
 void ParSpike::dbl_allgather(double* s, double* r, int n)
 {
-    //MPI_Allgather(s, n,  MPI_DOUBLE, r, n, MPI_DOUBLE, mpi_comm);
     mpi_comm.Allgather(s, n,  MPI::DOUBLE, r, n, MPI::DOUBLE);
 
 }
 
 #if BGPDMA
-
-
 static MPI_Comm bgp_comm;
 
 void ParSpike::bgp_comm()
