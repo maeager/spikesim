@@ -55,6 +55,8 @@ main2.o: main2.cpp   ParNetwork.h BBS.h ParSpike.h BBServer.h  BBS2MPI.h ParNetw
 main3.o: main3.cpp   ParNetwork.h BBS.h ParSpike.2.h BBServer.h  BBS2MPI.2.h ParNetwork2BBS.h ParallelNetManager.h
 	$(MPICXX) $(CXXFLAGS)  -c main3.cpp -o main3.o
 
+load_balances.o: load_balances.cpp ParNetwork.h BBS.h ParSpike.h BBServer.h BBS2MPI.h ParNetwork2BBS.h ParallelNetManager.h
+	$(MPICXX) $(CXXFLAGS)  -c load_balances.cpp -o load_balances.o
 
 ParNetwork.o: ParNetwork.h ParNetwork.cpp  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c ParNetwork.cpp -o ParNetwork.o
@@ -104,6 +106,14 @@ main3: $(ParSpikeSim_CXXOBJECTS) main3.o
 main2: $(ParSpikeSim_OBJECTS) main2.o
 	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main2 main2.o $(ParSpikeSim_OBJECTS)
 
+main1: $(ParSpikeSim_OBJECTS) main.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main1 main.o $(ParSpikeSim_OBJECTS)
+
+main-par: $(ParSpikeSim_CXXOBJECTS) main-par.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main-par main-par.o $(ParSpikeSim_CXXOBJECTS)
+
+load_balances: load_balances.o $(ParSpikeSim_OBJECTS)	
+	$(MPICXX) $(CXXFLAGS)  -o load_balances load_balances.o $(ParSpikeSim_OBJECTS)
 
 clean:
 	rm -f *.o *.exe *.bak *.sav *~ '#*'
@@ -130,3 +140,10 @@ remake:
 	#tail -79 Makefile >> Makefile.tmp
 	# 296- to end
 	# 1 to 5
+
+
+test_pnm.o: test_pnm.cpp   ParNetwork.h BBS.h ParSpike.h BBServer.h  BBS2MPI.h ParNetwork2BBS.h ParallelNetManager.h  AnyBuf.h
+	$(MPICXX) $(CXXFLAGS)  -c test_pnm.cpp -o test_pnm.o
+
+test_pnm: $(ParSpikeSim_OBJECTS) test_pnm.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o test_pnm test_pnm.o $(ParSpikeSim_OBJECTS)

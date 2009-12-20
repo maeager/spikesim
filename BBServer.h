@@ -52,7 +52,7 @@ class KeepArgs;
 
 void bbs_context_wait();
 void bbs_handle();
-void bbs_done();
+
 
 class BBSDirect : public BBSImpl
 {

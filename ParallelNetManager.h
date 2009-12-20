@@ -8,13 +8,13 @@
 #endif
 #include "ParNetwork.h"
 //#include "NetPar.h"
-#include "ParNetwork2BBS.h"
+#include "ParNetwork2BBS.h" 
 
 
 #include <list>
 #include <fstream>
 #include <string>
-#include<boost/shared_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "IdCounter.h"
 #include "Error.h"

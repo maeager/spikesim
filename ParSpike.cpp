@@ -165,7 +165,7 @@ void ParSpike::terminate()
 {
 
 #ifdef DEBUG
-    std::cout << "terminate: rank " << my_rank << std::endl;
+    std::cout << "Terminate: rank " << my_rank << std::endl;
 #endif
     if (under_mpi_control_) {
         MPI_Finalize();
@@ -186,7 +186,10 @@ void ParSpike::mpiabort(int errcode)
     if (flag) {
         MPI_Abort(MPI_COMM_WORLD, errcode);
     } else {
-        std::abort();
+#ifdef DEBUG
+    std::cout << "Abort: rank " << my_rank << std::endl;
+#endif
+	std::abort();
     }
 
 }
