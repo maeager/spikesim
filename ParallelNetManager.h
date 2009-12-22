@@ -54,7 +54,7 @@ public:
     void load_balance_round_robin(); //simplistic partitioning
     void load_balance_roulette();
     void load_balance_by_group();
-    void terminate();
+    void done();
 
     ConfigBase* cm2t(int precell_id, ConfigBase* postcell_syn, double weight, double delay);
 // mostly for debugging

@@ -164,17 +164,16 @@ double ParSpike::wtime()
 void ParSpike::terminate()
 {
 
-#ifdef DEBUG
-    std::cout << "Terminate: rank " << my_rank << std::endl;
-#endif
     if (under_mpi_control_) {
+#ifdef DEBUG
+    std::cout << "Terminating: rank " << my_rank << std::endl;
+#endif
         MPI_Finalize();
     }
     mpi_use = 0;
 #ifdef DEBUG
 //      BBS2MPI::checkbufleak();
 #endif
-
 
 }
 
@@ -184,10 +183,13 @@ void ParSpike::mpiabort(int errcode)
     int flag;
     MPI_Initialized(&flag);
     if (flag) {
-        MPI_Abort(MPI_COMM_WORLD, errcode);
+#ifdef DEBUG
+    std::cout << "Aborting MPI: rank " << my_rank << std::endl;
+#endif        
+    MPI_Abort(MPI_COMM_WORLD, errcode);
     } else {
 #ifdef DEBUG
-    std::cout << "Abort: rank " << my_rank << std::endl;
+    std::cout << "Aborting STD: rank " << my_rank << std::endl;
 #endif
 	std::abort();
     }
@@ -253,7 +255,7 @@ int ParSpike::spike_exchange()
         if (icapacity_ < novfl) {
             icapacity_ = novfl + 10;
             spikein_.clear();//if(spikein_) delete [] spikein_;
-            spikein_.resize(icapacity_);// (NRNMPI_Spike*)hoc_Emalloc(icapacity_ * sizeof(NRNMPI_Spike));
+            spikein_.resize(icapacity_);
         }
         n1 = (nout_ > spikebuf_size) ? nout_ - spikebuf_size : 0;
         MPI_Allgatherv(&spikeout_[0], n1, spike_type, &spikein_[0], nin_, displs, spike_type, mpi_comm);
@@ -290,9 +292,9 @@ int ParSpike::spike_exchange_compressed()
 
         //todo: change memory
         if (displs) delete displs;
-        displs = new int[np]; //(int*)hoc_Emalloc(np*sizeof(int));
+        displs = new int[np];
         displs[0] = 0;
-        byteovfl = new int[np]; //(int*)hoc_Emalloc(np*sizeof(int));
+        byteovfl = new int[np]; 
     }
     bbs_context_wait();
 
@@ -514,6 +516,9 @@ void ParSpike::wait(void** request)
 
 void ParSpike::barrier()
 {
+#ifdef DEBUG
+  if (my_rank != 0)  std::cout << "Halting on MPI_barrier()"<< std::endl;
+#endif
     MPI_Barrier(mpi_comm);
 }
 

@@ -711,7 +711,9 @@ void BBS::set_gid2node(int gid, int nid)
     NetPar::alloc_space();
 
     if (nid == my_rank) {
+#if DEBUG ==2
         std::cout<< " gid  " <<  gid<< "  defined on " <<  my_rank<< std::endl;
+#endif
         //PreSyn* ps;
         if (NetPar::gid2in_->find(gid)->first)
             NetPar::gid2in_->erase(gid);//assert(!(ps = NetPar::gid2in_->find(gid)));

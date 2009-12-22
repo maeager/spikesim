@@ -23,6 +23,8 @@ class ParallelNetManager;
 //#include "ParallelNetManager.h"
 #endif
 
+static int GroupID=0;
+
 //! Group of neurons sharing similar properties.
 /*! All the neurons of the group share the same configurators for the neural data (\link Group::data_cfg_ \endlink)
     and activation (\link Group::nrn_act_cfg_ \endlink) mechanisms.
@@ -34,11 +36,12 @@ class Group
     friend class AllCrossPairsThroughSameGroups;
 #ifdef PARALLELSIM
     friend class ParNetwork;
+    friend class ParallelNetManager;
 #else
     friend class Network;
 #endif
 public:
-    Group() : data_cfg_(0), nrn_act_cfg_(0) {}
+ Group() : id(GroupID++), data_cfg_(0), nrn_act_cfg_(0) {}
     void populate(std::ifstream & is);
     ~Group();
     void connect_to(Group & targetgroup, DistributionManager * const weightdistribcfg, DistributionManager * const delaydistribcfg, ConfigBase * const synmechcfg, ConfigBase * const plastmechcfg, ConnectivityManager * const connectivitymgr, std::list<boost::shared_ptr<ConfigBase> > & cfglist, Size & nb_con);
@@ -49,25 +52,30 @@ public:
     typedef std::list<boost::shared_ptr<NeuronInterface> > ListNrnType; /*!< Type redefinition for the list of pointers to the neurons. */
     ListNrnType list_; /*!< List of pointers to the neurons of the group. */
 
-    unsigned n;
+    unsigned n;  /*!< Number of cells required to be in Group defined by input script */
 private:
     ConfigBase * data_cfg_; /*!< Common configurator for the neural data shared by all the neurons of this group. */
     ConfigBase * nrn_act_cfg_; /*!< Common configurator for the activation mechanism shared by all the neurons of this group. */
 
 // accessors to information about the group
 public:
-    const ConfigBase * const neuronconfigurator() const {
+    ConfigBase * const neuronconfigurator() const {
         return nrn_act_cfg_;
+    }
+    ConfigBase * const dataconfigurator() const {
+        return data_cfg_;
     }
     Size size() const {
         return (Size) list_.size();
+    }
+    int required_cell_num() const {
+      return (int) n;
     }
     void clear_past_of_spike_list(const Time & time_end_past);
 
 #ifdef PARALLELSIM
 
-    void par_connect_to(ParallelNetManager * const pnm, Group & targetgroup, DistributionManager * const weight_distrib_cfg, DistributionManager * const delay_distrib_cfg, ConfigBase * const syn_mech_cfg, ConfigBase * const plast_mech_cfg, ConnectivityManager * const connectivity_mgr, std::list<boost::shared_ptr<ConfigBase> > & cfg_list, Size &nb_con);
-
+    void par_connect_to(ParallelNetManager* const  pnm, Group & targetgroup, DistributionManager * const weight_distrib_cfg, DistributionManager * const delay_distrib_cfg, ConfigBase * const syn_mech_cfg, ConfigBase * const plast_mech_cfg, ConnectivityManager * const connectivity_mgr, std::list<boost::shared_ptr<ConfigBase> > & cfg_list, Size &nb_con); 
     typedef std::list<boost::shared_ptr<ConfigBase> > ListBaseType; /*!< Type redefinition for the list of pointers to base class. */
     typedef std::list<boost::shared_ptr<ConnectivityManager> > ListConnType; /*!< Type redefinition for the list of pointers to Conn class. */
     typedef std::list<boost::shared_ptr<DistributionManager> > ListDistrType; /*!< Type redefinition for the list of pointers to Distr Manager class. */

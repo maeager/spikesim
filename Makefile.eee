@@ -91,8 +91,8 @@ ParNetwork2BBS.o:  ParNetwork2BBS.cpp ParNetwork2BBS.h  AnyBuf.h NetPar.h
 ParallelNetManager.o: ParallelNetManager.h ParallelNetManager.cpp NetPar.h ParNetwork.h BBS.h ParSpike.h BBServer.h BBS2MPI.h ParNetwork2BBS.h  AnyBuf.h
 	$(MPICXX) $(CXXFLAGS)  -c ParallelNetManager.cpp -o ParallelNetManager.o
 
-ParSpikeSim.exe: $(ParSpikeSim_OBJECTS) main3.o
-	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.exe main3.o  $(ParSpikeSim_OBJECTS)
+ParSpikeSim.exe: $(ParSpikeSim_OBJECTS) main2.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.exe main2.o  $(ParSpikeSim_OBJECTS)
 
 ParSpikeSim.2.exe: $(ParSpikeSim_CXXOBJECTS) main2.o
 	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o ParSpikeSim.2.exe main3.o $(ParSpikeSim_CXXOBJECTS)
@@ -100,8 +100,8 @@ ParSpikeSim.2.exe: $(ParSpikeSim_CXXOBJECTS) main2.o
 SpikeSim.exe: $(SpikeSim_OBJECTS)
 	$(MPICXX) $(CXXFLAGS) -o SpikeSim.exe $(SpikeSim_OBJECTS)
 
-main3: $(ParSpikeSim_CXXOBJECTS) main3.o
-	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main3 main3.o $(ParSpikeSim_CXXOBJECTS)
+main3: $(ParSpikeSim_OBJECTS) main3.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main3 main3.o $(ParSpikeSim_OBJECTS)
 
 main2: $(ParSpikeSim_OBJECTS) main2.o
 	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main2 main2.o $(ParSpikeSim_OBJECTS)

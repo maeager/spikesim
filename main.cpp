@@ -16,7 +16,7 @@
 #include "SimulationEnvironment.h"
 #include "OutputManager.h"
 #include "NoThreading.h"
-#include "Engine.h"
+//#include "Engine.h"
 
 
 
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
             return EXIT_FAILURE;
         }
 #ifdef PARALLELSIM
-        net.build_network();
+        //net.build_network();
         std::cout << std::endl << "ParNetwork size " << net.network_size() << std::endl;
 #endif
         std::cout << "simulation duration: " << (SimEnv::i_duration() * SimEnv::timestep()) << std::endl;
@@ -68,10 +68,10 @@ int main(int argc, char *argv[])
             RandomGenerator::reinit();
 
         // start of the simulation
-        Engine<MPIEngine> engine;
+	//        Engine<MPIEngine> engine;
 
-        engine.init(net);
-        engine.launch_sim(net);
+	//        engine.init(net);
+	//        engine.launch_sim(net);
 
 
         // stop time clock

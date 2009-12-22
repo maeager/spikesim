@@ -20,8 +20,6 @@
 //Globals --
 
 
-//extern    MPI_Comm mpi_comm;
-//extern    MPI_Comm bbs_comm;
 extern  MPI::Intracomm mpi_comm;
 extern  MPI::Intracomm bbs_comm;
 /* could convert to typedef pair<int,double>  SpikePacket_*/
@@ -123,7 +121,7 @@ public:
 
 };
 
-//class ParSpike GlobalSpikeConfig;
+
 
 
 

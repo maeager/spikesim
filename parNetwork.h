@@ -116,7 +116,7 @@ inline void ParNetwork::clear_past_of_spike_list(const Time & time_end_past)
 
 
 ///////////////////////////////////////////////////////////////////////////
-// Method to
+// Method to create pointers to all cells
 // all the groups are updates from #0 to last one
 inline void ParNetwork::build_cell_list()
 {

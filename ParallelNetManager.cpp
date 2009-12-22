@@ -1,22 +1,17 @@
 
 
-//#include "NetPar.h"
+
 #include <errno.h>
 #include "Group.h"
 #include "GlobalDefs.h"
 #include "AnyBuf.h"
+#include "NeuronFactory.h"
 #include "ParallelNetManager.h"
 #include "ParNetwork2BBS.h"
-
+//#include "NetPar.h"
 #define nil 0
 
 int ParallelNetManager::cell_cnt = 0;
-
-
-/*ParallelNetManager::ParallelNetManager()
-{
-}
-*/
 
 #ifdef CPPMPI
 ParallelNetManager::ParallelNetManager(int& argc, char**&argv)
@@ -59,7 +54,7 @@ void ParallelNetManager::init(int ncells, int ngroups)
 }
 
 
-void ParallelNetManager::terminate()
+void ParallelNetManager::done()
 {
     if (myid == 0) pc->done();
 }
@@ -80,7 +75,7 @@ void ParallelNetManager::set_gid2node(int cell_id, int pcid = -1)
     if (pcid == -1) pcid = myid; //default to myid
     pc->set_gid2node(cell_id, pcid);
 #ifdef DEBUG
-    if (myid == 0) std::cout << "Cell " << cell_id << " set by me to host " << pcid << std::endl;
+    //    if (myid == 0) std::cout << "Cell " << cell_id << " set by me to host " << pcid << std::endl;
 #endif
 }
 
@@ -89,13 +84,15 @@ void ParallelNetManager::load_balance_round_robin()   // simplistic partitioning
     for (register int i = 0; i < ncell; ++i) {
         set_gid2node(i, i % nwork);
     }
+    cell_cnt = 0;
 }
 
-void ParallelNetManager::load_balance_roulette()   // in order partitioning
+void ParallelNetManager::load_balance_roulette()   // in-order partitioning
 {
     for (register int i = 0; i < ncell; ++i) {
         set_gid2node(i, floor(i*nwork / ncell));
     }
+    cell_cnt = 0;
 }
 
 void ParallelNetManager::load_balance_by_group()   // group partitioning
@@ -109,6 +106,7 @@ void ParallelNetManager::load_balance_by_group()   // group partitioning
         for (register int nc = 0; nc < ncell; ++nc)
             set_gid2node(nc, floor(nc*nwork / ncell));
     }
+    cell_cnt = 0;
 }
 
 bool ParallelNetManager::gid_exists(int cell_id)
@@ -224,7 +222,7 @@ void ParallelNetManager::maxstepsize()
         pc->barrier();
     }
 }
-*/
+
 
 void ParallelNetManager::doinit()
 {
@@ -287,7 +285,7 @@ void ParallelNetManager::postwait(int x)
         pc->post("poststat");//, myid, w, sm, s, r, ru);
     }
 }
-/*
+
 proc ParallelNetManager::prstat() { local i, id, w, sm, s, r, ru // print the wait time and statistics
     if (nwork > 1) {
         pc->context(this, "postwait", $1)
@@ -391,11 +389,34 @@ void ParallelNetManager::create_network(ParNetwork&net)
 //  net.create();
 //------
 //Or
-    for (ParNetwork::ListGroupType::const_iterator i = net.gp_list_.begin();
-            i != net.gp_list_.end();
-            ++i)
-        (*i)->create_population();
-    net.build_cell_list();
+
+// This method was performed within the original Network class by letting each Group take care of itself. 
+// For the parallel system creation of the cells must be done by PNM and ParNetwork so that we can check to see if the cell is intended to be created on this node
+  
+    for (ParNetwork::ListGroupType::const_iterator grp = net.gp_list_.begin();
+            grp != net.gp_list_.end();
+	 ++grp){
+      //(*i)->create_population();    
+    //Create Neurons
+      if ((!(*grp)->neuronconfigurator()) || (!(*grp)->dataconfigurator()))
+        throw ConfigError("Group: void group or neuron configurator");
+    else {
+#ifdef DEBUG
+        std::cout << "Creating cells in Group " << std::endl;
+#endif
+        NeuronFactory nrnfactory( (*grp)->dataconfigurator(),  (*grp)->neuronconfigurator());
+        for (Size ii = 0; ii < (*grp)->size(); ++ii){
+	  //Is this cell to be created on the current node
+             if (gid_exists(cell_cnt++)) {
+	       (*grp)->list_.push_back(boost::shared_ptr<NeuronInterface>(nrnfactory.create()));
+	     }
+	}
+#ifdef DEBUG
+        std::cout << "Completed creating cells in Group:"<< (*grp)->id << " size = " << (*grp)->list_.size() << std::endl;
+#endif
+    }
+    }
+    net.build_cell_list();  //inline function
 }
 
 void ParallelNetManager::connect_network(ParNetwork&net, bool no_output = false)
@@ -407,27 +428,28 @@ void ParallelNetManager::connect_network(ParNetwork&net, bool no_output = false)
 //  net.connect_groups();
 //------
 //Or
-    /*  Size nb_con=0;
+      Size nb_con=0;
         for (ParNetwork::ListConnType::const_iterator i = net.conn_list_.begin();
              i != net.conn_list_.end();
              ++i){
             //(*i)->connect_to();
     // connect the groups
-            (*i).gp_source->par_connect_to(this,(*i).gp_target,
-                (*i).weight_distrib_cfg_,
-                (*i).delay_distrib_cfg_,
-                (*i).syn_mech_cfg_,
-                (*i).plast_mech_cfg_,
-                (*i).connectivity_cfg_,
-                (*i).cfg_list_,
+	  (*i)->gp_source->par_connect_to(this,
+		*(*i)->gp_target,
+		(*i)->weight_distrib_cfg_.get(),
+                (*i)->delay_distrib_cfg_.get(),
+                (*i)->syn_mech_cfg_.get(),
+                (*i)->plast_mech_cfg_.get(),
+                (*i)->connectivity_cfg_.get(),
+                net.cfg_list_,
                 nb_con);
-        // output on screen: write out the size of the constructed group
+	    
+	       // output on screen: write out the size of the constructed group
             if (! no_output)
             {
-                std::cout << nb_con << " connections from group #" << (*i).gp_source->id << " to group #" << (*i).gp_target->id  << std::endl;
+                std::cout << nb_con << " connections from group #" << (*i)->gp_source->id << " to group #" << (*i)->gp_target->id  << std::endl;
             }
             nb_con=0;
         }
-            //(**gp_source).par_connect_to(**gp_target, weight_distrib_cfg, delay_distrib_cfg, syn_mech_cfg, plast_mech_cfg, connectivity_cfg, cfg_list_, nb_con);
-    */
+    
 }
