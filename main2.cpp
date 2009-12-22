@@ -33,12 +33,7 @@ main(int argc, char *argv[])
       cout << "\tngroup = " << pnm.ngroup << endl;
       cout << "\tncellgrp = " << pnm.ncellgrp << endl;
     }
-    // TESTING load balances
-    //    pnm.load_balance_roulette(); pnm.pc->gid_clear(); pnm.pc->barrier(); //if (pnm.myid == 0) cin.get();
-    //   pnm.load_balance_round_robin(); pnm.pc->gid_clear(); pnm.pc->barrier(); //if (pnm.myid == 0) cin.get();
-    //pnm.load_balance_by_group(); pnm.pc->gid_clear();
 
-    //TESTING ParNetwork
     ParNetwork net;
 
     Size ncells = 0, ngroups = 0;
@@ -50,7 +45,7 @@ main(int argc, char *argv[])
       //net.build_from_file("./script.txt");
 	
     } catch (ConfigError & err) {
-        cout << err.what();
+      cout <<"Error "<< err.what();
         // terminates the execution
 	cin.get();
         return EXIT_FAILURE;
@@ -62,8 +57,9 @@ main(int argc, char *argv[])
     }
 
     //End Setup of ParNetwork
-    //     pnm.pc->barrier();
-    // if (pnm.myid == 0) {
+    if (pnm.myid != 0) {
+      //      pnm.pc->barrier(); 
+    } else {
         cout << "TESTING ParNetwork" << endl;
         cout << "cell_list size  = " <<   net.network_size() << endl;
         cout << "conn list size = " << net.conn_list_.size() << endl;  
@@ -72,32 +68,28 @@ main(int argc, char *argv[])
         cout << "presyn list size= " << net.presyn_list.size() << endl;
         cout << "postsyn list size= " << net.postsyn_list.size() << endl;
         cout << "Hit Enter to continue" << endl; //cin.get();
-	//}
-      cout << "Ncells = " << ncells << "\tNgroups = " << ngroups << endl;
-      pnm.init(ncells, ngroups);
-      //    if (pnm.myid == 0) {
-      cout << "TESTING ParallelNetManager" << endl;
-      cout << "\tncell = " << pnm.ncell << endl;
-      cout << "\tngroup = " << pnm.ngroup << endl;
-      cout << "\tncellgrp = " << pnm.ncellgrp << endl;
-      //}
-     //  pnm.load_balance_round_robin();
-    // Start Creation of network cells
-    // net.create_population();
+     }
+     cout << "Ncells = " << ncells << "\tNgroups = " << ngroups << endl;
+     pnm.init(ncells, ngroups);
+     pnm.load_balance_round_robin();
+     if (pnm.myid == 0) {
+       cout << "TESTING ParallelNetManager" << endl;
+       cout << "\tncell = " << pnm.ncell << endl;
+       cout << "\tngroup = " << pnm.ngroup << endl;
+       cout << "\tncellgrp = " << pnm.ncellgrp << endl;
+     }
 
-//
-//net.network_size();
-//    pnm.init(ncells, ngroups);
-//    pnm.load_balance_roulette();
-//    pnm.create_network(net);
 
+     // Start Creation of network cells
+     pnm.create_network(net);
+     
 
 
 //Round robin is probably the most inefficient way to distribute the neurons
 //Guy from IBM said that holding all the synapse on CPUs would be better
 
 
-    cout << " ParNetwork size " << net.network_size() << endl;
+//    cout << " ParNetwork size " << net.network_size() << endl;
 
 /*    cout << "simulation duration: " << (SimEnv::i_duration() * SimEnv::timestep()) << endl;
     cout << endl << "[info] press any key now to start the execution" << endl << endl;
@@ -132,13 +124,16 @@ main(int argc, char *argv[])
     // memory cleaning
 */
 
-    pnm.pc->barrier();
-    if (pnm.myid == 0) {
-      cout << "Hit Enter to finish" << endl; 
-      cin.get();
-      pnm.done();
-    }
+    
+	pnm.pc->barrier(); 
+	
+	if(pnm.myid == 0) {
+	  std::cout << "Hit Enter to finish" << std::endl;
+	  std::cin.get();
+	  pnm.done();
+	} else 	MPI_Finalize();
 
-    // wait for key pressed
+
+
     return 0;
 }

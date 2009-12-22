@@ -26,18 +26,20 @@ main(int argc, char *argv[])
 	std::cout << "ngroup = " << pnm.ngroup << std::endl;
 	std::cout << "ncellgrp = " << pnm.ncellgrp << std::endl;
 	}
-	// TESTING load balances 
-//	pnm.load_balance_roulette();pnm.pc->gid_clear();pnm.pc->barrier(); if( pnm.myid == 0) std::cin.get();
-	pnm.load_balance_round_robin();//pnm.pc->gid_clear();pnm.pc->barrier(); if( pnm.myid == 0) std::cin.get();
-//	pnm.load_balance_by_group();pnm.pc->gid_clear();
+       	// TESTING load balances 
+	pnm.load_balance_roulette();pnm.pc->gid_clear();pnm.pc->barrier(); if( pnm.myid == 0) std::cin.get();
+	pnm.load_balance_round_robin();pnm.pc->gid_clear();pnm.pc->barrier(); if( pnm.myid == 0) std::cin.get();
+	pnm.load_balance_by_group();pnm.pc->gid_clear();
 	
 
 	
-	//pnm.pc->barrier(); 
-	//if(pnm.myid == 0) {std::cin.get();
-	  pnm.terminate();
-	  //}
+	pnm.pc->barrier(); 
 	
-	// wait for key pressed
+	if(pnm.myid == 0) {
+	  std::cout << "Hit Enter to finish" << std::endl;
+	  std::cin.get();
+	  pnm.done();
+	} else 	MPI_Finalize();
+	
 	return 0;
 }

@@ -519,7 +519,7 @@ void ParSpike::barrier()
 #ifdef DEBUG
   if (my_rank != 0)  std::cout << "Halting on MPI_barrier()"<< std::endl;
 #endif
-    MPI_Barrier(mpi_comm);
+  if (MPI_Barrier(mpi_comm) != MPI_SUCCESS ) std::cout << "MPI_Barrier failure" << std::endl;
 }
 
 double ParSpike::dbl_allreduce(double x, int type)
