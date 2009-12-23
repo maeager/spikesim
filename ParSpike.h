@@ -24,7 +24,9 @@
 extern  MPI_Comm mpi_comm;
 extern  MPI_Comm bbs_comm;
 
-/* could convert to typedef pair<int,double>  SpikePacket_*/
+//! SpikePacket_
+/*! communication class for sending neuron's ID and time of spike.
+ */
 typedef struct {
     int gid;
     double spiketime;
@@ -45,7 +47,9 @@ static void pgvts_op(double* in, double* inout, int* len, MPI_Datatype* dptr);
 
 
 
-
+//! ParSpike: parallel environment variables.
+/*! This class encapsulates the parallel environment variables taken from nrnmpi folder in NEURON
+ */
 class ParSpike
 {
 public:

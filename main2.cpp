@@ -23,7 +23,7 @@ main(int argc, char *argv[])
 #else
     ParallelNetManager pnm(&argc, &argv);
 #endif
-    cout << "Hello World! I am " << pnm.myid << " of " << pnm.nhost << endl;
+    cout << "ParSpikeSim: I am " << pnm.myid << " of " << pnm.nhost << endl;
 
     // TEST ParallelNetManager
     pnm.init(100, 5);
@@ -71,6 +71,8 @@ main(int argc, char *argv[])
      }
      cout << "Ncells = " << ncells << "\tNgroups = " << ngroups << endl;
      pnm.init(ncells, ngroups);
+//Round robin is probably the most inefficient way to distribute the neurons
+//Guy from IBM said that holding all the synapse on CPUs would be better
      pnm.load_balance_round_robin();
      if (pnm.myid == 0) {
        cout << "TESTING ParallelNetManager" << endl;
@@ -82,16 +84,17 @@ main(int argc, char *argv[])
 
      // Start Creation of network cells
      pnm.create_network(net);
-     pnm.connect_network(net,false);
+     pnm.connect_network(net);
+     pnm.pc->barrier(); 
+    if (pnm.myid == 0) {
+      //      pnm.prun();
+    
+    }
 
 
-//Round robin is probably the most inefficient way to distribute the neurons
-//Guy from IBM said that holding all the synapse on CPUs would be better
 
 
-//    cout << " ParNetwork size " << net.network_size() << endl;
-
-/*    cout << "simulation duration: " << (SimEnv::i_duration() * SimEnv::timestep()) << endl;
+/*    cout << "Simulation duration: " << (SimEnv::i_duration() * SimEnv::timestep()) << endl;
     cout << endl << "[info] press any key now to start the execution" << endl << endl;
     cin.get();
 

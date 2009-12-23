@@ -115,6 +115,9 @@ main-par: $(ParSpikeSim_CXXOBJECTS) main-par.o
 load_balances: load_balances.o $(ParSpikeSim_OBJECTS)	
 	$(MPICXX) $(CXXFLAGS)  -o load_balances load_balances.o $(ParSpikeSim_OBJECTS)
 
+doc: Doxyfile
+	doxygen Doxyfile
+
 clean:
 	rm -f *.o *.exe *.bak *.sav *~ '#*'
 

@@ -1,5 +1,9 @@
-#ifndef bbssrvcli_h
-#define bbssrvcli_h
+// BBServer.h
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifndef BBSERVER_H
+#define BBSERVER_H
+
 
 #include <map>
 #include "BBS.h"

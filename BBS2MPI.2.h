@@ -1,5 +1,8 @@
-#ifndef bbsmpi_h
-#define bbsmpi_h
+// BBS2MPI.2.h
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifndef BBS2MPI_H
+#define BBS2MPI_H
 
 #include <cstdlib>
 #include <iostream>

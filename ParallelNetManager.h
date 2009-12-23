@@ -1,3 +1,7 @@
+// ParallelNetManager.h
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 #ifndef PARALLELNETMANAGER_H
 #define PARALLELNETMANAGER_H
 
@@ -36,7 +40,7 @@ public:
     ~ParallelNetManager();
     void init(int, int);
     void create_network(ParNetwork&);
-    void connect_network(ParNetwork&, bool);
+    void connect_network(ParNetwork&);
     void register_cell(int, Group*);
     void synmech_append(int, int);
     void set_gid2node(int, int);

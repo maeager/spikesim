@@ -13,6 +13,14 @@
 
 int ParallelNetManager::cell_cnt = 0;
 
+/** 
+ * ParallelNetManager Constructor
+ * 
+ * @param argc pass input arguments to MPI_Init 
+ * @param argv 
+ * 
+ * @return 
+ */
 #ifdef CPPMPI
 ParallelNetManager::ParallelNetManager(int& argc, char**&argv)
 #else
@@ -24,11 +32,12 @@ ParallelNetManager::ParallelNetManager(int* argc, char***argv)
 
 }
 
+//!Destructor
 ParallelNetManager::~ParallelNetManager()
 {
 }
 
-
+/// Initialise default parameters
 void ParallelNetManager::init(int ncells, int ngroups)
 {
 
@@ -54,6 +63,10 @@ void ParallelNetManager::init(int ncells, int ngroups)
 }
 
 
+/** 
+ *  Master process calls ParNetwork2BBS's done() to terminate the MPI processors 
+ *  
+ */ 
 void ParallelNetManager::done()
 {
     if (myid == 0) pc->done();
@@ -74,12 +87,13 @@ void ParallelNetManager::set_gid2node(int cell_id, int pcid = -1)
 {
     if (pcid == -1) pcid = myid; //default to myid
     pc->set_gid2node(cell_id, pcid);
-#ifdef DEBUG
-    //    if (myid == 0) std::cout << "Cell " << cell_id << " set by me to host " << pcid << std::endl;
+#if DEBUG ==2
+    std::cout << "Cell " << cell_id << " set by me to host " << pcid << std::endl;
 #endif
 }
 
-void ParallelNetManager::load_balance_round_robin()   // simplistic partitioning
+/// simplistic partitioning of neurons on nodes
+void ParallelNetManager::load_balance_round_robin()   
 {
     for (register int i = 0; i < ncell; ++i) {
         set_gid2node(i, i % nwork);
@@ -87,7 +101,8 @@ void ParallelNetManager::load_balance_round_robin()   // simplistic partitioning
     cell_cnt = 0;
 }
 
-void ParallelNetManager::load_balance_roulette()   // in-order partitioning
+/// order partitioning based on num of nodes
+void ParallelNetManager::load_balance_roulette()  
 {
     for (register int i = 0; i < ncell; ++i) {
         set_gid2node(i, floor(i*nwork / ncell));
@@ -95,7 +110,8 @@ void ParallelNetManager::load_balance_roulette()   // in-order partitioning
     cell_cnt = 0;
 }
 
-void ParallelNetManager::load_balance_by_group()   // group partitioning
+/// partition neurons based on groups
+void ParallelNetManager::load_balance_by_group()   
 {
     if (ngroup > nwork) {
         for (register int gr = 0; gr < ngroup; ++gr) {
@@ -109,10 +125,12 @@ void ParallelNetManager::load_balance_by_group()   // group partitioning
     cell_cnt = 0;
 }
 
+/// Check to see if global ID exists on this node
 bool ParallelNetManager::gid_exists(int cell_id)
 {
     return pc->gid_exists(cell_id);
 }
+
 /*
 void  ParallelNetManager::want_all_spikes() {
     for(register int i=0; i<ncell;++i) {
@@ -185,6 +203,7 @@ ConfigBase* ParallelNetManager::cm2t(int precell_id, ConfigBase* postcell_syn, d
 //  nc->delay = delay;
     return nc;
 }
+
 
 void ParallelNetManager::set_maxstep()
 {
@@ -419,7 +438,7 @@ void ParallelNetManager::create_network(ParNetwork&net)
     net.build_cell_list();  //inline function
 }
 
-void ParallelNetManager::connect_network(ParNetwork&net, bool no_output = false)
+void ParallelNetManager::connect_network(ParNetwork&net)
 {
 
 //TODO
@@ -432,7 +451,6 @@ void ParallelNetManager::connect_network(ParNetwork&net, bool no_output = false)
         for (ParNetwork::ListConnType::const_iterator i = net.conn_list_.begin();
              i != net.conn_list_.end();
              ++i){
-            //(*i)->connect_to();
     // connect the groups
 	  (*i)->gp_source->par_connect_to(this,
 		*(*i)->gp_target,
@@ -445,10 +463,9 @@ void ParallelNetManager::connect_network(ParNetwork&net, bool no_output = false)
                 nb_con);
 	    
 	       // output on screen: write out the size of the constructed group
-            if (! no_output)
-            {
+#ifdef DEBUG
                 std::cout << nb_con << " connections from group #" << (*i)->gp_source->id << " to group #" << (*i)->gp_target->id  << std::endl;
-            }
+#endif
             nb_con=0;
         }
     
