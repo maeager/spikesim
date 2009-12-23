@@ -36,7 +36,7 @@ public:
     ~ParallelNetManager();
     void init(int, int);
     void create_network(ParNetwork&);
-    void connect_network(ParNetwork&net, bool);
+    void connect_network(ParNetwork&, bool);
     void register_cell(int, Group*);
     void synmech_append(int, int);
     void set_gid2node(int, int);

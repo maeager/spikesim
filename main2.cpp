@@ -82,7 +82,7 @@ main(int argc, char *argv[])
 
      // Start Creation of network cells
      pnm.create_network(net);
-     
+     pnm.connect_network(net,false);
 
 
 //Round robin is probably the most inefficient way to distribute the neurons
