@@ -18,23 +18,28 @@
 #endif
 #include "NetPar.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// Network class definition
-// to handle a collection groups of neurons, create them from a configuration file, the outputs, etc.
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
+//! Synaptic Connection Class
+/**
+ * Important configurations for network connections.
+ * 
+ */
 class Conn
 {
+/*!< Type redefinition for the list of pointers to Group class. */
     typedef boost::shared_ptr<Group> GroupType;
-    typedef boost::shared_ptr<ConfigBase> BaseType; /*!< Type redefinition for the list of pointers to base class. */
-    typedef boost::shared_ptr<ConnectivityManager>  ConnType; /*!< Type redefinition for the list of pointers to base class. */
-    typedef boost::shared_ptr<DistributionManager> DistrType; /*!< Type redefinition for the list of pointers to base class. */
+/*!< Type redefinition for the list of pointers to SpikeSim's base class. */
+    typedef boost::shared_ptr<ConfigBase> BaseType; 
+/*!< Type redefinition for the list of pointers to ConnectivityManager class. */
+    typedef boost::shared_ptr<ConnectivityManager>  ConnType; 
+    /*!< Type redefinition for the list of pointers to DistributionManager class. */
+    typedef boost::shared_ptr<DistributionManager> DistrType; 
 public:
+/*!< Initialise the Conn class with each mechanism for synaptic connectivity. */
     Conn(GroupType gps, GroupType gpt, BaseType sm_cfg, BaseType pm_cfg, ConnType c_cfg, DistrType wd_cfg, DistrType dd_cfg) :
             gp_source(gps), gp_target(gpt), syn_mech_cfg_(sm_cfg), plast_mech_cfg_(pm_cfg), connectivity_cfg_(c_cfg),
             weight_distrib_cfg_(wd_cfg), delay_distrib_cfg_(dd_cfg) {}
     Size gid_, source_id, target_id;
-
+    
     GroupType gp_source, gp_target;
     BaseType syn_mech_cfg_, plast_mech_cfg_;
     ConnType connectivity_cfg_;
@@ -42,21 +47,24 @@ public:
 
 };
 
-//extern class Group;
-
+//! ParNetwork class definition 
+/** Based on Network and other mechanisms in Neuron to handle a collection groups of neurons, create them from a configuration file, the outputs, etc. in a parallel environment
+ */
 class ParNetwork
 {
 public:
-    ParNetwork() {}//par_ = new ParSpike;}
+    ParNetwork() {}
     //ParNetwork(ParSpike * par) { par_ = par;)
     ~ParNetwork();
     //~ParNetwork(){if (par_) delete par_;}
+
     void build_from_file(std::string filename, std::string logfilename = "log.dat", bool no_output = false);
     void update();
     void clear_past_of_spike_list(const Time & time_end_past);
     void build_cell_list();
-//  ParSpike * par_;
-    typedef std::map< int, SynMechInterface> Gid2PreSyn;  //Similar to NEURON's hash table for parallel program
+
+    //! Main Map for ID to Synapse interface. Similar to NEURON's hash table for parallel program
+    typedef std::map< int, SynMechInterface> Gid2PreSyn;  
     static Gid2PreSyn* gid2out_;
     static Gid2PreSyn* gid2in_;
 
@@ -66,23 +74,28 @@ public:
     void create_population();
     int network_size();
     //void psl_append(PreSynPtr p){ presyn_list.push_back(p);}
-    typedef std::list< boost::shared_ptr<Conn> > ListConnType;//SynMechInterface
+
+    //! Efficient shared_ptr list of Connection types
+    typedef std::list< boost::shared_ptr<Conn> > ListConnType;
     ListConnType conn_list_;
 
 //protected:
-    typedef std::list< PreSynPtr > ListSynType;//SynMechInterface
+
+    typedef std::list< PreSynPtr > ListSynType;
     typedef std::list<boost::shared_ptr<NeuronInterface> > ListNrnType;
     typedef std::list<boost::shared_ptr<Group> > ListGroupType;
     //typedef std::map<int, boost::shared_ptr<ConfigBase> > MapConfigType;
     typedef std::list<boost::shared_ptr<ConfigBase> > ListConfigType;
-    ListGroupType gp_list_; // list of pointers to the groups of the network
-    ListConfigType cfg_list_; // list of pointers to the configurators for the connections to keep
+    ListGroupType gp_list_; //! list of pointers to the groups of the network
+    ListConfigType cfg_list_; //! list of pointers to the configurators for the connections to keep
 //  const DataCommonNeuron::ListSynMechType & DataCommonNeuron
 
 
 //  typedef std::map<int,boost::shared_ptr<ConfigBase>> MapCellId;  //Cell id map
 
-    ListNrnType cell_list;  // list of pointers to all the neurons of the network
+    //! list of pointers to all the neurons of the network
+    ListNrnType cell_list;  
+    //! list of pointers to all the pre- and post-synaptic connections in the network
     ListSynType presyn_list, postsyn_list;
 //  MapCellId2Presyn gid2presyn;
 
@@ -95,8 +108,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////
-// Update method
-// all the groups are updates from #0 to last one
+//! Update method, all the groups are updated from #0 to last one
 inline void ParNetwork::update()
 {
     for (ListGroupType::const_iterator i = gp_list_.begin();
@@ -107,7 +119,7 @@ inline void ParNetwork::update()
 }
 
 /////////////////////////////////////////////////
-// clean the spike list of the neurons up to 'time_end_past'
+//! clean the spike list of the neurons up to 'time_end_past'
 inline void ParNetwork::clear_past_of_spike_list(const Time & time_end_past)
 {
     for (ListGroupType::const_iterator i = gp_list_.begin(); i != gp_list_.end(); ++i)
@@ -116,8 +128,7 @@ inline void ParNetwork::clear_past_of_spike_list(const Time & time_end_past)
 
 
 ///////////////////////////////////////////////////////////////////////////
-// Method to create pointers to all cells
-// all the groups are updates from #0 to last one
+//! Method to create pointers to all cells all the groups are updates from #0 to last one
 inline void ParNetwork::build_cell_list()
 {
 //TODO Check this
@@ -130,6 +141,8 @@ inline void ParNetwork::build_cell_list()
             cell_list.push_back((*j));
 
 }
+
+//! Redundant method to let Groups create network
 inline void ParNetwork::create_population(){
     for (ListGroupType::const_iterator i = gp_list_.begin();
             i != gp_list_.end();
@@ -137,6 +150,7 @@ inline void ParNetwork::create_population(){
         (*i)->create_population();
 }
 
+//! Show size of created neurons
 inline int ParNetwork::network_size()
 {
     return cell_list.size();

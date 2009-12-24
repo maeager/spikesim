@@ -45,6 +45,11 @@ class ParNetwork;
 
 class NetParEvent;
 
+//! Pre synapse class
+/*! 
+ *
+ *
+ */
 class PreSyn   //: public ConditionEvent {
 {
 public:
@@ -109,11 +114,17 @@ public:
     */
 };
 
+//! Pointer to PreSyn type
 typedef boost::shared_ptr< PreSyn > PreSynPtr;
+//! Critical typedef map of global IDs to Presynapses
 typedef std::map<int, boost::shared_ptr<PreSyn > > Gid2PreSyn; //SynapseInterface
 typedef std::map<int, boost::shared_ptr<PreSyn > >::iterator Gid2PreSynItr;
 
-
+//! NetPar class
+/*! 
+ * Holds important global methods outside of the ParNetwork and BBS utilities
+ * that need a link to MPI
+ */
 class NetPar : public ParSpike
 {
 private:

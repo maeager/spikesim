@@ -55,11 +55,14 @@ class ParSpike
 public:
     ParSpike(void);
 
-
+    /*! Setup MPI interface  */
     void init(int under_control, int* pargc, char*** pargv);
+    /*! Kill all MPI processors safely */
     static void terminate();
+    /*! Kill all MPI processors - not so safe */
     static void mpiabort(int errcode);
     static double wtime();
+    /// Setup Spike packets for transmission
     void make_spikebuf_type();
     void make_spike_type();
     /*inline */void spike_initialize() {

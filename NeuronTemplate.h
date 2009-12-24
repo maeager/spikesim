@@ -10,13 +10,11 @@
 
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// NeuronTemplate class template definition
-// data (list of synapses, etc) are in NrnData
-// the activation update mechanism is dealt with by NrnActMech
-// the interface is TypeBase
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
+//! NeuronTemplate class template definition
+/*! data (list of synapses, etc) are in NrnData
+ *the activation update mechanism is dealt with by NrnActMech
+ *the interface is TypeBase
+ */
 template < class NrnData
 , class NrnActMech
 , class TypeBase >
@@ -52,8 +50,7 @@ protected:
 // inline definition
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////
-// constructor
+//! constructor
 template <class NrnData, class NrnActMech, class TypeBase>
 NeuronTemplate<NrnData, NrnActMech, TypeBase>::NeuronTemplate(
     ConfigBase * datacfg,

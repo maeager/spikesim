@@ -29,12 +29,19 @@
 
 class Group;
 
+//! Main class for creating SpikeSim networks on a parallel system.
+/** This class provides an interface to many BBS and MPI utilities  
+ * from the original NEURON parallel implementation.
+ */ 
+
 class  ParallelNetManager
 {
 public:
 #ifdef CPPMPI
+    //! Constructor using C++ MPI utilities
     ParallelNetManager(int& argc, char**&argv);
 #else
+    //! Constructor using C MPI utilities
     ParallelNetManager(int* argc, char***argv);
 #endif
     ~ParallelNetManager();

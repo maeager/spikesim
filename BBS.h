@@ -21,6 +21,9 @@
 
 void bbs_done();
 
+//! BBSImpl Bulletin Board Implementation class
+/*! Primarily a virtual class that stores some extra BBS information 
+ */
 class BBSImpl
 {
 public:
@@ -82,7 +85,9 @@ protected:
 
 
 
-
+//! BBS Base for all classes in Bulletin Board Server
+/*! Takes care of the interface between ParSpike/MPI and ParNetwork/ParallelNetManager 
+ */
 class BBS : public ParSpike
 {
 public:
