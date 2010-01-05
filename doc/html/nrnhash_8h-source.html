@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: /media/data/Work/spikesimv6/nrnhash.h Source File</title>
+<title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/nrnhash.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,11 +9,12 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>/media/data/Work/spikesimv6/nrnhash.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef nrnhash_h</span>
+<h1>/media/data/Work/spikesimv6/nrnhash.h</h1><a href="nrnhash_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef nrnhash_h</span>
 <a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define nrnhash_h</span>
 <a name="l00003"></a>00003 <span class="preprocessor"></span><span class="comment">// hash table where buckets are binary search maps and key is castable to unsigned long</span>
 <a name="l00004"></a>00004 
@@ -22,10 +23,10 @@
 <a name="l00007"></a>00007 <span class="preprocessor">#include &lt;map&gt;</span>
 <a name="l00008"></a>00008 
 <a name="l00009"></a>00009 
-<a name="l00010"></a>00010 <span class="preprocessor">#define __NrnHashEntry(Table) Table##_Entry</span>
-<a name="l00011"></a>00011 <span class="preprocessor"></span><span class="preprocessor">#define NrnHashEntry(Table) __NrnHashEntry(Table)</span>
-<a name="l00012"></a>00012 <span class="preprocessor"></span><span class="preprocessor">#define __NrnHashLT(Table) nrnhash_lt_##Table</span>
-<a name="l00013"></a>00013 <span class="preprocessor"></span><span class="preprocessor">#define NrnHashLT(Table) __NrnHashLT(Table)</span>
+<a name="l00010"></a><a class="code" href="nrnhash_8h.html#44ed651be171e8c550ed84dda7c98be0">00010</a> <span class="preprocessor">#define __NrnHashEntry(Table) Table##_Entry</span>
+<a name="l00011"></a><a class="code" href="nrnhash_8h.html#e974a3e4b7c46a9442bd483dd9970b5e">00011</a> <span class="preprocessor"></span><span class="preprocessor">#define NrnHashEntry(Table) __NrnHashEntry(Table)</span>
+<a name="l00012"></a><a class="code" href="nrnhash_8h.html#4fef07197a0adcb3cae100fa6c7606b1">00012</a> <span class="preprocessor"></span><span class="preprocessor">#define __NrnHashLT(Table) nrnhash_lt_##Table</span>
+<a name="l00013"></a><a class="code" href="nrnhash_8h.html#7eee174c9805e384eb62d0e67932b317">00013</a> <span class="preprocessor"></span><span class="preprocessor">#define NrnHashLT(Table) __NrnHashLT(Table)</span>
 <a name="l00014"></a>00014 <span class="preprocessor"></span>
 <a name="l00015"></a>00015 <span class="comment">// note that more recent STL versions (But not gcc2.95) supply</span>
 <a name="l00016"></a>00016 <span class="comment">// at(long) to get the vector element. My version contains some</span>
@@ -33,7 +34,7 @@
 <a name="l00018"></a>00018 <span class="comment">// in this classes implementation of the find method.</span>
 <a name="l00019"></a>00019 <span class="comment">// [] creates key value association if does not exist</span>
 <a name="l00020"></a>00020 
-<a name="l00021"></a>00021 <span class="preprocessor">#define declareNrnHash(Table,Key,Value) \</span>
+<a name="l00021"></a><a class="code" href="nrnhash_8h.html#ebbd531f64ad907373b05ea575106694">00021</a> <span class="preprocessor">#define declareNrnHash(Table,Key,Value) \</span>
 <a name="l00022"></a>00022 <span class="preprocessor">    struct NrnHashLT(Table) { \</span>
 <a name="l00023"></a>00023 <span class="preprocessor">        int operator() (Key i, Key j) const { \</span>
 <a name="l00024"></a>00024 <span class="preprocessor">            return ((unsigned long)i) &lt; ((unsigned long)j); \</span>
@@ -53,7 +54,7 @@
 <a name="l00038"></a>00038 <span class="preprocessor">        long size_; \</span>
 <a name="l00039"></a>00039 <span class="preprocessor">    };</span>
 <a name="l00040"></a>00040 <span class="preprocessor"></span>
-<a name="l00041"></a>00041 <span class="preprocessor">#define implementNrnHash(Table,Key,Value) \</span>
+<a name="l00041"></a><a class="code" href="nrnhash_8h.html#8f05309c13b6f39aafb2e97cf77bb8d8">00041</a> <span class="preprocessor">#define implementNrnHash(Table,Key,Value) \</span>
 <a name="l00042"></a>00042 <span class="preprocessor">    Table::Table(long size) { \</span>
 <a name="l00043"></a>00043 <span class="preprocessor">        resize(size+1); \</span>
 <a name="l00044"></a>00044 <span class="preprocessor">        size_ = size; \</span>
@@ -75,7 +76,7 @@
 <a name="l00060"></a>00060 <span class="comment">// declareNrnHash(Table,Key,Object)</span>
 <a name="l00061"></a>00061 <span class="comment">// Table* table;</span>
 <a name="l00062"></a>00062 <span class="comment">// then you can iterate with</span>
-<a name="l00063"></a>00063 <span class="preprocessor">#define NrnHashIterate(Table,table,Value,value) \</span>
+<a name="l00063"></a><a class="code" href="nrnhash_8h.html#31daaf2b8a567a2e89ecd307d0c4e42b">00063</a> <span class="preprocessor">#define NrnHashIterate(Table,table,Value,value) \</span>
 <a name="l00064"></a>00064 <span class="preprocessor">    if (table) for (long i__ = table-&gt;size_ - 1; i__ &gt;= 0; --i__) { \</span>
 <a name="l00065"></a>00065 <span class="preprocessor">            NrnHashEntry(Table)::const_iterator p__ = table-&gt;at(i__).begin(); \</span>
 <a name="l00066"></a>00066 <span class="preprocessor">            NrnHashEntry(Table)::const_iterator pe__ = table-&gt;at(i__).end(); \</span>
@@ -86,7 +87,7 @@
 <a name="l00071"></a>00071 <span class="preprocessor"></span>
 <a name="l00072"></a>00072 <span class="preprocessor">#endif // nrnhash_h</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:04 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:33:49 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

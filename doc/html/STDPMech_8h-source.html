@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: /media/data/Work/spikesimv6/STDPMech.h Source File</title>
+<title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/STDPMech.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,11 +9,12 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>/media/data/Work/spikesimv6/STDPMech.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// STDPMech.h</span>
+<h1>/media/data/Work/spikesimv6/STDPMech.h</h1><a href="STDPMech_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// STDPMech.h</span>
 <a name="l00003"></a>00003 <span class="comment"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#ifndef STDPMECH_H</span>
 <a name="l00005"></a>00005 <span class="preprocessor"></span><span class="preprocessor">#define STDPMECH_H</span>
@@ -21,11 +22,11 @@
 <a name="l00007"></a>00007 <span class="preprocessor">#include &lt;math.h&gt;</span>
 <a name="l00008"></a>00008 <span class="preprocessor">#include &lt;deque&gt;</span>
 <a name="l00009"></a>00009 
-<a name="l00010"></a>00010 <span class="preprocessor">#include "SimulationEnvironment.h"</span>
-<a name="l00011"></a>00011 <span class="preprocessor">#include "ConfigBase.h"</span>
-<a name="l00012"></a>00012 <span class="preprocessor">#include "Error.h"</span>
-<a name="l00013"></a>00013 <span class="preprocessor">#include "GlobalDefs.h"</span>
-<a name="l00014"></a>00014 <span class="preprocessor">#include "STDPFunction.h"</span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include "<a class="code" href="SimulationEnvironment_8h.html">SimulationEnvironment.h</a>"</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include "<a class="code" href="ConfigBase_8h.html">ConfigBase.h</a>"</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include "<a class="code" href="Error_8h.html">Error.h</a>"</span>
+<a name="l00013"></a>00013 <span class="preprocessor">#include "<a class="code" href="GlobalDefs_8h.html">GlobalDefs.h</a>"</span>
+<a name="l00014"></a>00014 <span class="preprocessor">#include "<a class="code" href="STDPFunction_8h.html">STDPFunction.h</a>"</span>
 <a name="l00015"></a>00015 
 <a name="l00016"></a>00016 
 <a name="l00017"></a>00017 
@@ -43,45 +44,45 @@
 <a name="l00032"></a>00032 
 <a name="l00035"></a><a class="code" href="classSTDPMechConfig.html#f328b61277e2210cda8656371191168c">00035</a>     <span class="keyword">typedef</span> <a class="code" href="classSTDPMech.html" title="STDPMech definition.">STDPMech&lt;STDPFunction, STDPBounds&gt;</a> <a class="code" href="classSTDPMech.html" title="STDPMech definition.">related_component</a>;
 <a name="l00036"></a>00036 
-<a name="l00038"></a>00038     MAKE_VISITABLE(<a class="code" href="classSTDPMechConfig.html" title="STDPMechConfig: mechanism configurator for STDPMech.">STDPMechConfig</a>)
+<a name="l00038"></a>00038     <a class="code" href="Macros_8h.html#b6d5596bd06948904ee5817f6512dfcc">MAKE_VISITABLE</a>(<a class="code" href="classSTDPMechConfig.html" title="STDPMechConfig: mechanism configurator for STDPMech.">STDPMechConfig</a>)
 <a name="l00039"></a>00039 
 <a name="l00040"></a>00040 public:
 <a name="l00041"></a>00041 <span class="comment">//  STDPMechConfig(double w_in, double w_out, double tauP, double tauD, double cP, double cD, double cutoffP, double cutoffD, double gmin, double gmax);</span>
 <a name="l00042"></a>00042     <a class="code" href="classSTDPMechConfig.html" title="STDPMechConfig: mechanism configurator for STDPMech.">STDPMechConfig</a>(std::ifstream &amp; is);
-<a name="l00043"></a>00043     inline const <span class="keywordtype">double</span> &amp; cP()<span class="keyword"> const </span>{
+<a name="l00043"></a><a class="code" href="classSTDPMechConfig.html#21de3901ca56429fa2bde35f007e1261">00043</a>     inline const <span class="keywordtype">double</span> &amp; <a class="code" href="classSTDPMechConfig.html#21de3901ca56429fa2bde35f007e1261">cP</a>()<span class="keyword"> const </span>{
 <a name="l00044"></a>00044         <span class="keywordflow">return</span> STDPFunction::cP_;
 <a name="l00045"></a>00045     }
-<a name="l00046"></a>00046     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; cD()<span class="keyword"> const </span>{
+<a name="l00046"></a><a class="code" href="classSTDPMechConfig.html#bd6ea9ff3634f656dea07aab588250b5">00046</a>     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; <a class="code" href="classSTDPMechConfig.html#bd6ea9ff3634f656dea07aab588250b5">cD</a>()<span class="keyword"> const </span>{
 <a name="l00047"></a>00047         <span class="keywordflow">return</span> STDPFunction::cD_;
 <a name="l00048"></a>00048     }
-<a name="l00049"></a>00049     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; tauP()<span class="keyword"> const </span>{
+<a name="l00049"></a><a class="code" href="classSTDPMechConfig.html#348540d246ab51cc2db5a73a4bb2db90">00049</a>     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; <a class="code" href="classSTDPMechConfig.html#348540d246ab51cc2db5a73a4bb2db90">tauP</a>()<span class="keyword"> const </span>{
 <a name="l00050"></a>00050         <span class="keywordflow">return</span> STDPFunction::tauP_;
 <a name="l00051"></a>00051     }
-<a name="l00052"></a>00052     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; tauD()<span class="keyword"> const </span>{
+<a name="l00052"></a><a class="code" href="classSTDPMechConfig.html#4543e09ed3cc4fb18d0d5bf61b347ee6">00052</a>     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; <a class="code" href="classSTDPMechConfig.html#4543e09ed3cc4fb18d0d5bf61b347ee6">tauD</a>()<span class="keyword"> const </span>{
 <a name="l00053"></a>00053         <span class="keywordflow">return</span> STDPFunction::tauD_;
 <a name="l00054"></a>00054     }
-<a name="l00055"></a>00055     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; cutoffP()<span class="keyword"> const </span>{
+<a name="l00055"></a><a class="code" href="classSTDPMechConfig.html#aefa3ba082ed3259d2ebad3a441bd548">00055</a>     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; <a class="code" href="classSTDPMechConfig.html#aefa3ba082ed3259d2ebad3a441bd548">cutoffP</a>()<span class="keyword"> const </span>{
 <a name="l00056"></a>00056         <span class="keywordflow">return</span> STDPFunction::cutoffP_;
 <a name="l00057"></a>00057     }
-<a name="l00058"></a>00058     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; cutoffD()<span class="keyword"> const </span>{
+<a name="l00058"></a><a class="code" href="classSTDPMechConfig.html#819d79229e7c10296d87f50c71a6f41f">00058</a>     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; <a class="code" href="classSTDPMechConfig.html#819d79229e7c10296d87f50c71a6f41f">cutoffD</a>()<span class="keyword"> const </span>{
 <a name="l00059"></a>00059         <span class="keywordflow">return</span> STDPFunction::cutoffD_;
 <a name="l00060"></a>00060     }
-<a name="l00061"></a>00061     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; w_in()<span class="keyword"> const </span>{
+<a name="l00061"></a><a class="code" href="classSTDPMechConfig.html#ac5cfb27fc2f55349ebb66535a25c789">00061</a>     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; <a class="code" href="classSTDPMechConfig.html#ac5cfb27fc2f55349ebb66535a25c789">w_in</a>()<span class="keyword"> const </span>{
 <a name="l00062"></a>00062         <span class="keywordflow">return</span> w_in_;
 <a name="l00063"></a>00063     }
-<a name="l00064"></a>00064     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; w_out()<span class="keyword"> const </span>{
+<a name="l00064"></a><a class="code" href="classSTDPMechConfig.html#cc5b62ed6c3a10abf8b744fe7d0311ef">00064</a>     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; <a class="code" href="classSTDPMechConfig.html#cc5b62ed6c3a10abf8b744fe7d0311ef">w_out</a>()<span class="keyword"> const </span>{
 <a name="l00065"></a>00065         <span class="keywordflow">return</span> w_out_;
 <a name="l00066"></a>00066     }
-<a name="l00067"></a>00067     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; gmin()<span class="keyword"> const </span>{
+<a name="l00067"></a><a class="code" href="classSTDPMechConfig.html#d5c1e4bb1600a722d710d776f3105011">00067</a>     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; <a class="code" href="classSTDPMechConfig.html#d5c1e4bb1600a722d710d776f3105011">gmin</a>()<span class="keyword"> const </span>{
 <a name="l00068"></a>00068         <span class="keywordflow">return</span> STDPBounds::min_;
 <a name="l00069"></a>00069     }
-<a name="l00070"></a>00070     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; gmax()<span class="keyword"> const </span>{
+<a name="l00070"></a><a class="code" href="classSTDPMechConfig.html#0905dc80084f0d03bc3891bf556272a2">00070</a>     <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; <a class="code" href="classSTDPMechConfig.html#0905dc80084f0d03bc3891bf556272a2">gmax</a>()<span class="keyword"> const </span>{
 <a name="l00071"></a>00071         <span class="keywordflow">return</span> STDPBounds::max_;
 <a name="l00072"></a>00072     }
-<a name="l00073"></a>00073     <span class="keyword">inline</span> <span class="keywordtype">void</span> weight_change(<span class="keywordtype">double</span> &amp; weight, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; dt)<span class="keyword"> const </span>{
+<a name="l00073"></a><a class="code" href="classSTDPMechConfig.html#96da72c1822970b696760f68f1fea18c">00073</a>     <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classSTDPMechConfig.html#96da72c1822970b696760f68f1fea18c">weight_change</a>(<span class="keywordtype">double</span> &amp; weight, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; dt)<span class="keyword"> const </span>{
 <a name="l00074"></a>00074         weight += STDPFunction::weight_change_impl(weight, dt);
 <a name="l00075"></a>00075     }
-<a name="l00076"></a>00076     <span class="keyword">inline</span> <span class="keywordtype">void</span> check_bounds(<span class="keywordtype">double</span> &amp; weight)<span class="keyword"> const </span>{
+<a name="l00076"></a><a class="code" href="classSTDPMechConfig.html#cb9d6bd839373dbc39e395c6147342cf">00076</a>     <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classSTDPMechConfig.html#cb9d6bd839373dbc39e395c6147342cf">check_bounds</a>(<span class="keywordtype">double</span> &amp; weight)<span class="keyword"> const </span>{
 <a name="l00077"></a>00077         STDPBounds::check_bounds_impl(weight);
 <a name="l00078"></a>00078     }
 <a name="l00079"></a>00079 <span class="keyword">private</span>:
@@ -95,9 +96,9 @@
 <a name="l00089"></a><a class="code" href="classSTDPMech.html">00089</a> <span class="keyword">class </span><a class="code" href="classSTDPMech.html" title="STDPMech definition.">STDPMech</a>
 <a name="l00090"></a>00090 {
 <a name="l00091"></a>00091 <span class="keyword">protected</span>:
-<a name="l00092"></a>00092     <span class="keyword">explicit</span> <a class="code" href="classSTDPMech.html" title="STDPMech definition.">STDPMech</a>(<a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> configurator);
-<a name="l00093"></a>00093     <span class="keyword">template</span> &lt;<span class="keyword">class</span> TypeImpl&gt; <span class="keywordtype">void</span> on_preneuron_fire_plast_update(TypeImpl &amp; neuron, <span class="keyword">const</span> Time &amp; pre_spike_time);
-<a name="l00094"></a>00094     <span class="keyword">template</span> &lt;<span class="keyword">class</span> TypeImpl&gt; <span class="keywordtype">void</span> on_postneuron_fire_plast_update(TypeImpl &amp; neuron, <span class="keyword">const</span> Time &amp; post_spike_time);
+<a name="l00092"></a>00092     <span class="keyword">explicit</span> <a class="code" href="classSTDPMech.html#35a4450922aaec4722b5e46defc50fff">STDPMech</a>(<a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> configurator);
+<a name="l00093"></a>00093     <span class="keyword">template</span> &lt;<span class="keyword">class</span> TypeImpl&gt; <span class="keywordtype">void</span> <a class="code" href="classSTDPMech.html#83e24d32a7b0ad129676a18617668cbf">on_preneuron_fire_plast_update</a>(TypeImpl &amp; neuron, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; pre_spike_time);
+<a name="l00094"></a>00094     <span class="keyword">template</span> &lt;<span class="keyword">class</span> TypeImpl&gt; <span class="keywordtype">void</span> <a class="code" href="classSTDPMech.html#78e5b39cdc333dcc0e8762a802e2a61a">on_postneuron_fire_plast_update</a>(TypeImpl &amp; neuron, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; post_spike_time);
 <a name="l00095"></a>00095 <span class="keyword">private</span>:
 <a name="l00096"></a>00096     <span class="keyword">const</span> <a class="code" href="classSTDPMechConfig.html" title="STDPMechConfig: mechanism configurator for STDPMech.">STDPMechConfig&lt;STDPFunction, STDPBounds&gt;</a> * <span class="keyword">const</span> stdpmcfg_;
 <a name="l00097"></a>00097 };
@@ -113,28 +114,28 @@
 <a name="l00110"></a>00110 {
 <a name="l00111"></a>00111     std::string test;
 <a name="l00112"></a>00112     <span class="keywordtype">double</span> eta;
-<a name="l00113"></a>00113     READ_FROM_FILE(is, eta, <span class="stringliteral">"eta"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
-<a name="l00114"></a>00114     READ_FROM_FILE(is, w_in_, <span class="stringliteral">"w_in"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
+<a name="l00113"></a>00113     <a class="code" href="Macros_8h.html#f2275ee02e94610003c79f490e071b01">READ_FROM_FILE</a>(is, eta, <span class="stringliteral">"eta"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
+<a name="l00114"></a>00114     <a class="code" href="Macros_8h.html#f2275ee02e94610003c79f490e071b01">READ_FROM_FILE</a>(is, w_in_, <span class="stringliteral">"w_in"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
 <a name="l00115"></a>00115     w_in_ *= eta;
-<a name="l00116"></a>00116     READ_FROM_FILE(is, w_out_, <span class="stringliteral">"w_out"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
+<a name="l00116"></a>00116     <a class="code" href="Macros_8h.html#f2275ee02e94610003c79f490e071b01">READ_FROM_FILE</a>(is, w_out_, <span class="stringliteral">"w_out"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
 <a name="l00117"></a>00117     w_out_ *= eta;
-<a name="l00118"></a>00118     <span class="keywordtype">double</span> tauP, tauD, cP, cD;
-<a name="l00119"></a>00119     READ_FROM_FILE(is, tauP, <span class="stringliteral">"tauP"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
-<a name="l00120"></a>00120     READ_FROM_FILE(is, tauD, <span class="stringliteral">"tauD"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
-<a name="l00121"></a>00121     READ_FROM_FILE(is, cP, <span class="stringliteral">"cP"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
+<a name="l00118"></a>00118     <span class="keywordtype">double</span> <a class="code" href="classSTDPMechConfig.html#348540d246ab51cc2db5a73a4bb2db90">tauP</a>, <a class="code" href="classSTDPMechConfig.html#4543e09ed3cc4fb18d0d5bf61b347ee6">tauD</a>, <a class="code" href="classSTDPMechConfig.html#21de3901ca56429fa2bde35f007e1261">cP</a>, <a class="code" href="classSTDPMechConfig.html#bd6ea9ff3634f656dea07aab588250b5">cD</a>;
+<a name="l00119"></a>00119     <a class="code" href="Macros_8h.html#f2275ee02e94610003c79f490e071b01">READ_FROM_FILE</a>(is, tauP, <span class="stringliteral">"tauP"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
+<a name="l00120"></a>00120     <a class="code" href="Macros_8h.html#f2275ee02e94610003c79f490e071b01">READ_FROM_FILE</a>(is, tauD, <span class="stringliteral">"tauD"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
+<a name="l00121"></a>00121     <a class="code" href="Macros_8h.html#f2275ee02e94610003c79f490e071b01">READ_FROM_FILE</a>(is, cP, <span class="stringliteral">"cP"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
 <a name="l00122"></a>00122     cP *= eta;
-<a name="l00123"></a>00123     READ_FROM_FILE(is, cD, <span class="stringliteral">"cD"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
+<a name="l00123"></a>00123     <a class="code" href="Macros_8h.html#f2275ee02e94610003c79f490e071b01">READ_FROM_FILE</a>(is, cD, <span class="stringliteral">"cD"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
 <a name="l00124"></a>00124     cD *= -eta;
 <a name="l00125"></a>00125     STDPFunction::set_params(tauP, tauD, cP, cD);
-<a name="l00126"></a>00126     <span class="keywordtype">double</span> gmin, gmax;
-<a name="l00127"></a>00127     READ_FROM_FILE(is, gmin, <span class="stringliteral">"gmin"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
-<a name="l00128"></a>00128     READ_FROM_FILE(is, gmax, <span class="stringliteral">"gmax"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
+<a name="l00126"></a>00126     <span class="keywordtype">double</span> <a class="code" href="classSTDPMechConfig.html#d5c1e4bb1600a722d710d776f3105011">gmin</a>, <a class="code" href="classSTDPMechConfig.html#0905dc80084f0d03bc3891bf556272a2">gmax</a>;
+<a name="l00127"></a>00127     <a class="code" href="Macros_8h.html#f2275ee02e94610003c79f490e071b01">READ_FROM_FILE</a>(is, gmin, <span class="stringliteral">"gmin"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
+<a name="l00128"></a>00128     <a class="code" href="Macros_8h.html#f2275ee02e94610003c79f490e071b01">READ_FROM_FILE</a>(is, gmax, <span class="stringliteral">"gmax"</span>, <span class="stringliteral">"STDPMechConfig"</span>)
 <a name="l00129"></a>00129     STDPBounds::set_params(gmin, gmax);
 <a name="l00130"></a>00130 }
 <a name="l00131"></a>00131 
 <a name="l00133"></a>00133 <span class="comment">// stream operator overloading</span>
 <a name="l00134"></a>00134 <span class="keyword">template</span> &lt;<span class="keyword">class</span> STDPFunction, <span class="keyword">class</span> STDPBounds&gt;
-<a name="l00135"></a>00135 std::ofstream &amp; operator&lt;&lt;(std::ofstream &amp; os, const STDPMechConfig&lt;STDPFunction, STDPBounds&gt; &amp; stdpmcfg)
+<a name="l00135"></a><a class="code" href="STDPMech_8h.html#ae403ebf1fe7622bf48eee2332f310cc">00135</a> std::ofstream &amp; operator&lt;&lt;(std::ofstream &amp; os, const STDPMechConfig&lt;STDPFunction, STDPBounds&gt; &amp; stdpmcfg)
 <a name="l00136"></a>00136 {
 <a name="l00137"></a>00137     os &lt;&lt; <span class="stringliteral">" tauP "</span> &lt;&lt; stdpmcfg.tauP()
 <a name="l00138"></a>00138     &lt;&lt; <span class="stringliteral">"; tauD "</span> &lt;&lt; stdpmcfg.tauD()
@@ -151,7 +152,7 @@
 <a name="l00149"></a>00149 
 <a name="l00151"></a>00151 <span class="comment">// STDPMech constructor</span>
 <a name="l00152"></a>00152 <span class="keyword">template</span> &lt;<span class="keyword">class</span> STDPFunction, <span class="keyword">class</span> STDPBounds&gt;
-<a name="l00153"></a>00153 <span class="keyword">inline</span> <a class="code" href="classSTDPMech.html" title="STDPMech definition.">STDPMech&lt;STDPFunction, STDPBounds&gt;::STDPMech</a>(<a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> configurator)
+<a name="l00153"></a><a class="code" href="classSTDPMech.html#35a4450922aaec4722b5e46defc50fff">00153</a> <span class="keyword">inline</span> <a class="code" href="classSTDPMech.html#35a4450922aaec4722b5e46defc50fff">STDPMech&lt;STDPFunction, STDPBounds&gt;::STDPMech</a>(<a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> configurator)
 <a name="l00154"></a>00154         : stdpmcfg_(dynamic_cast&lt;<a class="code" href="classSTDPMechConfig.html" title="STDPMechConfig: mechanism configurator for STDPMech.">STDPMechConfig</a>&lt;STDPFunction, STDPBounds&gt; *&gt;(configurator))
 <a name="l00155"></a>00155 {
 <a name="l00156"></a>00156     <span class="keywordflow">if</span> (! stdpmcfg_) <span class="keywordflow">throw</span> <a class="code" href="classConfigError.html" title="Run-time error during the configuration process.">ConfigError</a>(<span class="stringliteral">"STDPMech: void configurator"</span>);
@@ -160,9 +161,9 @@
 <a name="l00160"></a>00160 <span class="comment">// to update the synaptic weight (passed as a reference) when the preneuron fired</span>
 <a name="l00161"></a>00161 <span class="keyword">template</span> &lt;<span class="keyword">class</span> STDPFunction, <span class="keyword">class</span> STDPBounds&gt;
 <a name="l00162"></a>00162 <span class="keyword">template</span> &lt;<span class="keyword">class</span> TypeImpl&gt;
-<a name="l00163"></a>00163 <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classSTDPMech.html" title="STDPMech definition.">STDPMech&lt;STDPFunction, STDPBounds&gt;::on_preneuron_fire_plast_update</a>(TypeImpl &amp; neuron, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; pre_spike_time)
+<a name="l00163"></a><a class="code" href="classSTDPMech.html#83e24d32a7b0ad129676a18617668cbf">00163</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classSTDPMech.html#83e24d32a7b0ad129676a18617668cbf">STDPMech&lt;STDPFunction, STDPBounds&gt;::on_preneuron_fire_plast_update</a>(TypeImpl &amp; neuron, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; pre_spike_time)
 <a name="l00164"></a>00164 {
-<a name="l00165"></a>00165     Time dt;
+<a name="l00165"></a>00165     <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> dt;
 <a name="l00166"></a>00166     <span class="keywordtype">double</span> pretime = pre_spike_time;
 <a name="l00167"></a>00167     <span class="keywordtype">double</span> &amp; weight = neuron.weight_impl();
 <a name="l00168"></a>00168     std::deque&lt;Time&gt;::const_reverse_iterator itend = neuron.postneuron_spike_list_impl().rend();
@@ -199,9 +200,9 @@
 <a name="l00200"></a>00200 <span class="comment">// to update the synaptic weight (passed as a reference) when the postneuron fired</span>
 <a name="l00201"></a>00201 <span class="keyword">template</span> &lt;<span class="keyword">class</span> STDPFunction, <span class="keyword">class</span> STDPBounds&gt;
 <a name="l00202"></a>00202 <span class="keyword">template</span> &lt;<span class="keyword">class</span> TypeImpl&gt;
-<a name="l00203"></a>00203 <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classSTDPMech.html" title="STDPMech definition.">STDPMech&lt;STDPFunction, STDPBounds&gt;::on_postneuron_fire_plast_update</a>(TypeImpl &amp; neuron, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; post_spike_time)
+<a name="l00203"></a><a class="code" href="classSTDPMech.html#78e5b39cdc333dcc0e8762a802e2a61a">00203</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classSTDPMech.html#78e5b39cdc333dcc0e8762a802e2a61a">STDPMech&lt;STDPFunction, STDPBounds&gt;::on_postneuron_fire_plast_update</a>(TypeImpl &amp; neuron, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp; post_spike_time)
 <a name="l00204"></a>00204 {
-<a name="l00205"></a>00205     Time dt = - stdpmcfg_-&gt;cutoffD(); <span class="comment">// meaningless initialisation, needed for tests using 'dt' later on</span>
+<a name="l00205"></a>00205     <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> dt = - stdpmcfg_-&gt;cutoffD(); <span class="comment">// meaningless initialisation, needed for tests using 'dt' later on</span>
 <a name="l00206"></a>00206     <span class="keywordtype">double</span> posttime = post_spike_time;
 <a name="l00207"></a>00207     <span class="keywordtype">double</span> &amp; weight = neuron.weight_impl();
 <a name="l00208"></a>00208     std::deque&lt;Time&gt;::const_reverse_iterator itend = neuron.preneuron_spike_list_impl().rend();
@@ -247,7 +248,7 @@
 <a name="l00248"></a>00248 
 <a name="l00249"></a>00249 <span class="preprocessor">#endif // !defined(STDPMECH_H)</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:04 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:53 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

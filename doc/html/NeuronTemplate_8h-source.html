@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: /media/data/Work/spikesimv6/NeuronTemplate.h Source File</title>
+<title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/NeuronTemplate.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,18 +9,19 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>/media/data/Work/spikesimv6/NeuronTemplate.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// NeuronTemplate.h</span>
+<h1>/media/data/Work/spikesimv6/NeuronTemplate.h</h1><a href="NeuronTemplate_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// NeuronTemplate.h</span>
 <a name="l00003"></a>00003 <span class="comment"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#ifndef NEURONTEMPLATE_H</span>
 <a name="l00005"></a>00005 <span class="preprocessor"></span><span class="preprocessor">#define NEURONTEMPLATE_H</span>
 <a name="l00006"></a>00006 <span class="preprocessor"></span>
 <a name="l00007"></a>00007 
-<a name="l00008"></a>00008 <span class="preprocessor">#include "ConfigBase.h"</span>
-<a name="l00009"></a>00009 <span class="preprocessor">#include "Visitor.h"</span>
+<a name="l00008"></a>00008 <span class="preprocessor">#include "<a class="code" href="ConfigBase_8h.html">ConfigBase.h</a>"</span>
+<a name="l00009"></a>00009 <span class="preprocessor">#include "<a class="code" href="Visitor_8h.html">Visitor.h</a>"</span>
 <a name="l00010"></a>00010 
 <a name="l00011"></a>00011 
 <a name="l00012"></a>00012 
@@ -33,23 +34,23 @@
 <a name="l00023"></a>00023         , <span class="keyword">public</span> NrnActMech
 <a name="l00024"></a>00024         , <span class="keyword">public</span> TypeBase
 <a name="l00025"></a>00025 {
-<a name="l00026"></a>00026     <span class="keyword">friend</span> <span class="keyword">class </span>Bide&lt;NrnActMech&gt;::X;
+<a name="l00026"></a><a class="code" href="classNeuronTemplate.html#07892d4fe477bd1028699afb30cf7351">00026</a>     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="structBide.html">Bide</a>&lt;NrnActMech&gt;::<a class="code" href="structBide.html#50692756bec484e3afe5d35e3131f422">X</a>;
 <a name="l00027"></a>00027 <span class="keyword">public</span>:
 <a name="l00028"></a>00028     <a class="code" href="classNeuronTemplate.html" title="NeuronTemplate class template definition.">NeuronTemplate</a>(ConfigBase * datacfg, ConfigBase * actmechcfg);
-<a name="l00029"></a>00029     const Volt &amp; potential() const {
+<a name="l00029"></a><a class="code" href="classNeuronTemplate.html#f26062c03607f58752a5992b84d67f9b">00029</a>     const <a class="code" href="GlobalDefs_8h.html#dc62585316487577d959750c59d5cc19" title="Neuron potential.">Volt</a> &amp; <a class="code" href="classNeuronTemplate.html#f26062c03607f58752a5992b84d67f9b">potential</a>() const {
 <a name="l00030"></a>00030         <span class="keywordflow">return</span> NrnActMech::potential_impl();
 <a name="l00031"></a>00031     }
-<a name="l00032"></a>00032     <span class="keyword">inline</span> <span class="keywordtype">void</span> apply_visitor(<a class="code" href="structAbstractVisitor.html" title="AbstractVisitor: common interface for all visitors.">AbstractVisitor</a> &amp; vis) {
+<a name="l00032"></a><a class="code" href="classNeuronTemplate.html#c2ddccce48f61faa4f413f90406e88ea">00032</a>     <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classNeuronTemplate.html#c2ddccce48f61faa4f413f90406e88ea">apply_visitor</a>(<a class="code" href="structAbstractVisitor.html" title="AbstractVisitor: common interface for all visitors.">AbstractVisitor</a> &amp; vis) {
 <a name="l00033"></a>00033         NrnData::apply_vis_impl(vis);
 <a name="l00034"></a>00034     }
 <a name="l00035"></a>00035 <span class="keyword">protected</span>:
-<a name="l00036"></a>00036     <span class="keyword">inline</span> <span class="keywordtype">void</span> update() {
+<a name="l00036"></a><a class="code" href="classNeuronTemplate.html#0d083be3d100c44cb69c2f4c6c30481a">00036</a>     <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classNeuronTemplate.html#0d083be3d100c44cb69c2f4c6c30481a">update</a>() {
 <a name="l00037"></a>00037         NrnActMech::perform_calculations(*<span class="keyword">this</span>);
 <a name="l00038"></a>00038     }
-<a name="l00039"></a>00039     <span class="keywordtype">void</span> add_presynapse(SynapseInterface * <span class="keyword">const</span> syn) {
+<a name="l00039"></a><a class="code" href="classNeuronTemplate.html#69e6b36b428f159673e3d3d48a96f281">00039</a>     <span class="keywordtype">void</span> <a class="code" href="classNeuronTemplate.html#69e6b36b428f159673e3d3d48a96f281">add_presynapse</a>(<a class="code" href="classSynapseInterface.html">SynapseInterface</a> * <span class="keyword">const</span> syn) {
 <a name="l00040"></a>00040         NrnData::add_presynapse_impl(syn);
 <a name="l00041"></a>00041     }
-<a name="l00042"></a>00042     <span class="keywordtype">void</span> add_postsynapse(SynapseInterface * <span class="keyword">const</span> syn) {
+<a name="l00042"></a><a class="code" href="classNeuronTemplate.html#dbb087d5c4d7e23e5353f5103ce97b14">00042</a>     <span class="keywordtype">void</span> <a class="code" href="classNeuronTemplate.html#dbb087d5c4d7e23e5353f5103ce97b14">add_postsynapse</a>(<a class="code" href="classSynapseInterface.html">SynapseInterface</a> * <span class="keyword">const</span> syn) {
 <a name="l00043"></a>00043         NrnData::add_postsynapse_impl(syn);
 <a name="l00044"></a>00044     }
 <a name="l00045"></a>00045 };
@@ -71,7 +72,7 @@
 <a name="l00064"></a>00064 
 <a name="l00065"></a>00065 <span class="preprocessor">#endif // !defined(NEURONTEMPLATE_H)</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:04 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:53 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

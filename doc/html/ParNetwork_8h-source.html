@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: /media/data/Work/spikesimv6/ParNetwork.h Source File</title>
+<title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/ParNetwork.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,11 +9,12 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>/media/data/Work/spikesimv6/ParNetwork.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// ParNetwork.h</span>
+<h1>/media/data/Work/spikesimv6/ParNetwork.h</h1><a href="ParNetwork_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// ParNetwork.h</span>
 <a name="l00003"></a>00003 <span class="comment"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#ifndef PARNETWORK_H</span>
 <a name="l00005"></a>00005 <span class="preprocessor"></span><span class="preprocessor">#define PARNETWORK_H</span>
@@ -21,16 +22,16 @@
 <a name="l00007"></a>00007 <span class="preprocessor">#include &lt;list&gt;</span>
 <a name="l00008"></a>00008 <span class="preprocessor">#include &lt;map&gt;</span>
 <a name="l00009"></a>00009 
-<a name="l00010"></a>00010 <span class="preprocessor">#include "Group.h"</span>
-<a name="l00011"></a>00011 <span class="preprocessor">#include "GlobalDefs.h"</span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include "<a class="code" href="Group_8h.html">Group.h</a>"</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include "<a class="code" href="GlobalDefs_8h.html">GlobalDefs.h</a>"</span>
 <a name="l00012"></a>00012 
 <a name="l00013"></a>00013 
 <a name="l00014"></a>00014 <span class="preprocessor">#ifdef CPPMPI</span>
 <a name="l00015"></a>00015 <span class="preprocessor"></span><span class="preprocessor">#include "ParSpike.2.h"</span>
 <a name="l00016"></a>00016 <span class="preprocessor">#else</span>
-<a name="l00017"></a>00017 <span class="preprocessor"></span><span class="preprocessor">#include "ParSpike.h"</span>
+<a name="l00017"></a>00017 <span class="preprocessor"></span><span class="preprocessor">#include "<a class="code" href="ParSpike_8h.html">ParSpike.h</a>"</span>
 <a name="l00018"></a>00018 <span class="preprocessor">#endif</span>
-<a name="l00019"></a>00019 <span class="preprocessor"></span><span class="preprocessor">#include "NetPar.h"</span>
+<a name="l00019"></a>00019 <span class="preprocessor"></span><span class="preprocessor">#include "<a class="code" href="NetPar_8h.html">NetPar.h</a>"</span>
 <a name="l00020"></a>00020 
 <a name="l00022"></a>00022 
 <a name="l00026"></a><a class="code" href="classConn.html">00026</a> <span class="keyword">class </span><a class="code" href="classConn.html" title="Synaptic Connection Class.">Conn</a>
@@ -41,14 +42,14 @@
 <a name="l00035"></a>00035     <span class="keyword">typedef</span> boost::shared_ptr&lt;DistributionManager&gt; DistrType; 
 <a name="l00036"></a>00036 <span class="keyword">public</span>:
 <a name="l00038"></a><a class="code" href="classConn.html#06730b2435ac11252f18423d7fcfaa02">00038</a>     <a class="code" href="classConn.html#06730b2435ac11252f18423d7fcfaa02">Conn</a>(GroupType gps, GroupType gpt, BaseType sm_cfg, BaseType pm_cfg, ConnType c_cfg, DistrType wd_cfg, DistrType dd_cfg) :
-<a name="l00039"></a>00039             gp_source(gps), gp_target(gpt), syn_mech_cfg_(sm_cfg), plast_mech_cfg_(pm_cfg), connectivity_cfg_(c_cfg),
-<a name="l00040"></a>00040             weight_distrib_cfg_(wd_cfg), delay_distrib_cfg_(dd_cfg) {}
-<a name="l00041"></a>00041     Size gid_, source_id, target_id;
+<a name="l00039"></a>00039             <a class="code" href="classConn.html#47d0043dde9d53e3a68324ce32227859">gp_source</a>(gps), <a class="code" href="classConn.html#0bfb972fa309d2353eb7653934d3aaa1">gp_target</a>(gpt), <a class="code" href="classConn.html#c87f28fe3e0633c93c577b9d1b298ff3">syn_mech_cfg_</a>(sm_cfg), <a class="code" href="classConn.html#09e9d754738f74333fb1fb985a410567">plast_mech_cfg_</a>(pm_cfg), <a class="code" href="classConn.html#ca119646cb32138d280ecce4d2f67e79">connectivity_cfg_</a>(c_cfg),
+<a name="l00040"></a>00040             <a class="code" href="classConn.html#2331dd38d239ae6ea23c9f914bdef687">weight_distrib_cfg_</a>(wd_cfg), <a class="code" href="classConn.html#fb8f0ac2ef6e5bc7f9f51c445a46836c">delay_distrib_cfg_</a>(dd_cfg) {}
+<a name="l00041"></a><a class="code" href="classConn.html#6e8aa9a2ab6a1ab39153dafbc42f3332">00041</a>     <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> <a class="code" href="classConn.html#369475bb990444cbd74a57f90549693b">gid_</a>, <a class="code" href="classConn.html#4570466c5f97ede6a23dba62d4de05fe">source_id</a>, <a class="code" href="classConn.html#6e8aa9a2ab6a1ab39153dafbc42f3332">target_id</a>;
 <a name="l00042"></a>00042     
-<a name="l00043"></a>00043     GroupType gp_source, gp_target;
-<a name="l00044"></a>00044     BaseType syn_mech_cfg_, plast_mech_cfg_;
-<a name="l00045"></a>00045     ConnType connectivity_cfg_;
-<a name="l00046"></a>00046     DistrType weight_distrib_cfg_, delay_distrib_cfg_;
+<a name="l00043"></a><a class="code" href="classConn.html#0bfb972fa309d2353eb7653934d3aaa1">00043</a>     GroupType <a class="code" href="classConn.html#47d0043dde9d53e3a68324ce32227859">gp_source</a>, <a class="code" href="classConn.html#0bfb972fa309d2353eb7653934d3aaa1">gp_target</a>;
+<a name="l00044"></a><a class="code" href="classConn.html#c87f28fe3e0633c93c577b9d1b298ff3">00044</a>     BaseType <a class="code" href="classConn.html#c87f28fe3e0633c93c577b9d1b298ff3">syn_mech_cfg_</a>, <a class="code" href="classConn.html#09e9d754738f74333fb1fb985a410567">plast_mech_cfg_</a>;
+<a name="l00045"></a><a class="code" href="classConn.html#ca119646cb32138d280ecce4d2f67e79">00045</a>     ConnType <a class="code" href="classConn.html#ca119646cb32138d280ecce4d2f67e79">connectivity_cfg_</a>;
+<a name="l00046"></a><a class="code" href="classConn.html#2331dd38d239ae6ea23c9f914bdef687">00046</a>     DistrType <a class="code" href="classConn.html#2331dd38d239ae6ea23c9f914bdef687">weight_distrib_cfg_</a>, <a class="code" href="classConn.html#fb8f0ac2ef6e5bc7f9f51c445a46836c">delay_distrib_cfg_</a>;
 <a name="l00047"></a>00047 
 <a name="l00048"></a>00048 };
 <a name="l00049"></a>00049 
@@ -56,46 +57,46 @@
 <a name="l00053"></a><a class="code" href="classParNetwork.html">00053</a> <span class="keyword">class </span><a class="code" href="classParNetwork.html" title="ParNetwork class definition.">ParNetwork</a>
 <a name="l00054"></a>00054 {
 <a name="l00055"></a>00055 <span class="keyword">public</span>:
-<a name="l00056"></a>00056     <a class="code" href="classParNetwork.html" title="ParNetwork class definition.">ParNetwork</a>() {}
+<a name="l00056"></a><a class="code" href="classParNetwork.html#77a79c4e0a53aad5af3ecc7bf70780b3">00056</a>     <a class="code" href="classParNetwork.html#77a79c4e0a53aad5af3ecc7bf70780b3">ParNetwork</a>() {}
 <a name="l00057"></a>00057     <span class="comment">//ParNetwork(ParSpike * par) { par_ = par;)</span>
-<a name="l00058"></a>00058     ~<a class="code" href="classParNetwork.html" title="ParNetwork class definition.">ParNetwork</a>();
+<a name="l00058"></a>00058     <a class="code" href="classParNetwork.html#063a6bb2d57648ba01fe15eb6032f485">~ParNetwork</a>();
 <a name="l00059"></a>00059     <span class="comment">//~ParNetwork(){if (par_) delete par_;}</span>
 <a name="l00060"></a>00060 
-<a name="l00061"></a>00061     <span class="keywordtype">void</span> build_from_file(std::string filename, std::string logfilename = <span class="stringliteral">"log.dat"</span>, <span class="keywordtype">bool</span> no_output = <span class="keyword">false</span>);
+<a name="l00061"></a>00061     <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#3b244dac8cfd6a194c33ba280db6e0e3">build_from_file</a>(std::string filename, std::string logfilename = <span class="stringliteral">"log.dat"</span>, <span class="keywordtype">bool</span> no_output = <span class="keyword">false</span>);
 <a name="l00062"></a>00062     <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#95bddc6640cbd332ff440f00e042df20">update</a>();
-<a name="l00063"></a>00063     <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#0d4a547733e1c80328d63b147e861ee2">clear_past_of_spike_list</a>(<span class="keyword">const</span> Time &amp; time_end_past);
+<a name="l00063"></a>00063     <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#0d4a547733e1c80328d63b147e861ee2">clear_past_of_spike_list</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; time_end_past);
 <a name="l00064"></a>00064     <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#e71b7066c0150039bb9c2e1b11504185">build_cell_list</a>();
 <a name="l00065"></a>00065 
 <a name="l00067"></a><a class="code" href="classParNetwork.html#0a18ac9b37a574ef4cac632012e068ce">00067</a>     <span class="keyword">typedef</span> std::map&lt; int, SynMechInterface&gt; <a class="code" href="classParNetwork.html#0a18ac9b37a574ef4cac632012e068ce" title="Main Map for ID to Synapse interface. Similar to NEURON&amp;#39;s hash table for parallel...">Gid2PreSyn</a>;  
-<a name="l00068"></a>00068     <span class="keyword">static</span> <a class="code" href="classParNetwork.html#0a18ac9b37a574ef4cac632012e068ce" title="Main Map for ID to Synapse interface. Similar to NEURON&amp;#39;s hash table for parallel...">Gid2PreSyn</a>* gid2out_;
-<a name="l00069"></a>00069     <span class="keyword">static</span> <a class="code" href="classParNetwork.html#0a18ac9b37a574ef4cac632012e068ce" title="Main Map for ID to Synapse interface. Similar to NEURON&amp;#39;s hash table for parallel...">Gid2PreSyn</a>* gid2in_;
+<a name="l00068"></a><a class="code" href="classParNetwork.html#de6b1bf4f12158be83f14fd2d64eea9b">00068</a>     <span class="keyword">static</span> <a class="code" href="classParNetwork.html#0a18ac9b37a574ef4cac632012e068ce" title="Main Map for ID to Synapse interface. Similar to NEURON&amp;#39;s hash table for parallel...">Gid2PreSyn</a>* <a class="code" href="classParNetwork.html#de6b1bf4f12158be83f14fd2d64eea9b">gid2out_</a>;
+<a name="l00069"></a><a class="code" href="classParNetwork.html#f372d259266fde15a17482d85a873276">00069</a>     <span class="keyword">static</span> <a class="code" href="classParNetwork.html#0a18ac9b37a574ef4cac632012e068ce" title="Main Map for ID to Synapse interface. Similar to NEURON&amp;#39;s hash table for parallel...">Gid2PreSyn</a>* <a class="code" href="classParNetwork.html#f372d259266fde15a17482d85a873276">gid2in_</a>;
 <a name="l00070"></a>00070 
-<a name="l00071"></a>00071     <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#1f023f709ef2bf394ae70ec630f13cae">config_from_file</a>(std::string filename, Size &amp; ncells, Size &amp;ngroups, std::string logfilename = <span class="stringliteral">"log.dat"</span>, <span class="keywordtype">bool</span> no_output = <span class="keyword">false</span>);
-<a name="l00072"></a>00072     <span class="keywordtype">void</span> create();
-<a name="l00073"></a>00073     <span class="keywordtype">void</span> connect_groups();
+<a name="l00071"></a>00071     <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#1f023f709ef2bf394ae70ec630f13cae">config_from_file</a>(std::string filename, <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; ncells, <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp;ngroups, std::string logfilename = <span class="stringliteral">"log.dat"</span>, <span class="keywordtype">bool</span> no_output = <span class="keyword">false</span>);
+<a name="l00072"></a>00072     <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#a2bb250e7e7445c498e42f1881f2c231">create</a>();
+<a name="l00073"></a>00073     <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#65dc59287ea1809bfcb8b9458a819966">connect_groups</a>();
 <a name="l00074"></a>00074     <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#e909789ebc5a36f6ac7e948f6b108c46" title="Redundant method to let Groups create network.">create_population</a>();
 <a name="l00075"></a>00075     <span class="keywordtype">int</span> <a class="code" href="classParNetwork.html#e8df590692df9afd4cdada765d9416ff" title="Show size of created neurons.">network_size</a>();
 <a name="l00076"></a>00076     <span class="comment">//void psl_append(PreSynPtr p){ presyn_list.push_back(p);}</span>
 <a name="l00077"></a>00077 
 <a name="l00079"></a><a class="code" href="classParNetwork.html#28f52736967869239c7b6bc3938bcd5a">00079</a>     <span class="keyword">typedef</span> std::list&lt; boost::shared_ptr&lt;Conn&gt; &gt; <a class="code" href="classParNetwork.html#28f52736967869239c7b6bc3938bcd5a" title="Efficient shared_ptr list of Connection types.">ListConnType</a>;
-<a name="l00080"></a>00080     <a class="code" href="classParNetwork.html#28f52736967869239c7b6bc3938bcd5a" title="Efficient shared_ptr list of Connection types.">ListConnType</a> conn_list_;
+<a name="l00080"></a><a class="code" href="classParNetwork.html#fb08c73524ec5dca6a674fef3e4582d4">00080</a>     <a class="code" href="classParNetwork.html#28f52736967869239c7b6bc3938bcd5a" title="Efficient shared_ptr list of Connection types.">ListConnType</a> <a class="code" href="classParNetwork.html#fb08c73524ec5dca6a674fef3e4582d4">conn_list_</a>;
 <a name="l00081"></a>00081 
 <a name="l00082"></a>00082 <span class="comment">//protected:</span>
 <a name="l00083"></a>00083 
-<a name="l00084"></a>00084     <span class="keyword">typedef</span> std::list&lt; PreSynPtr &gt; ListSynType;
-<a name="l00085"></a>00085     <span class="keyword">typedef</span> std::list&lt;boost::shared_ptr&lt;NeuronInterface&gt; &gt; ListNrnType;
-<a name="l00086"></a>00086     <span class="keyword">typedef</span> std::list&lt;boost::shared_ptr&lt;Group&gt; &gt; ListGroupType;
+<a name="l00084"></a><a class="code" href="classParNetwork.html#8549656f706985b7bd971be0874c1649">00084</a>     <span class="keyword">typedef</span> std::list&lt; PreSynPtr &gt; <a class="code" href="classParNetwork.html#8549656f706985b7bd971be0874c1649">ListSynType</a>;
+<a name="l00085"></a><a class="code" href="classParNetwork.html#c02561360d258cbb24ede70748d9628b">00085</a>     <span class="keyword">typedef</span> std::list&lt;boost::shared_ptr&lt;NeuronInterface&gt; &gt; <a class="code" href="classParNetwork.html#c02561360d258cbb24ede70748d9628b">ListNrnType</a>;
+<a name="l00086"></a><a class="code" href="classParNetwork.html#fbbd4c43033679e6e4b790fe4b367892">00086</a>     <span class="keyword">typedef</span> std::list&lt;boost::shared_ptr&lt;Group&gt; &gt; <a class="code" href="classParNetwork.html#fbbd4c43033679e6e4b790fe4b367892">ListGroupType</a>;
 <a name="l00087"></a>00087     <span class="comment">//typedef std::map&lt;int, boost::shared_ptr&lt;ConfigBase&gt; &gt; MapConfigType;</span>
-<a name="l00088"></a>00088     <span class="keyword">typedef</span> std::list&lt;boost::shared_ptr&lt;ConfigBase&gt; &gt; ListConfigType;
-<a name="l00089"></a>00089     ListGroupType gp_list_; 
-<a name="l00090"></a><a class="code" href="classParNetwork.html#042b4b28c881c447f29d44eddc5b201e">00090</a>     ListConfigType <a class="code" href="classParNetwork.html#042b4b28c881c447f29d44eddc5b201e" title="list of pointers to the groups of the network">cfg_list_</a>; 
+<a name="l00088"></a><a class="code" href="classParNetwork.html#564ad1982ba4dbc9e1f6b3d7ca884cff">00088</a>     <span class="keyword">typedef</span> std::list&lt;boost::shared_ptr&lt;ConfigBase&gt; &gt; <a class="code" href="classParNetwork.html#564ad1982ba4dbc9e1f6b3d7ca884cff">ListConfigType</a>;
+<a name="l00089"></a><a class="code" href="classParNetwork.html#fa27725aadb8de2e1b1129060bf2d6f5">00089</a>     <a class="code" href="classParNetwork.html#fbbd4c43033679e6e4b790fe4b367892">ListGroupType</a> <a class="code" href="classParNetwork.html#fa27725aadb8de2e1b1129060bf2d6f5">gp_list_</a>; 
+<a name="l00090"></a><a class="code" href="classParNetwork.html#042b4b28c881c447f29d44eddc5b201e">00090</a>     <a class="code" href="classParNetwork.html#564ad1982ba4dbc9e1f6b3d7ca884cff">ListConfigType</a> <a class="code" href="classParNetwork.html#042b4b28c881c447f29d44eddc5b201e" title="list of pointers to the groups of the network">cfg_list_</a>; 
 <a name="l00091"></a>00091 <span class="comment">//  const DataCommonNeuron::ListSynMechType &amp; DataCommonNeuron</span>
 <a name="l00092"></a>00092 
 <a name="l00093"></a>00093 
 <a name="l00094"></a>00094 <span class="comment">//  typedef std::map&lt;int,boost::shared_ptr&lt;ConfigBase&gt;&gt; MapCellId;  //Cell id map</span>
 <a name="l00095"></a>00095 
-<a name="l00097"></a><a class="code" href="classParNetwork.html#5f1fd9f2fbc93ccfa2fa62a296f89369">00097</a>     ListNrnType <a class="code" href="classParNetwork.html#5f1fd9f2fbc93ccfa2fa62a296f89369" title="list of pointers to the configurators for the connections to keep">cell_list</a>;  
-<a name="l00099"></a><a class="code" href="classParNetwork.html#51cff7d53a8a4fa8fcf34f250cd8a064">00099</a>     ListSynType <a class="code" href="classParNetwork.html#51cff7d53a8a4fa8fcf34f250cd8a064" title="list of pointers to all the pre- and post-synaptic connections in the network">presyn_list</a>, postsyn_list;
+<a name="l00097"></a><a class="code" href="classParNetwork.html#5f1fd9f2fbc93ccfa2fa62a296f89369">00097</a>     <a class="code" href="classParNetwork.html#c02561360d258cbb24ede70748d9628b">ListNrnType</a> <a class="code" href="classParNetwork.html#5f1fd9f2fbc93ccfa2fa62a296f89369" title="list of pointers to the configurators for the connections to keep">cell_list</a>;  
+<a name="l00099"></a><a class="code" href="classParNetwork.html#51cff7d53a8a4fa8fcf34f250cd8a064">00099</a>     <a class="code" href="classParNetwork.html#8549656f706985b7bd971be0874c1649">ListSynType</a> <a class="code" href="classParNetwork.html#51cff7d53a8a4fa8fcf34f250cd8a064" title="list of pointers to all the pre- and post-synaptic connections in the network">presyn_list</a>, <a class="code" href="classParNetwork.html#3af941276e952b16cb22c40a15574ed4">postsyn_list</a>;
 <a name="l00100"></a>00100 <span class="comment">//  MapCellId2Presyn gid2presyn;</span>
 <a name="l00101"></a>00101 
 <a name="l00102"></a>00102 
@@ -106,16 +107,16 @@
 <a name="l00109"></a>00109 <span class="comment"></span>
 <a name="l00112"></a><a class="code" href="classParNetwork.html#95bddc6640cbd332ff440f00e042df20">00112</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#95bddc6640cbd332ff440f00e042df20">ParNetwork::update</a>()
 <a name="l00113"></a>00113 {
-<a name="l00114"></a>00114     <span class="keywordflow">for</span> (ListGroupType::const_iterator i = gp_list_.begin();
-<a name="l00115"></a>00115             i != gp_list_.end();
+<a name="l00114"></a>00114     <span class="keywordflow">for</span> (ListGroupType::const_iterator i = <a class="code" href="classParNetwork.html#fa27725aadb8de2e1b1129060bf2d6f5">gp_list_</a>.begin();
+<a name="l00115"></a>00115             i != <a class="code" href="classParNetwork.html#fa27725aadb8de2e1b1129060bf2d6f5">gp_list_</a>.end();
 <a name="l00116"></a>00116             ++i)
 <a name="l00117"></a>00117         (*i)-&gt;update();
 <a name="l00118"></a>00118 
 <a name="l00119"></a>00119 }
 <a name="l00120"></a>00120 
-<a name="l00123"></a><a class="code" href="classParNetwork.html#0d4a547733e1c80328d63b147e861ee2">00123</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#0d4a547733e1c80328d63b147e861ee2">ParNetwork::clear_past_of_spike_list</a>(<span class="keyword">const</span> Time &amp; time_end_past)
+<a name="l00123"></a><a class="code" href="classParNetwork.html#0d4a547733e1c80328d63b147e861ee2">00123</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#0d4a547733e1c80328d63b147e861ee2">ParNetwork::clear_past_of_spike_list</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; time_end_past)
 <a name="l00124"></a>00124 {
-<a name="l00125"></a>00125     <span class="keywordflow">for</span> (ListGroupType::const_iterator i = gp_list_.begin(); i != gp_list_.end(); ++i)
+<a name="l00125"></a>00125     <span class="keywordflow">for</span> (ListGroupType::const_iterator i = <a class="code" href="classParNetwork.html#fa27725aadb8de2e1b1129060bf2d6f5">gp_list_</a>.begin(); i != <a class="code" href="classParNetwork.html#fa27725aadb8de2e1b1129060bf2d6f5">gp_list_</a>.end(); ++i)
 <a name="l00126"></a>00126         (*i)-&gt;clear_past_of_spike_list(time_end_past);
 <a name="l00127"></a>00127 }
 <a name="l00128"></a>00128 
@@ -123,8 +124,8 @@
 <a name="l00132"></a><a class="code" href="classParNetwork.html#e71b7066c0150039bb9c2e1b11504185">00132</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#e71b7066c0150039bb9c2e1b11504185">ParNetwork::build_cell_list</a>()
 <a name="l00133"></a>00133 {
 <a name="l00134"></a>00134 <span class="comment">//TODO Check this</span>
-<a name="l00135"></a>00135     <span class="keywordflow">for</span> (ListGroupType::const_iterator i = gp_list_.begin();
-<a name="l00136"></a>00136             i != gp_list_.end();
+<a name="l00135"></a>00135     <span class="keywordflow">for</span> (ListGroupType::const_iterator i = <a class="code" href="classParNetwork.html#fa27725aadb8de2e1b1129060bf2d6f5">gp_list_</a>.begin();
+<a name="l00136"></a>00136             i != <a class="code" href="classParNetwork.html#fa27725aadb8de2e1b1129060bf2d6f5">gp_list_</a>.end();
 <a name="l00137"></a>00137             ++i)
 <a name="l00138"></a>00138         <span class="keywordflow">for</span> (ListNrnType::iterator j = (*i)-&gt;list_.begin();
 <a name="l00139"></a>00139                 j != (*i)-&gt;list_.end();
@@ -134,8 +135,8 @@
 <a name="l00143"></a>00143 }
 <a name="l00144"></a>00144 
 <a name="l00146"></a><a class="code" href="classParNetwork.html#e909789ebc5a36f6ac7e948f6b108c46">00146</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classParNetwork.html#e909789ebc5a36f6ac7e948f6b108c46" title="Redundant method to let Groups create network.">ParNetwork::create_population</a>(){
-<a name="l00147"></a>00147     <span class="keywordflow">for</span> (ListGroupType::const_iterator i = gp_list_.begin();
-<a name="l00148"></a>00148             i != gp_list_.end();
+<a name="l00147"></a>00147     <span class="keywordflow">for</span> (ListGroupType::const_iterator i = <a class="code" href="classParNetwork.html#fa27725aadb8de2e1b1129060bf2d6f5">gp_list_</a>.begin();
+<a name="l00148"></a>00148             i != <a class="code" href="classParNetwork.html#fa27725aadb8de2e1b1129060bf2d6f5">gp_list_</a>.end();
 <a name="l00149"></a>00149             ++i)
 <a name="l00150"></a>00150         (*i)-&gt;create_population();
 <a name="l00151"></a>00151 }
@@ -149,7 +150,7 @@
 <a name="l00160"></a>00160 
 <a name="l00161"></a>00161 <span class="preprocessor">#endif // !defined(NETWORK_H)</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:04 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:53 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

@@ -39,7 +39,7 @@ ParallelNetManager::~ParallelNetManager()
 
  
 /** 
- * init sets the default parameters for PNM
+ * sets the default parameters for PNM
  * 
  * @param ncells 
  * @param ngroups 

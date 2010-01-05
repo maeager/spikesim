@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: /media/data/Work/spikesimv6/BBSServer.h Source File</title>
+<title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/BBSServer.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,11 +9,12 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>/media/data/Work/spikesimv6/BBSServer.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef bbslsrv2_h</span>
+<h1>/media/data/Work/spikesimv6/BBSServer.h</h1><a href="BBSServer_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef bbslsrv2_h</span>
 <a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define bbslsrv2_h</span>
 <a name="l00003"></a>00003 <span class="preprocessor"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#include &lt;nrnmpiuse.h&gt;</span>
@@ -25,11 +26,11 @@
 <a name="l00010"></a>00010 <span class="keyword">class </span>MpiReadyList;
 <a name="l00011"></a>00011 <span class="keyword">class </span>MpiLookingToDoList;
 <a name="l00012"></a>00012 <span class="keyword">class </span>MpiResultList;
-<a name="l00013"></a>00013 <span class="keyword">struct </span>bbsmpibuf;
+<a name="l00013"></a>00013 <span class="keyword">struct </span><a class="code" href="structbbsmpibuf.html">bbsmpibuf</a>;
 <a name="l00014"></a>00014 
 <a name="l00015"></a>00015 
-<a name="l00016"></a>00016 <span class="keywordtype">void</span> bbs_handle();
-<a name="l00017"></a>00017 <span class="keywordtype">void</span> bbs_done()
+<a name="l00016"></a>00016 <span class="keywordtype">void</span> <a class="code" href="BBServer_8cpp.html#ce6ab54f88fff9170ff192b76e129de1">bbs_handle</a>();
+<a name="l00017"></a><a class="code" href="BBSServer_8h.html#2ad2ce354a6960590f4f4d29550dc369">00017</a> <span class="keywordtype">void</span> <a class="code" href="BBS_8h.html#75ea96929bf1bdfa14ce14ff29b01c99">bbs_done</a>()
 <a name="l00018"></a>00018 
 <a name="l00019"></a>00019 class <a class="code" href="classBBSImpl.html" title="BBSImpl Bulletin Board Implementation class.">BBSImpl</a>
 <a name="l00020"></a>00020 {
@@ -42,17 +43,17 @@
 <a name="l00027"></a>00027     <span class="keyword">virtual</span> <span class="keywordtype">void</span> take(<span class="keyword">const</span> <span class="keywordtype">char</span>*) = 0; <span class="comment">/* blocks til something to take */</span>
 <a name="l00028"></a>00028     <span class="keyword">virtual</span> <span class="keywordtype">boolean</span> look_take(<span class="keyword">const</span> <span class="keywordtype">char</span>*) = 0; <span class="comment">/* returns false if nothing to take */</span>
 <a name="l00029"></a>00029     <span class="comment">// after taking use these</span>
-<a name="l00030"></a>00030     <span class="keyword">virtual</span> <span class="keywordtype">int</span> upkint() = 0;
-<a name="l00031"></a>00031     <span class="keyword">virtual</span> <span class="keywordtype">double</span> upkdouble() = 0;
-<a name="l00032"></a>00032     <span class="keyword">virtual</span> <span class="keywordtype">void</span> upkvec(<span class="keywordtype">int</span>, <span class="keywordtype">double</span>*) = 0;
-<a name="l00033"></a>00033     <span class="keyword">virtual</span> <span class="keywordtype">char</span>* upkstr() = 0; <span class="comment">// delete [] char* when finished</span>
+<a name="l00030"></a>00030     <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code" href="namespaceBBS2MPI.html#5f57c3b1bb937fb365ac625cd5667cb6">upkint</a>() = 0;
+<a name="l00031"></a>00031     <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="namespaceBBS2MPI.html#bc1821552c835f26500106a5ca6aa37d">upkdouble</a>() = 0;
+<a name="l00032"></a>00032     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="namespaceBBS2MPI.html#86ab8c1908467328e46d7ff7f54cd6e9">upkvec</a>(<span class="keywordtype">int</span>, <span class="keywordtype">double</span>*) = 0;
+<a name="l00033"></a>00033     <span class="keyword">virtual</span> <span class="keywordtype">char</span>* <a class="code" href="namespaceBBS2MPI.html#1f716b515925c0a720c79de79763eaa7">upkstr</a>() = 0; <span class="comment">// delete [] char* when finished</span>
 <a name="l00034"></a>00034 
 <a name="l00035"></a>00035     <span class="comment">// before posting use these</span>
-<a name="l00036"></a>00036     <span class="keyword">virtual</span> <span class="keywordtype">void</span> pkbegin() = 0;
-<a name="l00037"></a>00037     <span class="keyword">virtual</span> <span class="keywordtype">void</span> pkint(<span class="keywordtype">int</span>) = 0;
-<a name="l00038"></a>00038     <span class="keyword">virtual</span> <span class="keywordtype">void</span> pkdouble(<span class="keywordtype">double</span>) = 0;
-<a name="l00039"></a>00039     <span class="keyword">virtual</span> <span class="keywordtype">void</span> pkvec(<span class="keywordtype">int</span>, <span class="keywordtype">double</span>*) = 0;
-<a name="l00040"></a>00040     <span class="keyword">virtual</span> <span class="keywordtype">void</span> pkstr(<span class="keyword">const</span> <span class="keywordtype">char</span>*) = 0;
+<a name="l00036"></a>00036     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="namespaceBBS2MPI.html#32fa7388e4d1f472b9130505e42f1ec5">pkbegin</a>() = 0;
+<a name="l00037"></a>00037     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="namespaceBBS2MPI.html#ca8d3ebbca32c352f266a2da303b1ee8">pkint</a>(<span class="keywordtype">int</span>) = 0;
+<a name="l00038"></a>00038     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="namespaceBBS2MPI.html#bc2fb3ea1577e072b95e1b9fd7b8a7f9">pkdouble</a>(<span class="keywordtype">double</span>) = 0;
+<a name="l00039"></a>00039     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="namespaceBBS2MPI.html#85dd21b766cd2130366563b33ecfa357">pkvec</a>(<span class="keywordtype">int</span>, <span class="keywordtype">double</span>*) = 0;
+<a name="l00040"></a>00040     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="namespaceBBS2MPI.html#216cc4e54a4552f2bcfd4a21934acde9">pkstr</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*) = 0;
 <a name="l00041"></a>00041     <span class="keyword">virtual</span> <span class="keywordtype">void</span> post(<span class="keyword">const</span> <span class="keywordtype">char</span>*) = 0;
 <a name="l00042"></a>00042 
 <a name="l00043"></a>00043     <span class="keyword">virtual</span> <span class="keywordtype">void</span> post_todo(<span class="keywordtype">int</span> parentid) = 0;
@@ -95,91 +96,91 @@
 <a name="l00080"></a>00080 <span class="keyword">class </span><a class="code" href="classBBS.html" title="BBS Base for all classes in Bulletin Board Server.">BBS</a>
 <a name="l00081"></a>00081 {
 <a name="l00082"></a>00082 <span class="keyword">public</span>:
-<a name="l00083"></a>00083     <a class="code" href="classBBS.html" title="BBS Base for all classes in Bulletin Board Server.">BBS</a>();
-<a name="l00084"></a>00084     <a class="code" href="classBBS.html" title="BBS Base for all classes in Bulletin Board Server.">BBS</a>(<span class="keywordtype">int</span> nhost);
-<a name="l00085"></a>00085     <span class="keyword">virtual</span> ~<a class="code" href="classBBS.html" title="BBS Base for all classes in Bulletin Board Server.">BBS</a>();
+<a name="l00083"></a>00083     <a class="code" href="classBBS.html#f74a83220f1c159b5e781d9272aac6af">BBS</a>();
+<a name="l00084"></a>00084     <a class="code" href="classBBS.html#f74a83220f1c159b5e781d9272aac6af">BBS</a>(<span class="keywordtype">int</span> <a class="code" href="classBBS.html#474482221b5b1b6ed2a83d64c7981cc6">nhost</a>);
+<a name="l00085"></a>00085     <span class="keyword">virtual</span> <a class="code" href="classBBS.html#29a4e6f7e46aa8b41f777b4674a1b2f0">~BBS</a>();
 <a name="l00086"></a>00086 
-<a name="l00087"></a>00087     <span class="keywordtype">boolean</span> look(<span class="keyword">const</span> <span class="keywordtype">char</span>*);
+<a name="l00087"></a>00087     <span class="keywordtype">boolean</span> <a class="code" href="classBBS.html#a278bdb27fec9aa99e2c44bc342eec13">look</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*);
 <a name="l00088"></a>00088 
-<a name="l00089"></a>00089     <span class="keywordtype">void</span> take(<span class="keyword">const</span> <span class="keywordtype">char</span>*); <span class="comment">/* blocks til something to take */</span>
-<a name="l00090"></a>00090     <span class="keywordtype">boolean</span> look_take(<span class="keyword">const</span> <span class="keywordtype">char</span>*); <span class="comment">/* returns false if nothing to take */</span>
+<a name="l00089"></a>00089     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#f467871defd69cd4c31df1cd96b26937">take</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*); <span class="comment">/* blocks til something to take */</span>
+<a name="l00090"></a>00090     <span class="keywordtype">boolean</span> <a class="code" href="classBBS.html#0d29f215aaa5db9c54d8e5c11b374d9d">look_take</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*); <span class="comment">/* returns false if nothing to take */</span>
 <a name="l00091"></a>00091     <span class="comment">// after taking use these</span>
-<a name="l00092"></a>00092     <span class="keywordtype">int</span> upkint();
-<a name="l00093"></a>00093     <span class="keywordtype">double</span> upkdouble();
-<a name="l00094"></a>00094     <span class="keywordtype">void</span> upkvec(<span class="keywordtype">int</span> n, <span class="keywordtype">double</span>* px); <span class="comment">// n input px space must exist</span>
-<a name="l00095"></a>00095     <span class="keywordtype">char</span>* upkstr(); <span class="comment">// delete [] char* when finished</span>
+<a name="l00092"></a>00092     <span class="keywordtype">int</span> <a class="code" href="classBBS.html#7bea349b78689bccf71c183dadc3a2e9">upkint</a>();
+<a name="l00093"></a>00093     <span class="keywordtype">double</span> <a class="code" href="classBBS.html#fa240d961e46557ee72ca717e6974940">upkdouble</a>();
+<a name="l00094"></a>00094     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#4da1df8565c6ba44162207711b2df5f5">upkvec</a>(<span class="keywordtype">int</span> n, <span class="keywordtype">double</span>* px); <span class="comment">// n input px space must exist</span>
+<a name="l00095"></a>00095     <span class="keywordtype">char</span>* <a class="code" href="classBBS.html#ede595df714dfccfb07a10b793583622">upkstr</a>(); <span class="comment">// delete [] char* when finished</span>
 <a name="l00096"></a>00096 
 <a name="l00097"></a>00097     <span class="comment">// before posting use these</span>
-<a name="l00098"></a>00098     <span class="keywordtype">void</span> pkbegin();
-<a name="l00099"></a>00099     <span class="keywordtype">void</span> pkint(<span class="keywordtype">int</span>);
-<a name="l00100"></a>00100     <span class="keywordtype">void</span> pkdouble(<span class="keywordtype">double</span>);
-<a name="l00101"></a>00101     <span class="keywordtype">void</span> pkvec(<span class="keywordtype">int</span> n, <span class="keywordtype">double</span>* px); <span class="comment">// doesn't pack n</span>
-<a name="l00102"></a>00102     <span class="keywordtype">void</span> pkstr(<span class="keyword">const</span> <span class="keywordtype">char</span>*);
-<a name="l00103"></a>00103     <span class="keywordtype">void</span> post(<span class="keyword">const</span> <span class="keywordtype">char</span>*);
+<a name="l00098"></a>00098     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#8f454a3c5942ee2c6ed23bb9d856b431">pkbegin</a>();
+<a name="l00099"></a>00099     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#5a60256785421569b7e22037ed347e86">pkint</a>(<span class="keywordtype">int</span>);
+<a name="l00100"></a>00100     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#5980ed1e7cfdf7db17108e253046c0d6">pkdouble</a>(<span class="keywordtype">double</span>);
+<a name="l00101"></a>00101     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#6b8920c71ec1887cc5302bcfc163649a">pkvec</a>(<span class="keywordtype">int</span> n, <span class="keywordtype">double</span>* px); <span class="comment">// doesn't pack n</span>
+<a name="l00102"></a>00102     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#47b2a0e81b4b0139dc433b3f0c3ce6c0">pkstr</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*);
+<a name="l00103"></a>00103     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#9c794fa8198011f2abfbaaf905347fdf">post</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*);
 <a name="l00104"></a>00104 
-<a name="l00105"></a>00105     <span class="keywordtype">int</span> submit(<span class="keywordtype">int</span> userid);
-<a name="l00106"></a>00106     <span class="keywordtype">boolean</span> working(<span class="keywordtype">int</span> &amp;<span class="keywordtype">id</span>, <span class="keywordtype">double</span>&amp; x, <span class="keywordtype">int</span>&amp; userid);
-<a name="l00107"></a>00107     <span class="keywordtype">void</span> context();
+<a name="l00105"></a>00105     <span class="keywordtype">int</span> <a class="code" href="classBBS.html#d58d1b6ffd0a88ddc2509a7227f0b338">submit</a>(<span class="keywordtype">int</span> userid);
+<a name="l00106"></a>00106     <span class="keywordtype">boolean</span> <a class="code" href="classBBS.html#7cf69cf070480e288730da8ea1aa7164">working</a>(<span class="keywordtype">int</span> &amp;<span class="keywordtype">id</span>, <span class="keywordtype">double</span>&amp; x, <span class="keywordtype">int</span>&amp; userid);
+<a name="l00107"></a>00107     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#fc3d7ef8adef1c28cc4b00b8b8469bef">context</a>();
 <a name="l00108"></a>00108 
-<a name="l00109"></a>00109     <span class="keywordtype">boolean</span> is_master();
-<a name="l00110"></a>00110     <span class="keywordtype">void</span> worker(); <span class="comment">// forever execute</span>
-<a name="l00111"></a>00111     <span class="keywordtype">void</span> done(); <span class="comment">// prints timing</span>
+<a name="l00109"></a>00109     <span class="keywordtype">boolean</span> <a class="code" href="classBBS.html#7d22d4a577519868ee5d9c6e50ab63ee">is_master</a>();
+<a name="l00110"></a>00110     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#9e248285f3dc7a8c02a1a450b2dfd810">worker</a>(); <span class="comment">// forever execute</span>
+<a name="l00111"></a>00111     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#72fbe1f3c478bccf2bb08320105a4598">done</a>(); <span class="comment">// prints timing</span>
 <a name="l00112"></a>00112 
-<a name="l00113"></a>00113     <span class="keywordtype">void</span> perror(<span class="keyword">const</span> <span class="keywordtype">char</span>*);
-<a name="l00114"></a>00114     <span class="keywordtype">double</span> time();
-<a name="l00115"></a>00115     <span class="keywordtype">double</span> wait_time();
-<a name="l00116"></a>00116     <span class="keywordtype">double</span> integ_time();
-<a name="l00117"></a>00117     <span class="keywordtype">double</span> send_time();
-<a name="l00118"></a>00118     <span class="keywordtype">void</span> add_wait_time(<span class="keywordtype">double</span>); <span class="comment">// add interval since arg</span>
+<a name="l00113"></a>00113     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#91ed9dd138d600565365094e0eb0ec29">perror</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*);
+<a name="l00114"></a>00114     <span class="keywordtype">double</span> <a class="code" href="classBBS.html#d90d2aaa21388312a9e0c26fe9486582">time</a>();
+<a name="l00115"></a>00115     <span class="keywordtype">double</span> <a class="code" href="classBBS.html#9e25472616b66f1478e54939fc38a4e3">wait_time</a>();
+<a name="l00116"></a>00116     <span class="keywordtype">double</span> <a class="code" href="classBBS.html#772045066007bb33ed953bf92de6a034">integ_time</a>();
+<a name="l00117"></a>00117     <span class="keywordtype">double</span> <a class="code" href="classBBS.html#3b40eff572a5ab550c815279e57efe80">send_time</a>();
+<a name="l00118"></a>00118     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#9f6a4eff923fd5ff65100fc25c0e9a9c">add_wait_time</a>(<span class="keywordtype">double</span>); <span class="comment">// add interval since arg</span>
 <a name="l00119"></a>00119 
-<a name="l00120"></a>00120     <span class="keywordtype">int</span> nhost();
-<a name="l00121"></a>00121     <span class="keywordtype">int</span> myid();
+<a name="l00120"></a>00120     <span class="keywordtype">int</span> <a class="code" href="classBBS.html#474482221b5b1b6ed2a83d64c7981cc6">nhost</a>();
+<a name="l00121"></a>00121     <span class="keywordtype">int</span> <a class="code" href="classBBS.html#1d8766632c8335895d6596f79525a99f">myid</a>();
 <a name="l00122"></a>00122 
 <a name="l00123"></a>00123     <span class="comment">// netpar interface</span>
 <a name="l00124"></a>00124     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#37d37a9d438ad4ff38e4e3590f23dde9">set_gid2node</a>(<span class="keywordtype">int</span>, <span class="keywordtype">int</span>);
 <a name="l00125"></a>00125     <span class="keywordtype">int</span> <a class="code" href="classBBS.html#993e82cfcd15ce284b2f6815c9122cf6">gid_exists</a>(<span class="keywordtype">int</span>);
-<a name="l00126"></a>00126     <span class="keywordtype">double</span> <a class="code" href="classBBS.html#5a863b411c9d23b17f67a6917fdf2311">threshold</a>();
-<a name="l00127"></a>00127     <span class="keywordtype">void</span> cell();
-<a name="l00128"></a>00128     <span class="keywordtype">void</span> outputcell(<span class="keywordtype">int</span>);
-<a name="l00129"></a>00129     <span class="keywordtype">void</span> spike_record(<span class="keywordtype">int</span>, IvocVect*, IvocVect*);
+<a name="l00126"></a>00126     <span class="keywordtype">double</span> <a class="code" href="classBBS.html#f5b91de42c0fc5e656931534cefa1dbe">threshold</a>();
+<a name="l00127"></a>00127     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#aab30dbfba782061cd5968d49f58babc">cell</a>();
+<a name="l00128"></a>00128     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#ed7c51fa23c37b050e728d251db9a20f">outputcell</a>(<span class="keywordtype">int</span>);
+<a name="l00129"></a>00129     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#a7654b371a2d7520e9f2193f420234fd">spike_record</a>(<span class="keywordtype">int</span>, IvocVect*, IvocVect*);
 <a name="l00130"></a>00130     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#5505a569e08c5ceb7e3f2e6845fa2e1a">netpar_solve</a>(<span class="keywordtype">double</span>);
-<a name="l00131"></a>00131     Object** <a class="code" href="classBBS.html#865f15807e94be71839d8f1dcc2d4b50">gid2obj</a>(<span class="keywordtype">int</span>);
-<a name="l00132"></a>00132     Object** gid2cell(<span class="keywordtype">int</span>);
-<a name="l00133"></a>00133     Object** gid_connect(<span class="keywordtype">int</span>);
-<a name="l00134"></a>00134     <span class="keywordtype">double</span> netpar_mindelay(<span class="keywordtype">double</span> maxdelay);
-<a name="l00135"></a>00135     <span class="keywordtype">void</span> netpar_spanning_statistics(<span class="keywordtype">int</span>*, <span class="keywordtype">int</span>*, <span class="keywordtype">int</span>*, <span class="keywordtype">int</span>*);
-<a name="l00136"></a>00136     IvocVect* netpar_max_histogram(IvocVect*);
+<a name="l00131"></a>00131     Object** <a class="code" href="classBBS.html#55ba4cf9930790c5d341f646f8e3b68d">gid2obj</a>(<span class="keywordtype">int</span>);
+<a name="l00132"></a>00132     Object** <a class="code" href="classBBS.html#537fae9771a21a4df0ad1751f5fd4220">gid2cell</a>(<span class="keywordtype">int</span>);
+<a name="l00133"></a>00133     Object** <a class="code" href="classBBS.html#60dbf630148f4fe6ef04971ecf98b038">gid_connect</a>(<span class="keywordtype">int</span>);
+<a name="l00134"></a>00134     <span class="keywordtype">double</span> <a class="code" href="classBBS.html#f4e069f7c689f5db170a43ca201dce16">netpar_mindelay</a>(<span class="keywordtype">double</span> maxdelay);
+<a name="l00135"></a>00135     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#c60d38588e2beaf9a43f28d034350882">netpar_spanning_statistics</a>(<span class="keywordtype">int</span>*, <span class="keywordtype">int</span>*, <span class="keywordtype">int</span>*, <span class="keywordtype">int</span>*);
+<a name="l00136"></a>00136     IvocVect* <a class="code" href="classBBS.html#7a06340d8744fd933a174e658eb83577">netpar_max_histogram</a>(IvocVect*);
 <a name="l00137"></a>00137 <span class="keyword">protected</span>:
-<a name="l00138"></a>00138     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#892895f58412f691d703a3854fc1a24c" title="HAVE_PVM3_H.">init</a>(<span class="keywordtype">int</span>);
+<a name="l00138"></a>00138     <span class="keywordtype">void</span> <a class="code" href="classBBS.html#892895f58412f691d703a3854fc1a24c">init</a>(<span class="keywordtype">int</span>);
 <a name="l00139"></a>00139 <span class="keyword">protected</span>:
-<a name="l00140"></a>00140     <a class="code" href="classBBSImpl.html" title="BBSImpl Bulletin Board Implementation class.">BBSImpl</a>* impl_;
+<a name="l00140"></a>00140     <a class="code" href="classBBSImpl.html" title="BBSImpl Bulletin Board Implementation class.">BBSImpl</a>* <a class="code" href="classBBS.html#abd716bddb9c4c445b6226ab7b68aaef">impl_</a>;
 <a name="l00141"></a>00141 };
 <a name="l00142"></a>00142 
 <a name="l00143"></a>00143 
-<a name="l00144"></a>00144 <span class="keyword">class </span>BBS_Server
+<a name="l00144"></a><a class="code" href="classBBS__Server.html">00144</a> <span class="keyword">class </span><a class="code" href="classBBS__Server.html">BBS_Server</a>
 <a name="l00145"></a>00145 {
 <a name="l00146"></a>00146 <span class="keyword">public</span>:
-<a name="l00147"></a>00147     BBS_Server();
-<a name="l00148"></a>00148     <span class="keyword">virtual</span> ~BBS_Server();
+<a name="l00147"></a>00147     <a class="code" href="classBBS__Server.html#536876219693fa2e8c06f57d63bc592d">BBS_Server</a>();
+<a name="l00148"></a>00148     <span class="keyword">virtual</span> <a class="code" href="classBBS__Server.html#7f3f9978a27c97f2c39fa7d7344fbef2">~BBS_Server</a>();
 <a name="l00149"></a>00149 
-<a name="l00150"></a>00150     <span class="keywordtype">void</span> post(<span class="keyword">const</span> <span class="keywordtype">char</span>* key, bbsmpibuf*);
-<a name="l00151"></a>00151     <span class="keywordtype">boolean</span> look(<span class="keyword">const</span> <span class="keywordtype">char</span>* key, bbsmpibuf**);
-<a name="l00152"></a>00152     <span class="keywordtype">boolean</span> look_take(<span class="keyword">const</span> <span class="keywordtype">char</span>* key, bbsmpibuf**);
-<a name="l00153"></a>00153     <span class="keywordtype">boolean</span> take_pending(<span class="keyword">const</span> <span class="keywordtype">char</span>* key, <span class="keywordtype">int</span>* cid);
-<a name="l00154"></a>00154     <span class="keywordtype">void</span> put_pending(<span class="keyword">const</span> <span class="keywordtype">char</span>* key, <span class="keywordtype">int</span> cid);
-<a name="l00155"></a>00155     <span class="keyword">static</span> BBS_Server* server_;
-<a name="l00156"></a>00156     <span class="keyword">static</span> <span class="keywordtype">void</span> handle(); <span class="comment">// all remote requests</span>
-<a name="l00157"></a>00157     <span class="keyword">static</span> <span class="keywordtype">void</span> handle1(<span class="keywordtype">int</span> size, <span class="keywordtype">int</span> tag, <span class="keywordtype">int</span> source);
-<a name="l00158"></a>00158     <span class="keywordtype">void</span> start();
-<a name="l00159"></a>00159     <span class="keywordtype">void</span> done();
+<a name="l00150"></a>00150     <span class="keywordtype">void</span> <a class="code" href="classBBS__Server.html#bf56ce9cfa31fc5b1de91b9161bfdcfc">post</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* key, <a class="code" href="structbbsmpibuf.html">bbsmpibuf</a>*);
+<a name="l00151"></a>00151     <span class="keywordtype">boolean</span> <a class="code" href="classBBS__Server.html#7db36ef0b28a3bf781caded55211f627">look</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* key, <a class="code" href="structbbsmpibuf.html">bbsmpibuf</a>**);
+<a name="l00152"></a>00152     <span class="keywordtype">boolean</span> <a class="code" href="classBBS__Server.html#0669bb7433e0cb23fb0aa9c289ec43a7">look_take</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* key, <a class="code" href="structbbsmpibuf.html">bbsmpibuf</a>**);
+<a name="l00153"></a>00153     <span class="keywordtype">boolean</span> <a class="code" href="classBBS__Server.html#b57a2eaa4d2c6422a10717f31aaa9a15">take_pending</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* key, <span class="keywordtype">int</span>* cid);
+<a name="l00154"></a>00154     <span class="keywordtype">void</span> <a class="code" href="classBBS__Server.html#388a5f26a073eaa04295b3d47313053f">put_pending</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* key, <span class="keywordtype">int</span> cid);
+<a name="l00155"></a><a class="code" href="classBBS__Server.html#371e6552db4d618bb1c17d275bda00b2">00155</a>     <span class="keyword">static</span> <a class="code" href="classBBS__Server.html">BBS_Server</a>* <a class="code" href="classBBS__Server.html#371e6552db4d618bb1c17d275bda00b2">server_</a>;
+<a name="l00156"></a>00156     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classBBS__Server.html#7ac72d10e433b56f8dca60225e4aa582">handle</a>(); <span class="comment">// all remote requests</span>
+<a name="l00157"></a>00157     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classBBS__Server.html#745b0d8d21f025aad0c469ddd14a49c6">handle1</a>(<span class="keywordtype">int</span> size, <span class="keywordtype">int</span> tag, <span class="keywordtype">int</span> source);
+<a name="l00158"></a>00158     <span class="keywordtype">void</span> <a class="code" href="classBBS__Server.html#99ef86bdbca5a058cf0addaea33ad8a6">start</a>();
+<a name="l00159"></a>00159     <span class="keywordtype">void</span> <a class="code" href="classBBS__Server.html#428b601803955776dbfb602227bb5ed7">done</a>();
 <a name="l00160"></a>00160 
-<a name="l00161"></a>00161     <span class="keywordtype">void</span> post_todo(<span class="keywordtype">int</span> parentid, <span class="keywordtype">int</span> cid, bbsmpibuf*);
-<a name="l00162"></a>00162     <span class="keywordtype">void</span> context(bbsmpibuf*);
-<a name="l00163"></a>00163     <span class="keywordtype">boolean</span> send_context(<span class="keywordtype">int</span> cid); <span class="comment">// sends if not sent already</span>
-<a name="l00164"></a>00164     <span class="keywordtype">void</span> post_result(<span class="keywordtype">int</span> <span class="keywordtype">id</span>, bbsmpibuf*);
-<a name="l00165"></a>00165     <span class="keywordtype">int</span> look_take_todo(bbsmpibuf**);
-<a name="l00166"></a>00166     <span class="keywordtype">int</span> look_take_result(<span class="keywordtype">int</span> parentid, bbsmpibuf**);
-<a name="l00167"></a>00167     <span class="keywordtype">void</span> context_wait();
+<a name="l00161"></a>00161     <span class="keywordtype">void</span> <a class="code" href="classBBS__Server.html#e5c1645464205ecb4aa7a10951469f15">post_todo</a>(<span class="keywordtype">int</span> parentid, <span class="keywordtype">int</span> cid, <a class="code" href="structbbsmpibuf.html">bbsmpibuf</a>*);
+<a name="l00162"></a>00162     <span class="keywordtype">void</span> <a class="code" href="classBBS__Server.html#af592c2979c6475b74e765a08230dcf7">context</a>(<a class="code" href="structbbsmpibuf.html">bbsmpibuf</a>*);
+<a name="l00163"></a>00163     <span class="keywordtype">boolean</span> <a class="code" href="classBBS__Server.html#71cb95cc42b3b8bdcbda06fe38a4c9e8">send_context</a>(<span class="keywordtype">int</span> cid); <span class="comment">// sends if not sent already</span>
+<a name="l00164"></a>00164     <span class="keywordtype">void</span> <a class="code" href="classBBS__Server.html#8693def140c42f12010c81f1a2e232a4">post_result</a>(<span class="keywordtype">int</span> <span class="keywordtype">id</span>, <a class="code" href="structbbsmpibuf.html">bbsmpibuf</a>*);
+<a name="l00165"></a>00165     <span class="keywordtype">int</span> <a class="code" href="classBBS__Server.html#374f7b534736e03ec4ac4acb798980e7">look_take_todo</a>(<a class="code" href="structbbsmpibuf.html">bbsmpibuf</a>**);
+<a name="l00166"></a>00166     <span class="keywordtype">int</span> <a class="code" href="classBBS__Server.html#9ae21c457fe3e983c981a99d38b97a78">look_take_result</a>(<span class="keywordtype">int</span> parentid, <a class="code" href="structbbsmpibuf.html">bbsmpibuf</a>**);
+<a name="l00167"></a>00167     <span class="keywordtype">void</span> <a class="code" href="classBBS__Server.html#1e7c8141cbb521ed4cac483f4bcf486c">context_wait</a>();
 <a name="l00168"></a>00168 <span class="keyword">private</span>:
 <a name="l00169"></a>00169     <span class="keywordtype">void</span> add_looking_todo(<span class="keywordtype">int</span> cid);
 <a name="l00170"></a>00170 <span class="keyword">private</span>:
@@ -191,13 +192,13 @@
 <a name="l00176"></a>00176     MpiResultList* results_;
 <a name="l00177"></a>00177     MpiLookingToDoList* send_context_;
 <a name="l00178"></a>00178     <span class="keywordtype">int</span> next_id_;
-<a name="l00179"></a>00179     bbsmpibuf* context_buf_;
+<a name="l00179"></a>00179     <a class="code" href="structbbsmpibuf.html">bbsmpibuf</a>* context_buf_;
 <a name="l00180"></a>00180     <span class="keywordtype">int</span> remaining_context_cnt_;
 <a name="l00181"></a>00181 };
 <a name="l00182"></a>00182 
 <a name="l00183"></a>00183 <span class="preprocessor">#endif</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:03 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:33:48 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

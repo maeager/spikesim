@@ -116,8 +116,9 @@ public:
     //! Returns the time-averaged rate of the spike train.
     /*! \param t_start Start time. Anterior spike times are ignored.
         \param t_stop Stop time. Posterior spike times are ignored.
-        \param spike_list Spike list on which to perform the averaging.
-     */
+        \param spike_list_iterator_begin Spike list on which to perform the averaging.
+	\param spike_list_iterator_end 
+    */
 
     inline double compute_rate(const Time & t_start, const Time & t_stop
                                , const std::deque<Time>::const_iterator & spike_list_iterator_begin
@@ -169,7 +170,8 @@ public:
     /*! Method template called according to the real type of FileWrapper.
         \param t_start Start time. Anterior spike times are ignored.
         \param t_stop Stop time. Posterior spike times are ignored.
-        \param spike_list Spike list to perform the operation.
+        \param spike_list1 Spike list to perform the operation.
+        \param spike_list2 Spike list to perform the operation.
         \param file_wrapper (of type \b FileWrapper).
      */
     template <class FileWrapper>

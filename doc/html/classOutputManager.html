@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: OutputManager Class Reference</title>
+<title>ParSpikeSimv6.2: OutputManager Class Reference</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,6 +9,7 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -32,39 +33,118 @@
 <a href="classOutputManager-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Static Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="761fc589898f2d8fa1d5ca80893310b9"></a><!-- doxytag: member="OutputManager::set" ref="761fc589898f2d8fa1d5ca80893310b9" args="(std::ifstream &amp;is)" -->
-static void&nbsp;</td><td class="memItemRight" valign="bottom"><b>set</b> (std::ifstream &amp;is)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputManager.html#761fc589898f2d8fa1d5ca80893310b9">set</a> (std::ifstream &amp;is)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="3bdca547ff4ffb21260ccc881093ba7b"></a><!-- doxytag: member="OutputManager::add_group_to_outputter" ref="3bdca547ff4ffb21260ccc881093ba7b" args="(const Size &amp;outputter_id, Group *const gp)" -->
-static void&nbsp;</td><td class="memItemRight" valign="bottom"><b>add_group_to_outputter</b> (const Size &amp;outputter_id, <a class="el" href="classGroup.html">Group</a> *const gp)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputManager.html#3bdca547ff4ffb21260ccc881093ba7b">add_group_to_outputter</a> (const <a class="el" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9">Size</a> &amp;outputter_id, <a class="el" href="classGroup.html">Group</a> *const gp)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="c2e55b7370f5529ebd9da187f3aa70d8"></a><!-- doxytag: member="OutputManager::i_outputting_period" ref="c2e55b7370f5529ebd9da187f3aa70d8" args="()" -->
-static unsigned &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><b>i_outputting_period</b> ()</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static unsigned &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputManager.html#c2e55b7370f5529ebd9da187f3aa70d8">i_outputting_period</a> ()</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="92bb88cf52dedd5df132f4a407c01d59"></a><!-- doxytag: member="OutputManager::outputting_period" ref="92bb88cf52dedd5df132f4a407c01d59" args="()" -->
-static const Time &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><b>outputting_period</b> ()</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputManager.html#92bb88cf52dedd5df132f4a407c01d59">outputting_period</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputManager.html#33d0f940b9c95e419109ec41b7ae604b">open_files</a> ()</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Opens all the file for all the objects Outputter in outputter_list_.  <a href="#33d0f940b9c95e419109ec41b7ae604b"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="8cc155e9eaf5b9e862dcdfb74d5850e9"></a><!-- doxytag: member="OutputManager::close_all" ref="8cc155e9eaf5b9e862dcdfb74d5850e9" args="()" -->
-static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputManager.html#8cc155e9eaf5b9e862dcdfb74d5850e9">close_all</a> ()</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputManager.html#8cc155e9eaf5b9e862dcdfb74d5850e9">close_all</a> ()</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open all the files. <br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="59c2a920516223ab61c883150d4fa935"></a><!-- doxytag: member="OutputManager::do_output" ref="59c2a920516223ab61c883150d4fa935" args="(const std::string &amp;freq_tag)" -->
-static void&nbsp;</td><td class="memItemRight" valign="bottom"><b>do_output</b> (const std::string &amp;freq_tag)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open all the files.  <a href="#8cc155e9eaf5b9e862dcdfb74d5850e9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputManager.html#59c2a920516223ab61c883150d4fa935">do_output</a> (const std::string &amp;freq_tag)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="dd14b2cd193edbe1996c6260a324f35c"></a><!-- doxytag: member="OutputManager::clear_past_of_spike_lists" ref="dd14b2cd193edbe1996c6260a324f35c" args="(Network &amp;net)" -->
-static void&nbsp;</td><td class="memItemRight" valign="bottom"><b>clear_past_of_spike_lists</b> (Network &amp;net)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputManager.html#dd14b2cd193edbe1996c6260a324f35c">clear_past_of_spike_lists</a> (<a class="el" href="classNetwork.html">Network</a> &amp;net)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="6cd35903fae10430dd3d90ec5ff6868c"></a><!-- doxytag: member="OutputManager::do_output_connectivity" ref="6cd35903fae10430dd3d90ec5ff6868c" args="(const std::list&lt; Size &gt; &amp;list_nb_pre_nrn, const std::list&lt; Size &gt; &amp;list_nb_post_nrn, int bide)" -->
-static void&nbsp;</td><td class="memItemRight" valign="bottom"><b>do_output_connectivity</b> (const std::list&lt; Size &gt; &amp;list_nb_pre_nrn, const std::list&lt; Size &gt; &amp;list_nb_post_nrn, int bide)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputManager.html#6cd35903fae10430dd3d90ec5ff6868c">do_output_connectivity</a> (const std::list&lt; <a class="el" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9">Size</a> &gt; &amp;list_nb_pre_nrn, const std::list&lt; <a class="el" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9">Size</a> &gt; &amp;list_nb_post_nrn, int bide)</td></tr>
 
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
 <a class="el" href="classOutputManager.html" title="OutputManager: class definition.">OutputManager</a>: class definition. 
 <p>
 Encapsulates the file and filename, the operation and the list of the goups to apply the operation on. Its static members <hr><h2>Member Function Documentation</h2>
+<a class="anchor" name="761fc589898f2d8fa1d5ca80893310b9"></a><!-- doxytag: member="OutputManager::set" ref="761fc589898f2d8fa1d5ca80893310b9" args="(std::ifstream &amp;is)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputManager::set           </td>
+          <td>(</td>
+          <td class="paramtype">std::ifstream &amp;&nbsp;</td>
+          <td class="paramname"> <em>is</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="3bdca547ff4ffb21260ccc881093ba7b"></a><!-- doxytag: member="OutputManager::add_group_to_outputter" ref="3bdca547ff4ffb21260ccc881093ba7b" args="(const Size &amp;outputter_id, Group *const gp)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputManager::add_group_to_outputter           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9">Size</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>outputter_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGroup.html">Group</a> *const &nbsp;</td>
+          <td class="paramname"> <em>gp</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c2e55b7370f5529ebd9da187f3aa70d8"></a><!-- doxytag: member="OutputManager::i_outputting_period" ref="c2e55b7370f5529ebd9da187f3aa70d8" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static unsigned&amp; OutputManager::i_outputting_period           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="92bb88cf52dedd5df132f4a407c01d59"></a><!-- doxytag: member="OutputManager::outputting_period" ref="92bb88cf52dedd5df132f4a407c01d59" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a>&amp; OutputManager::outputting_period           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="33d0f940b9c95e419109ec41b7ae604b"></a><!-- doxytag: member="OutputManager::open_files" ref="33d0f940b9c95e419109ec41b7ae604b" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -86,10 +166,106 @@ Opens all the file for all the objects Outputter in outputter_list_.
 Open all the files. 
 </div>
 </div><p>
-<hr>The documentation for this class was generated from the following files:<ul>
-<li>/media/data/Work/spikesimv6/<a class="el" href="OutputManager_8h-source.html">OutputManager.h</a><li>/media/data/Work/spikesimv6/OutputManager.cpp</ul>
+<a class="anchor" name="8cc155e9eaf5b9e862dcdfb74d5850e9"></a><!-- doxytag: member="OutputManager::close_all" ref="8cc155e9eaf5b9e862dcdfb74d5850e9" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputManager::close_all           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:16 2009 for spikesimv6 by&nbsp;
+<div class="memdoc">
+
+<p>
+Open all the files. 
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="59c2a920516223ab61c883150d4fa935"></a><!-- doxytag: member="OutputManager::do_output" ref="59c2a920516223ab61c883150d4fa935" args="(const std::string &amp;freq_tag)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputManager::do_output           </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&nbsp;</td>
+          <td class="paramname"> <em>freq_tag</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="dd14b2cd193edbe1996c6260a324f35c"></a><!-- doxytag: member="OutputManager::clear_past_of_spike_lists" ref="dd14b2cd193edbe1996c6260a324f35c" args="(Network &amp;net)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputManager::clear_past_of_spike_lists           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classNetwork.html">Network</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>net</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="6cd35903fae10430dd3d90ec5ff6868c"></a><!-- doxytag: member="OutputManager::do_output_connectivity" ref="6cd35903fae10430dd3d90ec5ff6868c" args="(const std::list&lt; Size &gt; &amp;list_nb_pre_nrn, const std::list&lt; Size &gt; &amp;list_nb_post_nrn, int bide)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputManager::do_output_connectivity           </td>
+          <td>(</td>
+          <td class="paramtype">const std::list&lt; <a class="el" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9">Size</a> &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>list_nb_pre_nrn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::list&lt; <a class="el" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9">Size</a> &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>list_nb_post_nrn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>bide</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<hr>The documentation for this class was generated from the following files:<ul>
+<li>/media/data/Work/spikesimv6/<a class="el" href="OutputManager_8h-source.html">OutputManager.h</a><li>/media/data/Work/spikesimv6/<a class="el" href="OutputManager_8cpp.html">OutputManager.cpp</a></ul>
+</div>
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:56 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

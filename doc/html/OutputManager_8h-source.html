@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: /media/data/Work/spikesimv6/OutputManager.h Source File</title>
+<title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/OutputManager.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,11 +9,12 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>/media/data/Work/spikesimv6/OutputManager.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// OutputManager.h</span>
+<h1>/media/data/Work/spikesimv6/OutputManager.h</h1><a href="OutputManager_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// OutputManager.h</span>
 <a name="l00003"></a>00003 <span class="comment"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#ifndef OUTPUTMANAGER_H</span>
 <a name="l00005"></a>00005 <span class="preprocessor"></span><span class="preprocessor">#define OUTPUTMANAGER_H</span>
@@ -22,21 +23,21 @@
 <a name="l00008"></a>00008 <span class="preprocessor">#include &lt;string&gt;</span>
 <a name="l00009"></a>00009 <span class="preprocessor">#include &lt;fstream&gt;</span>
 <a name="l00010"></a>00010 
-<a name="l00011"></a>00011 <span class="preprocessor">#include "StringFormatters.h"</span>
-<a name="l00012"></a>00012 <span class="preprocessor">#include "SimulationEnvironment.h"</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include "<a class="code" href="StringFormatters_8h.html">StringFormatters.h</a>"</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include "<a class="code" href="SimulationEnvironment_8h.html">SimulationEnvironment.h</a>"</span>
 <a name="l00013"></a>00013 <span class="preprocessor">#ifdef PARALLELSIM</span>
-<a name="l00014"></a>00014 <span class="preprocessor"></span><span class="preprocessor">#include "ParNetwork.h"</span>
+<a name="l00014"></a>00014 <span class="preprocessor"></span><span class="preprocessor">#include "<a class="code" href="ParNetwork_8h.html">ParNetwork.h</a>"</span>
 <a name="l00015"></a>00015 <span class="preprocessor">#else</span>
-<a name="l00016"></a>00016 <span class="preprocessor"></span><span class="preprocessor">#include "Network.h"</span>
+<a name="l00016"></a>00016 <span class="preprocessor"></span><span class="preprocessor">#include "<a class="code" href="Network_8h.html">Network.h</a>"</span>
 <a name="l00017"></a>00017 <span class="preprocessor">#endif</span>
-<a name="l00018"></a>00018 <span class="preprocessor"></span><span class="preprocessor">#include "ConfigBase.h"</span>
-<a name="l00019"></a>00019 <span class="preprocessor">#include "AsciiFileWrapper.h"</span>
+<a name="l00018"></a>00018 <span class="preprocessor"></span><span class="preprocessor">#include "<a class="code" href="ConfigBase_8h.html">ConfigBase.h</a>"</span>
+<a name="l00019"></a>00019 <span class="preprocessor">#include "<a class="code" href="AsciiFileWrapper_8h.html">AsciiFileWrapper.h</a>"</span>
 <a name="l00020"></a>00020 
 <a name="l00021"></a>00021 
 <a name="l00023"></a>00023 
 <a name="l00025"></a><a class="code" href="classOutputterBase.html">00025</a> <span class="keyword">class </span><a class="code" href="classOutputterBase.html" title="OutputterBase: abstract base class for.">OutputterBase</a>
 <a name="l00026"></a>00026 {
-<a name="l00027"></a>00027     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classOutputManager.html" title="OutputManager: class definition.">OutputManager</a>;
+<a name="l00027"></a><a class="code" href="classOutputterBase.html#8cd06cc1f5136896680dc62a4f457a7e">00027</a>     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classOutputManager.html" title="OutputManager: class definition.">OutputManager</a>;
 <a name="l00028"></a>00028 <span class="keyword">protected</span>:
 <a name="l00030"></a>00030 
 <a name="l00032"></a><a class="code" href="classOutputterBase.html#e7779a14de8dd01be50c2036607351c3">00032</a>     <span class="keyword">typedef</span> std::string <a class="code" href="classOutputterBase.html#e7779a14de8dd01be50c2036607351c3" title="Definition of the type Tag.">Tag</a>;
@@ -46,7 +47,7 @@
 <a name="l00039"></a><a class="code" href="classOutputterBase.html#ac63adfb111c2219fe1c3d4dbdaec55d">00039</a>     <span class="keyword">virtual</span> <a class="code" href="classOutputterBase.html#ac63adfb111c2219fe1c3d4dbdaec55d" title="Virtual destructor.">~OutputterBase</a>() {}
 <a name="l00041"></a>00041     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classOutputterBase.html#be73bbe8714bd74d859cbbbfc8854e6c" title="Open the file for writing.">open_file</a>() = 0;
 <a name="l00043"></a>00043     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classOutputterBase.html#06626d0d3b52df6b825d9a4c981ed7d0" title="Add an entire group to the list of neurons to be outputted.">add_group</a>(<a class="code" href="classGroup.html" title="Group of neurons sharing similar properties.">Group</a> * <span class="keyword">const</span> gp) = 0;
-<a name="l00045"></a>00045     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classOutputterBase.html#fd4fa5c58ad0dbe1992556420ace4d89" title="Operation to do when called by OutputManager.">do_operation</a>(<span class="keyword">const</span> Time &amp; t_start, <span class="keyword">const</span> Time &amp; t_stop) = 0;
+<a name="l00045"></a>00045     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classOutputterBase.html#fd4fa5c58ad0dbe1992556420ace4d89" title="Operation to do when called by OutputManager.">do_operation</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; t_start, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; t_stop) = 0;
 <a name="l00047"></a><a class="code" href="classOutputterBase.html#feb0a8e0ff30658237a6fd7718a5df7c">00047</a>     <span class="keyword">const</span> <a class="code" href="classOutputterBase.html#e7779a14de8dd01be50c2036607351c3" title="Definition of the type Tag.">Tag</a> &amp; <a class="code" href="classOutputterBase.html#feb0a8e0ff30658237a6fd7718a5df7c" title="Type tag accessor.">type_tag</a>() {
 <a name="l00048"></a>00048         <span class="keywordflow">return</span> type_tag_;
 <a name="l00049"></a>00049     }
@@ -98,7 +99,7 @@
 <a name="l00111"></a>00111         NeuronListHandler::add_group(gp);
 <a name="l00112"></a>00112     }
 <a name="l00113"></a>00113 
-<a name="l00115"></a><a class="code" href="classOutputterImpl.html#8b539c466fd9376ac49f1b2a8bd312ac">00115</a>     <span class="keywordtype">void</span> <a class="code" href="classOutputterImpl.html#8b539c466fd9376ac49f1b2a8bd312ac" title="Operation to do when called by OutputManager.">do_operation</a>(<span class="keyword">const</span> Time &amp; t_start, <span class="keyword">const</span> Time &amp; t_stop) {
+<a name="l00115"></a><a class="code" href="classOutputterImpl.html#8b539c466fd9376ac49f1b2a8bd312ac">00115</a>     <span class="keywordtype">void</span> <a class="code" href="classOutputterImpl.html#8b539c466fd9376ac49f1b2a8bd312ac" title="Operation to do when called by OutputManager.">do_operation</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; t_start, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; t_stop) {
 <a name="l00116"></a>00116         NeuronListHandler::template iterate&lt;OutputOperation, FileWrapper&gt;(t_start, t_stop, <span class="keyword">this</span>, <span class="keyword">this</span>);
 <a name="l00117"></a>00117     }
 <a name="l00118"></a>00118 
@@ -119,19 +120,19 @@
 <a name="l00137"></a>00137 <span class="comment">// initialisation and destruction</span>
 <a name="l00138"></a>00138 <span class="keyword">public</span>:
 <a name="l00139"></a>00139     <span class="keyword">static</span> <span class="keywordtype">void</span> <span class="keyword">set</span>(std::ifstream &amp; is);
-<a name="l00140"></a>00140     <span class="keyword">static</span> <span class="keywordtype">void</span> add_group_to_outputter(<span class="keyword">const</span> Size &amp; outputter_id, <a class="code" href="classGroup.html" title="Group of neurons sharing similar properties.">Group</a> * <span class="keyword">const</span> gp);
+<a name="l00140"></a>00140     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classOutputManager.html#3bdca547ff4ffb21260ccc881093ba7b">add_group_to_outputter</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; outputter_id, <a class="code" href="classGroup.html" title="Group of neurons sharing similar properties.">Group</a> * <span class="keyword">const</span> gp);
 <a name="l00141"></a>00141 <span class="keyword">private</span>:
 <a name="l00142"></a>00142     <span class="keyword">static</span> <span class="keywordtype">void</span> add_outputter(<span class="keyword">const</span> std::string &amp; key, <span class="keyword">const</span> std::string &amp; freq_tag, <span class="keyword">const</span> std::string &amp; output_file_type = <span class="stringliteral">"ascii"</span>);
 <a name="l00143"></a>00143     <span class="keyword">static</span> std::string make_name(<span class="keyword">const</span> std::string &amp; name_base) {
-<a name="l00144"></a>00144         <span class="keywordflow">return</span> name_base + StringFormatter::IntToStr(outputter_count_++);
+<a name="l00144"></a>00144         <span class="keywordflow">return</span> name_base + <a class="code" href="structStringFormatter.html#60fd1508f6d842f670c97edb8d99cc54" title="Converts an unsigned integer to a string.">StringFormatter::IntToStr</a>(outputter_count_++);
 <a name="l00145"></a>00145     }
 <a name="l00146"></a>00146 
 <a name="l00147"></a>00147 <span class="comment">// accessors to members</span>
 <a name="l00148"></a>00148 <span class="keyword">public</span>:
-<a name="l00149"></a>00149     <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">unsigned</span> &amp; i_outputting_period() {
+<a name="l00149"></a><a class="code" href="classOutputManager.html#c2e55b7370f5529ebd9da187f3aa70d8">00149</a>     <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">unsigned</span> &amp; <a class="code" href="classOutputManager.html#c2e55b7370f5529ebd9da187f3aa70d8">i_outputting_period</a>() {
 <a name="l00150"></a>00150         <span class="keywordflow">return</span> i_outputting_period_;
 <a name="l00151"></a>00151     }
-<a name="l00152"></a>00152     <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">const</span> Time &amp; outputting_period() {
+<a name="l00152"></a><a class="code" href="classOutputManager.html#92bb88cf52dedd5df132f4a407c01d59">00152</a>     <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; <a class="code" href="classOutputManager.html#92bb88cf52dedd5df132f4a407c01d59">outputting_period</a>() {
 <a name="l00153"></a>00153         <span class="keywordflow">return</span> outputting_period_;
 <a name="l00154"></a>00154     }
 <a name="l00155"></a>00155 
@@ -139,27 +140,27 @@
 <a name="l00157"></a>00157 <span class="keyword">public</span>:
 <a name="l00159"></a>00159     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classOutputManager.html#33d0f940b9c95e419109ec41b7ae604b" title="Opens all the file for all the objects Outputter in outputter_list_.">open_files</a>();
 <a name="l00160"></a>00160     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classOutputManager.html#8cc155e9eaf5b9e862dcdfb74d5850e9" title="Open all the files.">close_all</a>();
-<a name="l00161"></a>00161     <span class="keyword">static</span> <span class="keywordtype">void</span> do_output(<span class="keyword">const</span> std::string &amp; freq_tag);
-<a name="l00162"></a>00162     <span class="keyword">static</span> <span class="keywordtype">void</span> clear_past_of_spike_lists(
+<a name="l00161"></a>00161     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classOutputManager.html#59c2a920516223ab61c883150d4fa935">do_output</a>(<span class="keyword">const</span> std::string &amp; freq_tag);
+<a name="l00162"></a>00162     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classOutputManager.html#dd14b2cd193edbe1996c6260a324f35c">clear_past_of_spike_lists</a>(
 <a name="l00163"></a>00163 #ifdef PARALLELSIM
 <a name="l00164"></a>00164         <a class="code" href="classParNetwork.html" title="ParNetwork class definition.">ParNetwork</a> &amp; net);
 <a name="l00165"></a>00165 <span class="preprocessor">#else</span>
-<a name="l00166"></a>00166 <span class="preprocessor"></span>        Network &amp; net);
+<a name="l00166"></a>00166 <span class="preprocessor"></span>        <a class="code" href="classNetwork.html">Network</a> &amp; net);
 <a name="l00167"></a>00167 <span class="preprocessor">#endif</span>
-<a name="l00168"></a>00168 <span class="preprocessor"></span>    <span class="keyword">static</span> <span class="keywordtype">void</span> do_output_connectivity(<span class="keyword">const</span> std::list&lt;Size&gt; &amp; list_nb_pre_nrn, <span class="keyword">const</span> std::list&lt;Size&gt; &amp; list_nb_post_nrn, <span class="keywordtype">int</span> bide);
+<a name="l00168"></a>00168 <span class="preprocessor"></span>    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classOutputManager.html#6cd35903fae10430dd3d90ec5ff6868c">do_output_connectivity</a>(<span class="keyword">const</span> std::list&lt;Size&gt; &amp; list_nb_pre_nrn, <span class="keyword">const</span> std::list&lt;Size&gt; &amp; list_nb_post_nrn, <span class="keywordtype">int</span> bide);
 <a name="l00169"></a>00169 
 <a name="l00170"></a>00170 <span class="comment">// members</span>
 <a name="l00171"></a>00171 <span class="keyword">private</span>:
 <a name="l00173"></a>00173     <span class="keyword">static</span> <span class="keywordtype">unsigned</span> i_outputting_period_;
-<a name="l00175"></a>00175     <span class="keyword">static</span> Time outputting_period_;
+<a name="l00175"></a>00175     <span class="keyword">static</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> outputting_period_;
 <a name="l00177"></a>00177     <span class="keyword">static</span> std::string name_model_;
-<a name="l00179"></a>00179     <span class="keyword">static</span> Size outputter_count_;
+<a name="l00179"></a>00179     <span class="keyword">static</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> outputter_count_;
 <a name="l00181"></a>00181     <span class="keyword">static</span> <span class="keywordtype">bool</span> clear_spike_lists_;
 <a name="l00183"></a>00183     <span class="keyword">typedef</span> std::vector&lt;OutputterBase *&gt; OutputterListType;
 <a name="l00184"></a>00184     <span class="keyword">static</span> OutputterListType outputter_list_;
 <a name="l00185"></a>00185 <span class="comment">//  typedef std::map&lt;std::string, OutputterBase * const&gt; OutputterListType;</span>
 <a name="l00187"></a>00187 <span class="comment"></span>    <span class="keyword">static</span> <a class="code" href="classAsciiFileWrapper.html" title="AsciiFileWrapper: manages the access to an ASCII file.">AsciiFileWrapper</a> connectivity_output_;
-<a name="l00189"></a>00189     <span class="keyword">static</span> Size connect_count_;
+<a name="l00189"></a>00189     <span class="keyword">static</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> connect_count_;
 <a name="l00191"></a>00191     <span class="keyword">static</span> <span class="keywordtype">bool</span> is_connectivity_outputted_;
 <a name="l00192"></a>00192 };
 <a name="l00193"></a>00193 
@@ -171,7 +172,7 @@
 <a name="l00199"></a>00199 
 <a name="l00200"></a>00200 <span class="preprocessor">#endif // !defined(OUTPUTMANAGER_H</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:04 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:53 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

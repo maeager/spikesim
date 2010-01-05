@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: /media/data/Work/spikesimv6/ParSpike.h Source File</title>
+<title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/ParSpike.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,11 +9,12 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>/media/data/Work/spikesimv6/ParSpike.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// ParSpike.h</span>
+<h1>/media/data/Work/spikesimv6/ParSpike.h</h1><a href="ParSpike_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// ParSpike.h</span>
 <a name="l00003"></a>00003 <span class="comment"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#ifndef PARSPIKE_H</span>
 <a name="l00005"></a>00005 <span class="preprocessor"></span><span class="preprocessor">#define PARSPIKE_H</span>
@@ -30,18 +31,18 @@
 <a name="l00016"></a>00016 <span class="preprocessor">#include &lt;mpi.h&gt;</span>
 <a name="l00017"></a>00017 
 <a name="l00018"></a>00018 <span class="preprocessor">#ifndef _spikebuf_size</span>
-<a name="l00019"></a>00019 <span class="preprocessor"></span><span class="preprocessor">#define _spikebuf_size 0</span>
+<a name="l00019"></a><a class="code" href="ParSpike_8h.html#dc4998cf02dc6bcad23373a3850b87a6">00019</a> <span class="preprocessor"></span><span class="preprocessor">#define _spikebuf_size 0</span>
 <a name="l00020"></a>00020 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
 <a name="l00021"></a>00021 <span class="preprocessor"></span><span class="comment">//Globals --</span>
 <a name="l00022"></a>00022 
 <a name="l00023"></a>00023 
-<a name="l00024"></a>00024 <span class="keyword">extern</span>  MPI_Comm mpi_comm;
-<a name="l00025"></a>00025 <span class="keyword">extern</span>  MPI_Comm bbs_comm;
+<a name="l00024"></a>00024 <span class="keyword">extern</span>  MPI_Comm <a class="code" href="ParSpike_8cpp.html#8eb6ed0fc96ea75bff05e64fd28d3880">mpi_comm</a>;
+<a name="l00025"></a>00025 <span class="keyword">extern</span>  MPI_Comm <a class="code" href="BBS2MPI_8cpp.html#44e5bd9690a3b69837c16bb3a408986e">bbs_comm</a>;
 <a name="l00026"></a>00026 
 <a name="l00028"></a>00028 
-<a name="l00030"></a>00030 <span class="keyword">typedef</span> <span class="keyword">struct </span>{
-<a name="l00031"></a>00031     <span class="keywordtype">int</span> gid;
-<a name="l00032"></a>00032     <span class="keywordtype">double</span> spiketime;
+<a name="l00030"></a><a class="code" href="structSpikePacket__.html">00030</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
+<a name="l00031"></a><a class="code" href="structSpikePacket__.html#949633297b9486d4d910e86c69b035e6">00031</a>     <span class="keywordtype">int</span> gid;
+<a name="l00032"></a><a class="code" href="structSpikePacket__.html#0715ad40ecdabc35746aa7121554b585">00032</a>     <span class="keywordtype">double</span> spiketime;
 <a name="l00033"></a>00033 } <a class="code" href="structSpikePacket__.html" title="SpikePacket_.">SpikePacket_</a>;
 <a name="l00034"></a>00034 <span class="preprocessor">#if _spikebuf_size &gt; 0</span>
 <a name="l00035"></a>00035 <span class="preprocessor"></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{
@@ -60,79 +61,79 @@
 <a name="l00048"></a>00048 
 <a name="l00049"></a>00049 
 <a name="l00051"></a>00051 
-<a name="l00053"></a>00053 <span class="keyword">class </span><a class="code" href="classParSpike.html" title="ParSpike: parallel environment variables.">ParSpike</a>
+<a name="l00053"></a><a class="code" href="classParSpike.html">00053</a> <span class="keyword">class </span><a class="code" href="classParSpike.html" title="ParSpike: parallel environment variables.">ParSpike</a>
 <a name="l00054"></a>00054 {
 <a name="l00055"></a>00055 <span class="keyword">public</span>:
-<a name="l00056"></a>00056     <a class="code" href="classParSpike.html" title="ParSpike: parallel environment variables.">ParSpike</a>(<span class="keywordtype">void</span>);
+<a name="l00056"></a>00056     <a class="code" href="classParSpike.html#68c763341865185ca579deb71adda73d">ParSpike</a>(<span class="keywordtype">void</span>);
 <a name="l00057"></a>00057 
-<a name="l00059"></a>00059     <span class="keywordtype">void</span> init(<span class="keywordtype">int</span> under_control, <span class="keywordtype">int</span>* pargc, <span class="keywordtype">char</span>*** pargv);
-<a name="l00061"></a>00061     <span class="keyword">static</span> <span class="keywordtype">void</span> terminate();
-<a name="l00063"></a>00063     <span class="keyword">static</span> <span class="keywordtype">void</span> mpiabort(<span class="keywordtype">int</span> errcode);
-<a name="l00064"></a>00064     <span class="keyword">static</span> <span class="keywordtype">double</span> wtime();
-<a name="l00066"></a>00066     <span class="keywordtype">void</span> make_spikebuf_type();
+<a name="l00059"></a>00059     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#151ed356bafd46471075794e05ed436a">init</a>(<span class="keywordtype">int</span> under_control, <span class="keywordtype">int</span>* pargc, <span class="keywordtype">char</span>*** pargv);
+<a name="l00061"></a>00061     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#5256b89246591c6b803ca7564283092b">terminate</a>();
+<a name="l00063"></a>00063     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#f2d9f4fd0e9cc42d04f3f9604ecf2890">mpiabort</a>(<span class="keywordtype">int</span> errcode);
+<a name="l00064"></a>00064     <span class="keyword">static</span> <span class="keywordtype">double</span> <a class="code" href="classParSpike.html#1250c0859817509ca5ceb48d84dce679">wtime</a>();
+<a name="l00066"></a>00066     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#a66fcdfbe7aa057294626a5062008536" title="Setup Spike packets for transmission.">make_spikebuf_type</a>();
 <a name="l00067"></a>00067     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#03e7edad1fb30b94780d3dcbbb9e6169">make_spike_type</a>();
-<a name="l00068"></a>00068     <span class="comment">/*inline */</span><span class="keywordtype">void</span> spike_initialize() {
+<a name="l00068"></a><a class="code" href="classParSpike.html#a11769966dd42a60d25937549126713d">00068</a>     <span class="comment">/*inline */</span><span class="keywordtype">void</span> <a class="code" href="classParSpike.html#a11769966dd42a60d25937549126713d">spike_initialize</a>() {
 <a name="l00069"></a>00069         <a class="code" href="classParSpike.html#03e7edad1fb30b94780d3dcbbb9e6169">make_spike_type</a>();
 <a name="l00070"></a>00070     }
 <a name="l00071"></a>00071     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#fe20016e50c4d68a40864360d64ffe77">spike_exchange</a>();
 <a name="l00072"></a>00072     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#4773c7cd84eb89bce27fe01cfaf49f69" title="spike_exchange_compressed: comments from original work">spike_exchange_compressed</a>();
-<a name="l00073"></a>00073     <span class="keyword">static</span> <span class="keywordtype">double</span> mindelay(<span class="keywordtype">double</span> m);
-<a name="l00074"></a>00074     <span class="keyword">static</span> <span class="keywordtype">int</span> int_allmax(<span class="keywordtype">int</span> x);
+<a name="l00073"></a>00073     <span class="keyword">static</span> <span class="keywordtype">double</span> <a class="code" href="classParSpike.html#7dbde868f10a6a29b975bc0bed8d467a">mindelay</a>(<span class="keywordtype">double</span> m);
+<a name="l00074"></a>00074     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#2a68df934c837d7ca37531b4b600ccc6">int_allmax</a>(<span class="keywordtype">int</span> x);
 <a name="l00075"></a>00075     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#d29da0ff8c0752404cca8ef132b295a8" title="int_gather interface to MPI_Gather">int_gather</a>(<span class="keywordtype">int</span>* s, <span class="keywordtype">int</span>* r, <span class="keywordtype">int</span> cnt, <span class="keywordtype">int</span> root);
 <a name="l00076"></a>00076     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#07f25b97aa543b833681ae4034b960a1" title="int_gatherv interface to MPI_Gatherv">int_gatherv</a>(<span class="keywordtype">int</span>* s, <span class="keywordtype">int</span> scnt, <span class="keywordtype">int</span>* r, <span class="keywordtype">int</span>* rcnt, <span class="keywordtype">int</span>* rdispl, <span class="keywordtype">int</span> root);
 <a name="l00077"></a>00077     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#400fa9bc6872b5ef44fe98445924a59e" title="int_alltoallv interface to MPI_Alltoallv with MPI_INT">int_alltoallv</a>(<span class="keywordtype">int</span>* s, <span class="keywordtype">int</span>* scnt, <span class="keywordtype">int</span>* sdispl, <span class="keywordtype">int</span>* r, <span class="keywordtype">int</span>* rcnt, <span class="keywordtype">int</span>* rdispl) ;
 <a name="l00078"></a>00078     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#4e2e298cd46022f60c26975ba4973359" title="dbl_alltoallv interface to MPI_Alltoallv with MPI_DOUBLES">dbl_alltoallv</a>(<span class="keywordtype">double</span>* s, <span class="keywordtype">int</span>* scnt, <span class="keywordtype">int</span>* sdispl, <span class="keywordtype">double</span>* r, <span class="keywordtype">int</span>* rcnt, <span class="keywordtype">int</span>* rdispl);
-<a name="l00079"></a>00079     <span class="keyword">static</span> <span class="keywordtype">void</span> int_allgather(<span class="keywordtype">int</span>* s, <span class="keywordtype">int</span>* r, <span class="keywordtype">int</span> n);
-<a name="l00080"></a>00080     <span class="keywordtype">void</span> int_allgatherv(<span class="keywordtype">int</span>* s, <span class="keywordtype">int</span>* r, <span class="keywordtype">int</span>* n, <span class="keywordtype">int</span>* dspl) ;
-<a name="l00081"></a>00081     <span class="keywordtype">void</span> dbl_allgatherv(<span class="keywordtype">double</span>* s, <span class="keywordtype">double</span>* r, <span class="keywordtype">int</span>* n, <span class="keywordtype">int</span>* dspl);
-<a name="l00082"></a>00082     <span class="keywordtype">void</span> dbl_broadcast(<span class="keywordtype">double</span>* buf, <span class="keywordtype">int</span> cnt, <span class="keywordtype">int</span> root);
-<a name="l00083"></a>00083     <span class="keywordtype">void</span> int_broadcast(<span class="keywordtype">int</span>* buf, <span class="keywordtype">int</span> cnt, <span class="keywordtype">int</span> root);
-<a name="l00084"></a>00084     <span class="keywordtype">void</span> char_broadcast(<span class="keywordtype">char</span>* buf, <span class="keywordtype">int</span> cnt, <span class="keywordtype">int</span> root) ;
-<a name="l00085"></a>00085     <span class="keywordtype">int</span> int_sum_reduce(<span class="keywordtype">int</span> in, <span class="keywordtype">int</span> comm) ;
-<a name="l00086"></a>00086     <span class="keywordtype">void</span> assert_opstep(<span class="keywordtype">int</span> opstep, <span class="keywordtype">double</span> t, <span class="keywordtype">int</span> comm);
-<a name="l00087"></a>00087     <span class="keywordtype">double</span> dbl_allmin(<span class="keywordtype">double</span> x, <span class="keywordtype">int</span> comm);
+<a name="l00079"></a>00079     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#80b14b0d41f0f06315d246d1a129a61a">int_allgather</a>(<span class="keywordtype">int</span>* s, <span class="keywordtype">int</span>* r, <span class="keywordtype">int</span> n);
+<a name="l00080"></a>00080     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#21aea6dda5b099f0465af923d158e4a4">int_allgatherv</a>(<span class="keywordtype">int</span>* s, <span class="keywordtype">int</span>* r, <span class="keywordtype">int</span>* n, <span class="keywordtype">int</span>* dspl) ;
+<a name="l00081"></a>00081     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#1c6737712ff07d242fda86e2888e85ae">dbl_allgatherv</a>(<span class="keywordtype">double</span>* s, <span class="keywordtype">double</span>* r, <span class="keywordtype">int</span>* n, <span class="keywordtype">int</span>* dspl);
+<a name="l00082"></a>00082     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#69c97e90c1b1650134db90b719937cbe">dbl_broadcast</a>(<span class="keywordtype">double</span>* buf, <span class="keywordtype">int</span> cnt, <span class="keywordtype">int</span> root);
+<a name="l00083"></a>00083     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#106b58425c0165cdefffd485230668b8">int_broadcast</a>(<span class="keywordtype">int</span>* buf, <span class="keywordtype">int</span> cnt, <span class="keywordtype">int</span> root);
+<a name="l00084"></a>00084     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#ec9bb21ff887ca4a0c312a9a3a2a8a98">char_broadcast</a>(<span class="keywordtype">char</span>* buf, <span class="keywordtype">int</span> cnt, <span class="keywordtype">int</span> root) ;
+<a name="l00085"></a>00085     <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#c98f2dc4c08883a42080d2e6f9618c35">int_sum_reduce</a>(<span class="keywordtype">int</span> in, <span class="keywordtype">int</span> comm) ;
+<a name="l00086"></a>00086     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#0e84943f56b92eef613ad04c2379f2f8">assert_opstep</a>(<span class="keywordtype">int</span> opstep, <span class="keywordtype">double</span> t, <span class="keywordtype">int</span> comm);
+<a name="l00087"></a>00087     <span class="keywordtype">double</span> <a class="code" href="classParSpike.html#b55fde12d95073261a40732e2be3dccb">dbl_allmin</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">int</span> comm);
 <a name="l00088"></a>00088 
-<a name="l00089"></a>00089     <span class="keywordtype">int</span> pgvts_least(<span class="keywordtype">double</span>* t, <span class="keywordtype">int</span>* op, <span class="keywordtype">int</span>* init);
+<a name="l00089"></a>00089     <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#2dfbf6a6860d00741678b2143cf6b28c">pgvts_least</a>(<span class="keywordtype">double</span>* t, <span class="keywordtype">int</span>* op, <span class="keywordtype">int</span>* init);
 <a name="l00090"></a>00090 
-<a name="l00091"></a>00091     <span class="keywordtype">void</span> send_doubles(<span class="keywordtype">double</span>* pd, <span class="keywordtype">int</span> cnt, <span class="keywordtype">int</span> dest, <span class="keywordtype">int</span> tag) ;
+<a name="l00091"></a>00091     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#c17f6796ed83f265a2b3d17a8ac4f771">send_doubles</a>(<span class="keywordtype">double</span>* pd, <span class="keywordtype">int</span> cnt, <span class="keywordtype">int</span> dest, <span class="keywordtype">int</span> tag) ;
 <a name="l00092"></a>00092 
-<a name="l00093"></a>00093     <span class="keywordtype">void</span> recv_doubles(<span class="keywordtype">double</span>* pd, <span class="keywordtype">int</span> cnt, <span class="keywordtype">int</span> src, <span class="keywordtype">int</span> tag) ;
-<a name="l00094"></a>00094     <span class="keywordtype">void</span> postrecv_doubles(<span class="keywordtype">double</span>* pd, <span class="keywordtype">int</span> cnt, <span class="keywordtype">int</span> src, <span class="keywordtype">int</span> tag, <span class="keywordtype">void</span>** request);
-<a name="l00095"></a>00095     <span class="keywordtype">void</span> wait(<span class="keywordtype">void</span>** request);
+<a name="l00093"></a>00093     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#ca46590126c037703fc5260f7a91a487">recv_doubles</a>(<span class="keywordtype">double</span>* pd, <span class="keywordtype">int</span> cnt, <span class="keywordtype">int</span> src, <span class="keywordtype">int</span> tag) ;
+<a name="l00094"></a>00094     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#d547690250b75cfccb35b2ae68b406d2">postrecv_doubles</a>(<span class="keywordtype">double</span>* pd, <span class="keywordtype">int</span> cnt, <span class="keywordtype">int</span> src, <span class="keywordtype">int</span> tag, <span class="keywordtype">void</span>** request);
+<a name="l00095"></a>00095     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#a952374d136da783d5519a354b85aec1">wait</a>(<span class="keywordtype">void</span>** request);
 <a name="l00096"></a>00096     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#9dc964f7412b6beb85b1ca238b9ccb0e" title="Barrier interface to MPI_Barrier.">barrier</a>();
-<a name="l00097"></a>00097     <span class="keywordtype">double</span> dbl_allreduce(<span class="keywordtype">double</span> x, <span class="keywordtype">int</span> type);
-<a name="l00098"></a>00098     <span class="keywordtype">void</span> dbl_allgather(<span class="keywordtype">double</span>* s, <span class="keywordtype">double</span>* r, <span class="keywordtype">int</span> n) ;
+<a name="l00097"></a>00097     <span class="keywordtype">double</span> <a class="code" href="classParSpike.html#8e23d9deb8294b105b4d36fbf2cf0e1d">dbl_allreduce</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">int</span> type);
+<a name="l00098"></a>00098     <span class="keywordtype">void</span> <a class="code" href="classParSpike.html#258f5ff54c29917e541500feb3abda15">dbl_allgather</a>(<span class="keywordtype">double</span>* s, <span class="keywordtype">double</span>* r, <span class="keywordtype">int</span> n) ;
 <a name="l00099"></a>00099 
 <a name="l00100"></a>00100 
-<a name="l00101"></a>00101     <span class="keyword">static</span> std::vector&lt;SpikePacket_&gt; spikeout_;
-<a name="l00102"></a>00102     <span class="keyword">static</span> std::vector&lt;SpikePacket_&gt; spikein_;
+<a name="l00101"></a><a class="code" href="classParSpike.html#2d4f9fedfe000205e9928a54048ec6e1">00101</a>     <span class="keyword">static</span> std::vector&lt;SpikePacket_&gt; <a class="code" href="classParSpike.html#2d4f9fedfe000205e9928a54048ec6e1">spikeout_</a>;
+<a name="l00102"></a><a class="code" href="classParSpike.html#bd72b6e8562ca30353e265626c2b2b8b">00102</a>     <span class="keyword">static</span> std::vector&lt;SpikePacket_&gt; <a class="code" href="classParSpike.html#bd72b6e8562ca30353e265626c2b2b8b">spikein_</a>;
 <a name="l00103"></a>00103 <span class="preprocessor">#if _spikebuf_size &gt; 0</span>
 <a name="l00104"></a>00104 <span class="preprocessor"></span>    <span class="keyword">static</span> std::vector&lt;SpikeBuffer_&gt; spbufout_;
 <a name="l00105"></a>00105     <span class="keyword">static</span> std::vector&lt;SpikeBuffer_&gt; spbufin_;
 <a name="l00106"></a>00106 <span class="preprocessor">#endif</span>
 <a name="l00107"></a>00107 <span class="preprocessor"></span>
 <a name="l00108"></a>00108 
-<a name="l00109"></a>00109     <span class="keyword">static</span> <span class="keywordtype">int</span> nout_;
-<a name="l00110"></a>00110     <span class="keyword">static</span> <span class="keywordtype">int</span>* nin_;
-<a name="l00111"></a>00111     <span class="keyword">static</span> <span class="keywordtype">int</span> icapacity_;
+<a name="l00109"></a><a class="code" href="classParSpike.html#f0ef9eaa27c5c20b9170789f6685858c">00109</a>     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#f0ef9eaa27c5c20b9170789f6685858c">nout_</a>;
+<a name="l00110"></a><a class="code" href="classParSpike.html#2e7f74f1a4ea2609746b98c80ee274b7">00110</a>     <span class="keyword">static</span> <span class="keywordtype">int</span>* <a class="code" href="classParSpike.html#2e7f74f1a4ea2609746b98c80ee274b7">nin_</a>;
+<a name="l00111"></a><a class="code" href="classParSpike.html#fd542a98e4154c41ee7172014fc7724b">00111</a>     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#fd542a98e4154c41ee7172014fc7724b">icapacity_</a>;
 <a name="l00112"></a>00112 <span class="comment">//  SpikePacket_* spikeout_;</span>
 <a name="l00113"></a>00113 <span class="comment">//  SpikePacket_* spikein_;</span>
 <a name="l00114"></a>00114 
-<a name="l00115"></a>00115     <span class="keyword">static</span> <span class="keywordtype">int</span> ag_send_size_;
-<a name="l00116"></a>00116     <span class="keyword">static</span> <span class="keywordtype">int</span> ag_send_nspike_;
-<a name="l00117"></a>00117     <span class="keyword">static</span> <span class="keywordtype">int</span> ovfl_capacity_;
-<a name="l00118"></a>00118     <span class="keyword">static</span> <span class="keywordtype">int</span> ovfl_;
-<a name="l00119"></a>00119     <span class="keyword">static</span> std::vector&lt;unsigned char&gt; spfixout_;
-<a name="l00120"></a>00120     <span class="keyword">static</span> std::vector&lt;unsigned char&gt; spfixin_;
-<a name="l00121"></a>00121     <span class="keyword">static</span> std::vector&lt;unsigned char&gt; spfixin_ovfl_;
-<a name="l00122"></a>00122     <span class="keyword">static</span> <span class="keywordtype">int</span> localgid_size_;
-<a name="l00123"></a>00123     <span class="keyword">static</span> <span class="keywordtype">int</span> mpi_use; <span class="comment">/* are we using MPI? */</span>
-<a name="l00124"></a>00124     <span class="keyword">static</span> <span class="keywordtype">int</span> under_mpi_control_;
-<a name="l00125"></a>00125     <span class="keyword">static</span> <span class="keywordtype">int</span> my_rank; <span class="comment">/* rank */</span>
-<a name="l00126"></a>00126     <span class="keyword">static</span> <span class="keywordtype">int</span> numprocs;
-<a name="l00127"></a>00127     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#05f54d9d9c099a4a6bca117bab238c4f">np</a>;
-<a name="l00128"></a>00128     <span class="keyword">static</span> <span class="keywordtype">int</span>* displs;
-<a name="l00129"></a>00129     <span class="keyword">static</span> <span class="keywordtype">int</span>* byteovfl; <span class="comment">/* for the compressed transfer method */</span>
+<a name="l00115"></a><a class="code" href="classParSpike.html#c8bf61bf1fd33c0797f60efaa3dbb8bb">00115</a>     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#c8bf61bf1fd33c0797f60efaa3dbb8bb">ag_send_size_</a>;
+<a name="l00116"></a><a class="code" href="classParSpike.html#8d9b70edc3426f18f0eb6131b850156c">00116</a>     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#8d9b70edc3426f18f0eb6131b850156c">ag_send_nspike_</a>;
+<a name="l00117"></a><a class="code" href="classParSpike.html#82d252fcb37d31276e220159d1491ff0">00117</a>     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#82d252fcb37d31276e220159d1491ff0">ovfl_capacity_</a>;
+<a name="l00118"></a><a class="code" href="classParSpike.html#2e3208f71b9e9cf62b2d2984b2739f8e">00118</a>     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#2e3208f71b9e9cf62b2d2984b2739f8e">ovfl_</a>;
+<a name="l00119"></a><a class="code" href="classParSpike.html#26316c25a6565372f132ba33996db12b">00119</a>     <span class="keyword">static</span> std::vector&lt;unsigned char&gt; <a class="code" href="classParSpike.html#26316c25a6565372f132ba33996db12b">spfixout_</a>;
+<a name="l00120"></a><a class="code" href="classParSpike.html#756b8ba91ee8b92cf2a9920791c4ec21">00120</a>     <span class="keyword">static</span> std::vector&lt;unsigned char&gt; <a class="code" href="classParSpike.html#756b8ba91ee8b92cf2a9920791c4ec21">spfixin_</a>;
+<a name="l00121"></a><a class="code" href="classParSpike.html#31acfe4b355f0385bab3793ad5d94315">00121</a>     <span class="keyword">static</span> std::vector&lt;unsigned char&gt; <a class="code" href="classParSpike.html#31acfe4b355f0385bab3793ad5d94315">spfixin_ovfl_</a>;
+<a name="l00122"></a><a class="code" href="classParSpike.html#ad218bd9e3c1879fa5a8f3fe5977e0b9">00122</a>     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#ad218bd9e3c1879fa5a8f3fe5977e0b9">localgid_size_</a>;
+<a name="l00123"></a><a class="code" href="classParSpike.html#0caa37e64ee6582d621d37b108ee1b94">00123</a>     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#0caa37e64ee6582d621d37b108ee1b94">mpi_use</a>; <span class="comment">/* are we using MPI? */</span>
+<a name="l00124"></a><a class="code" href="classParSpike.html#a8d6358a3ad900606afa4a2a73a17830">00124</a>     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#a8d6358a3ad900606afa4a2a73a17830">under_mpi_control_</a>;
+<a name="l00125"></a><a class="code" href="classParSpike.html#ab80db9efe9ab19024d5b52669e412bb">00125</a>     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#ab80db9efe9ab19024d5b52669e412bb">my_rank</a>; <span class="comment">/* rank */</span>
+<a name="l00126"></a><a class="code" href="classParSpike.html#2ff3b542cd4d25ba12c560b9d95a67fd">00126</a>     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#2ff3b542cd4d25ba12c560b9d95a67fd">numprocs</a>;
+<a name="l00127"></a><a class="code" href="classParSpike.html#7270cfbca389e10da843973f2a7c7ced">00127</a>     <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="classParSpike.html#7270cfbca389e10da843973f2a7c7ced">np</a>;
+<a name="l00128"></a><a class="code" href="classParSpike.html#38e79aa5f64e3ae760401f9996890351">00128</a>     <span class="keyword">static</span> <span class="keywordtype">int</span>* <a class="code" href="classParSpike.html#38e79aa5f64e3ae760401f9996890351">displs</a>;
+<a name="l00129"></a><a class="code" href="classParSpike.html#9ba4887912c3fec7fda91cb905ef7b2f">00129</a>     <span class="keyword">static</span> <span class="keywordtype">int</span>* <a class="code" href="classParSpike.html#9ba4887912c3fec7fda91cb905ef7b2f">byteovfl</a>; <span class="comment">/* for the compressed transfer method */</span>
 <a name="l00130"></a>00130 
 <a name="l00131"></a>00131 
 <a name="l00132"></a>00132 
@@ -145,7 +146,7 @@
 <a name="l00139"></a>00139 
 <a name="l00140"></a>00140 <span class="preprocessor">#endif  </span><span class="comment">/* PARSPIKE_H */</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:04 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:53 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

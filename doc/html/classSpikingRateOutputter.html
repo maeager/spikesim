@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: SpikingRateOutputter Class Reference</title>
+<title>ParSpikeSimv6.2: SpikingRateOutputter Class Reference</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,6 +9,7 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -33,6 +34,7 @@ Inheritance diagram for SpikingRateOutputter:</div>
 
 <p><center><img src="classSpikingRateOutputter.png" usemap="#SpikingRateOutputter_map" border="0" alt=""></center>
 <map name="SpikingRateOutputter_map">
+<area href="classDataRecordNeuronVisitor.html" alt="DataRecordNeuronVisitor" shape="rect" coords="95,56,276,80">
 <area href="structAbstractVisitor.html" alt="AbstractVisitor" shape="rect" coords="0,0,181,24">
 <area href="classVisitor.html" alt="Visitor< DataRecordNeuron >" shape="rect" coords="191,0,372,24">
 </map>
@@ -42,39 +44,76 @@ Inheritance diagram for SpikingRateOutputter:</div>
 <a href="classSpikingRateOutputter-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">unsigned&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpikingRateOutputter.html#5f82a15e35281a019379989c574929f4">nb_outputs_for_neuron</a> (NeuronInterface *const)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">unsigned&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpikingRateOutputter.html#5f82a15e35281a019379989c574929f4">nb_outputs_for_neuron</a> (<a class="el" href="classNeuronInterface.html">NeuronInterface</a> *const)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns 1, one rate per neuron.  <a href="#5f82a15e35281a019379989c574929f4"></a><br></td></tr>
 <tr><td class="memTemplParams" nowrap colspan="2">template&lt;class FileWrapper&gt; </td></tr>
-<tr><td class="memTemplItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSpikingRateOutputter.html#b3ffbb032a9fd3df3d766cd644eb6556">operation</a> (const Time &amp;t_start, const Time &amp;t_stop, NeuronInterface *const nrn, FileWrapper *const file_wrapper)</td></tr>
+<tr><td class="memTemplItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSpikingRateOutputter.html#b3ffbb032a9fd3df3d766cd644eb6556">operation</a> (const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;t_start, const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;t_stop, <a class="el" href="classNeuronInterface.html">NeuronInterface</a> *const nrn, FileWrapper *const file_wrapper)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Calls <a class="el" href="classSpikingRateOutputter.html#e6ca3f6a4c959d34ef8f143e405caee8">SpikingRateOutputter::compute_rate</a> and send the results to the <b>FileWrapper</b>.  <a href="#b3ffbb032a9fd3df3d766cd644eb6556"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpikingRateOutputter.html#e6ca3f6a4c959d34ef8f143e405caee8">compute_rate</a> (const Time &amp;t_start, const Time &amp;t_stop, const std::deque&lt; Time &gt;::const_iterator &amp;spike_list_iterator_begin, const std::deque&lt; Time &gt;::const_iterator &amp;spike_list_iterator_end)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpikingRateOutputter.html#e6ca3f6a4c959d34ef8f143e405caee8">compute_rate</a> (const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;t_start, const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;t_stop, const std::deque&lt; <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &gt;::const_iterator &amp;spike_list_iterator_begin, const std::deque&lt; <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &gt;::const_iterator &amp;spike_list_iterator_end)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the time-averaged rate of the spike train.  <a href="#e6ca3f6a4c959d34ef8f143e405caee8"></a><br></td></tr>
-<tr><td class="memTemplParams" nowrap colspan="2"><a class="anchor" name="fb5bbf4487c950f35df0a17999389852"></a><!-- doxytag: member="SpikingRateOutputter::export_connectivity" ref="fb5bbf4487c950f35df0a17999389852" args="(NeuronInterface *const nrn, FileWrapper *const file_wrapper, int pre_post)" -->
-template&lt;class FileWrapper&gt; </td></tr>
-<tr><td class="memTemplItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memTemplItemRight" valign="bottom"><b>export_connectivity</b> (NeuronInterface *const nrn, FileWrapper *const file_wrapper, int pre_post)</td></tr>
+<tr><td class="memTemplParams" nowrap colspan="2">template&lt;class FileWrapper&gt; </td></tr>
+<tr><td class="memTemplItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSpikingRateOutputter.html#fb5bbf4487c950f35df0a17999389852">export_connectivity</a> (<a class="el" href="classNeuronInterface.html">NeuronInterface</a> *const nrn, FileWrapper *const file_wrapper, int pre_post)</td></tr>
 
 <tr><td colspan="2"><br><h2>Protected Types</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="bb13057d6d3c83cc13f2d5198f8cb42e"></a><!-- doxytag: member="SpikingRateOutputter::InitValue" ref="bb13057d6d3c83cc13f2d5198f8cb42e" args="" -->
-typedef void *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpikingRateOutputter.html#bb13057d6d3c83cc13f2d5198f8cb42e">InitValue</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">typedef void *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpikingRateOutputter.html#bb13057d6d3c83cc13f2d5198f8cb42e">InitValue</a></td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Type for initialisation value. <br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Type for initialisation value.  <a href="#bb13057d6d3c83cc13f2d5198f8cb42e"></a><br></td></tr>
 <tr><td colspan="2"><br><h2>Protected Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="16365558eebbcbd92d1d3f1385704e0b"></a><!-- doxytag: member="SpikingRateOutputter::SpikingRateOutputter" ref="16365558eebbcbd92d1d3f1385704e0b" args="(InitValue)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpikingRateOutputter.html#16365558eebbcbd92d1d3f1385704e0b">SpikingRateOutputter</a> (<a class="el" href="classSpikingRateOutputter.html#bb13057d6d3c83cc13f2d5198f8cb42e">InitValue</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpikingRateOutputter.html#16365558eebbcbd92d1d3f1385704e0b">SpikingRateOutputter</a> (<a class="el" href="classSpikingRateOutputter.html#bb13057d6d3c83cc13f2d5198f8cb42e">InitValue</a>)</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor. <br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor.  <a href="#16365558eebbcbd92d1d3f1385704e0b"></a><br></td></tr>
 <tr><td colspan="2"><br><h2>Friends</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="bd7618f093c1f3fc7eb9eb5d5bdd6dae"></a><!-- doxytag: member="SpikingRateOutputter::CovarianceOutputter" ref="bd7618f093c1f3fc7eb9eb5d5bdd6dae" args="" -->
-class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpikingRateOutputter.html#bd7618f093c1f3fc7eb9eb5d5bdd6dae">CovarianceOutputter</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSpikingRateOutputter.html#bd7618f093c1f3fc7eb9eb5d5bdd6dae">CovarianceOutputter</a></td></tr>
 
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
 Computes the spiking rate of a neuron. 
 <p>
-The rate (in Hz) is computed for all the spikes between times <b>t_start</b> and <b>t_stop</b>. The method template <a class="el" href="classSpikingRateOutputter.html#b3ffbb032a9fd3df3d766cd644eb6556">SpikingRateOutputter::operation</a> depends on the the template parameter <b>FileWrapper</b>. Derives from DataRecordNeuronVisitor to be able to retrieve the spike list from neurons. <hr><h2>Member Function Documentation</h2>
+The rate (in Hz) is computed for all the spikes between times <b>t_start</b> and <b>t_stop</b>. The method template <a class="el" href="classSpikingRateOutputter.html#b3ffbb032a9fd3df3d766cd644eb6556">SpikingRateOutputter::operation</a> depends on the the template parameter <b>FileWrapper</b>. Derives from <a class="el" href="classDataRecordNeuronVisitor.html">DataRecordNeuronVisitor</a> to be able to retrieve the spike list from neurons. <hr><h2>Member Typedef Documentation</h2>
+<a class="anchor" name="bb13057d6d3c83cc13f2d5198f8cb42e"></a><!-- doxytag: member="SpikingRateOutputter::InitValue" ref="bb13057d6d3c83cc13f2d5198f8cb42e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void* <a class="el" href="classSpikingRateOutputter.html#bb13057d6d3c83cc13f2d5198f8cb42e">SpikingRateOutputter::InitValue</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Type for initialisation value. 
+<p>
+
+</div>
+</div><p>
+<hr><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" name="16365558eebbcbd92d1d3f1385704e0b"></a><!-- doxytag: member="SpikingRateOutputter::SpikingRateOutputter" ref="16365558eebbcbd92d1d3f1385704e0b" args="(InitValue)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SpikingRateOutputter::SpikingRateOutputter           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSpikingRateOutputter.html#bb13057d6d3c83cc13f2d5198f8cb42e">InitValue</a>&nbsp;</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Constructor. 
+<p>
+
+</div>
+</div><p>
+<hr><h2>Member Function Documentation</h2>
 <a class="anchor" name="5f82a15e35281a019379989c574929f4"></a><!-- doxytag: member="SpikingRateOutputter::nb_outputs_for_neuron" ref="5f82a15e35281a019379989c574929f4" args="(NeuronInterface *const)" -->
 <div class="memitem">
 <div class="memproto">
@@ -82,7 +121,7 @@ The rate (in Hz) is computed for all the spikes between times <b>t_start</b> and
         <tr>
           <td class="memname">unsigned SpikingRateOutputter::nb_outputs_for_neuron           </td>
           <td>(</td>
-          <td class="paramtype">NeuronInterface *&nbsp;</td>
+          <td class="paramtype"><a class="el" href="classNeuronInterface.html">NeuronInterface</a> *&nbsp;</td>
           <td class="paramname"> <em>const</em>          </td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
@@ -106,19 +145,19 @@ template&lt;class FileWrapper&gt; </div>
         <tr>
           <td class="memname">void SpikingRateOutputter::operation           </td>
           <td>(</td>
-          <td class="paramtype">const Time &amp;&nbsp;</td>
+          <td class="paramtype">const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>t_start</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Time &amp;&nbsp;</td>
+          <td class="paramtype">const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>t_stop</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">NeuronInterface *const &nbsp;</td>
+          <td class="paramtype"><a class="el" href="classNeuronInterface.html">NeuronInterface</a> *const &nbsp;</td>
           <td class="paramname"> <em>nrn</em>, </td>
         </tr>
         <tr>
@@ -157,25 +196,25 @@ Method template called according to the real type of FileWrapper. <dl compact><d
         <tr>
           <td class="memname">double SpikingRateOutputter::compute_rate           </td>
           <td>(</td>
-          <td class="paramtype">const Time &amp;&nbsp;</td>
+          <td class="paramtype">const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>t_start</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Time &amp;&nbsp;</td>
+          <td class="paramtype">const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>t_stop</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::deque&lt; Time &gt;::const_iterator &amp;&nbsp;</td>
+          <td class="paramtype">const std::deque&lt; <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &gt;::const_iterator &amp;&nbsp;</td>
           <td class="paramname"> <em>spike_list_iterator_begin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::deque&lt; Time &gt;::const_iterator &amp;&nbsp;</td>
+          <td class="paramtype">const std::deque&lt; <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &gt;::const_iterator &amp;&nbsp;</td>
           <td class="paramname"> <em>spike_list_iterator_end</em></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -200,10 +239,63 @@ Returns the time-averaged rate of the spike train.
 
 </div>
 </div><p>
+<a class="anchor" name="fb5bbf4487c950f35df0a17999389852"></a><!-- doxytag: member="SpikingRateOutputter::export_connectivity" ref="fb5bbf4487c950f35df0a17999389852" args="(NeuronInterface *const nrn, FileWrapper *const file_wrapper, int pre_post)" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class FileWrapper&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void SpikingRateOutputter::export_connectivity           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classNeuronInterface.html">NeuronInterface</a> *const &nbsp;</td>
+          <td class="paramname"> <em>nrn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FileWrapper *const &nbsp;</td>
+          <td class="paramname"> <em>file_wrapper</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>pre_post</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<hr><h2>Friends And Related Function Documentation</h2>
+<a class="anchor" name="bd7618f093c1f3fc7eb9eb5d5bdd6dae"></a><!-- doxytag: member="SpikingRateOutputter::CovarianceOutputter" ref="bd7618f093c1f3fc7eb9eb5d5bdd6dae" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classCovarianceOutputter.html">CovarianceOutputter</a><code> [friend]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <hr>The documentation for this class was generated from the following file:<ul>
 <li>/media/data/Work/spikesimv6/<a class="el" href="SpikeListOperations_8h-source.html">SpikeListOperations.h</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:19 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:57 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

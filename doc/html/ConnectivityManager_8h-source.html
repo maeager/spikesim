@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: /media/data/Work/spikesimv6/ConnectivityManager.h Source File</title>
+<title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/ConnectivityManager.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,11 +9,12 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>/media/data/Work/spikesimv6/ConnectivityManager.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// ConnectivityManager.h</span>
+<h1>/media/data/Work/spikesimv6/ConnectivityManager.h</h1><a href="ConnectivityManager_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// ConnectivityManager.h</span>
 <a name="l00003"></a>00003 <span class="comment"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#ifndef CONNECTIVITYMANAGER_H</span>
 <a name="l00005"></a>00005 <span class="preprocessor"></span><span class="preprocessor">#define CONNECTIVITYMANAGER_H</span>
@@ -21,29 +22,29 @@
 <a name="l00007"></a>00007 <span class="preprocessor">#include &lt;fstream&gt;</span>
 <a name="l00008"></a>00008 <span class="preprocessor">#include &lt;vector&gt;</span>
 <a name="l00009"></a>00009 
-<a name="l00010"></a>00010 <span class="preprocessor">#include "Error.h"</span>
-<a name="l00011"></a>00011 <span class="preprocessor">#include "GlobalDefs.h"</span>
-<a name="l00012"></a>00012 <span class="preprocessor">#include "RandomGenerator.h"</span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include "<a class="code" href="Error_8h.html">Error.h</a>"</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include "<a class="code" href="GlobalDefs_8h.html">GlobalDefs.h</a>"</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include "<a class="code" href="RandomGenerator_8h.html">RandomGenerator.h</a>"</span>
 <a name="l00013"></a>00013 
 <a name="l00014"></a>00014 
 <a name="l00015"></a>00015 
 <a name="l00016"></a>00016 
 <a name="l00018"></a>00018 <span class="comment">// ConnectivityManager mother class definition</span>
 <a name="l00020"></a>00020 <span class="comment"></span>
-<a name="l00021"></a>00021 <span class="keyword">struct </span>ConnectivityManager {
-<a name="l00022"></a>00022     <span class="keyword">virtual</span> <span class="keywordtype">bool</span> do_connect(<span class="keyword">const</span> Size &amp; n_prenrn, <span class="keyword">const</span> Size &amp; n_postnrn) = 0;
+<a name="l00021"></a><a class="code" href="structConnectivityManager.html">00021</a> <span class="keyword">struct </span><a class="code" href="structConnectivityManager.html">ConnectivityManager</a> {
+<a name="l00022"></a>00022     <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="structConnectivityManager.html#84dc835171c3f993f4b9a96d299db995">do_connect</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_postnrn) = 0;
 <a name="l00023"></a>00023 };
 <a name="l00024"></a>00024 
 <a name="l00025"></a>00025 
 <a name="l00026"></a>00026 
 <a name="l00028"></a>00028 <span class="comment">// FullConnectivity class definition</span>
 <a name="l00030"></a>00030 <span class="comment"></span>
-<a name="l00031"></a>00031 <span class="keyword">class </span>FullConnectivity
-<a name="l00032"></a>00032         : <span class="keyword">public</span> ConnectivityManager
+<a name="l00031"></a><a class="code" href="classFullConnectivity.html">00031</a> <span class="keyword">class </span><a class="code" href="classFullConnectivity.html">FullConnectivity</a>
+<a name="l00032"></a>00032         : <span class="keyword">public</span> <a class="code" href="structConnectivityManager.html">ConnectivityManager</a>
 <a name="l00033"></a>00033 {
 <a name="l00034"></a>00034 <span class="keyword">public</span>:
-<a name="l00035"></a>00035     FullConnectivity(std::ifstream &amp; is) {}
-<a name="l00036"></a>00036     <span class="keywordtype">bool</span> do_connect(<span class="keyword">const</span> Size &amp; n_prenrn, <span class="keyword">const</span> Size &amp; n_postnrn) {
+<a name="l00035"></a><a class="code" href="classFullConnectivity.html#e418001b6c3498c212fff4629df870b4">00035</a>     <a class="code" href="classFullConnectivity.html#e418001b6c3498c212fff4629df870b4">FullConnectivity</a>(std::ifstream &amp; is) {}
+<a name="l00036"></a><a class="code" href="classFullConnectivity.html#d060550c0f305145579515ce3f228870">00036</a>     <span class="keywordtype">bool</span> <a class="code" href="classFullConnectivity.html#d060550c0f305145579515ce3f228870">do_connect</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_postnrn) {
 <a name="l00037"></a>00037         <span class="keywordflow">return</span> <span class="keyword">true</span>;
 <a name="l00038"></a>00038     }
 <a name="l00039"></a>00039 };
@@ -53,14 +54,14 @@
 <a name="l00044"></a>00044 <span class="comment">// RandomFullPreConnectivity class definition</span>
 <a name="l00045"></a>00045 <span class="comment">// proba_connection_ chance for each neuron to have connections, if yes full connectivity with all other neurons as preneurons</span>
 <a name="l00047"></a>00047 <span class="comment"></span>
-<a name="l00048"></a>00048 <span class="keyword">class </span>RandomFullPreConnectivity
-<a name="l00049"></a>00049         : <span class="keyword">public</span> ConnectivityManager
+<a name="l00048"></a><a class="code" href="classRandomFullPreConnectivity.html">00048</a> <span class="keyword">class </span><a class="code" href="classRandomFullPreConnectivity.html">RandomFullPreConnectivity</a>
+<a name="l00049"></a>00049         : <span class="keyword">public</span> <a class="code" href="structConnectivityManager.html">ConnectivityManager</a>
 <a name="l00050"></a>00050 {
 <a name="l00051"></a>00051 <span class="keyword">public</span>:
-<a name="l00052"></a>00052     RandomFullPreConnectivity(std::ifstream &amp; is, <span class="keyword">const</span> Size &amp; size_gp_postnrn);
-<a name="l00053"></a>00053     <span class="keywordtype">bool</span> do_connect(<span class="keyword">const</span> Size &amp; n_prenrn, <span class="keyword">const</span> Size &amp; n_postnrn);
+<a name="l00052"></a>00052     <a class="code" href="classRandomFullPreConnectivity.html#e758086f2abdce075959f63f3b5aeed4">RandomFullPreConnectivity</a>(std::ifstream &amp; is, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; size_gp_postnrn);
+<a name="l00053"></a>00053     <span class="keywordtype">bool</span> <a class="code" href="classRandomFullPreConnectivity.html#59f0bc13589cd5977e838b15300ca71a">do_connect</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_postnrn);
 <a name="l00054"></a>00054 <span class="keyword">protected</span>:
-<a name="l00055"></a>00055     std::vector&lt;bool&gt; post_neuron_list_;
+<a name="l00055"></a><a class="code" href="classRandomFullPreConnectivity.html#d87be358e7aed0d92c2f183030d96b04">00055</a>     std::vector&lt;bool&gt; <a class="code" href="classRandomFullPreConnectivity.html#d87be358e7aed0d92c2f183030d96b04">post_neuron_list_</a>;
 <a name="l00056"></a>00056 };
 <a name="l00057"></a>00057 
 <a name="l00058"></a>00058 
@@ -68,14 +69,14 @@
 <a name="l00061"></a>00061 <span class="comment">// RandomFixedPreConnectivity class definition</span>
 <a name="l00062"></a>00062 <span class="comment">// proba_connection_ chance for each neuron to have connections, if yes full connectivity with all other neurons as preneurons</span>
 <a name="l00064"></a>00064 <span class="comment"></span>
-<a name="l00065"></a>00065 <span class="keyword">class </span>RandomFixedPreConnectivity
-<a name="l00066"></a>00066         : <span class="keyword">public</span> ConnectivityManager
+<a name="l00065"></a><a class="code" href="classRandomFixedPreConnectivity.html">00065</a> <span class="keyword">class </span><a class="code" href="classRandomFixedPreConnectivity.html">RandomFixedPreConnectivity</a>
+<a name="l00066"></a>00066         : <span class="keyword">public</span> <a class="code" href="structConnectivityManager.html">ConnectivityManager</a>
 <a name="l00067"></a>00067 {
 <a name="l00068"></a>00068 <span class="keyword">public</span>:
-<a name="l00069"></a>00069     RandomFixedPreConnectivity(std::ifstream &amp; is, <span class="keyword">const</span> Size &amp; size_gp_prenrn, <span class="keyword">const</span> Size &amp; size_gp_postnrn);
-<a name="l00070"></a>00070     <span class="keywordtype">bool</span> do_connect(<span class="keyword">const</span> Size &amp; n_prenrn, <span class="keyword">const</span> Size &amp; n_postnrn);
+<a name="l00069"></a>00069     <a class="code" href="classRandomFixedPreConnectivity.html#28d158bcfa584407da83f73d133ba850">RandomFixedPreConnectivity</a>(std::ifstream &amp; is, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; size_gp_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; size_gp_postnrn);
+<a name="l00070"></a>00070     <span class="keywordtype">bool</span> <a class="code" href="classRandomFixedPreConnectivity.html#94e476f211b9ed0c48b792b3fc58e02d">do_connect</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_postnrn);
 <a name="l00071"></a>00071 <span class="keyword">protected</span>:
-<a name="l00072"></a>00072     std::vector&lt;std::vector&lt;bool&gt; &gt; con_list_;
+<a name="l00072"></a><a class="code" href="classRandomFixedPreConnectivity.html#95d770f2359d21010562e0c0784aa0d3">00072</a>     std::vector&lt;std::vector&lt;bool&gt; &gt; <a class="code" href="classRandomFixedPreConnectivity.html#95d770f2359d21010562e0c0784aa0d3">con_list_</a>;
 <a name="l00073"></a>00073 };
 <a name="l00074"></a>00074 
 <a name="l00075"></a>00075 
@@ -84,14 +85,14 @@
 <a name="l00079"></a>00079 <span class="comment">// divide preneuron pool (resp. postneuron) in nb_division_pre_ (resp. nb_division_post_) "equal" subpools</span>
 <a name="l00080"></a>00080 <span class="comment">// connects the #num_subgp_pre_ subpool of preneurons with #num_subgp_post_ subpool of postneurons</span>
 <a name="l00082"></a>00082 <span class="comment"></span>
-<a name="l00083"></a>00083 <span class="keyword">class </span>FullByBlockConnectivity
-<a name="l00084"></a>00084         : <span class="keyword">public</span> ConnectivityManager
+<a name="l00083"></a><a class="code" href="classFullByBlockConnectivity.html">00083</a> <span class="keyword">class </span><a class="code" href="classFullByBlockConnectivity.html">FullByBlockConnectivity</a>
+<a name="l00084"></a>00084         : <span class="keyword">public</span> <a class="code" href="structConnectivityManager.html">ConnectivityManager</a>
 <a name="l00085"></a>00085 {
 <a name="l00086"></a>00086 <span class="keyword">public</span>:
-<a name="l00087"></a>00087     FullByBlockConnectivity(std::ifstream &amp; is, <span class="keyword">const</span> Size &amp; size_gp_prenrn, <span class="keyword">const</span> Size &amp; size_gp_postnrn);
-<a name="l00088"></a>00088     <span class="keywordtype">bool</span> do_connect(<span class="keyword">const</span> Size &amp; n_prenrn, <span class="keyword">const</span> Size &amp; n_postnrn);
+<a name="l00087"></a>00087     <a class="code" href="classFullByBlockConnectivity.html#ba0e8b577d310f5eab0a1c62950f9e8a">FullByBlockConnectivity</a>(std::ifstream &amp; is, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; size_gp_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; size_gp_postnrn);
+<a name="l00088"></a>00088     <span class="keywordtype">bool</span> <a class="code" href="classFullByBlockConnectivity.html#fe2bfb074dcba0d6ff367a3f8950a388">do_connect</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_postnrn);
 <a name="l00089"></a>00089 <span class="keyword">protected</span>:
-<a name="l00090"></a>00090     <span class="keywordtype">unsigned</span> num_subgp_pre_, nb_division_pre_, num_subgp_post_, nb_division_post_, size_gp_prenrn_, size_gp_postnrn_;
+<a name="l00090"></a><a class="code" href="classFullByBlockConnectivity.html#f3ff1a58c00f5c2a05264f9f64c28f9e">00090</a>     <span class="keywordtype">unsigned</span> <a class="code" href="classFullByBlockConnectivity.html#c5102858915cbb8574bd75768deaaac2">num_subgp_pre_</a>, <a class="code" href="classFullByBlockConnectivity.html#5203f8e7696b266cc0460d53b186e033">nb_division_pre_</a>, <a class="code" href="classFullByBlockConnectivity.html#07e2646f546de4021ab4b8b44924bfb4">num_subgp_post_</a>, <a class="code" href="classFullByBlockConnectivity.html#c2c11799ef2b109fd948abe342d0b98d">nb_division_post_</a>, <a class="code" href="classFullByBlockConnectivity.html#f3ff1a58c00f5c2a05264f9f64c28f9e">size_gp_prenrn_</a>, <a class="code" href="classFullByBlockConnectivity.html#34b81977eda254ff2850742a14480dc9">size_gp_postnrn_</a>;
 <a name="l00091"></a>00091 };
 <a name="l00092"></a>00092 
 <a name="l00093"></a>00093 
@@ -101,15 +102,15 @@
 <a name="l00098"></a>00098 <span class="comment">// connects the #num_subgp_pre_ subpool of preneurons with #num_subgp_post_ subpool of postneurons with</span>
 <a name="l00099"></a>00099 <span class="comment">// proba given by proba_connection</span>
 <a name="l00101"></a>00101 <span class="comment"></span>
-<a name="l00102"></a>00102 <span class="keyword">class </span>RandomByBlockConnectivity
-<a name="l00103"></a>00103         : <span class="keyword">public</span> ConnectivityManager
+<a name="l00102"></a><a class="code" href="classRandomByBlockConnectivity.html">00102</a> <span class="keyword">class </span><a class="code" href="classRandomByBlockConnectivity.html">RandomByBlockConnectivity</a>
+<a name="l00103"></a>00103         : <span class="keyword">public</span> <a class="code" href="structConnectivityManager.html">ConnectivityManager</a>
 <a name="l00104"></a>00104 {
 <a name="l00105"></a>00105 <span class="keyword">public</span>:
-<a name="l00106"></a>00106     RandomByBlockConnectivity(std::ifstream &amp; is, <span class="keyword">const</span> Size &amp; size_gp_prenrn, <span class="keyword">const</span> Size &amp; size_gp_postnrn);
-<a name="l00107"></a>00107     <span class="keywordtype">bool</span> do_connect(<span class="keyword">const</span> Size &amp; n_prenrn, <span class="keyword">const</span> Size &amp; n_postnrn);
+<a name="l00106"></a>00106     <a class="code" href="classRandomByBlockConnectivity.html#2538cb2b29099ab29bc21d2384eac30f">RandomByBlockConnectivity</a>(std::ifstream &amp; is, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; size_gp_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; size_gp_postnrn);
+<a name="l00107"></a>00107     <span class="keywordtype">bool</span> <a class="code" href="classRandomByBlockConnectivity.html#a648935a86f11bc813a643006bb0a2dd">do_connect</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_postnrn);
 <a name="l00108"></a>00108 <span class="keyword">protected</span>:
-<a name="l00109"></a>00109     <span class="keywordtype">unsigned</span> num_subgp_pre_, nb_division_pre_, num_subgp_post_, nb_division_post_, size_gp_prenrn_, size_gp_postnrn_;
-<a name="l00110"></a>00110     <span class="keywordtype">double</span> proba_connection_;
+<a name="l00109"></a><a class="code" href="classRandomByBlockConnectivity.html#804dc2ebc245212a4a4ae9b1705bedff">00109</a>     <span class="keywordtype">unsigned</span> <a class="code" href="classRandomByBlockConnectivity.html#356a4180b62a50d02905aba2195a50e7">num_subgp_pre_</a>, <a class="code" href="classRandomByBlockConnectivity.html#16d3f2b187ffbd35fed853da3e4995a4">nb_division_pre_</a>, <a class="code" href="classRandomByBlockConnectivity.html#cb3a78bd03a22255773000412a421a17">num_subgp_post_</a>, <a class="code" href="classRandomByBlockConnectivity.html#4a4238906b493aa4187f2473c6b1ace6">nb_division_post_</a>, <a class="code" href="classRandomByBlockConnectivity.html#804dc2ebc245212a4a4ae9b1705bedff">size_gp_prenrn_</a>, <a class="code" href="classRandomByBlockConnectivity.html#01964a6b9ab6b4d734f225476dbcd57f">size_gp_postnrn_</a>;
+<a name="l00110"></a><a class="code" href="classRandomByBlockConnectivity.html#a12716c12a9c97fd1989a51146febc91">00110</a>     <span class="keywordtype">double</span> <a class="code" href="classRandomByBlockConnectivity.html#a12716c12a9c97fd1989a51146febc91">proba_connection_</a>;
 <a name="l00111"></a>00111 };
 <a name="l00112"></a>00112 
 <a name="l00113"></a>00113 
@@ -117,30 +118,30 @@
 <a name="l00116"></a>00116 <span class="comment">// RandomConnectivity class definition</span>
 <a name="l00117"></a>00117 <span class="comment">// connection with probability proba_connection_</span>
 <a name="l00119"></a>00119 <span class="comment"></span>
-<a name="l00120"></a>00120 <span class="keyword">class </span>RandomConnectivity
-<a name="l00121"></a>00121         : <span class="keyword">public</span> ConnectivityManager
+<a name="l00120"></a><a class="code" href="classRandomConnectivity.html">00120</a> <span class="keyword">class </span><a class="code" href="classRandomConnectivity.html">RandomConnectivity</a>
+<a name="l00121"></a>00121         : <span class="keyword">public</span> <a class="code" href="structConnectivityManager.html">ConnectivityManager</a>
 <a name="l00122"></a>00122 {
 <a name="l00123"></a>00123 <span class="keyword">public</span>:
-<a name="l00124"></a>00124     RandomConnectivity(std::ifstream &amp; is);
-<a name="l00125"></a>00125     <span class="keywordtype">bool</span> do_connect(<span class="keyword">const</span> Size &amp; n_prenrn, <span class="keyword">const</span> Size &amp; n_postnrn) {
-<a name="l00126"></a>00126         <span class="keywordflow">return</span> (RandomGenerator::dran(1.) &lt; proba_connection_);
+<a name="l00124"></a>00124     <a class="code" href="classRandomConnectivity.html#478c3fc1c8fc3272e9eb9d554df759ac">RandomConnectivity</a>(std::ifstream &amp; is);
+<a name="l00125"></a><a class="code" href="classRandomConnectivity.html#138d1c604b79ef562931599f7067bd87">00125</a>     <span class="keywordtype">bool</span> <a class="code" href="classRandomConnectivity.html#138d1c604b79ef562931599f7067bd87">do_connect</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_postnrn) {
+<a name="l00126"></a>00126         <span class="keywordflow">return</span> (<a class="code" href="classRandomGenerator.html#7d5f68859b98dee4ef17beb31b7b2425">RandomGenerator::dran</a>(1.) &lt; <a class="code" href="classRandomConnectivity.html#6b8c20c18885b8b24384c5b058367c6b">proba_connection_</a>);
 <a name="l00127"></a>00127     }
 <a name="l00128"></a>00128 <span class="keyword">protected</span>:
-<a name="l00129"></a>00129     <span class="keywordtype">double</span> proba_connection_;
+<a name="l00129"></a><a class="code" href="classRandomConnectivity.html#6b8c20c18885b8b24384c5b058367c6b">00129</a>     <span class="keywordtype">double</span> <a class="code" href="classRandomConnectivity.html#6b8c20c18885b8b24384c5b058367c6b">proba_connection_</a>;
 <a name="l00130"></a>00130 };
 <a name="l00131"></a>00131 
 <a name="l00132"></a>00132 
 <a name="l00133"></a>00133 
 <a name="l00135"></a>00135 <span class="comment">// ListConnectivity class definition</span>
 <a name="l00137"></a>00137 <span class="comment"></span>
-<a name="l00138"></a>00138 <span class="keyword">class </span>ListConnectivity
-<a name="l00139"></a>00139         : <span class="keyword">public</span> ConnectivityManager
+<a name="l00138"></a><a class="code" href="classListConnectivity.html">00138</a> <span class="keyword">class </span><a class="code" href="classListConnectivity.html">ListConnectivity</a>
+<a name="l00139"></a>00139         : <span class="keyword">public</span> <a class="code" href="structConnectivityManager.html">ConnectivityManager</a>
 <a name="l00140"></a>00140 {
 <a name="l00141"></a>00141 <span class="keyword">public</span>:
-<a name="l00142"></a>00142     ListConnectivity(std::ifstream &amp; is, <span class="keyword">const</span> Size &amp; size_gp_prenrn, <span class="keyword">const</span> Size &amp; size_gp_postnrn);
-<a name="l00143"></a>00143     <span class="keywordtype">bool</span> do_connect(<span class="keyword">const</span> Size &amp; n_prenrn, <span class="keyword">const</span> Size &amp; n_postnrn);
+<a name="l00142"></a>00142     <a class="code" href="classListConnectivity.html#914f77303792a780203579c9c32c9c51">ListConnectivity</a>(std::ifstream &amp; is, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; size_gp_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; size_gp_postnrn);
+<a name="l00143"></a>00143     <span class="keywordtype">bool</span> <a class="code" href="classListConnectivity.html#7f5df68fa439783875d8d06b3163eb52">do_connect</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_postnrn);
 <a name="l00144"></a>00144 <span class="keyword">protected</span>:
-<a name="l00145"></a>00145     std::vector&lt;std::vector&lt;bool&gt; &gt; con_list_;
+<a name="l00145"></a><a class="code" href="classListConnectivity.html#78f5c19e51cb6d776528361d0c1e9c68">00145</a>     std::vector&lt;std::vector&lt;bool&gt; &gt; <a class="code" href="classListConnectivity.html#78f5c19e51cb6d776528361d0c1e9c68">con_list_</a>;
 <a name="l00146"></a>00146 };
 <a name="l00147"></a>00147 
 <a name="l00148"></a>00148 
@@ -150,37 +151,37 @@
 <a name="l00154"></a>00154 <span class="comment">// then connects back to the initial one</span>
 <a name="l00155"></a>00155 <span class="comment">// each step a random neuron is drawn, checking it hasn't been picked up previously</span>
 <a name="l00156"></a>00156 
-<a name="l00157"></a>00157 <span class="keyword">class </span>LoopConnectivity
-<a name="l00158"></a>00158         : <span class="keyword">public</span> ConnectivityManager
+<a name="l00157"></a><a class="code" href="classLoopConnectivity.html">00157</a> <span class="keyword">class </span><a class="code" href="classLoopConnectivity.html">LoopConnectivity</a>
+<a name="l00158"></a>00158         : <span class="keyword">public</span> <a class="code" href="structConnectivityManager.html">ConnectivityManager</a>
 <a name="l00159"></a>00159 {
 <a name="l00160"></a>00160 <span class="keyword">public</span>:
-<a name="l00161"></a>00161     LoopConnectivity(std::ifstream &amp; is, <span class="keyword">const</span> Size &amp; size_gp);
-<a name="l00162"></a>00162     <span class="keywordtype">bool</span> do_connect(<span class="keyword">const</span> Size &amp; n_prenrn, <span class="keyword">const</span> Size &amp; n_postnrn);
+<a name="l00161"></a>00161     <a class="code" href="classLoopConnectivity.html#2b08e504807839d5322347836daf4eca">LoopConnectivity</a>(std::ifstream &amp; is, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; size_gp);
+<a name="l00162"></a>00162     <span class="keywordtype">bool</span> <a class="code" href="classLoopConnectivity.html#0e575d297e853d4e014536e97324a51d">do_connect</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_postnrn);
 <a name="l00163"></a>00163 <span class="keyword">protected</span>:
-<a name="l00164"></a>00164     Size number_of_loops_, length_of_loops_;
-<a name="l00165"></a>00165     std::vector&lt;std::vector&lt;bool&gt; &gt; con_list_;
+<a name="l00164"></a><a class="code" href="classLoopConnectivity.html#7cc3f7e39c449f7c8edddf894bac25fd">00164</a>     <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> <a class="code" href="classLoopConnectivity.html#7cc3f7e39c449f7c8edddf894bac25fd">number_of_loops_</a>, <a class="code" href="classLoopConnectivity.html#c6911b035db93077858a3be40b0249ca">length_of_loops_</a>;
+<a name="l00165"></a><a class="code" href="classLoopConnectivity.html#579e9464fa0575233c3e012741175611">00165</a>     std::vector&lt;std::vector&lt;bool&gt; &gt; <a class="code" href="classLoopConnectivity.html#579e9464fa0575233c3e012741175611">con_list_</a>;
 <a name="l00166"></a>00166 };
 <a name="l00167"></a>00167 
 <a name="l00168"></a>00168 
 <a name="l00169"></a>00169 
 <a name="l00171"></a>00171 <span class="comment">// SparseRandomConnectivityTypeII class definition</span>
 <a name="l00173"></a>00173 <span class="comment"></span>
-<a name="l00174"></a>00174 <span class="keyword">class </span>SparseRandomConnectivityTypeII
-<a name="l00175"></a>00175         : <span class="keyword">public</span> ConnectivityManager
+<a name="l00174"></a><a class="code" href="classSparseRandomConnectivityTypeII.html">00174</a> <span class="keyword">class </span><a class="code" href="classSparseRandomConnectivityTypeII.html">SparseRandomConnectivityTypeII</a>
+<a name="l00175"></a>00175         : <span class="keyword">public</span> <a class="code" href="structConnectivityManager.html">ConnectivityManager</a>
 <a name="l00176"></a>00176 {
 <a name="l00177"></a>00177 <span class="keyword">public</span>:
-<a name="l00178"></a>00178     SparseRandomConnectivityTypeII(std::ifstream &amp; is, <span class="keyword">const</span> Size &amp; size_gp_prenrn, <span class="keyword">const</span> Size &amp; size_gp_postnrn);
-<a name="l00179"></a>00179     <span class="keywordtype">bool</span> do_connect(<span class="keyword">const</span> Size &amp; n_prenrn, <span class="keyword">const</span> Size &amp; n_postnrn);
+<a name="l00178"></a>00178     <a class="code" href="classSparseRandomConnectivityTypeII.html#a71f7c799bc301747f092491cdefa058">SparseRandomConnectivityTypeII</a>(std::ifstream &amp; is, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; size_gp_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; size_gp_postnrn);
+<a name="l00179"></a>00179     <span class="keywordtype">bool</span> <a class="code" href="classSparseRandomConnectivityTypeII.html#0ad5f7ccc6636cd21cceaa8be3921413">do_connect</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_prenrn, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; n_postnrn);
 <a name="l00180"></a>00180 <span class="keyword">protected</span>:
-<a name="l00181"></a>00181     std::vector&lt;std::vector&lt;bool&gt; &gt; con_list_;
-<a name="l00182"></a>00182     <span class="keywordtype">double</span> num_connections_;
+<a name="l00181"></a><a class="code" href="classSparseRandomConnectivityTypeII.html#6257f9957d5f237576480b49fce207ae">00181</a>     std::vector&lt;std::vector&lt;bool&gt; &gt; <a class="code" href="classSparseRandomConnectivityTypeII.html#6257f9957d5f237576480b49fce207ae">con_list_</a>;
+<a name="l00182"></a><a class="code" href="classSparseRandomConnectivityTypeII.html#6b1a396585d8ea82ebb730040aac4464">00182</a>     <span class="keywordtype">double</span> <a class="code" href="classSparseRandomConnectivityTypeII.html#6b1a396585d8ea82ebb730040aac4464">num_connections_</a>;
 <a name="l00183"></a>00183 };
 <a name="l00184"></a>00184 
 <a name="l00185"></a>00185 
 <a name="l00186"></a>00186 
 <a name="l00187"></a>00187 <span class="preprocessor">#endif // !defined(CONNECTIVITYMANAGER_H)</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:03 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:52 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

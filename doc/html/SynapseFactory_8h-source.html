@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: /media/data/Work/spikesimv6/SynapseFactory.h Source File</title>
+<title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/SynapseFactory.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,37 +9,38 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>/media/data/Work/spikesimv6/SynapseFactory.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// SynapseFactory.h</span>
+<h1>/media/data/Work/spikesimv6/SynapseFactory.h</h1><a href="SynapseFactory_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// SynapseFactory.h</span>
 <a name="l00003"></a>00003 <span class="comment"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#ifndef SYNAPSEFACTORY_H</span>
 <a name="l00005"></a>00005 <span class="preprocessor"></span><span class="preprocessor">#define SYNAPSEFACTORY_H</span>
 <a name="l00006"></a>00006 <span class="preprocessor"></span>
 <a name="l00007"></a>00007 
-<a name="l00008"></a>00008 <span class="preprocessor">#include "TypeDefs.h"</span>
-<a name="l00009"></a>00009 <span class="preprocessor">#include "ConcreteSynapseFactory.h"</span>
+<a name="l00008"></a>00008 <span class="preprocessor">#include "<a class="code" href="TypeDefs_8h.html">TypeDefs.h</a>"</span>
+<a name="l00009"></a>00009 <span class="preprocessor">#include "<a class="code" href="ConcreteSynapseFactory_8h.html">ConcreteSynapseFactory.h</a>"</span>
 <a name="l00010"></a>00010 
 <a name="l00011"></a>00011 
 <a name="l00012"></a>00012 
 <a name="l00014"></a>00014 <span class="comment">// SynapseFactory class definition</span>
 <a name="l00015"></a>00015 <span class="comment">// creates a synapse according to the distribution of weights and delays, synaptic mechanism, plasticity mechanism</span>
 <a name="l00017"></a>00017 <span class="comment"></span>
-<a name="l00018"></a>00018 <span class="keyword">class </span>SynapseFactory
+<a name="l00018"></a><a class="code" href="classSynapseFactory.html">00018</a> <span class="keyword">class </span><a class="code" href="classSynapseFactory.html">SynapseFactory</a>
 <a name="l00019"></a>00019 {
 <a name="l00020"></a>00020 <span class="keyword">public</span>:
-<a name="l00021"></a>00021     SynapseFactory(DistributionManager * <span class="keyword">const</span> weight_distrib_cfg, DistributionManager * <span class="keyword">const</span> delay_distrib_cfg, <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> syn_mech_cfg, <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> plast_mech_cfg, std::list&lt;boost::shared_ptr&lt;ConfigBase&gt; &gt; &amp; cfglist);
-<a name="l00022"></a>00022     <span class="keywordtype">void</span> create(<span class="keyword">const</span> std::list&lt;NeuronInterface *&gt; &amp; preneuron_list, NeuronInterface * <span class="keyword">const</span> postneuron) {
-<a name="l00023"></a>00023         <span class="keywordflow">if</span> (concrete_factory_)
-<a name="l00024"></a>00024             concrete_factory_-&gt;create(preneuron_list, postneuron);
+<a name="l00021"></a>00021     <a class="code" href="classSynapseFactory.html#74816a61a0a771771b521f56b2ee29d7">SynapseFactory</a>(<a class="code" href="structDistributionManager.html">DistributionManager</a> * <span class="keyword">const</span> weight_distrib_cfg, <a class="code" href="structDistributionManager.html">DistributionManager</a> * <span class="keyword">const</span> delay_distrib_cfg, <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> syn_mech_cfg, <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> plast_mech_cfg, std::list&lt;boost::shared_ptr&lt;ConfigBase&gt; &gt; &amp; cfglist);
+<a name="l00022"></a><a class="code" href="classSynapseFactory.html#242583b06b4de28a3ffccb1a9b216ead">00022</a>     <span class="keywordtype">void</span> <a class="code" href="classSynapseFactory.html#242583b06b4de28a3ffccb1a9b216ead">create</a>(<span class="keyword">const</span> std::list&lt;NeuronInterface *&gt; &amp; preneuron_list, <a class="code" href="classNeuronInterface.html">NeuronInterface</a> * <span class="keyword">const</span> postneuron) {
+<a name="l00023"></a>00023         <span class="keywordflow">if</span> (<a class="code" href="classSynapseFactory.html#d4b227ea6fcbbd8b51e3e46d13df53f1">concrete_factory_</a>)
+<a name="l00024"></a>00024             <a class="code" href="classSynapseFactory.html#d4b227ea6fcbbd8b51e3e46d13df53f1">concrete_factory_</a>-&gt;<a class="code" href="structAbstractSynapseFactory.html#b0ef8a7f3089f9c3d26364d2abe53ae9">create</a>(preneuron_list, postneuron);
 <a name="l00025"></a>00025         <span class="keywordflow">else</span>
 <a name="l00026"></a>00026             <span class="keywordflow">throw</span> <a class="code" href="classConfigError.html" title="Run-time error during the configuration process.">ConfigError</a>(<span class="stringliteral">"SynapseFactory: error creating synapses"</span>);
 <a name="l00027"></a>00027     }
 <a name="l00028"></a>00028 <span class="keyword">protected</span>:
-<a name="l00029"></a>00029     <a class="code" href="structAbstractSynapseFactory.html" title="AbstractSynapseFactory: Abstract class for all synapses factories.">AbstractSynapseFactory</a> * concrete_factory_;
-<a name="l00030"></a>00030     <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * data_cfg_; <span class="comment">// data configurator</span>
+<a name="l00029"></a><a class="code" href="classSynapseFactory.html#d4b227ea6fcbbd8b51e3e46d13df53f1">00029</a>     <a class="code" href="structAbstractSynapseFactory.html" title="AbstractSynapseFactory: Abstract class for all synapses factories.">AbstractSynapseFactory</a> * <a class="code" href="classSynapseFactory.html#d4b227ea6fcbbd8b51e3e46d13df53f1">concrete_factory_</a>;
+<a name="l00030"></a><a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">00030</a>     <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a>; <span class="comment">// data configurator</span>
 <a name="l00031"></a>00031 };
 <a name="l00032"></a>00032 
 <a name="l00033"></a>00033 
@@ -47,27 +48,27 @@
 <a name="l00037"></a>00037 <span class="comment"></span>
 <a name="l00039"></a>00039 <span class="comment">// SynapseFactory constructor</span>
 <a name="l00040"></a>00040 <span class="comment">// determines the correct type of synapse to create according to the given configurators in argument</span>
-<a name="l00041"></a>00041 <span class="keyword">inline</span> SynapseFactory::SynapseFactory(DistributionManager * <span class="keyword">const</span> weight_distrib_cfg
-<a name="l00042"></a>00042                                       , DistributionManager * <span class="keyword">const</span> delay_distrib_cfg
+<a name="l00041"></a><a class="code" href="classSynapseFactory.html#74816a61a0a771771b521f56b2ee29d7">00041</a> <span class="keyword">inline</span> <a class="code" href="classSynapseFactory.html#74816a61a0a771771b521f56b2ee29d7">SynapseFactory::SynapseFactory</a>(<a class="code" href="structDistributionManager.html">DistributionManager</a> * <span class="keyword">const</span> weight_distrib_cfg
+<a name="l00042"></a>00042                                       , <a class="code" href="structDistributionManager.html">DistributionManager</a> * <span class="keyword">const</span> delay_distrib_cfg
 <a name="l00043"></a>00043                                       , <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> syn_mech_cfg
 <a name="l00044"></a>00044                                       , <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> plast_mech_cfg
 <a name="l00045"></a>00045                                       , std::list&lt;boost::shared_ptr&lt;ConfigBase&gt; &gt; &amp; cfglist)
 <a name="l00046"></a>00046         : concrete_factory_(0)
 <a name="l00047"></a>00047 {
 <a name="l00048"></a>00048     <span class="comment">// possible distribution configurators for the synaptic weight</span>
-<a name="l00049"></a>00049     DeltaDistribution * ddswc = <span class="keyword">dynamic_cast&lt;</span>DeltaDistribution *<span class="keyword">&gt;</span>(weight_distrib_cfg);
-<a name="l00050"></a>00050     UniformDistribution * udswc = <span class="keyword">dynamic_cast&lt;</span>UniformDistribution *<span class="keyword">&gt;</span>(weight_distrib_cfg);
-<a name="l00051"></a>00051     GaussianDistribution * gdswc = <span class="keyword">dynamic_cast&lt;</span>GaussianDistribution *<span class="keyword">&gt;</span>(weight_distrib_cfg);
+<a name="l00049"></a>00049     <a class="code" href="classDeltaDistribution.html">DeltaDistribution</a> * ddswc = <span class="keyword">dynamic_cast&lt;</span><a class="code" href="classDeltaDistribution.html">DeltaDistribution</a> *<span class="keyword">&gt;</span>(weight_distrib_cfg);
+<a name="l00050"></a>00050     <a class="code" href="classUniformDistribution.html">UniformDistribution</a> * udswc = <span class="keyword">dynamic_cast&lt;</span><a class="code" href="classUniformDistribution.html">UniformDistribution</a> *<span class="keyword">&gt;</span>(weight_distrib_cfg);
+<a name="l00051"></a>00051     <a class="code" href="classGaussianDistribution.html">GaussianDistribution</a> * gdswc = <span class="keyword">dynamic_cast&lt;</span><a class="code" href="classGaussianDistribution.html">GaussianDistribution</a> *<span class="keyword">&gt;</span>(weight_distrib_cfg);
 <a name="l00052"></a>00052 
 <a name="l00053"></a>00053     <span class="comment">// possible distribution configurators for the synaptic delay</span>
-<a name="l00054"></a>00054     DeltaDistribution * ddsdc = <span class="keyword">dynamic_cast&lt;</span>DeltaDistribution *<span class="keyword">&gt;</span>(delay_distrib_cfg);
-<a name="l00055"></a>00055     UniformDistribution * udsdc = <span class="keyword">dynamic_cast&lt;</span>UniformDistribution *<span class="keyword">&gt;</span>(delay_distrib_cfg);
-<a name="l00056"></a>00056     GaussianDistribution * gdsdc = <span class="keyword">dynamic_cast&lt;</span>GaussianDistribution *<span class="keyword">&gt;</span>(delay_distrib_cfg);
+<a name="l00054"></a>00054     <a class="code" href="classDeltaDistribution.html">DeltaDistribution</a> * ddsdc = <span class="keyword">dynamic_cast&lt;</span><a class="code" href="classDeltaDistribution.html">DeltaDistribution</a> *<span class="keyword">&gt;</span>(delay_distrib_cfg);
+<a name="l00055"></a>00055     <a class="code" href="classUniformDistribution.html">UniformDistribution</a> * udsdc = <span class="keyword">dynamic_cast&lt;</span><a class="code" href="classUniformDistribution.html">UniformDistribution</a> *<span class="keyword">&gt;</span>(delay_distrib_cfg);
+<a name="l00056"></a>00056     <a class="code" href="classGaussianDistribution.html">GaussianDistribution</a> * gdsdc = <span class="keyword">dynamic_cast&lt;</span><a class="code" href="classGaussianDistribution.html">GaussianDistribution</a> *<span class="keyword">&gt;</span>(delay_distrib_cfg);
 <a name="l00057"></a>00057 
 <a name="l00058"></a>00058     <span class="comment">// possible synaptic activation mechanism configurators</span>
-<a name="l00059"></a>00059     DoubleExpSynMechConfig * asmsc = <span class="keyword">dynamic_cast&lt;</span>DoubleExpSynMechConfig *<span class="keyword">&gt;</span>(syn_mech_cfg);
-<a name="l00060"></a>00060     CondSynMechConfig * csmsc = <span class="keyword">dynamic_cast&lt;</span>CondSynMechConfig *<span class="keyword">&gt;</span>(syn_mech_cfg);
-<a name="l00061"></a>00061     InstantSynMechConfig * ismsc = <span class="keyword">dynamic_cast&lt;</span>InstantSynMechConfig *<span class="keyword">&gt;</span>(syn_mech_cfg);
+<a name="l00059"></a>00059     <a class="code" href="classDoubleExpSynMechConfig.html">DoubleExpSynMechConfig</a> * asmsc = <span class="keyword">dynamic_cast&lt;</span><a class="code" href="classDoubleExpSynMechConfig.html">DoubleExpSynMechConfig</a> *<span class="keyword">&gt;</span>(syn_mech_cfg);
+<a name="l00060"></a>00060     <a class="code" href="classCondSynMechConfig.html">CondSynMechConfig</a> * csmsc = <span class="keyword">dynamic_cast&lt;</span><a class="code" href="classCondSynMechConfig.html">CondSynMechConfig</a> *<span class="keyword">&gt;</span>(syn_mech_cfg);
+<a name="l00061"></a>00061     <a class="code" href="classInstantSynMechConfig.html">InstantSynMechConfig</a> * ismsc = <span class="keyword">dynamic_cast&lt;</span><a class="code" href="classInstantSynMechConfig.html">InstantSynMechConfig</a> *<span class="keyword">&gt;</span>(syn_mech_cfg);
 <a name="l00062"></a>00062 
 <a name="l00063"></a>00063     <span class="comment">// possible plasticity mechanism configurators</span>
 <a name="l00064"></a>00064     <a class="code" href="classNoPlastMechConfig.html" title="NoPlastMechConfig:.">NoPlastMechConfig</a> * npmsc = <span class="keyword">dynamic_cast&lt;</span><a class="code" href="classNoPlastMechConfig.html" title="NoPlastMechConfig:.">NoPlastMechConfig</a> *<span class="keyword">&gt;</span>(plast_mech_cfg);
@@ -77,48 +78,48 @@
 <a name="l00068"></a>00068     <span class="keywordflow">if</span> (csmsc) {
 <a name="l00069"></a>00069         <span class="keywordflow">if</span> (npmsc) {
 <a name="l00070"></a>00070             <span class="keywordflow">if</span> (ddswc &amp;&amp; ddsdc) {
-<a name="l00071"></a>00071                 data_cfg_ = <span class="keyword">new</span> DataLightSynapseConfig(weight_distrib_cfg, delay_distrib_cfg);
-<a name="l00072"></a>00072                 cfglist.push_back(boost::shared_ptr&lt;ConfigBase&gt;(data_cfg_));
-<a name="l00073"></a>00073                 concrete_factory_ = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataLightSynapseConfig, CondSynMechConfig, NoPlastMechConfig&gt;</a>(<span class="keyword">dynamic_cast&lt;</span>DataLightSynapseConfig *<span class="keyword">&gt;</span>(data_cfg_), csmsc, npmsc);
+<a name="l00071"></a>00071                 <a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a> = <span class="keyword">new</span> <a class="code" href="classDataLightSynapseConfig.html">DataLightSynapseConfig</a>(weight_distrib_cfg, delay_distrib_cfg);
+<a name="l00072"></a>00072                 cfglist.push_back(boost::shared_ptr&lt;ConfigBase&gt;(<a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a>));
+<a name="l00073"></a>00073                 <a class="code" href="classSynapseFactory.html#d4b227ea6fcbbd8b51e3e46d13df53f1">concrete_factory_</a> = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataLightSynapseConfig, CondSynMechConfig, NoPlastMechConfig&gt;</a>(<span class="keyword">dynamic_cast&lt;</span><a class="code" href="classDataLightSynapseConfig.html">DataLightSynapseConfig</a> *<span class="keyword">&gt;</span>(<a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a>), csmsc, npmsc);
 <a name="l00074"></a>00074             } <span class="keywordflow">else</span> {
-<a name="l00075"></a>00075                 data_cfg_ = <span class="keyword">new</span> DataIndivSynapseConfig(weight_distrib_cfg, delay_distrib_cfg);
-<a name="l00076"></a>00076                 concrete_factory_ = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataIndivSynapseConfig, CondSynMechConfig, NoPlastMechConfig&gt;</a>(<span class="keyword">dynamic_cast&lt;</span>DataIndivSynapseConfig *<span class="keyword">&gt;</span>(data_cfg_), csmsc, npmsc);
+<a name="l00075"></a>00075                 <a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a> = <span class="keyword">new</span> <a class="code" href="classDataIndivSynapseConfig.html">DataIndivSynapseConfig</a>(weight_distrib_cfg, delay_distrib_cfg);
+<a name="l00076"></a>00076                 <a class="code" href="classSynapseFactory.html#d4b227ea6fcbbd8b51e3e46d13df53f1">concrete_factory_</a> = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataIndivSynapseConfig, CondSynMechConfig, NoPlastMechConfig&gt;</a>(<span class="keyword">dynamic_cast&lt;</span><a class="code" href="classDataIndivSynapseConfig.html">DataIndivSynapseConfig</a> *<span class="keyword">&gt;</span>(<a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a>), csmsc, npmsc);
 <a name="l00077"></a>00077             }
 <a name="l00078"></a>00078         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (stdpmsc) {
-<a name="l00079"></a>00079             data_cfg_ = <span class="keyword">new</span> DataPlastSynapseConfig(weight_distrib_cfg, delay_distrib_cfg);
-<a name="l00080"></a>00080             concrete_factory_ = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataPlastSynapseConfig, CondSynMechConfig, STDPMechConfig&lt;AdditiveSTDPNegExpFunction, ClipToBounds&gt;</a> &gt;(<span class="keyword">dynamic_cast&lt;</span>DataPlastSynapseConfig *<span class="keyword">&gt;</span>(data_cfg_), csmsc, stdpmsc);
+<a name="l00079"></a>00079             <a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a> = <span class="keyword">new</span> <a class="code" href="classDataPlastSynapseConfig.html">DataPlastSynapseConfig</a>(weight_distrib_cfg, delay_distrib_cfg);
+<a name="l00080"></a>00080             <a class="code" href="classSynapseFactory.html#d4b227ea6fcbbd8b51e3e46d13df53f1">concrete_factory_</a> = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataPlastSynapseConfig, CondSynMechConfig, STDPMechConfig&lt;AdditiveSTDPNegExpFunction, ClipToBounds&gt;</a> &gt;(<span class="keyword">dynamic_cast&lt;</span><a class="code" href="classDataPlastSynapseConfig.html">DataPlastSynapseConfig</a> *<span class="keyword">&gt;</span>(<a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a>), csmsc, stdpmsc);
 <a name="l00081"></a>00081         } <span class="keywordflow">else</span> {
 <a name="l00082"></a>00082             <span class="keywordflow">throw</span> <a class="code" href="classConfigError.html" title="Run-time error during the configuration process.">ConfigError</a>(<span class="stringliteral">"SynapseFactory: unknown plasticity mechanism configurator"</span>);
 <a name="l00083"></a>00083         }
 <a name="l00084"></a>00084     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ismsc) {
 <a name="l00085"></a>00085         <span class="keywordflow">if</span> (npmsc) {
 <a name="l00086"></a>00086             <span class="keywordflow">if</span> (ddswc &amp;&amp; ddsdc) {
-<a name="l00087"></a>00087                 data_cfg_ = <span class="keyword">new</span> DataLightSynapseConfig(weight_distrib_cfg, delay_distrib_cfg);
-<a name="l00088"></a>00088                 cfglist.push_back(boost::shared_ptr&lt;ConfigBase&gt;(data_cfg_));
-<a name="l00089"></a>00089                 concrete_factory_ = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataLightSynapseConfig, InstantSynMechConfig, NoPlastMechConfig&gt;</a>(<span class="keyword">dynamic_cast&lt;</span>DataLightSynapseConfig *<span class="keyword">&gt;</span>(data_cfg_), ismsc, npmsc);
+<a name="l00087"></a>00087                 <a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a> = <span class="keyword">new</span> <a class="code" href="classDataLightSynapseConfig.html">DataLightSynapseConfig</a>(weight_distrib_cfg, delay_distrib_cfg);
+<a name="l00088"></a>00088                 cfglist.push_back(boost::shared_ptr&lt;ConfigBase&gt;(<a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a>));
+<a name="l00089"></a>00089                 <a class="code" href="classSynapseFactory.html#d4b227ea6fcbbd8b51e3e46d13df53f1">concrete_factory_</a> = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataLightSynapseConfig, InstantSynMechConfig, NoPlastMechConfig&gt;</a>(<span class="keyword">dynamic_cast&lt;</span><a class="code" href="classDataLightSynapseConfig.html">DataLightSynapseConfig</a> *<span class="keyword">&gt;</span>(<a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a>), ismsc, npmsc);
 <a name="l00090"></a>00090             } <span class="keywordflow">else</span> {
-<a name="l00091"></a>00091                 data_cfg_ = <span class="keyword">new</span> DataIndivSynapseConfig(weight_distrib_cfg, delay_distrib_cfg);
-<a name="l00092"></a>00092                 concrete_factory_ = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataIndivSynapseConfig, InstantSynMechConfig, NoPlastMechConfig&gt;</a>(<span class="keyword">dynamic_cast&lt;</span>DataIndivSynapseConfig *<span class="keyword">&gt;</span>(data_cfg_), ismsc, npmsc);
+<a name="l00091"></a>00091                 <a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a> = <span class="keyword">new</span> <a class="code" href="classDataIndivSynapseConfig.html">DataIndivSynapseConfig</a>(weight_distrib_cfg, delay_distrib_cfg);
+<a name="l00092"></a>00092                 <a class="code" href="classSynapseFactory.html#d4b227ea6fcbbd8b51e3e46d13df53f1">concrete_factory_</a> = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataIndivSynapseConfig, InstantSynMechConfig, NoPlastMechConfig&gt;</a>(<span class="keyword">dynamic_cast&lt;</span><a class="code" href="classDataIndivSynapseConfig.html">DataIndivSynapseConfig</a> *<span class="keyword">&gt;</span>(<a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a>), ismsc, npmsc);
 <a name="l00093"></a>00093             }
 <a name="l00094"></a>00094         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (stdpmsc) {
-<a name="l00095"></a>00095             data_cfg_ = <span class="keyword">new</span> DataPlastSynapseConfig(weight_distrib_cfg, delay_distrib_cfg);
-<a name="l00096"></a>00096             concrete_factory_ = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataPlastSynapseConfig, InstantSynMechConfig, STDPMechConfig&lt;AdditiveSTDPNegExpFunction, ClipToBounds&gt;</a> &gt;(<span class="keyword">dynamic_cast&lt;</span>DataPlastSynapseConfig *<span class="keyword">&gt;</span>(data_cfg_), ismsc, stdpmsc);
+<a name="l00095"></a>00095             <a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a> = <span class="keyword">new</span> <a class="code" href="classDataPlastSynapseConfig.html">DataPlastSynapseConfig</a>(weight_distrib_cfg, delay_distrib_cfg);
+<a name="l00096"></a>00096             <a class="code" href="classSynapseFactory.html#d4b227ea6fcbbd8b51e3e46d13df53f1">concrete_factory_</a> = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataPlastSynapseConfig, InstantSynMechConfig, STDPMechConfig&lt;AdditiveSTDPNegExpFunction, ClipToBounds&gt;</a> &gt;(<span class="keyword">dynamic_cast&lt;</span><a class="code" href="classDataPlastSynapseConfig.html">DataPlastSynapseConfig</a> *<span class="keyword">&gt;</span>(<a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a>), ismsc, stdpmsc);
 <a name="l00097"></a>00097         } <span class="keywordflow">else</span> {
 <a name="l00098"></a>00098             <span class="keywordflow">throw</span> <a class="code" href="classConfigError.html" title="Run-time error during the configuration process.">ConfigError</a>(<span class="stringliteral">"SynapseFactory: unknown plasticity mechanism configurator"</span>);
 <a name="l00099"></a>00099         }
 <a name="l00100"></a>00100     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (asmsc) {
 <a name="l00101"></a>00101         <span class="keywordflow">if</span> (npmsc) {
 <a name="l00102"></a>00102             <span class="keywordflow">if</span> (ddswc &amp;&amp; ddsdc) {
-<a name="l00103"></a>00103                 data_cfg_ = <span class="keyword">new</span> DataLightSynapseConfig(weight_distrib_cfg, delay_distrib_cfg);
-<a name="l00104"></a>00104                 cfglist.push_back(boost::shared_ptr&lt;ConfigBase&gt;(data_cfg_));
-<a name="l00105"></a>00105                 concrete_factory_ = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataLightSynapseConfig, DoubleExpSynMechConfig, NoPlastMechConfig&gt;</a>(<span class="keyword">dynamic_cast&lt;</span>DataLightSynapseConfig *<span class="keyword">&gt;</span>(data_cfg_), asmsc, npmsc);
+<a name="l00103"></a>00103                 <a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a> = <span class="keyword">new</span> <a class="code" href="classDataLightSynapseConfig.html">DataLightSynapseConfig</a>(weight_distrib_cfg, delay_distrib_cfg);
+<a name="l00104"></a>00104                 cfglist.push_back(boost::shared_ptr&lt;ConfigBase&gt;(<a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a>));
+<a name="l00105"></a>00105                 <a class="code" href="classSynapseFactory.html#d4b227ea6fcbbd8b51e3e46d13df53f1">concrete_factory_</a> = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataLightSynapseConfig, DoubleExpSynMechConfig, NoPlastMechConfig&gt;</a>(<span class="keyword">dynamic_cast&lt;</span><a class="code" href="classDataLightSynapseConfig.html">DataLightSynapseConfig</a> *<span class="keyword">&gt;</span>(<a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a>), asmsc, npmsc);
 <a name="l00106"></a>00106             } <span class="keywordflow">else</span> {
-<a name="l00107"></a>00107                 data_cfg_ = <span class="keyword">new</span> DataIndivSynapseConfig(weight_distrib_cfg, delay_distrib_cfg);
-<a name="l00108"></a>00108                 concrete_factory_ = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataIndivSynapseConfig, DoubleExpSynMechConfig, NoPlastMechConfig&gt;</a>(<span class="keyword">dynamic_cast&lt;</span>DataIndivSynapseConfig *<span class="keyword">&gt;</span>(data_cfg_), asmsc, npmsc);
+<a name="l00107"></a>00107                 <a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a> = <span class="keyword">new</span> <a class="code" href="classDataIndivSynapseConfig.html">DataIndivSynapseConfig</a>(weight_distrib_cfg, delay_distrib_cfg);
+<a name="l00108"></a>00108                 <a class="code" href="classSynapseFactory.html#d4b227ea6fcbbd8b51e3e46d13df53f1">concrete_factory_</a> = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataIndivSynapseConfig, DoubleExpSynMechConfig, NoPlastMechConfig&gt;</a>(<span class="keyword">dynamic_cast&lt;</span><a class="code" href="classDataIndivSynapseConfig.html">DataIndivSynapseConfig</a> *<span class="keyword">&gt;</span>(<a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a>), asmsc, npmsc);
 <a name="l00109"></a>00109             }
 <a name="l00110"></a>00110         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (stdpmsc) {
-<a name="l00111"></a>00111             data_cfg_ = <span class="keyword">new</span> DataPlastSynapseConfig(weight_distrib_cfg, delay_distrib_cfg);
-<a name="l00112"></a>00112             concrete_factory_ = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataPlastSynapseConfig, DoubleExpSynMechConfig, STDPMechConfig&lt;AdditiveSTDPNegExpFunction, ClipToBounds&gt;</a> &gt;(<span class="keyword">dynamic_cast&lt;</span>DataPlastSynapseConfig *<span class="keyword">&gt;</span>(data_cfg_), asmsc, stdpmsc);
+<a name="l00111"></a>00111             <a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a> = <span class="keyword">new</span> <a class="code" href="classDataPlastSynapseConfig.html">DataPlastSynapseConfig</a>(weight_distrib_cfg, delay_distrib_cfg);
+<a name="l00112"></a>00112             <a class="code" href="classSynapseFactory.html#d4b227ea6fcbbd8b51e3e46d13df53f1">concrete_factory_</a> = <span class="keyword">new</span> <a class="code" href="classConcreteSynapseFactory.html" title="ConcreteSynapseFactory:.">ConcreteSynapseFactory&lt;DataPlastSynapseConfig, DoubleExpSynMechConfig, STDPMechConfig&lt;AdditiveSTDPNegExpFunction, ClipToBounds&gt;</a> &gt;(<span class="keyword">dynamic_cast&lt;</span><a class="code" href="classDataPlastSynapseConfig.html">DataPlastSynapseConfig</a> *<span class="keyword">&gt;</span>(<a class="code" href="classSynapseFactory.html#6f2fffa6f84d6316f83f61289698ba36">data_cfg_</a>), asmsc, stdpmsc);
 <a name="l00113"></a>00113         } <span class="keywordflow">else</span> {
 <a name="l00114"></a>00114             <span class="keywordflow">throw</span> <a class="code" href="classConfigError.html" title="Run-time error during the configuration process.">ConfigError</a>(<span class="stringliteral">"SynapseFactory: unknown plasticity mechanism configurator"</span>);
 <a name="l00115"></a>00115         }
@@ -192,7 +193,7 @@
 <a name="l00183"></a>00183 <span class="comment">*/</span>
 <a name="l00184"></a>00184 <span class="preprocessor">#endif // !defined(SYNAPSEFACTORY_H)</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:04 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:53 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

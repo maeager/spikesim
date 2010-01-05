@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: /media/data/Work/spikesimv6/Header1.h Source File</title>
+<title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/Header1.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,55 +9,56 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>/media/data/Work/spikesimv6/Header1.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef PARALLELMANAGER_H</span>
+<h1>/media/data/Work/spikesimv6/Header1.h</h1><a href="Header1_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef PARALLELMANAGER_H</span>
 <a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define PARALLELMANAGER_H</span>
 <a name="l00003"></a>00003 <span class="preprocessor"></span>
-<a name="l00004"></a>00004 <span class="preprocessor">#include "ParSpike.h"</span>
+<a name="l00004"></a>00004 <span class="preprocessor">#include "<a class="code" href="ParSpike_8h.html">ParSpike.h</a>"</span>
 <a name="l00005"></a>00005 
-<a name="l00006"></a>00006 <span class="keyword">class  </span>ParallelManager
+<a name="l00006"></a><a class="code" href="classParallelManager.html">00006</a> <span class="keyword">class  </span><a class="code" href="classParallelManager.html">ParallelManager</a>
 <a name="l00007"></a>00007 {
 <a name="l00008"></a>00008 <span class="keyword">public</span>:
-<a name="l00009"></a>00009     ParallelManager(<span class="keywordtype">int</span> n) {
-<a name="l00010"></a>00010         init(n);
+<a name="l00009"></a><a class="code" href="classParallelManager.html#6f5e7d3adebb2f53b3e983cd571e24b4">00009</a>     <a class="code" href="classParallelManager.html#6f5e7d3adebb2f53b3e983cd571e24b4">ParallelManager</a>(<span class="keywordtype">int</span> n) {
+<a name="l00010"></a>00010         <a class="code" href="Header1_8h.html#8a2d7bafb59d4fe4407fa8ba91fa7076">init</a>(n);
 <a name="l00011"></a>00011     }
-<a name="l00012"></a>00012     ~ParallelManager() {
-<a name="l00013"></a>00013         <span class="keywordflow">if</span> (pc.mpi_use) pc.terminate();
+<a name="l00012"></a><a class="code" href="classParallelManager.html#5e33fd352560d7f8f2122192be18e1a7">00012</a>     <a class="code" href="classParallelManager.html#5e33fd352560d7f8f2122192be18e1a7">~ParallelManager</a>() {
+<a name="l00013"></a>00013         <span class="keywordflow">if</span> (<a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.<a class="code" href="classParSpike.html#0caa37e64ee6582d621d37b108ee1b94">mpi_use</a>) <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.<a class="code" href="classParSpike.html#5256b89246591c6b803ca7564283092b">terminate</a>();
 <a name="l00014"></a>00014     }
-<a name="l00015"></a>00015     <span class="keywordtype">void</span> register_cell();
-<a name="l00016"></a>00016     <span class="keywordtype">void</span> nc_append();
-<a name="l00017"></a>00017     <span class="keywordtype">void</span> set_gid2node()
-<a name="l00018"></a>00018     bool gid_exists();
-<a name="l00019"></a>00019     <span class="keywordtype">void</span> create_cell();
+<a name="l00015"></a>00015     <span class="keywordtype">void</span> <a class="code" href="classParallelManager.html#1d7f36feaba391a98a01908883296d7d">register_cell</a>();
+<a name="l00016"></a>00016     <span class="keywordtype">void</span> <a class="code" href="classParallelManager.html#a44ef12c12998290a4644aa7aa491d13">nc_append</a>();
+<a name="l00017"></a>00017     <span class="keywordtype">void</span> <a class="code" href="classParallelManager.html#3916ef421f7307e3f3dbbe2a0065f71b">set_gid2node</a>()
+<a name="l00018"></a>00018     bool <a class="code" href="Header1_8h.html#4d19b7db3314981716bbb5407ea00c28">gid_exists</a>();
+<a name="l00019"></a>00019     <span class="keywordtype">void</span> <a class="code" href="classParallelManager.html#a9fed91a0e7d4de0a1fe7e863f2bc85e">create_cell</a>();
 <a name="l00020"></a>00020 
-<a name="l00021"></a>00021     <a class="code" href="classParSpike.html" title="ParSpike: parallel environment variables.">ParSpike</a> *pc;
-<a name="l00022"></a>00022     <span class="keywordtype">int</span> maxstepsize
-<a name="l00023"></a>00023     std::vector&lt;<span class="keywordtype">float</span>&gt; spikevec;
-<a name="l00024"></a>00024     std::vector&lt;<span class="keywordtype">int</span>&gt; idvec;
+<a name="l00021"></a><a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">00021</a>     <a class="code" href="classParSpike.html" title="ParSpike: parallel environment variables.">ParSpike</a> *<a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>;
+<a name="l00022"></a>00022     <span class="keywordtype">int</span> <a class="code" href="Header1_8h.html#469e02b0be2de44cd77825fbc03088f5">maxstepsize</a>
+<a name="l00023"></a><a class="code" href="classParallelManager.html#294e66464d9cd43c241a81eaa432c874">00023</a>     std::vector&lt;<span class="keywordtype">float</span>&gt; <a class="code" href="classParallelManager.html#294e66464d9cd43c241a81eaa432c874">spikevec</a>;
+<a name="l00024"></a><a class="code" href="classParallelManager.html#d497e4d7cbf11a186e4a0b6ed52282cc">00024</a>     std::vector&lt;<span class="keywordtype">int</span>&gt; <a class="code" href="classParallelManager.html#d497e4d7cbf11a186e4a0b6ed52282cc">idvec</a>;
 <a name="l00025"></a>00025 
 <a name="l00026"></a>00026 <span class="comment">//  void gatherspikes();</span>
 <a name="l00027"></a>00027 <span class="comment">//void want_all_spikes();</span>
 <a name="l00028"></a>00028 <span class="comment">//void spike_record(int);</span>
 <a name="l00029"></a>00029 <span class="comment">//public graphout, wantgraph, set_maxstep, serialize</span>
 <a name="l00030"></a>00030 
-<a name="l00031"></a>00031     <span class="keywordtype">void</span> prun(), pcontinue(), pinit(), psolve();
+<a name="l00031"></a>00031     <span class="keywordtype">void</span> <a class="code" href="classParallelManager.html#1cd18a313c3f069bbcecc7bab56ed186">prun</a>(), <a class="code" href="classParallelManager.html#b7137b38578b1c1c56ad9b4f4fddafcb">pcontinue</a>(), <a class="code" href="classParallelManager.html#444ee4939fbf5ac4855539807c9f2ff6">pinit</a>(), <a class="code" href="classParallelManager.html#3f3b97ac74028dd785a5ed532715a356">psolve</a>();
 <a name="l00032"></a>00032     <span class="keywordtype">int</span> ncell
-<a name="l00033"></a>00033     <span class="keywordtype">void</span> round_robin(); <span class="comment">//simplistic partitioning</span>
-<a name="l00034"></a>00034     <span class="keywordtype">void</span> * tmpcell;
+<a name="l00033"></a>00033     <span class="keywordtype">void</span> <a class="code" href="classParallelManager.html#931eb488409de44f9548249c20f1a158">round_robin</a>(); <span class="comment">//simplistic partitioning</span>
+<a name="l00034"></a><a class="code" href="classParallelManager.html#e310397ec581475249666b816767357f">00034</a>     <span class="keywordtype">void</span> * <a class="code" href="classParallelManager.html#e310397ec581475249666b816767357f">tmpcell</a>;
 <a name="l00035"></a>00035 <span class="comment">// mostly for debugging</span>
 <a name="l00036"></a>00036 
-<a name="l00037"></a>00037     <span class="keywordtype">int</span> myid;
-<a name="l00038"></a>00038     <span class="keywordtype">int</span> nwork;
-<a name="l00039"></a>00039     <span class="keywordtype">int</span> nhost;
-<a name="l00040"></a>00040     <span class="keywordtype">int</span> prstat;
-<a name="l00041"></a>00041     SynPtr * nc;
+<a name="l00037"></a><a class="code" href="classParallelManager.html#1143bfa13d96cec67cafc00fe949888b">00037</a>     <span class="keywordtype">int</span> <a class="code" href="classParallelManager.html#1143bfa13d96cec67cafc00fe949888b">myid</a>;
+<a name="l00038"></a><a class="code" href="classParallelManager.html#ba2093860f9cbc6d98a5964d6bae2db1">00038</a>     <span class="keywordtype">int</span> <a class="code" href="classParallelManager.html#ba2093860f9cbc6d98a5964d6bae2db1">nwork</a>;
+<a name="l00039"></a><a class="code" href="classParallelManager.html#e035e9d8e90ccd7effdcd5e459f48097">00039</a>     <span class="keywordtype">int</span> <a class="code" href="classParallelManager.html#e035e9d8e90ccd7effdcd5e459f48097">nhost</a>;
+<a name="l00040"></a><a class="code" href="classParallelManager.html#d85ddbf0cd80e9f6211cc7754259a57d">00040</a>     <span class="keywordtype">int</span> <a class="code" href="classParallelManager.html#d85ddbf0cd80e9f6211cc7754259a57d">prstat</a>;
+<a name="l00041"></a><a class="code" href="classParallelManager.html#200bf9db881a8fc77a0eb03f3f05a9d8">00041</a>     SynPtr * <a class="code" href="classParallelManager.html#200bf9db881a8fc77a0eb03f3f05a9d8">nc</a>;
 <a name="l00042"></a>00042 };
 <a name="l00043"></a>00043 
 <a name="l00044"></a>00044 
-<a name="l00045"></a>00045 <span class="keywordtype">void</span> init(<span class="keywordtype">int</span> ncells)
+<a name="l00045"></a><a class="code" href="Header1_8h.html#8a2d7bafb59d4fe4407fa8ba91fa7076">00045</a> <span class="keywordtype">void</span> <a class="code" href="Header1_8h.html#8a2d7bafb59d4fe4407fa8ba91fa7076">init</a>(<span class="keywordtype">int</span> ncells)
 <a name="l00046"></a>00046 {
 <a name="l00047"></a>00047     pc = <span class="keyword">new</span> <a class="code" href="classParSpike.html" title="ParSpike: parallel environment variables.">ParSpike</a>;
 <a name="l00048"></a>00048     nhost = pc.nhost;
@@ -91,54 +92,54 @@
 <a name="l00076"></a>00076 <span class="comment">// register_cell(gid, cellobject) and that will both call gid_exists (if it</span>
 <a name="l00077"></a>00077 <span class="comment">// does not already exist), and make the mapping.</span>
 <a name="l00078"></a>00078 
-<a name="l00079"></a>00079 <span class="keywordtype">void</span> set_gid2node(<span class="keywordtype">int</span> cell_id)
+<a name="l00079"></a><a class="code" href="Header1_8h.html#f20db98bb20832e5070f42f31d1c7e7d">00079</a> <span class="keywordtype">void</span> <a class="code" href="classParallelManager.html#3916ef421f7307e3f3dbbe2a0065f71b">set_gid2node</a>(<span class="keywordtype">int</span> cell_id)
 <a name="l00080"></a>00080 {
-<a name="l00081"></a>00081     pc.set_gid2node(cell_id, myid);
+<a name="l00081"></a>00081     <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.set_gid2node(cell_id, <a class="code" href="classParallelManager.html#1143bfa13d96cec67cafc00fe949888b">myid</a>);
 <a name="l00082"></a>00082 }
 <a name="l00083"></a>00083 
-<a name="l00084"></a>00084 <span class="keywordtype">void</span> round_robin()   <span class="comment">// simplistic partitioning</span>
+<a name="l00084"></a><a class="code" href="Header1_8h.html#7492aaaa7d0e7314cdff2512480cb764">00084</a> <span class="keywordtype">void</span> <a class="code" href="classParallelManager.html#931eb488409de44f9548249c20f1a158">round_robin</a>()   <span class="comment">// simplistic partitioning</span>
 <a name="l00085"></a>00085 {
 <a name="l00086"></a>00086     <span class="keywordflow">for</span> (<span class="keyword">register</span> <span class="keywordtype">int</span> i = 0; i &lt; ncell; ++i) {
-<a name="l00087"></a>00087         set_gid2node(i, i % nwork);
+<a name="l00087"></a>00087         <a class="code" href="classParallelManager.html#3916ef421f7307e3f3dbbe2a0065f71b">set_gid2node</a>(i, i % <a class="code" href="classParallelManager.html#ba2093860f9cbc6d98a5964d6bae2db1">nwork</a>);
 <a name="l00088"></a>00088     }
 <a name="l00089"></a>00089 }
 <a name="l00090"></a>00090 
-<a name="l00091"></a>00091 <span class="keywordtype">bool</span> gid_exists(<span class="keywordtype">int</span> cell_id)
+<a name="l00091"></a><a class="code" href="Header1_8h.html#4d19b7db3314981716bbb5407ea00c28">00091</a> <span class="keywordtype">bool</span> <a class="code" href="Header1_8h.html#4d19b7db3314981716bbb5407ea00c28">gid_exists</a>(<span class="keywordtype">int</span> cell_id)
 <a name="l00092"></a>00092 {
-<a name="l00093"></a>00093     <span class="keywordflow">return</span> pc.gid_exists(cell_id);
+<a name="l00093"></a>00093     <span class="keywordflow">return</span> <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.gid_exists(cell_id);
 <a name="l00094"></a>00094 }
 <a name="l00095"></a>00095 
-<a name="l00096"></a>00096 <span class="keywordtype">void</span>  want_all_spikes()
+<a name="l00096"></a><a class="code" href="Header1_8h.html#17f513a5075452f3e807aeb956075818">00096</a> <span class="keywordtype">void</span>  <a class="code" href="Header1_8h.html#17f513a5075452f3e807aeb956075818">want_all_spikes</a>()
 <a name="l00097"></a>00097 {
 <a name="l00098"></a>00098     local i
 <a name="l00099"></a>00099     <span class="keywordflow">for</span> (<span class="keyword">register</span> <span class="keywordtype">int</span> i = 0; i &lt; ncell; ++i) {
-<a name="l00100"></a>00100         spike_record(i);
+<a name="l00100"></a>00100         <a class="code" href="Header1_8h.html#842fc9f3925e4d397f502bec9d1eb54c">spike_record</a>(i);
 <a name="l00101"></a>00101     }
 <a name="l00102"></a>00102 }
 <a name="l00103"></a>00103 
-<a name="l00104"></a>00104 <span class="keywordtype">void</span> spike_record(<span class="keywordtype">int</span> cell_id)
+<a name="l00104"></a><a class="code" href="Header1_8h.html#842fc9f3925e4d397f502bec9d1eb54c">00104</a> <span class="keywordtype">void</span> <a class="code" href="Header1_8h.html#842fc9f3925e4d397f502bec9d1eb54c">spike_record</a>(<span class="keywordtype">int</span> cell_id)
 <a name="l00105"></a>00105 {
-<a name="l00106"></a>00106     <span class="keywordflow">if</span> (gid_exists(cell_id)) {
-<a name="l00107"></a>00107         pc.spike_record(cell_id, spikevec, idvec);
+<a name="l00106"></a>00106     <span class="keywordflow">if</span> (<a class="code" href="Header1_8h.html#4d19b7db3314981716bbb5407ea00c28">gid_exists</a>(cell_id)) {
+<a name="l00107"></a>00107         <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.spike_record(cell_id, <a class="code" href="classParallelManager.html#294e66464d9cd43c241a81eaa432c874">spikevec</a>, <a class="code" href="classParallelManager.html#d497e4d7cbf11a186e4a0b6ed52282cc">idvec</a>);
 <a name="l00108"></a>00108     }
 <a name="l00109"></a>00109 }
 <a name="l00110"></a>00110 
 <a name="l00111"></a>00111 <span class="comment">// arg is gid and string that creates a cell such as "new Cell(x, y, z)"</span>
 <a name="l00112"></a>00112 <span class="comment">// return the cell object (usually nil)</span>
 <a name="l00113"></a>00113 <span class="comment">// this is deprecated</span>
-<a name="l00114"></a>00114 <span class="keywordtype">void</span> create_cell(<span class="keywordtype">int</span> cell_id, NeuronType * nt)
+<a name="l00114"></a><a class="code" href="Header1_8h.html#e150cb2acda82d6372bc327f1463ce02">00114</a> <span class="keywordtype">void</span> <a class="code" href="classParallelManager.html#a9fed91a0e7d4de0a1fe7e863f2bc85e">create_cell</a>(<span class="keywordtype">int</span> cell_id, NeuronType * nt)
 <a name="l00115"></a>00115 {
-<a name="l00116"></a>00116     <span class="keywordflow">if</span> (gid_exists(cell_id)) {
-<a name="l00117"></a>00117         register_cell(cell_id, nt)
+<a name="l00116"></a>00116     <span class="keywordflow">if</span> (<a class="code" href="Header1_8h.html#4d19b7db3314981716bbb5407ea00c28">gid_exists</a>(cell_id)) {
+<a name="l00117"></a>00117         <a class="code" href="classParallelManager.html#1d7f36feaba391a98a01908883296d7d">register_cell</a>(cell_id, nt)
 <a name="l00118"></a>00118     }
 <a name="l00119"></a>00119 
 <a name="l00120"></a>00120 }
 <a name="l00121"></a>00121 
-<a name="l00122"></a>00122 <span class="keywordtype">void</span> register_cell(<span class="keywordtype">int</span> cell_id, <span class="keywordtype">void</span>* cell)
+<a name="l00122"></a><a class="code" href="Header1_8h.html#2a68a3479dc3f072b23c6ea3cf68a717">00122</a> <span class="keywordtype">void</span> <a class="code" href="classParallelManager.html#1d7f36feaba391a98a01908883296d7d">register_cell</a>(<span class="keywordtype">int</span> cell_id, <span class="keywordtype">void</span>* cell)
 <a name="l00123"></a>00123 {
-<a name="l00124"></a>00124     <span class="keywordtype">void</span> * nc;
-<a name="l00125"></a>00125     <span class="keywordflow">if</span> (!pc.gid_exists($1)) {
-<a name="l00126"></a>00126         pc.set_gid2node(cell_id, pc.id);
+<a name="l00124"></a>00124     <span class="keywordtype">void</span> * <a class="code" href="classParallelManager.html#200bf9db881a8fc77a0eb03f3f05a9d8">nc</a>;
+<a name="l00125"></a>00125     <span class="keywordflow">if</span> (!<a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.gid_exists($1)) {
+<a name="l00126"></a>00126         <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.set_gid2node(cell_id, <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.id);
 <a name="l00127"></a>00127     }
 <a name="l00128"></a>00128     <span class="comment">// all existing cells must have an associated gid which</span>
 <a name="l00129"></a>00129     <span class="comment">// is stored in the cell's PreSyn. The nc below will be</span>
@@ -148,57 +149,57 @@
 <a name="l00133"></a>00133     <span class="comment">// we force the cell to be an outputcell due to the danger of</span>
 <a name="l00134"></a>00134     <span class="comment">// user error</span>
 <a name="l00135"></a>00135     cells.append(cell)
-<a name="l00136"></a>00136     nc = <span class="keyword">new</span> NetCon(cell, nil)
-<a name="l00137"></a>00137     pc.cell(cell_id, nc, 1);
+<a name="l00136"></a>00136     nc = <span class="keyword">new</span> NetCon(cell, <a class="code" href="BBServer_8h.html#7a7ca81d2a85873283b5ec82953b1b25">nil</a>)
+<a name="l00137"></a>00137     <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.cell(cell_id, nc, 1);
 <a name="l00138"></a>00138 }
 <a name="l00139"></a>00139 
-<a name="l00140"></a>00140 <span class="keywordtype">void</span> nc_append(<span class="keywordtype">int</span> precell_id, <span class="keywordtype">int</span> postcell_id)
+<a name="l00140"></a><a class="code" href="Header1_8h.html#261d7c2e3b159749cd3b1b60a15fc6c4">00140</a> <span class="keywordtype">void</span> <a class="code" href="classParallelManager.html#a44ef12c12998290a4644aa7aa491d13">nc_append</a>(<span class="keywordtype">int</span> precell_id, <span class="keywordtype">int</span> postcell_id)
 <a name="l00141"></a>00141 {
 <a name="l00142"></a>00142     <span class="keywordtype">int</span> w, se, ww, i = -1;
-<a name="l00143"></a>00143     <span class="keywordflow">if</span> (gid_exists(postcell_id)) {
+<a name="l00143"></a>00143     <span class="keywordflow">if</span> (<a class="code" href="Header1_8h.html#4d19b7db3314981716bbb5407ea00c28">gid_exists</a>(postcell_id)) {
 <a name="l00144"></a>00144         <span class="comment">// target in this subset</span>
 <a name="l00145"></a>00145         <span class="comment">// source may be on this or another machine</span>
-<a name="l00146"></a>00146         nc = cm2t(precell_id, pc-&gt;gid2cell(postcell_id), $3, $4, $5)
+<a name="l00146"></a>00146         <a class="code" href="classParallelManager.html#200bf9db881a8fc77a0eb03f3f05a9d8">nc</a> = <a class="code" href="Header1_8h.html#fd05187d5f2e6f366228dd1fdf739a2c">cm2t</a>(precell_id, <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>-&gt;gid2cell(postcell_id), $3, $4, $5)
 <a name="l00147"></a>00147              i = nclist.count
-<a name="l00148"></a>00148                  nclist.append(nc)
-<a name="l00149"></a>00149     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((se = gid_exists(precell_id)) &gt; 0) {
+<a name="l00148"></a>00148                  nclist.append(<a class="code" href="classParallelManager.html#200bf9db881a8fc77a0eb03f3f05a9d8">nc</a>)
+<a name="l00149"></a>00149     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((se = <a class="code" href="Header1_8h.html#4d19b7db3314981716bbb5407ea00c28">gid_exists</a>(precell_id)) &gt; 0) {
 <a name="l00150"></a>00150         <span class="comment">// source exists but not the target</span>
 <a name="l00151"></a>00151         <span class="keywordflow">if</span> (se != 3) { <span class="comment">// output to another machine and it is</span>
 <a name="l00152"></a>00152             <span class="comment">// not yet an outputcell</span>
-<a name="l00153"></a>00153             pc-&gt;outputcell(precell_id);
+<a name="l00153"></a>00153             <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>-&gt;outputcell(precell_id);
 <a name="l00154"></a>00154         }
 <a name="l00155"></a>00155     }
 <a name="l00156"></a>00156 
 <a name="l00157"></a>00157 }
 <a name="l00158"></a>00158 
-<a name="l00159"></a>00159 obfunc cm2t(<span class="keywordtype">int</span> precell_id, <span class="keywordtype">void</span> * postcell, <span class="keywordtype">int</span> postcell_synid = -1, <span class="keywordtype">double</span> weight = 0.0, <span class="keywordtype">double</span> delay = 0.0)
+<a name="l00159"></a><a class="code" href="Header1_8h.html#fd05187d5f2e6f366228dd1fdf739a2c">00159</a> obfunc <a class="code" href="Header1_8h.html#fd05187d5f2e6f366228dd1fdf739a2c">cm2t</a>(<span class="keywordtype">int</span> precell_id, <span class="keywordtype">void</span> * postcell, <span class="keywordtype">int</span> postcell_synid = -1, <span class="keywordtype">double</span> weight = 0.0, <span class="keywordtype">double</span> delay = 0.0)
 <a name="l00160"></a>00160 {
 <a name="l00161"></a>00161     <span class="keywordflow">if</span> ($3 &lt; 0) {
-<a name="l00162"></a>00162         nc = pc-&gt;gid_connect(precell_id, $o2)
+<a name="l00162"></a>00162         <a class="code" href="classParallelManager.html#200bf9db881a8fc77a0eb03f3f05a9d8">nc</a> = <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>-&gt;gid_connect(precell_id, $o2)
 <a name="l00163"></a>00163     } <span class="keywordflow">else</span> {
-<a name="l00164"></a>00164         nc = pc-&gt;gid_connect(precell_id, postcell-&gt;synlist[postcell_synid])
+<a name="l00164"></a>00164         <a class="code" href="classParallelManager.html#200bf9db881a8fc77a0eb03f3f05a9d8">nc</a> = <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>-&gt;gid_connect(precell_id, postcell-&gt;synlist[postcell_synid])
 <a name="l00165"></a>00165          }
-<a name="l00166"></a>00166          nc-&gt;weight = $4
-<a name="l00167"></a>00167                       nc-&gt;delay = $5
-<a name="l00168"></a>00168                                   <span class="keywordflow">return</span> nc
+<a name="l00166"></a>00166          <a class="code" href="classParallelManager.html#200bf9db881a8fc77a0eb03f3f05a9d8">nc</a>-&gt;weight = $4
+<a name="l00167"></a>00167                       <a class="code" href="classParallelManager.html#200bf9db881a8fc77a0eb03f3f05a9d8">nc</a>-&gt;delay = $5
+<a name="l00168"></a>00168                                   <span class="keywordflow">return</span> <a class="code" href="classParallelManager.html#200bf9db881a8fc77a0eb03f3f05a9d8">nc</a>
 <a name="l00169"></a>00169                                      }
 <a name="l00170"></a>00170 
-<a name="l00171"></a>00171                                      <span class="keywordtype">void</span> set_maxstep()
+<a name="l00171"></a><a class="code" href="Header1_8h.html#43af1ace257fcdfb0e252ed16f6a94c6">00171</a>                                      <span class="keywordtype">void</span> <a class="code" href="Header1_8h.html#43af1ace257fcdfb0e252ed16f6a94c6">set_maxstep</a>()
 <a name="l00172"></a>00172 {
 <a name="l00173"></a>00173     <span class="comment">// arg is max allowed, return val is just for this subnet</span>
-<a name="l00174"></a>00174     localmaxstep_ = pc.set_maxstep(10); <span class="comment">// arg is the maximum allowed</span>
+<a name="l00174"></a>00174     localmaxstep_ = <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.set_maxstep(10); <span class="comment">// arg is the maximum allowed</span>
 <a name="l00175"></a>00175 <span class="comment">//  printf("%d localmaxstep=%g\n", myid, localmaxstep_)</span>
 <a name="l00176"></a>00176 }
 <a name="l00177"></a>00177 
-<a name="l00178"></a>00178 proc maxstepsize()
+<a name="l00178"></a><a class="code" href="Header1_8h.html#469e02b0be2de44cd77825fbc03088f5">00178</a> proc <a class="code" href="Header1_8h.html#469e02b0be2de44cd77825fbc03088f5">maxstepsize</a>()
 <a name="l00179"></a>00179 {
 <a name="l00180"></a>00180     local i, m
 <a name="l00181"></a>00181     <span class="keywordflow">if</span> (!maxstepsize_called_) {
 <a name="l00182"></a>00182         maxstepsize_called_ = 1
-<a name="l00183"></a>00183         <span class="keywordflow">if</span> (nwork &gt; 1) {
-<a name="l00184"></a>00184             pc.context(<span class="keyword">this</span>, <span class="stringliteral">"set_maxstep"</span>)
+<a name="l00183"></a>00183         <span class="keywordflow">if</span> (<a class="code" href="classParallelManager.html#ba2093860f9cbc6d98a5964d6bae2db1">nwork</a> &gt; 1) {
+<a name="l00184"></a>00184             <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.context(<span class="keyword">this</span>, <span class="stringliteral">"set_maxstep"</span>)
 <a name="l00185"></a>00185         }
-<a name="l00186"></a>00186         set_maxstep()
+<a name="l00186"></a>00186         <a class="code" href="Header1_8h.html#43af1ace257fcdfb0e252ed16f6a94c6">set_maxstep</a>()
 <a name="l00187"></a>00187     }
 <a name="l00188"></a>00188 }
 <a name="l00189"></a>00189 
@@ -206,107 +207,107 @@
 <a name="l00191"></a>00191 <span class="comment">// without using the bulletin board. A file should be opened</span>
 <a name="l00192"></a>00192 <span class="comment">// with File.aopen for appending at the beginning of the iterator_statement</span>
 <a name="l00193"></a>00193 <span class="comment">// and closed at the end.</span>
-<a name="l00194"></a>00194 iterator serialize()
+<a name="l00194"></a><a class="code" href="Header1_8h.html#0aef7e69a6bcda4232c61cafd33fcdf0">00194</a> iterator <a class="code" href="Header1_8h.html#0aef7e69a6bcda4232c61cafd33fcdf0">serialize</a>()
 <a name="l00195"></a>00195 {
 <a name="l00196"></a>00196     local rank
-<a name="l00197"></a>00197     pc.<a class="code" href="classParSpike.html#9dc964f7412b6beb85b1ca238b9ccb0e" title="Barrier interface to MPI_Barrier.">barrier</a>
-<a name="l00198"></a>00198     <span class="keywordflow">for</span> rank = 0, pc.nhost {
-<a name="l00199"></a>00199     <span class="keywordflow">if</span> (rank == pc.id) {
+<a name="l00197"></a>00197     <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.<a class="code" href="classParSpike.html#9dc964f7412b6beb85b1ca238b9ccb0e" title="Barrier interface to MPI_Barrier.">barrier</a>
+<a name="l00198"></a>00198     <span class="keywordflow">for</span> rank = 0, <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.nhost {
+<a name="l00199"></a>00199     <span class="keywordflow">if</span> (rank == <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.id) {
 <a name="l00200"></a>00200             iterator_statement
 <a name="l00201"></a>00201         }
-<a name="l00202"></a>00202         pc.<a class="code" href="classParSpike.html#9dc964f7412b6beb85b1ca238b9ccb0e" title="Barrier interface to MPI_Barrier.">barrier</a>
+<a name="l00202"></a>00202         <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.<a class="code" href="classParSpike.html#9dc964f7412b6beb85b1ca238b9ccb0e" title="Barrier interface to MPI_Barrier.">barrier</a>
 <a name="l00203"></a>00203     }
 <a name="l00204"></a>00204 }
 <a name="l00205"></a>00205 
-<a name="l00206"></a>00206 proc doinit()
+<a name="l00206"></a><a class="code" href="Header1_8h.html#173a5d1ff60883125cfad0acdfdd2ed3">00206</a> proc <a class="code" href="Header1_8h.html#173a5d1ff60883125cfad0acdfdd2ed3">doinit</a>()
 <a name="l00207"></a>00207 {
 <a name="l00208"></a>00208     stdinit()
 <a name="l00209"></a>00209 }
 <a name="l00210"></a>00210 
-<a name="l00211"></a>00211 proc pinit()
+<a name="l00211"></a><a class="code" href="Header1_8h.html#c5d274fd57201c9623f7b66f38e95781">00211</a> proc <a class="code" href="classParallelManager.html#444ee4939fbf5ac4855539807c9f2ff6">pinit</a>()
 <a name="l00212"></a>00212 {
-<a name="l00213"></a>00213     maxstepsize()
-<a name="l00214"></a>00214     if (nwork &gt; 1) {
-<a name="l00215"></a>00215         pc.context(<span class="keyword">this</span>, <span class="stringliteral">"doinit"</span>)
+<a name="l00213"></a>00213     <a class="code" href="Header1_8h.html#469e02b0be2de44cd77825fbc03088f5">maxstepsize</a>()
+<a name="l00214"></a>00214     <span class="keywordflow">if</span> (<a class="code" href="classParallelManager.html#ba2093860f9cbc6d98a5964d6bae2db1">nwork</a> &gt; 1) {
+<a name="l00215"></a>00215         <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.context(<span class="keyword">this</span>, <span class="stringliteral">"doinit"</span>)
 <a name="l00216"></a>00216     }
-<a name="l00217"></a>00217     doinit() <span class="comment">// the master does one also</span>
+<a name="l00217"></a>00217     <a class="code" href="Header1_8h.html#173a5d1ff60883125cfad0acdfdd2ed3">doinit</a>() <span class="comment">// the master does one also</span>
 <a name="l00218"></a>00218 }
 <a name="l00219"></a>00219 
-<a name="l00220"></a>00220 proc psolve()
+<a name="l00220"></a><a class="code" href="Header1_8h.html#ff530cc43cd470e397450982d78f0118">00220</a> proc <a class="code" href="classParallelManager.html#3f3b97ac74028dd785a5ed532715a356">psolve</a>()
 <a name="l00221"></a>00221 {
-<a name="l00222"></a>00222     pc.psolve($1)
+<a name="l00222"></a>00222     <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.psolve($1)
 <a name="l00223"></a>00223 }
 <a name="l00224"></a>00224 
-<a name="l00225"></a>00225 proc pcontinue()
+<a name="l00225"></a><a class="code" href="Header1_8h.html#2a0817c4c125899ea5ebdc69aac80dc8">00225</a> proc <a class="code" href="classParallelManager.html#b7137b38578b1c1c56ad9b4f4fddafcb">pcontinue</a>()
 <a name="l00226"></a>00226 {
-<a name="l00227"></a>00227     <span class="keywordflow">if</span> (nwork &gt; 1) {
-<a name="l00228"></a>00228         pc.context(<span class="keyword">this</span>, <span class="stringliteral">"psolve"</span>, $1)
+<a name="l00227"></a>00227     <span class="keywordflow">if</span> (<a class="code" href="classParallelManager.html#ba2093860f9cbc6d98a5964d6bae2db1">nwork</a> &gt; 1) {
+<a name="l00228"></a>00228         <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.context(<span class="keyword">this</span>, <span class="stringliteral">"psolve"</span>, $1)
 <a name="l00229"></a>00229     }
-<a name="l00230"></a>00230     psolve($1)
+<a name="l00230"></a>00230     <a class="code" href="classParallelManager.html#3f3b97ac74028dd785a5ed532715a356">psolve</a>($1)
 <a name="l00231"></a>00231 }
 <a name="l00232"></a>00232 
-<a name="l00233"></a>00233 proc prun()
+<a name="l00233"></a><a class="code" href="Header1_8h.html#1a0ab38a0d79dc1f98b77ff87e005cac">00233</a> proc <a class="code" href="classParallelManager.html#1cd18a313c3f069bbcecc7bab56ed186">prun</a>()
 <a name="l00234"></a>00234 {
-<a name="l00235"></a>00235     pinit()
-<a name="l00236"></a>00236     pcontinue(tstop)
+<a name="l00235"></a>00235     <a class="code" href="classParallelManager.html#444ee4939fbf5ac4855539807c9f2ff6">pinit</a>()
+<a name="l00236"></a>00236     <a class="code" href="classParallelManager.html#b7137b38578b1c1c56ad9b4f4fddafcb">pcontinue</a>(tstop)
 <a name="l00237"></a>00237 }
 <a name="l00238"></a>00238 
-<a name="l00239"></a>00239 proc postwait()
+<a name="l00239"></a><a class="code" href="Header1_8h.html#4814fb6b36d502e78a068e6220093c7a">00239</a> proc <a class="code" href="Header1_8h.html#4814fb6b36d502e78a068e6220093c7a">postwait</a>()
 <a name="l00240"></a>00240 {
 <a name="l00241"></a>00241     local w, sm, s, r, ru
 <a name="l00242"></a>00242     <span class="keywordflow">if</span> ($1 == 0) {
-<a name="l00243"></a>00243         pc.post(<span class="stringliteral">"waittime"</span>, myid, pc.wait_time())
+<a name="l00243"></a>00243         <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.post(<span class="stringliteral">"waittime"</span>, <a class="code" href="classParallelManager.html#1143bfa13d96cec67cafc00fe949888b">myid</a>, <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.wait_time())
 <a name="l00244"></a>00244     } <span class="keywordflow">else</span> {
-<a name="l00245"></a>00245         w = pc.wait_time()
-<a name="l00246"></a>00246             sm = pc.spike_statistics(&amp;s, &amp;r, &amp;ru)
-<a name="l00247"></a>00247                  pc.post(<span class="stringliteral">"poststat"</span>, myid, w, sm, s, r, ru)
+<a name="l00245"></a>00245         w = <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.wait_time()
+<a name="l00246"></a>00246             sm = <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.spike_statistics(&amp;s, &amp;r, &amp;ru)
+<a name="l00247"></a>00247                  <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.post(<span class="stringliteral">"poststat"</span>, <a class="code" href="classParallelManager.html#1143bfa13d96cec67cafc00fe949888b">myid</a>, w, sm, s, r, ru)
 <a name="l00248"></a>00248              }
 <a name="l00249"></a>00249          }
 <a name="l00250"></a>00250 
-<a name="l00251"></a>00251          proc prstat()
+<a name="l00251"></a><a class="code" href="Header1_8h.html#c13942a64470da4a3930c31ba803ce4c">00251</a>          proc <a class="code" href="classParallelManager.html#d85ddbf0cd80e9f6211cc7754259a57d">prstat</a>()
 <a name="l00252"></a>00252 {
 <a name="l00253"></a>00253     local i, id, w, sm, s, r, ru <span class="comment">// print the wait time and statis</span>
-<a name="l00254"></a>00254     <span class="keywordflow">if</span> (nwork &gt; 1) {
-<a name="l00255"></a>00255         pc.context(<span class="keyword">this</span>, <span class="stringliteral">"postwait"</span>, $1)
+<a name="l00254"></a>00254     <span class="keywordflow">if</span> (<a class="code" href="classParallelManager.html#ba2093860f9cbc6d98a5964d6bae2db1">nwork</a> &gt; 1) {
+<a name="l00255"></a>00255         <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.context(<span class="keyword">this</span>, <span class="stringliteral">"postwait"</span>, $1)
 <a name="l00256"></a>00256     }
-<a name="l00257"></a>00257     postwait($1)
-<a name="l00258"></a>00258     if ($1 == 0) {
-<a name="l00259"></a>00259         <span class="keywordflow">for</span> i = 0, nwork - 1 {
-<a name="l00260"></a>00260         pc.take(<span class="stringliteral">"waittime"</span>, &amp;<span class="keywordtype">id</span>, &amp;w)
+<a name="l00257"></a>00257     <a class="code" href="Header1_8h.html#4814fb6b36d502e78a068e6220093c7a">postwait</a>($1)
+<a name="l00258"></a>00258     <span class="keywordflow">if</span> ($1 == 0) {
+<a name="l00259"></a>00259         <span class="keywordflow">for</span> i = 0, <a class="code" href="classParallelManager.html#ba2093860f9cbc6d98a5964d6bae2db1">nwork</a> - 1 {
+<a name="l00260"></a>00260         <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.take(<span class="stringliteral">"waittime"</span>, &amp;<span class="keywordtype">id</span>, &amp;w)
 <a name="l00261"></a>00261             printf(<span class="stringliteral">"%d wait time %g\n"</span>, <span class="keywordtype">id</span>, w)
 <a name="l00262"></a>00262         }
 <a name="l00263"></a>00263     } <span class="keywordflow">else</span> {
 <a name="l00264"></a>00264         printf(<span class="stringliteral">"id\t nsmax\t nsend\t nrecv\t nrused\t wait\n"</span>)
-<a name="l00265"></a>00265         for i = 0, nwork - 1 {
-<a name="l00266"></a>00266         pc.take(<span class="stringliteral">"poststat"</span>, &amp;<span class="keywordtype">id</span>, &amp;w, &amp;sm, &amp;s, &amp;r, &amp;ru)
+<a name="l00265"></a>00265         <span class="keywordflow">for</span> i = 0, <a class="code" href="classParallelManager.html#ba2093860f9cbc6d98a5964d6bae2db1">nwork</a> - 1 {
+<a name="l00266"></a>00266         <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.take(<span class="stringliteral">"poststat"</span>, &amp;<span class="keywordtype">id</span>, &amp;w, &amp;sm, &amp;s, &amp;r, &amp;ru)
 <a name="l00267"></a>00267             printf(<span class="stringliteral">"%d\t %d\t %d\t %d\t %d\t %g\n"</span>, <span class="keywordtype">id</span>, sm, s, r, ru, w)
 <a name="l00268"></a>00268         }
 <a name="l00269"></a>00269         printf(<span class="stringliteral">"end of prstat\n"</span>)
 <a name="l00270"></a>00270     }
 <a name="l00271"></a>00271 }
 <a name="l00272"></a>00272 
-<a name="l00273"></a>00273 proc postspikes()
+<a name="l00273"></a><a class="code" href="Header1_8h.html#6cc080e872880ed45b7868377708c4f4">00273</a> proc <a class="code" href="Header1_8h.html#6cc080e872880ed45b7868377708c4f4">postspikes</a>()
 <a name="l00274"></a>00274 {
-<a name="l00275"></a>00275     pc.post(<span class="stringliteral">"postspike"</span>, spikevec, idvec);
+<a name="l00275"></a>00275     <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.post(<span class="stringliteral">"postspike"</span>, <a class="code" href="classParallelManager.html#294e66464d9cd43c241a81eaa432c874">spikevec</a>, <a class="code" href="classParallelManager.html#d497e4d7cbf11a186e4a0b6ed52282cc">idvec</a>);
 <a name="l00276"></a>00276 }
 <a name="l00277"></a>00277 
-<a name="l00278"></a>00278 proc gatherspikes()
+<a name="l00278"></a><a class="code" href="Header1_8h.html#304710b5025af07e9828c334fb9f7186">00278</a> proc <a class="code" href="Header1_8h.html#304710b5025af07e9828c334fb9f7186">gatherspikes</a>()
 <a name="l00279"></a>00279 {
 <a name="l00280"></a>00280     local i
 <a name="l00281"></a>00281 
-<a name="l00282"></a>00282     <span class="keywordflow">if</span> (nwork &gt; 1) {
+<a name="l00282"></a>00282     <span class="keywordflow">if</span> (<a class="code" href="classParallelManager.html#ba2093860f9cbc6d98a5964d6bae2db1">nwork</a> &gt; 1) {
 <a name="l00283"></a>00283         std::vector&lt;float&gt; s, id;
-<a name="l00284"></a>00284         pc.context(<span class="keyword">this</span>, <span class="stringliteral">"postspikes"</span>)
-<a name="l00285"></a>00285         <span class="keywordflow">for</span> i = 0, nwork - 2 {
-<a name="l00286"></a>00286         pc.take(<span class="stringliteral">"postspike"</span>, s, <span class="keywordtype">id</span>)
-<a name="l00287"></a>00287             spikevec.append(s);
-<a name="l00288"></a>00288             idvec.append(<span class="keywordtype">id</span>);
+<a name="l00284"></a>00284         <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.context(<span class="keyword">this</span>, <span class="stringliteral">"postspikes"</span>)
+<a name="l00285"></a>00285         <span class="keywordflow">for</span> i = 0, <a class="code" href="classParallelManager.html#ba2093860f9cbc6d98a5964d6bae2db1">nwork</a> - 2 {
+<a name="l00286"></a>00286         <a class="code" href="classParallelManager.html#5247ff3e706ddd247a6d0918355f2936">pc</a>.take(<span class="stringliteral">"postspike"</span>, s, <span class="keywordtype">id</span>)
+<a name="l00287"></a>00287             <a class="code" href="classParallelManager.html#294e66464d9cd43c241a81eaa432c874">spikevec</a>.append(s);
+<a name="l00288"></a>00288             <a class="code" href="classParallelManager.html#d497e4d7cbf11a186e4a0b6ed52282cc">idvec</a>.append(<span class="keywordtype">id</span>);
 <a name="l00289"></a>00289         }
 <a name="l00290"></a>00290     }
 <a name="l00291"></a>00291 }
 <a name="l00292"></a>00292 <span class="preprocessor">#endif</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:04 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:33:49 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: OutputterImpl&lt; FileWrapper, OutputOperation, NeuronListHandler &gt; Class Template Reference</title>
+<title>ParSpikeSimv6.2: OutputterImpl&lt; FileWrapper, OutputOperation, NeuronListHandler &gt; Class Template Reference</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,6 +9,7 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -44,26 +45,22 @@ Inheritance diagram for OutputterImpl&lt; FileWrapper, OutputOperation, NeuronLi
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputterImpl.html#6b625ff75dcf0e573c81aa11cf159d6b">OutputterImpl</a> (const <a class="el" href="classOutputterBase.html#e7779a14de8dd01be50c2036607351c3">Tag</a> &amp;type_tag, const <a class="el" href="classOutputterBase.html#e7779a14de8dd01be50c2036607351c3">Tag</a> &amp;freq_tag, const typename FileWrapper::InitValue &amp;init_1, const typename OutputOperation::InitValue &amp;init_2, const typename NeuronListHandler::InitValue &amp;init_3)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor.  <a href="#6b625ff75dcf0e573c81aa11cf159d6b"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="8d5014b2af9f71bb8b1c4f99f0813ff7"></a><!-- doxytag: member="OutputterImpl::open_file" ref="8d5014b2af9f71bb8b1c4f99f0813ff7" args="()" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputterImpl.html#8d5014b2af9f71bb8b1c4f99f0813ff7">open_file</a> ()</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputterImpl.html#8d5014b2af9f71bb8b1c4f99f0813ff7">open_file</a> ()</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open the file via FileWrapper. <br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Open the file via FileWrapper.  <a href="#8d5014b2af9f71bb8b1c4f99f0813ff7"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputterImpl.html#822bf9ad9edfedb489adef91e0645cd2">~OutputterImpl</a> ()</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Destructor.  <a href="#822bf9ad9edfedb489adef91e0645cd2"></a><br></td></tr>
 <tr><td colspan="2"><br><h2>Protected Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="367747a752e9306f38285e6dbeeaddc8"></a><!-- doxytag: member="OutputterImpl::add_group" ref="367747a752e9306f38285e6dbeeaddc8" args="(Group *const gp)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputterImpl.html#367747a752e9306f38285e6dbeeaddc8">add_group</a> (<a class="el" href="classGroup.html">Group</a> *const gp)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputterImpl.html#367747a752e9306f38285e6dbeeaddc8">add_group</a> (<a class="el" href="classGroup.html">Group</a> *const gp)</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add an entire group to the list of neurons to be outputted. <br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="8b539c466fd9376ac49f1b2a8bd312ac"></a><!-- doxytag: member="OutputterImpl::do_operation" ref="8b539c466fd9376ac49f1b2a8bd312ac" args="(const Time &amp;t_start, const Time &amp;t_stop)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputterImpl.html#8b539c466fd9376ac49f1b2a8bd312ac">do_operation</a> (const Time &amp;t_start, const Time &amp;t_stop)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add an entire group to the list of neurons to be outputted.  <a href="#367747a752e9306f38285e6dbeeaddc8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputterImpl.html#8b539c466fd9376ac49f1b2a8bd312ac">do_operation</a> (const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;t_start, const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;t_stop)</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Operation to do when called by <a class="el" href="classOutputManager.html" title="OutputManager: class definition.">OutputManager</a>. <br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="66d3eaad150af698ffda6ce798430e04"></a><!-- doxytag: member="OutputterImpl::export_ID" ref="66d3eaad150af698ffda6ce798430e04" args="()" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputterImpl.html#66d3eaad150af698ffda6ce798430e04">export_ID</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Operation to do when called by <a class="el" href="classOutputManager.html" title="OutputManager: class definition.">OutputManager</a>.  <a href="#8b539c466fd9376ac49f1b2a8bd312ac"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOutputterImpl.html#66d3eaad150af698ffda6ce798430e04">export_ID</a> ()</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Export the IDs of the neurons treated by the outputter. <br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Export the IDs of the neurons treated by the outputter.  <a href="#66d3eaad150af698ffda6ce798430e04"></a><br></td></tr>
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
 <h3>template&lt;class FileWrapper, class OutputOperation, class NeuronListHandler&gt;<br>
@@ -150,10 +147,122 @@ Destructor.
 Call FileWrapper to close the file(s). 
 </div>
 </div><p>
+<hr><h2>Member Function Documentation</h2>
+<a class="anchor" name="8d5014b2af9f71bb8b1c4f99f0813ff7"></a><!-- doxytag: member="OutputterImpl::open_file" ref="8d5014b2af9f71bb8b1c4f99f0813ff7" args="()" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class FileWrapper, class OutputOperation, class NeuronListHandler&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classOutputterImpl.html">OutputterImpl</a>&lt; FileWrapper, OutputOperation, NeuronListHandler &gt;::open_file           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Open the file via FileWrapper. 
+<p>
+
+<p>Implements <a class="el" href="classOutputterBase.html#be73bbe8714bd74d859cbbbfc8854e6c">OutputterBase</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="367747a752e9306f38285e6dbeeaddc8"></a><!-- doxytag: member="OutputterImpl::add_group" ref="367747a752e9306f38285e6dbeeaddc8" args="(Group *const gp)" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class FileWrapper, class OutputOperation, class NeuronListHandler&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classOutputterImpl.html">OutputterImpl</a>&lt; FileWrapper, OutputOperation, NeuronListHandler &gt;::add_group           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGroup.html">Group</a> *const &nbsp;</td>
+          <td class="paramname"> <em>gp</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, protected, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Add an entire group to the list of neurons to be outputted. 
+<p>
+
+<p>Implements <a class="el" href="classOutputterBase.html#06626d0d3b52df6b825d9a4c981ed7d0">OutputterBase</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="8b539c466fd9376ac49f1b2a8bd312ac"></a><!-- doxytag: member="OutputterImpl::do_operation" ref="8b539c466fd9376ac49f1b2a8bd312ac" args="(const Time &amp;t_start, const Time &amp;t_stop)" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class FileWrapper, class OutputOperation, class NeuronListHandler&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classOutputterImpl.html">OutputterImpl</a>&lt; FileWrapper, OutputOperation, NeuronListHandler &gt;::do_operation           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>t_start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>t_stop</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inline, protected, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Operation to do when called by <a class="el" href="classOutputManager.html" title="OutputManager: class definition.">OutputManager</a>. 
+<p>
+
+<p>Implements <a class="el" href="classOutputterBase.html#fd4fa5c58ad0dbe1992556420ace4d89">OutputterBase</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="66d3eaad150af698ffda6ce798430e04"></a><!-- doxytag: member="OutputterImpl::export_ID" ref="66d3eaad150af698ffda6ce798430e04" args="()" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class FileWrapper, class OutputOperation, class NeuronListHandler&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classOutputterImpl.html">OutputterImpl</a>&lt; FileWrapper, OutputOperation, NeuronListHandler &gt;::export_ID           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, protected, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Export the IDs of the neurons treated by the outputter. 
+<p>
+
+<p>Implements <a class="el" href="classOutputterBase.html#37659fafa25601cffbc271c31533a61d">OutputterBase</a>.</p>
+
+</div>
+</div><p>
 <hr>The documentation for this class was generated from the following file:<ul>
 <li>/media/data/Work/spikesimv6/<a class="el" href="OutputManager_8h-source.html">OutputManager.h</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:17 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:56 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: AdditiveSTDPNegExpFunction Class Reference</title>
+<title>ParSpikeSimv6.2: AdditiveSTDPNegExpFunction Class Reference</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,6 +9,7 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -35,11 +36,9 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdditiveSTDPNegExpFunction.html#05ef32c4922215e37787ebc2aa0015ab">set_params</a> (double tauP, double tauD, double cP, double cD)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sets the parmeters of the function.  <a href="#05ef32c4922215e37787ebc2aa0015ab"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="00029739a18c4d6126aa6a9041ae0019"></a><!-- doxytag: member="AdditiveSTDPNegExpFunction::operator()" ref="00029739a18c4d6126aa6a9041ae0019" args="(const Time &amp;t1, const Time &amp;t2)" -->
-double&nbsp;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (const Time &amp;t1, const Time &amp;t2)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdditiveSTDPNegExpFunction.html#00029739a18c4d6126aa6a9041ae0019">operator()</a> (const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;t1, const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;t2)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="4ee534af9fc9655b5457c44498a1b48d"></a><!-- doxytag: member="AdditiveSTDPNegExpFunction::weight_change_impl" ref="4ee534af9fc9655b5457c44498a1b48d" args="(double &amp;weight, const double &amp;dt) const " -->
-double&nbsp;</td><td class="memItemRight" valign="bottom"><b>weight_change_impl</b> (double &amp;weight, const double &amp;dt) const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdditiveSTDPNegExpFunction.html#4ee534af9fc9655b5457c44498a1b48d">weight_change_impl</a> (double &amp;weight, const double &amp;dt) const </td></tr>
 
 <tr><td colspan="2"><br><h2>Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdditiveSTDPNegExpFunction.html#54a73c5a3ef743c3eaaa28beeed253a4">inv_tauP_</a></td></tr>
@@ -102,6 +101,64 @@ double&nbsp;</td><td class="memItemRight" valign="bottom"><b>weight_change_impl<
 Sets the parmeters of the function. 
 <p>
 Called by the constructor of <a class="el" href="classSTDPMech.html" title="STDPMech definition.">STDPMech</a>. 
+</div>
+</div><p>
+<a class="anchor" name="00029739a18c4d6126aa6a9041ae0019"></a><!-- doxytag: member="AdditiveSTDPNegExpFunction::operator()" ref="00029739a18c4d6126aa6a9041ae0019" args="(const Time &amp;t1, const Time &amp;t2)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double AdditiveSTDPNegExpFunction::operator()           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>t1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>t2</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inline, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="4ee534af9fc9655b5457c44498a1b48d"></a><!-- doxytag: member="AdditiveSTDPNegExpFunction::weight_change_impl" ref="4ee534af9fc9655b5457c44498a1b48d" args="(double &amp;weight, const double &amp;dt) const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double AdditiveSTDPNegExpFunction::weight_change_impl           </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&nbsp;</td>
+          <td class="paramname"> <em>weight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&nbsp;</td>
+          <td class="paramname"> <em>dt</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td> const<code> [inline, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
 </div>
 </div><p>
 <hr><h2>Member Data Documentation</h2>
@@ -213,7 +270,7 @@ integral value of the function
 <hr>The documentation for this class was generated from the following file:<ul>
 <li>/media/data/Work/spikesimv6/<a class="el" href="STDPFunction_8h-source.html">STDPFunction.h</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:07 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:54 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

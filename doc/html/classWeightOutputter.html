@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: WeightOutputter Class Reference</title>
+<title>ParSpikeSimv6.2: WeightOutputter Class Reference</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,6 +9,7 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -33,6 +34,7 @@ Inheritance diagram for WeightOutputter:</div>
 
 <p><center><img src="classWeightOutputter.png" usemap="#WeightOutputter_map" border="0" alt=""></center>
 <map name="WeightOutputter_map">
+<area href="classDataCommonNeuronVisitor.html" alt="DataCommonNeuronVisitor" shape="rect" coords="99,56,287,80">
 <area href="structAbstractVisitor.html" alt="AbstractVisitor" shape="rect" coords="0,0,188,24">
 <area href="classVisitor.html" alt="Visitor< DataCommonNeuron >" shape="rect" coords="198,0,386,24">
 </map>
@@ -42,35 +44,73 @@ Inheritance diagram for WeightOutputter:</div>
 <a href="classWeightOutputter-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">unsigned&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWeightOutputter.html#b79dcda31131cac711f637571b901f4e">nb_outputs_for_neuron</a> (NeuronInterface *const nrn)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">unsigned&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWeightOutputter.html#b79dcda31131cac711f637571b901f4e">nb_outputs_for_neuron</a> (<a class="el" href="classNeuronInterface.html">NeuronInterface</a> *const nrn)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the number of post_synapses of the neuron.  <a href="#b79dcda31131cac711f637571b901f4e"></a><br></td></tr>
 <tr><td class="memTemplParams" nowrap colspan="2">template&lt;class FileWrapper&gt; </td></tr>
-<tr><td class="memTemplItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classWeightOutputter.html#789bccb82fde4daca9851fc1e9b4498e">operation</a> (const Time &amp;t_start, const Time &amp;t_stop, NeuronInterface *const nrn, FileWrapper *const file_wrapper)</td></tr>
+<tr><td class="memTemplItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classWeightOutputter.html#789bccb82fde4daca9851fc1e9b4498e">operation</a> (const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;t_start, const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;t_stop, <a class="el" href="classNeuronInterface.html">NeuronInterface</a> *const nrn, FileWrapper *const file_wrapper)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Performs the outputting of the weights of the post-synaptic spikes of a neuron.  <a href="#789bccb82fde4daca9851fc1e9b4498e"></a><br></td></tr>
 <tr><td class="memTemplParams" nowrap colspan="2">template&lt;class FileWrapper&gt; </td></tr>
-<tr><td class="memTemplItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classWeightOutputter.html#4e935d426e490b7c6788a69043d46aec">export_connectivity</a> (NeuronInterface *const nrn, FileWrapper *const file_wrapper, int pre_post)</td></tr>
+<tr><td class="memTemplItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classWeightOutputter.html#4e935d426e490b7c6788a69043d46aec">export_connectivity</a> (<a class="el" href="classNeuronInterface.html">NeuronInterface</a> *const nrn, FileWrapper *const file_wrapper, int pre_post)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the number of post_synapses of the neuron.  <a href="#4e935d426e490b7c6788a69043d46aec"></a><br></td></tr>
 <tr><td colspan="2"><br><h2>Protected Types</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="1e7f712e20264f1de5362251255ce7f5"></a><!-- doxytag: member="WeightOutputter::InitValue" ref="1e7f712e20264f1de5362251255ce7f5" args="" -->
-typedef void *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWeightOutputter.html#1e7f712e20264f1de5362251255ce7f5">InitValue</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">typedef void *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWeightOutputter.html#1e7f712e20264f1de5362251255ce7f5">InitValue</a></td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Type for initialisation value. <br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Type for initialisation value.  <a href="#1e7f712e20264f1de5362251255ce7f5"></a><br></td></tr>
 <tr><td colspan="2"><br><h2>Protected Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="ec5e31ba1eb65d3e76407f9acff68d29"></a><!-- doxytag: member="WeightOutputter::WeightOutputter" ref="ec5e31ba1eb65d3e76407f9acff68d29" args="(InitValue)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWeightOutputter.html#ec5e31ba1eb65d3e76407f9acff68d29">WeightOutputter</a> (<a class="el" href="classWeightOutputter.html#1e7f712e20264f1de5362251255ce7f5">InitValue</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWeightOutputter.html#ec5e31ba1eb65d3e76407f9acff68d29">WeightOutputter</a> (<a class="el" href="classWeightOutputter.html#1e7f712e20264f1de5362251255ce7f5">InitValue</a>)</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor. <br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="b6d2e2734e193152c2b8ef07f5927cdf"></a><!-- doxytag: member="WeightOutputter::do_operation" ref="b6d2e2734e193152c2b8ef07f5927cdf" args="(const Time &amp;t_start, const Time &amp;t_stop)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><b>do_operation</b> (const Time &amp;t_start, const Time &amp;t_stop)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor.  <a href="#ec5e31ba1eb65d3e76407f9acff68d29"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWeightOutputter.html#b6d2e2734e193152c2b8ef07f5927cdf">do_operation</a> (const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;t_start, const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;t_stop)</td></tr>
 
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
 Outputs the weights of the post-synapses of a neuron. 
 <p>
-The method template <a class="el" href="classSpikingRateOutputter.html#b3ffbb032a9fd3df3d766cd644eb6556">SpikingRateOutputter::operation</a> depends on the the template parameter <b>FileWrapper</b>. <hr><h2>Member Function Documentation</h2>
+The method template <a class="el" href="classSpikingRateOutputter.html#b3ffbb032a9fd3df3d766cd644eb6556">SpikingRateOutputter::operation</a> depends on the the template parameter <b>FileWrapper</b>. <hr><h2>Member Typedef Documentation</h2>
+<a class="anchor" name="1e7f712e20264f1de5362251255ce7f5"></a><!-- doxytag: member="WeightOutputter::InitValue" ref="1e7f712e20264f1de5362251255ce7f5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void* <a class="el" href="classWeightOutputter.html#1e7f712e20264f1de5362251255ce7f5">WeightOutputter::InitValue</a><code> [protected]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Type for initialisation value. 
+<p>
+
+</div>
+</div><p>
+<hr><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" name="ec5e31ba1eb65d3e76407f9acff68d29"></a><!-- doxytag: member="WeightOutputter::WeightOutputter" ref="ec5e31ba1eb65d3e76407f9acff68d29" args="(InitValue)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">WeightOutputter::WeightOutputter           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classWeightOutputter.html#1e7f712e20264f1de5362251255ce7f5">InitValue</a>&nbsp;</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Constructor. 
+<p>
+
+</div>
+</div><p>
+<hr><h2>Member Function Documentation</h2>
 <a class="anchor" name="b79dcda31131cac711f637571b901f4e"></a><!-- doxytag: member="WeightOutputter::nb_outputs_for_neuron" ref="b79dcda31131cac711f637571b901f4e" args="(NeuronInterface *const nrn)" -->
 <div class="memitem">
 <div class="memproto">
@@ -78,7 +118,7 @@ The method template <a class="el" href="classSpikingRateOutputter.html#b3ffbb032
         <tr>
           <td class="memname">unsigned WeightOutputter::nb_outputs_for_neuron           </td>
           <td>(</td>
-          <td class="paramtype">NeuronInterface *const &nbsp;</td>
+          <td class="paramtype"><a class="el" href="classNeuronInterface.html">NeuronInterface</a> *const &nbsp;</td>
           <td class="paramname"> <em>nrn</em>          </td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
@@ -102,19 +142,19 @@ template&lt;class FileWrapper&gt; </div>
         <tr>
           <td class="memname">void WeightOutputter::operation           </td>
           <td>(</td>
-          <td class="paramtype">const Time &amp;&nbsp;</td>
+          <td class="paramtype">const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>t_start</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Time &amp;&nbsp;</td>
+          <td class="paramtype">const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>t_stop</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">NeuronInterface *const &nbsp;</td>
+          <td class="paramtype"><a class="el" href="classNeuronInterface.html">NeuronInterface</a> *const &nbsp;</td>
           <td class="paramname"> <em>nrn</em>, </td>
         </tr>
         <tr>
@@ -155,7 +195,7 @@ template&lt;class FileWrapper&gt; </div>
         <tr>
           <td class="memname">void WeightOutputter::export_connectivity           </td>
           <td>(</td>
-          <td class="paramtype">NeuronInterface *const &nbsp;</td>
+          <td class="paramtype"><a class="el" href="classNeuronInterface.html">NeuronInterface</a> *const &nbsp;</td>
           <td class="paramname"> <em>nrn</em>, </td>
         </tr>
         <tr>
@@ -185,10 +225,39 @@ Returns the number of post_synapses of the neuron.
 Used by a class <b>NeuronListHandler</b> (see <a class="el" href="classOutputterImpl.html" title="OutputterImpl: class template with the concrete outputting mechanisms.">OutputterImpl</a>) to export the ID of the post-neurons of <b>nrn</b>. 
 </div>
 </div><p>
+<a class="anchor" name="b6d2e2734e193152c2b8ef07f5927cdf"></a><!-- doxytag: member="WeightOutputter::do_operation" ref="b6d2e2734e193152c2b8ef07f5927cdf" args="(const Time &amp;t_start, const Time &amp;t_stop)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WeightOutputter::do_operation           </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>t_start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>t_stop</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inline, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <hr>The documentation for this class was generated from the following files:<ul>
 <li>/media/data/Work/spikesimv6/<a class="el" href="WeightOperations_8h-source.html">WeightOperations.h</a><li>/media/data/Work/spikesimv6/<a class="el" href="WeightOutputs_8h-source.html">WeightOutputs.h</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:20 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:57 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

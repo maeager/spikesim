@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: CorrInputMech&lt; CorrInputMechConfigType &gt; Class Template Reference</title>
+<title>ParSpikeSimv6.2: CorrInputMech&lt; CorrInputMechConfigType &gt; Class Template Reference</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,6 +9,7 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -32,15 +33,12 @@
 <a href="classCorrInputMech-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Protected Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="76150d705d2d8a80898e3ad222b604c2"></a><!-- doxytag: member="CorrInputMech::CorrInputMech" ref="76150d705d2d8a80898e3ad222b604c2" args="(ConfigBase *const configurator)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><b>CorrInputMech</b> (<a class="el" href="classConfigBase.html">ConfigBase</a> *const configurator)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCorrInputMech.html#76150d705d2d8a80898e3ad222b604c2">CorrInputMech</a> (<a class="el" href="classConfigBase.html">ConfigBase</a> *const configurator)</td></tr>
 
-<tr><td class="memTemplParams" nowrap colspan="2"><a class="anchor" name="0cc6b73d634a8cdfe8c42c68265ab9a9"></a><!-- doxytag: member="CorrInputMech::perform_calculations" ref="0cc6b73d634a8cdfe8c42c68265ab9a9" args="(TypeImpl &amp;neuron)" -->
-template&lt;class TypeImpl&gt; </td></tr>
-<tr><td class="memTemplItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memTemplItemRight" valign="bottom"><b>perform_calculations</b> (TypeImpl &amp;neuron)</td></tr>
+<tr><td class="memTemplParams" nowrap colspan="2">template&lt;class TypeImpl&gt; </td></tr>
+<tr><td class="memTemplItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classCorrInputMech.html#0cc6b73d634a8cdfe8c42c68265ab9a9">perform_calculations</a> (TypeImpl &amp;neuron)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="74ef02ba088ff83a131fe6bd308b1faa"></a><!-- doxytag: member="CorrInputMech::potential_impl" ref="74ef02ba088ff83a131fe6bd308b1faa" args="() const " -->
-const Volt &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><b>potential_impl</b> () const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">const <a class="el" href="GlobalDefs_8h.html#dc62585316487577d959750c59d5cc19">Volt</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCorrInputMech.html#74ef02ba088ff83a131fe6bd308b1faa">potential_impl</a> () const </td></tr>
 
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
@@ -49,10 +47,79 @@ const Volt &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><b>potential
 
 <a class="el" href="classCorrInputMech.html" title="CorrInputMech: class template for correlated Poisson pulse train generators.">CorrInputMech</a>: class template for correlated Poisson pulse train generators. 
 <p>
-The mechanism inside can rely on a constant rate (DeltaCorrInputRef, <a class="el" href="classShortTimeCorrInputRef.html" title="ShortTimeCorrInputRef:.">ShortTimeCorrInputRef</a>) or oscillatory (<a class="el" href="classOscillatoryDeltaCorrInputRef.html" title="OscillatoryDeltaCorrInputRef: oscillatory version.">OscillatoryDeltaCorrInputRef</a>). , with constant correlation within a group, cf. common reference CorrGroupReference <hr>The documentation for this class was generated from the following file:<ul>
+The mechanism inside can rely on a constant rate (<a class="el" href="classDeltaCorrInputRef.html">DeltaCorrInputRef</a>, <a class="el" href="classShortTimeCorrInputRef.html" title="ShortTimeCorrInputRef:.">ShortTimeCorrInputRef</a>) or oscillatory (<a class="el" href="classOscillatoryDeltaCorrInputRef.html" title="OscillatoryDeltaCorrInputRef: oscillatory version.">OscillatoryDeltaCorrInputRef</a>). , with constant correlation within a group, cf. common reference CorrGroupReference <hr><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" name="76150d705d2d8a80898e3ad222b604c2"></a><!-- doxytag: member="CorrInputMech::CorrInputMech" ref="76150d705d2d8a80898e3ad222b604c2" args="(ConfigBase *const configurator)" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class CorrInputMechConfigType&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCorrInputMech.html">CorrInputMech</a>&lt; CorrInputMechConfigType &gt;::<a class="el" href="classCorrInputMech.html">CorrInputMech</a>           </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classConfigBase.html">ConfigBase</a> *const &nbsp;</td>
+          <td class="paramname"> <em>configurator</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, explicit, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<hr><h2>Member Function Documentation</h2>
+<a class="anchor" name="0cc6b73d634a8cdfe8c42c68265ab9a9"></a><!-- doxytag: member="CorrInputMech::perform_calculations" ref="0cc6b73d634a8cdfe8c42c68265ab9a9" args="(TypeImpl &amp;neuron)" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class CorrInputMechConfigType&gt; </div>
+<div class="memtemplate">
+template&lt;class TypeImpl&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classCorrInputMech.html">CorrInputMech</a>&lt; CorrInputMechConfigType &gt;::perform_calculations           </td>
+          <td>(</td>
+          <td class="paramtype">TypeImpl &amp;&nbsp;</td>
+          <td class="paramname"> <em>neuron</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="74ef02ba088ff83a131fe6bd308b1faa"></a><!-- doxytag: member="CorrInputMech::potential_impl" ref="74ef02ba088ff83a131fe6bd308b1faa" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class CorrInputMechConfigType&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="GlobalDefs_8h.html#dc62585316487577d959750c59d5cc19">Volt</a>&amp; <a class="el" href="classCorrInputMech.html">CorrInputMech</a>&lt; CorrInputMechConfigType &gt;::potential_impl           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<hr>The documentation for this class was generated from the following file:<ul>
 <li>/media/data/Work/spikesimv6/<a class="el" href="CorrInputMech_8h-source.html">CorrInputMech.h</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:10 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:55 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

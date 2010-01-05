@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: /media/data/Work/spikesimv6/ManageableInput.h Source File</title>
+<title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/ManageableInput.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,11 +9,12 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>/media/data/Work/spikesimv6/ManageableInput.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// ManageableInput.h</span>
+<h1>/media/data/Work/spikesimv6/ManageableInput.h</h1><a href="ManageableInput_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// ManageableInput.h</span>
 <a name="l00003"></a>00003 <span class="comment"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#ifndef MANAGEABLEINPUT_H</span>
 <a name="l00005"></a>00005 <span class="preprocessor"></span><span class="preprocessor">#define MANAGEABLEINPUT_H</span>
@@ -21,8 +22,8 @@
 <a name="l00007"></a>00007 
 <a name="l00008"></a>00008 <span class="preprocessor">#include &lt;list&gt;</span>
 <a name="l00009"></a>00009 
-<a name="l00010"></a>00010 <span class="preprocessor">#include "Error.h"</span>
-<a name="l00011"></a>00011 <span class="preprocessor">#include "GlobalDefs.h"</span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include "<a class="code" href="Error_8h.html">Error.h</a>"</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include "<a class="code" href="GlobalDefs_8h.html">GlobalDefs.h</a>"</span>
 <a name="l00012"></a>00012 
 <a name="l00013"></a>00013 
 <a name="l00014"></a>00014 <span class="keyword">class </span><a class="code" href="classManageableInput.html" title="ManageableInput class definition.">ManageableInput</a>;
@@ -30,14 +31,14 @@
 <a name="l00016"></a>00016 
 <a name="l00018"></a><a class="code" href="classManageableInputManager.html">00018</a> <span class="keyword">class </span><a class="code" href="classManageableInputManager.html" title="ManageableInputManager class definition to centralise all manageable inputs and launch...">ManageableInputManager</a>
 <a name="l00019"></a>00019 {
-<a name="l00020"></a>00020     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classManageableInput.html" title="ManageableInput class definition.">ManageableInput</a>;
-<a name="l00021"></a>00021     <span class="keyword">friend</span> <span class="keyword">class </span>Threading;
+<a name="l00020"></a><a class="code" href="classManageableInputManager.html#16b9bb84b40609ef338356f517aaa397">00020</a>     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classManageableInput.html" title="ManageableInput class definition.">ManageableInput</a>;
+<a name="l00021"></a><a class="code" href="classManageableInputManager.html#f9f4c90dfd384cfe3b1092b611967c30">00021</a>     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classThreading.html">Threading</a>;
 <a name="l00022"></a>00022 <span class="keyword">public</span>:
 <a name="l00023"></a>00023     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classManageableInputManager.html#1c78a27f25164caccd3372ea78899352">input_update_general</a>();
 <a name="l00024"></a>00024 <span class="comment">//  static ManageableInput * const get_primary_input(unsigned i);</span>
 <a name="l00025"></a>00025 <span class="keyword">protected</span>:
-<a name="l00026"></a>00026     <span class="keyword">static</span> <span class="keywordtype">void</span> append(<a class="code" href="classManageableInput.html" title="ManageableInput class definition.">ManageableInput</a> * <span class="keyword">const</span> pmi);
-<a name="l00027"></a>00027     <span class="keyword">static</span> std::list&lt;ManageableInput *&gt; list_inputs_primary_;
+<a name="l00026"></a>00026     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classManageableInputManager.html#9ab5e445edd3b9c7ce8607c6bb54f6d4">append</a>(<a class="code" href="classManageableInput.html" title="ManageableInput class definition.">ManageableInput</a> * <span class="keyword">const</span> pmi);
+<a name="l00027"></a><a class="code" href="classManageableInputManager.html#8f9d3483d04ba4ae8a8a4d3c1dc1cf9c">00027</a>     <span class="keyword">static</span> std::list&lt;ManageableInput *&gt; <a class="code" href="classManageableInputManager.html#8f9d3483d04ba4ae8a8a4d3c1dc1cf9c">list_inputs_primary_</a>;
 <a name="l00028"></a>00028 <span class="comment">//  static std::vector&lt;ManageableInput *&gt; list_inputs_secondary_;</span>
 <a name="l00029"></a>00029 };
 <a name="l00030"></a>00030 
@@ -46,16 +47,16 @@
 <a name="l00034"></a>00034 
 <a name="l00036"></a><a class="code" href="classManageableInput.html">00036</a> <span class="keyword">class </span><a class="code" href="classManageableInput.html" title="ManageableInput class definition.">ManageableInput</a>
 <a name="l00037"></a>00037 {
-<a name="l00038"></a>00038     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classManageableInputManager.html" title="ManageableInputManager class definition to centralise all manageable inputs and launch...">ManageableInputManager</a>;
-<a name="l00039"></a>00039     <span class="keyword">friend</span> <span class="keyword">class </span>Threading;
+<a name="l00038"></a><a class="code" href="classManageableInput.html#55658a6e727821a7503d1558794204e3">00038</a>     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classManageableInputManager.html" title="ManageableInputManager class definition to centralise all manageable inputs and launch...">ManageableInputManager</a>;
+<a name="l00039"></a><a class="code" href="classManageableInput.html#f9f4c90dfd384cfe3b1092b611967c30">00039</a>     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classThreading.html">Threading</a>;
 <a name="l00040"></a>00040 <span class="keyword">protected</span>:
-<a name="l00041"></a>00041     <a class="code" href="classManageableInput.html" title="ManageableInput class definition.">ManageableInput</a>(<span class="keywordtype">bool</span> is_primary = <span class="keyword">true</span>) {
+<a name="l00041"></a><a class="code" href="classManageableInput.html#5fbb290d386d6fb186d177488478afc9">00041</a>     <a class="code" href="classManageableInput.html#5fbb290d386d6fb186d177488478afc9">ManageableInput</a>(<span class="keywordtype">bool</span> is_primary = <span class="keyword">true</span>) {
 <a name="l00042"></a>00042         <span class="keywordflow">if</span> (is_primary)
-<a name="l00043"></a>00043             ManageableInputManager::append(<span class="keyword">this</span>);
+<a name="l00043"></a>00043             <a class="code" href="classManageableInputManager.html#9ab5e445edd3b9c7ce8607c6bb54f6d4">ManageableInputManager::append</a>(<span class="keyword">this</span>);
 <a name="l00044"></a>00044 <span class="comment">//      else</span>
 <a name="l00045"></a>00045 <span class="comment">//          ManageableInputManager::append(this);</span>
 <a name="l00046"></a>00046     }
-<a name="l00047"></a>00047     <span class="keyword">virtual</span> <span class="keywordtype">void</span> input_update() = 0;
+<a name="l00047"></a>00047     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classManageableInput.html#3e9093644acd2d41cb61a7972255d26c">input_update</a>() = 0;
 <a name="l00048"></a>00048 };
 <a name="l00049"></a>00049 
 <a name="l00050"></a>00050 
@@ -64,8 +65,8 @@
 <a name="l00055"></a>00055 <span class="comment"></span>
 <a name="l00059"></a><a class="code" href="classManageableInputManager.html#1c78a27f25164caccd3372ea78899352">00059</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classManageableInputManager.html#1c78a27f25164caccd3372ea78899352">ManageableInputManager::input_update_general</a>()
 <a name="l00060"></a>00060 {
-<a name="l00061"></a>00061     <span class="keywordflow">for</span> (std::list&lt;ManageableInput *&gt;::const_iterator i = list_inputs_primary_.begin();
-<a name="l00062"></a>00062             i != list_inputs_primary_.end();
+<a name="l00061"></a>00061     <span class="keywordflow">for</span> (std::list&lt;ManageableInput *&gt;::const_iterator i = <a class="code" href="classManageableInputManager.html#8f9d3483d04ba4ae8a8a4d3c1dc1cf9c">list_inputs_primary_</a>.begin();
+<a name="l00062"></a>00062             i != <a class="code" href="classManageableInputManager.html#8f9d3483d04ba4ae8a8a4d3c1dc1cf9c">list_inputs_primary_</a>.end();
 <a name="l00063"></a>00063             ++i)
 <a name="l00064"></a>00064         (*i)-&gt;input_update();
 <a name="l00065"></a>00065 
@@ -92,7 +93,7 @@
 <a name="l00087"></a>00087 
 <a name="l00088"></a>00088 <span class="preprocessor">#endif // !defined(MANAGEABLEINPUT_H)</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:04 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:53 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

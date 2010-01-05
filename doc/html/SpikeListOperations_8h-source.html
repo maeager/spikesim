@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: /media/data/Work/spikesimv6/SpikeListOperations.h Source File</title>
+<title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/SpikeListOperations.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,11 +9,12 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>/media/data/Work/spikesimv6/SpikeListOperations.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// SpikeListOperations.h</span>
+<h1>/media/data/Work/spikesimv6/SpikeListOperations.h</h1><a href="SpikeListOperations_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// SpikeListOperations.h</span>
 <a name="l00003"></a>00003 <span class="comment"></span>
 <a name="l00004"></a>00004 
 <a name="l00005"></a>00005 <span class="preprocessor">#ifndef SPIKELISTOPERATIONS_H</span>
@@ -22,35 +23,35 @@
 <a name="l00008"></a>00008 
 <a name="l00009"></a>00009 <span class="preprocessor">#include &lt;deque&gt;</span>
 <a name="l00010"></a>00010 
-<a name="l00011"></a>00011 <span class="preprocessor">#include "GlobalDefs.h"</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include "<a class="code" href="GlobalDefs_8h.html">GlobalDefs.h</a>"</span>
 <a name="l00012"></a>00012 
 <a name="l00013"></a>00013 
 <a name="l00014"></a>00014 
 <a name="l00016"></a>00016 
 <a name="l00018"></a><a class="code" href="classIndivSpikeOutputter.html">00018</a> <span class="keyword">class </span><a class="code" href="classIndivSpikeOutputter.html" title="Outputs the spike times individually.">IndivSpikeOutputter</a>
-<a name="l00019"></a>00019         : <span class="keyword">public</span> DataRecordNeuronVisitor
+<a name="l00019"></a>00019         : <span class="keyword">public</span> <a class="code" href="classDataRecordNeuronVisitor.html">DataRecordNeuronVisitor</a>
 <a name="l00020"></a>00020 {
 <a name="l00021"></a>00021 <span class="keyword">protected</span>:
 <a name="l00023"></a><a class="code" href="classIndivSpikeOutputter.html#58c944c8cd05031e8b50387f8fa529ff">00023</a>     <span class="keyword">typedef</span> <span class="keywordtype">void</span> * <a class="code" href="classIndivSpikeOutputter.html#58c944c8cd05031e8b50387f8fa529ff" title="Type for initialisation value.">InitValue</a>;
-<a name="l00025"></a><a class="code" href="classIndivSpikeOutputter.html#6b4f3d4b80a07eeadd52cfcfc8f29835">00025</a>     <a class="code" href="classIndivSpikeOutputter.html" title="Outputs the spike times individually.">IndivSpikeOutputter</a>(<a class="code" href="classIndivSpikeOutputter.html#58c944c8cd05031e8b50387f8fa529ff" title="Type for initialisation value.">InitValue</a>) {}
+<a name="l00025"></a><a class="code" href="classIndivSpikeOutputter.html#6b4f3d4b80a07eeadd52cfcfc8f29835">00025</a>     <a class="code" href="classIndivSpikeOutputter.html#2a4ab73fc7d51b5397ffc6a2618ba522">IndivSpikeOutputter</a>(<a class="code" href="classIndivSpikeOutputter.html#58c944c8cd05031e8b50387f8fa529ff" title="Type for initialisation value.">InitValue</a>) {}
 <a name="l00026"></a>00026 <span class="keyword">public</span>:
 <a name="l00028"></a>00028 
-<a name="l00030"></a><a class="code" href="classIndivSpikeOutputter.html#cc838c59ebaf4ad1914ada8ce26804e9">00030</a>     <span class="keywordtype">unsigned</span> <a class="code" href="classIndivSpikeOutputter.html#cc838c59ebaf4ad1914ada8ce26804e9" title="Returns 1, not used here.">nb_outputs_for_neuron</a>(NeuronInterface * <span class="keyword">const</span>) {
+<a name="l00030"></a><a class="code" href="classIndivSpikeOutputter.html#cc838c59ebaf4ad1914ada8ce26804e9">00030</a>     <span class="keywordtype">unsigned</span> <a class="code" href="classIndivSpikeOutputter.html#cc838c59ebaf4ad1914ada8ce26804e9" title="Returns 1, not used here.">nb_outputs_for_neuron</a>(<a class="code" href="classNeuronInterface.html">NeuronInterface</a> * <span class="keyword">const</span>) {
 <a name="l00031"></a>00031         <span class="keywordflow">return</span> 1;
 <a name="l00032"></a>00032     }
 <a name="l00033"></a>00033 
 <a name="l00035"></a>00035 
 <a name="l00041"></a>00041     <span class="keyword">template</span> &lt;<span class="keyword">class</span> FileWrapper&gt;
-<a name="l00042"></a><a class="code" href="classIndivSpikeOutputter.html#68b9dccdc644d062906ed9dcaab0aee8">00042</a>     <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classIndivSpikeOutputter.html#68b9dccdc644d062906ed9dcaab0aee8" title="Performs the outputting of the individual spikes of a neuron.">operation</a>(<span class="keyword">const</span> Time &amp; t_start, <span class="keyword">const</span> Time &amp; t_stop
-<a name="l00043"></a>00043                           , NeuronInterface * <span class="keyword">const</span> nrn
+<a name="l00042"></a><a class="code" href="classIndivSpikeOutputter.html#68b9dccdc644d062906ed9dcaab0aee8">00042</a>     <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classIndivSpikeOutputter.html#68b9dccdc644d062906ed9dcaab0aee8" title="Performs the outputting of the individual spikes of a neuron.">operation</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; t_start, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; t_stop
+<a name="l00043"></a>00043                           , <a class="code" href="classNeuronInterface.html">NeuronInterface</a> * <span class="keyword">const</span> nrn
 <a name="l00044"></a>00044                           , FileWrapper * <span class="keyword">const</span> file_wrapper) {
 <a name="l00045"></a>00045         <span class="comment">// to retrieve the list of the spike times</span>
-<a name="l00046"></a>00046         nrn-&gt;apply_visitor(*<span class="keyword">this</span>);
+<a name="l00046"></a>00046         nrn-&gt;<a class="code" href="classNeuronInterface.html#317fba6d1c22cda390d5af666bf854ff">apply_visitor</a>(*<span class="keyword">this</span>);
 <a name="l00047"></a>00047 
-<a name="l00048"></a>00048         <span class="keywordflow">if</span> (spike_time_list_pointer() != 0) {
+<a name="l00048"></a>00048         <span class="keywordflow">if</span> (<a class="code" href="classDataRecordNeuronVisitor.html#406f9c65127d83a518c191975d2c8a4a">spike_time_list_pointer</a>() != 0) {
 <a name="l00049"></a>00049             <span class="comment">// go through the spike list</span>
-<a name="l00050"></a>00050             <span class="keywordflow">for</span> (std::deque&lt;Time&gt;::const_iterator i = spike_time_list().begin();
-<a name="l00051"></a>00051                     i != spike_time_list().end();
+<a name="l00050"></a>00050             <span class="keywordflow">for</span> (std::deque&lt;Time&gt;::const_iterator i = <a class="code" href="classDataRecordNeuronVisitor.html#92f8fd7334f70a4c3d33d75b7d5c86a2">spike_time_list</a>().begin();
+<a name="l00051"></a>00051                     i != <a class="code" href="classDataRecordNeuronVisitor.html#92f8fd7334f70a4c3d33d75b7d5c86a2">spike_time_list</a>().end();
 <a name="l00052"></a>00052                     ++i)
 <a name="l00053"></a>00053                 <span class="comment">// outputs to file only if the spike time is between t_start and t_stop</span>
 <a name="l00054"></a>00054                 <span class="keywordflow">if</span> ((*i &gt;= t_start) &amp;&amp; (*i &lt; t_stop))
@@ -58,14 +59,14 @@
 <a name="l00056"></a>00056         } <span class="keywordflow">else</span> std::cout &lt;&lt; <span class="stringliteral">"error while outputting spike times: void spikelist"</span>;
 <a name="l00057"></a>00057 
 <a name="l00058"></a>00058         <span class="comment">// reinitialise the visitor (sets the spike_time_list_pointer to 0)</span>
-<a name="l00059"></a>00059         reset();
+<a name="l00059"></a>00059         <a class="code" href="classDataRecordNeuronVisitor.html#66f196c683a79b82f81529a6fe8db997">reset</a>();
 <a name="l00060"></a>00060 
 <a name="l00061"></a>00061         <span class="comment">// insert separation between the spike trains</span>
 <a name="l00062"></a>00062         file_wrapper-&gt;insert_separation(<span class="stringliteral">"end_variable"</span>);
 <a name="l00063"></a>00063     }
 <a name="l00064"></a>00064 
 <a name="l00065"></a>00065     <span class="keyword">template</span> &lt;<span class="keyword">class</span> FileWrapper&gt;
-<a name="l00066"></a>00066     <span class="keyword">inline</span> <span class="keywordtype">void</span> export_connectivity(NeuronInterface * <span class="keyword">const</span> nrn, FileWrapper * <span class="keyword">const</span> file_wrapper, <span class="keywordtype">int</span> pre_post) {
+<a name="l00066"></a><a class="code" href="classIndivSpikeOutputter.html#f16578e00079538e0cd0a4e29e7b1386">00066</a>     <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classIndivSpikeOutputter.html#f16578e00079538e0cd0a4e29e7b1386">export_connectivity</a>(<a class="code" href="classNeuronInterface.html">NeuronInterface</a> * <span class="keyword">const</span> nrn, FileWrapper * <span class="keyword">const</span> file_wrapper, <span class="keywordtype">int</span> pre_post) {
 <a name="l00067"></a>00067     }
 <a name="l00068"></a>00068 };
 <a name="l00069"></a>00069 
@@ -73,36 +74,36 @@
 <a name="l00071"></a>00071 
 <a name="l00073"></a>00073 
 <a name="l00077"></a><a class="code" href="classSpikingRateOutputter.html">00077</a> <span class="keyword">class </span><a class="code" href="classSpikingRateOutputter.html" title="Computes the spiking rate of a neuron.">SpikingRateOutputter</a>
-<a name="l00078"></a>00078         : <span class="keyword">public</span> DataRecordNeuronVisitor
+<a name="l00078"></a>00078         : <span class="keyword">public</span> <a class="code" href="classDataRecordNeuronVisitor.html">DataRecordNeuronVisitor</a>
 <a name="l00079"></a>00079 {
-<a name="l00080"></a>00080     <span class="keyword">template</span> &lt;<span class="keyword">class</span> KernelFunction&gt; <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classCovarianceOutputter.html" title="Computes the covariance between the two spike trains with the kernel KernelFunction...">CovarianceOutputter</a>;
+<a name="l00080"></a><a class="code" href="classSpikingRateOutputter.html#bd7618f093c1f3fc7eb9eb5d5bdd6dae">00080</a>     <span class="keyword">template</span> &lt;<span class="keyword">class</span> KernelFunction&gt; <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classCovarianceOutputter.html" title="Computes the covariance between the two spike trains with the kernel KernelFunction...">CovarianceOutputter</a>;
 <a name="l00081"></a>00081 <span class="keyword">protected</span>:
 <a name="l00083"></a><a class="code" href="classSpikingRateOutputter.html#bb13057d6d3c83cc13f2d5198f8cb42e">00083</a>     <span class="keyword">typedef</span> <span class="keywordtype">void</span> * <a class="code" href="classSpikingRateOutputter.html#bb13057d6d3c83cc13f2d5198f8cb42e" title="Type for initialisation value.">InitValue</a>;
 <a name="l00085"></a><a class="code" href="classSpikingRateOutputter.html#16365558eebbcbd92d1d3f1385704e0b">00085</a>     <a class="code" href="classSpikingRateOutputter.html#16365558eebbcbd92d1d3f1385704e0b" title="Constructor.">SpikingRateOutputter</a>(<a class="code" href="classSpikingRateOutputter.html#bb13057d6d3c83cc13f2d5198f8cb42e" title="Type for initialisation value.">InitValue</a>) {}
 <a name="l00086"></a>00086 <span class="keyword">public</span>:
 <a name="l00088"></a>00088 
-<a name="l00090"></a><a class="code" href="classSpikingRateOutputter.html#5f82a15e35281a019379989c574929f4">00090</a>     <span class="keywordtype">unsigned</span> <a class="code" href="classSpikingRateOutputter.html#5f82a15e35281a019379989c574929f4" title="Returns 1, one rate per neuron.">nb_outputs_for_neuron</a>(NeuronInterface * <span class="keyword">const</span>) {
+<a name="l00090"></a><a class="code" href="classSpikingRateOutputter.html#5f82a15e35281a019379989c574929f4">00090</a>     <span class="keywordtype">unsigned</span> <a class="code" href="classSpikingRateOutputter.html#5f82a15e35281a019379989c574929f4" title="Returns 1, one rate per neuron.">nb_outputs_for_neuron</a>(<a class="code" href="classNeuronInterface.html">NeuronInterface</a> * <span class="keyword">const</span>) {
 <a name="l00091"></a>00091         <span class="keywordflow">return</span> 1;
 <a name="l00092"></a>00092     }
 <a name="l00093"></a>00093 
 <a name="l00095"></a>00095 
 <a name="l00101"></a>00101     <span class="keyword">template</span> &lt;<span class="keyword">class</span> FileWrapper&gt;
-<a name="l00102"></a><a class="code" href="classSpikingRateOutputter.html#b3ffbb032a9fd3df3d766cd644eb6556">00102</a>     <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classSpikingRateOutputter.html#b3ffbb032a9fd3df3d766cd644eb6556" title="Calls SpikingRateOutputter::compute_rate and send the results to the FileWrapper...">operation</a>(<span class="keyword">const</span> Time &amp; t_start, <span class="keyword">const</span> Time &amp; t_stop
-<a name="l00103"></a>00103                           , NeuronInterface * <span class="keyword">const</span> nrn
+<a name="l00102"></a><a class="code" href="classSpikingRateOutputter.html#b3ffbb032a9fd3df3d766cd644eb6556">00102</a>     <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classSpikingRateOutputter.html#b3ffbb032a9fd3df3d766cd644eb6556" title="Calls SpikingRateOutputter::compute_rate and send the results to the FileWrapper...">operation</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; t_start, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; t_stop
+<a name="l00103"></a>00103                           , <a class="code" href="classNeuronInterface.html">NeuronInterface</a> * <span class="keyword">const</span> nrn
 <a name="l00104"></a>00104                           , FileWrapper * <span class="keyword">const</span> file_wrapper) {
 <a name="l00105"></a>00105         <span class="comment">// to retrieve the list of the spike times</span>
-<a name="l00106"></a>00106         nrn-&gt;apply_visitor(*<span class="keyword">this</span>);
+<a name="l00106"></a>00106         nrn-&gt;<a class="code" href="classNeuronInterface.html#317fba6d1c22cda390d5af666bf854ff">apply_visitor</a>(*<span class="keyword">this</span>);
 <a name="l00107"></a>00107 
-<a name="l00108"></a>00108         <span class="keywordflow">if</span> (spike_time_list_pointer() != 0)
-<a name="l00109"></a>00109             file_wrapper-&gt;write_to_file(<a class="code" href="classSpikingRateOutputter.html#e6ca3f6a4c959d34ef8f143e405caee8" title="Returns the time-averaged rate of the spike train.">compute_rate</a>(t_start, t_stop, spike_time_list().begin(), spike_time_list().end()));
+<a name="l00108"></a>00108         <span class="keywordflow">if</span> (<a class="code" href="classDataRecordNeuronVisitor.html#406f9c65127d83a518c191975d2c8a4a">spike_time_list_pointer</a>() != 0)
+<a name="l00109"></a>00109             file_wrapper-&gt;write_to_file(<a class="code" href="classSpikingRateOutputter.html#e6ca3f6a4c959d34ef8f143e405caee8" title="Returns the time-averaged rate of the spike train.">compute_rate</a>(t_start, t_stop, <a class="code" href="classDataRecordNeuronVisitor.html#92f8fd7334f70a4c3d33d75b7d5c86a2">spike_time_list</a>().begin(), <a class="code" href="classDataRecordNeuronVisitor.html#92f8fd7334f70a4c3d33d75b7d5c86a2">spike_time_list</a>().end()));
 <a name="l00110"></a>00110         <span class="keywordflow">else</span>
 <a name="l00111"></a>00111             std::cout &lt;&lt; <span class="stringliteral">"error while outputting spike times: void spikelist"</span>;
 <a name="l00112"></a>00112 
 <a name="l00113"></a>00113         <span class="comment">// reinitialise the visitor (sets the spike_time_list_pointer to 0)</span>
-<a name="l00114"></a>00114         reset();
+<a name="l00114"></a>00114         <a class="code" href="classDataRecordNeuronVisitor.html#66f196c683a79b82f81529a6fe8db997">reset</a>();
 <a name="l00115"></a>00115     }
 <a name="l00117"></a>00117 
-<a name="l00122"></a><a class="code" href="classSpikingRateOutputter.html#e6ca3f6a4c959d34ef8f143e405caee8">00122</a>     <span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code" href="classSpikingRateOutputter.html#e6ca3f6a4c959d34ef8f143e405caee8" title="Returns the time-averaged rate of the spike train.">compute_rate</a>(<span class="keyword">const</span> Time &amp; t_start, <span class="keyword">const</span> Time &amp; t_stop
+<a name="l00122"></a><a class="code" href="classSpikingRateOutputter.html#e6ca3f6a4c959d34ef8f143e405caee8">00122</a>     <span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code" href="classSpikingRateOutputter.html#e6ca3f6a4c959d34ef8f143e405caee8" title="Returns the time-averaged rate of the spike train.">compute_rate</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; t_start, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; t_stop
 <a name="l00123"></a>00123                                , <span class="keyword">const</span> std::deque&lt;Time&gt;::const_iterator &amp; spike_list_iterator_begin
 <a name="l00124"></a>00124                                , <span class="keyword">const</span> std::deque&lt;Time&gt;::const_iterator &amp; spike_list_iterator_end) {
 <a name="l00125"></a>00125         <span class="comment">// look for the first spike after t_start (iterator i)</span>
@@ -120,7 +121,7 @@
 <a name="l00137"></a>00137     }
 <a name="l00138"></a>00138 
 <a name="l00139"></a>00139     <span class="keyword">template</span> &lt;<span class="keyword">class</span> FileWrapper&gt;
-<a name="l00140"></a>00140     <span class="keyword">inline</span> <span class="keywordtype">void</span> export_connectivity(NeuronInterface * <span class="keyword">const</span> nrn, FileWrapper * <span class="keyword">const</span> file_wrapper, <span class="keywordtype">int</span> pre_post) {
+<a name="l00140"></a><a class="code" href="classSpikingRateOutputter.html#fb5bbf4487c950f35df0a17999389852">00140</a>     <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classSpikingRateOutputter.html#fb5bbf4487c950f35df0a17999389852">export_connectivity</a>(<a class="code" href="classNeuronInterface.html">NeuronInterface</a> * <span class="keyword">const</span> nrn, FileWrapper * <span class="keyword">const</span> file_wrapper, <span class="keywordtype">int</span> pre_post) {
 <a name="l00141"></a>00141     }
 <a name="l00142"></a>00142 
 <a name="l00143"></a>00143 };
@@ -136,13 +137,13 @@
 <a name="l00159"></a><a class="code" href="classCovarianceOutputter.html#22d5d0534667dfc3ff7f736996fbda66">00159</a>     <a class="code" href="classCovarianceOutputter.html#22d5d0534667dfc3ff7f736996fbda66" title="Constructor.">CovarianceOutputter</a>(<a class="code" href="classCovarianceOutputter.html#111ecc32d12a9b7f24d278430c9cc606" title="Type for initialisation value.">InitValue</a>) : sro_(0) {}
 <a name="l00160"></a>00160 <span class="keyword">public</span>:
 <a name="l00162"></a>00162 
-<a name="l00164"></a><a class="code" href="classCovarianceOutputter.html#02526b6c57f6754347c52405ad38c3fa">00164</a>     <span class="keywordtype">unsigned</span> <a class="code" href="classCovarianceOutputter.html#02526b6c57f6754347c52405ad38c3fa" title="Returns 1, one correlation coefficient per pair of neurons.">nb_outputs_for_pair</a>(NeuronInterface * <span class="keyword">const</span>, NeuronInterface * <span class="keyword">const</span>) {
+<a name="l00164"></a><a class="code" href="classCovarianceOutputter.html#02526b6c57f6754347c52405ad38c3fa">00164</a>     <span class="keywordtype">unsigned</span> <a class="code" href="classCovarianceOutputter.html#02526b6c57f6754347c52405ad38c3fa" title="Returns 1, one correlation coefficient per pair of neurons.">nb_outputs_for_pair</a>(<a class="code" href="classNeuronInterface.html">NeuronInterface</a> * <span class="keyword">const</span>, <a class="code" href="classNeuronInterface.html">NeuronInterface</a> * <span class="keyword">const</span>) {
 <a name="l00165"></a>00165         <span class="keywordflow">return</span> 1;
 <a name="l00166"></a>00166     }
 <a name="l00167"></a>00167 
 <a name="l00169"></a>00169 
 <a name="l00175"></a>00175     <span class="keyword">template</span> &lt;<span class="keyword">class</span> FileWrapper&gt;
-<a name="l00176"></a><a class="code" href="classCovarianceOutputter.html#24e83afe2178be3dede4e26b34c6d50e">00176</a>     <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classCovarianceOutputter.html#24e83afe2178be3dede4e26b34c6d50e" title="Performs the time-averaged rate of the spike train.">operation</a>(<span class="keyword">const</span> Time &amp; t_start, <span class="keyword">const</span> Time &amp; t_stop
+<a name="l00176"></a><a class="code" href="classCovarianceOutputter.html#24e83afe2178be3dede4e26b34c6d50e">00176</a>     <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classCovarianceOutputter.html#24e83afe2178be3dede4e26b34c6d50e" title="Performs the time-averaged rate of the spike train.">operation</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; t_start, <span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; t_stop
 <a name="l00177"></a>00177                           , <span class="keyword">const</span> std::deque&lt;Time&gt; &amp; spike_list1
 <a name="l00178"></a>00178                           , <span class="keyword">const</span> std::deque&lt;Time&gt; &amp; spike_list2
 <a name="l00179"></a>00179                           , FileWrapper * <span class="keyword">const</span> file_wrapper) {
@@ -189,7 +190,7 @@
 <a name="l00220"></a>00220 
 <a name="l00221"></a>00221 <span class="preprocessor">#endif  //SPIKELISTOPERATIONS_H</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:04 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:53 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

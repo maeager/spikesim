@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: /media/data/Work/spikesimv6/Group.h Source File</title>
+<title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/Group.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,11 +9,12 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>/media/data/Work/spikesimv6/Group.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// Group.h</span>
+<h1>/media/data/Work/spikesimv6/Group.h</h1><a href="Group_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// Group.h</span>
 <a name="l00003"></a>00003 <span class="comment"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#ifndef GROUP_H</span>
 <a name="l00005"></a>00005 <span class="preprocessor"></span><span class="preprocessor">#define GROUP_H</span>
@@ -23,14 +24,14 @@
 <a name="l00009"></a>00009 <span class="preprocessor">#include &lt;string&gt;</span>
 <a name="l00010"></a>00010 <span class="preprocessor">#include&lt;boost/shared_ptr.hpp&gt;</span>
 <a name="l00011"></a>00011 
-<a name="l00012"></a>00012 <span class="preprocessor">#include "IdCounter.h"</span>
-<a name="l00013"></a>00013 <span class="preprocessor">#include "Error.h"</span>
-<a name="l00014"></a>00014 <span class="preprocessor">#include "DataCommonNeuron.h"</span>
-<a name="l00015"></a>00015 <span class="preprocessor">#include "DataRecordNeuron.h"</span>
-<a name="l00016"></a>00016 <span class="preprocessor">#include "TypeDefs.h"</span>
-<a name="l00017"></a>00017 <span class="preprocessor">#include "GlobalDefs.h"</span>
-<a name="l00018"></a>00018 <span class="preprocessor">#include "ConnectivityManager.h"</span>
-<a name="l00019"></a>00019 <span class="preprocessor">#include "DistributionManager.h"</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include "<a class="code" href="IdCounter_8h.html">IdCounter.h</a>"</span>
+<a name="l00013"></a>00013 <span class="preprocessor">#include "<a class="code" href="Error_8h.html">Error.h</a>"</span>
+<a name="l00014"></a>00014 <span class="preprocessor">#include "<a class="code" href="DataCommonNeuron_8h.html">DataCommonNeuron.h</a>"</span>
+<a name="l00015"></a>00015 <span class="preprocessor">#include "<a class="code" href="DataRecordNeuron_8h.html">DataRecordNeuron.h</a>"</span>
+<a name="l00016"></a>00016 <span class="preprocessor">#include "<a class="code" href="TypeDefs_8h.html">TypeDefs.h</a>"</span>
+<a name="l00017"></a>00017 <span class="preprocessor">#include "<a class="code" href="GlobalDefs_8h.html">GlobalDefs.h</a>"</span>
+<a name="l00018"></a>00018 <span class="preprocessor">#include "<a class="code" href="ConnectivityManager_8h.html">ConnectivityManager.h</a>"</span>
+<a name="l00019"></a>00019 <span class="preprocessor">#include "<a class="code" href="DistributionManager_8h.html">DistributionManager.h</a>"</span>
 <a name="l00020"></a>00020 
 <a name="l00021"></a>00021 <span class="preprocessor">#ifdef PARALLELSIM</span>
 <a name="l00022"></a>00022 <span class="preprocessor"></span><span class="keyword">class </span><a class="code" href="classParallelNetManager.html" title="Main class for creating SpikeSim networks on a parallel system.">ParallelNetManager</a>;
@@ -43,20 +44,20 @@
 <a name="l00032"></a><a class="code" href="classGroup.html">00032</a> <span class="keyword">class </span><a class="code" href="classGroup.html" title="Group of neurons sharing similar properties.">Group</a>
 <a name="l00033"></a>00033 <span class="comment">//  : public IdCounter&lt;Group&gt;</span>
 <a name="l00034"></a>00034 {
-<a name="l00035"></a>00035     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classSingleWayThroughGroups.html" title="Has a list of groups (does not own them), treats each neuron within each group, group...">SingleWayThroughGroups</a>;
-<a name="l00036"></a>00036     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classAllCrossPairsThroughSameGroups.html" title="Holds a list of groups, and treats all pairs of neurons of each group (including...">AllCrossPairsThroughSameGroups</a>;
+<a name="l00035"></a><a class="code" href="classGroup.html#ced3838d63885b5cf86c6b16ce0529b3">00035</a>     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classSingleWayThroughGroups.html" title="Has a list of groups (does not own them), treats each neuron within each group, group...">SingleWayThroughGroups</a>;
+<a name="l00036"></a><a class="code" href="classGroup.html#1b221c41d434a93934efeeafc0f188bf">00036</a>     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classAllCrossPairsThroughSameGroups.html" title="Holds a list of groups, and treats all pairs of neurons of each group (including...">AllCrossPairsThroughSameGroups</a>;
 <a name="l00037"></a>00037 <span class="preprocessor">#ifdef PARALLELSIM</span>
 <a name="l00038"></a>00038 <span class="preprocessor"></span>    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classParNetwork.html" title="ParNetwork class definition.">ParNetwork</a>;
 <a name="l00039"></a>00039     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classParallelNetManager.html" title="Main class for creating SpikeSim networks on a parallel system.">ParallelNetManager</a>;
 <a name="l00040"></a>00040 <span class="preprocessor">#else</span>
-<a name="l00041"></a>00041 <span class="preprocessor"></span>    <span class="keyword">friend</span> <span class="keyword">class </span>Network;
+<a name="l00041"></a><a class="code" href="classGroup.html#88b59289ffd793fecd040d32e397b1e9">00041</a> <span class="preprocessor"></span>    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classNetwork.html">Network</a>;
 <a name="l00042"></a>00042 <span class="preprocessor">#endif</span>
 <a name="l00043"></a>00043 <span class="preprocessor"></span><span class="keyword">public</span>:
-<a name="l00044"></a>00044  <a class="code" href="classGroup.html" title="Group of neurons sharing similar properties.">Group</a>() : id(GroupID++), data_cfg_(0), nrn_act_cfg_(0) {}
-<a name="l00045"></a>00045     <span class="keywordtype">void</span> populate(std::ifstream &amp; is);
-<a name="l00046"></a>00046     ~<a class="code" href="classGroup.html" title="Group of neurons sharing similar properties.">Group</a>();
-<a name="l00047"></a>00047     <span class="keywordtype">void</span> connect_to(<a class="code" href="classGroup.html" title="Group of neurons sharing similar properties.">Group</a> &amp; targetgroup, DistributionManager * <span class="keyword">const</span> weightdistribcfg, DistributionManager * <span class="keyword">const</span> delaydistribcfg, <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> synmechcfg, <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> plastmechcfg, ConnectivityManager * <span class="keyword">const</span> connectivitymgr, std::list&lt;boost::shared_ptr&lt;ConfigBase&gt; &gt; &amp; cfglist, Size &amp; nb_con);
-<a name="l00048"></a>00048     <span class="keywordtype">void</span> update();
+<a name="l00044"></a><a class="code" href="classGroup.html#7b74f9ac68e0504ccf2e2854b7355ff1">00044</a>  <a class="code" href="classGroup.html#7b74f9ac68e0504ccf2e2854b7355ff1">Group</a>() : id(GroupID++), data_cfg_(0), nrn_act_cfg_(0) {}
+<a name="l00045"></a>00045     <span class="keywordtype">void</span> <a class="code" href="classGroup.html#6b1f30db3bfe2dba27b3afc89cc6f96e">populate</a>(std::ifstream &amp; is);
+<a name="l00046"></a>00046     <a class="code" href="classGroup.html#ed00a22ff227ee2657ae44a5cbcedf7c">~Group</a>();
+<a name="l00047"></a>00047     <span class="keywordtype">void</span> <a class="code" href="classGroup.html#524d4403d36b3a518a53b0370b32f3e5">connect_to</a>(<a class="code" href="classGroup.html" title="Group of neurons sharing similar properties.">Group</a> &amp; targetgroup, <a class="code" href="structDistributionManager.html">DistributionManager</a> * <span class="keyword">const</span> weightdistribcfg, <a class="code" href="structDistributionManager.html">DistributionManager</a> * <span class="keyword">const</span> delaydistribcfg, <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> synmechcfg, <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> plastmechcfg, <a class="code" href="structConnectivityManager.html">ConnectivityManager</a> * <span class="keyword">const</span> connectivitymgr, std::list&lt;boost::shared_ptr&lt;ConfigBase&gt; &gt; &amp; cfglist, <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp; nb_con);
+<a name="l00048"></a>00048     <span class="keywordtype">void</span> <a class="code" href="classGroup.html#15613fb52efd859858250ddf52ca6599">update</a>();
 <a name="l00049"></a>00049 <span class="comment">//  void plasticity_update();</span>
 <a name="l00050"></a>00050 
 <a name="l00051"></a>00051 <span class="comment">// a virer ??? xxx</span>
@@ -68,23 +69,23 @@
 <a name="l00058"></a>00058     <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * nrn_act_cfg_; 
 <a name="l00060"></a>00060 <span class="comment">// accessors to information about the group</span>
 <a name="l00061"></a>00061 <span class="keyword">public</span>:
-<a name="l00062"></a>00062     <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> neuronconfigurator()<span class="keyword"> const </span>{
+<a name="l00062"></a><a class="code" href="classGroup.html#1cfca9f6efd46f1c98d8f048dad39f44">00062</a>     <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> <a class="code" href="classGroup.html#1cfca9f6efd46f1c98d8f048dad39f44">neuronconfigurator</a>()<span class="keyword"> const </span>{
 <a name="l00063"></a>00063         <span class="keywordflow">return</span> nrn_act_cfg_;
 <a name="l00064"></a>00064     }
-<a name="l00065"></a>00065     <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> dataconfigurator()<span class="keyword"> const </span>{
+<a name="l00065"></a><a class="code" href="classGroup.html#891a76a963cbde885f6786ecdd8a53ff">00065</a>     <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> <a class="code" href="classGroup.html#891a76a963cbde885f6786ecdd8a53ff">dataconfigurator</a>()<span class="keyword"> const </span>{
 <a name="l00066"></a>00066         <span class="keywordflow">return</span> data_cfg_;
 <a name="l00067"></a>00067     }
-<a name="l00068"></a>00068     Size size()<span class="keyword"> const </span>{
-<a name="l00069"></a>00069         <span class="keywordflow">return</span> (Size) <a class="code" href="classGroup.html#d93041adee4fb46bb5ca2713152cca3c">list_</a>.size();
+<a name="l00068"></a><a class="code" href="classGroup.html#f716f776381fd49ce8035a52480a85a1">00068</a>     <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> <a class="code" href="classGroup.html#f716f776381fd49ce8035a52480a85a1">size</a>()<span class="keyword"> const </span>{
+<a name="l00069"></a>00069         <span class="keywordflow">return</span> (<a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a>) <a class="code" href="classGroup.html#d93041adee4fb46bb5ca2713152cca3c">list_</a>.size();
 <a name="l00070"></a>00070     }
-<a name="l00071"></a>00071     <span class="keywordtype">int</span> required_cell_num()<span class="keyword"> const </span>{
+<a name="l00071"></a><a class="code" href="classGroup.html#a132771bedc425299f7bcee9c50fa152">00071</a>     <span class="keywordtype">int</span> <a class="code" href="classGroup.html#a132771bedc425299f7bcee9c50fa152">required_cell_num</a>()<span class="keyword"> const </span>{
 <a name="l00072"></a>00072       <span class="keywordflow">return</span> (<span class="keywordtype">int</span>) <a class="code" href="classGroup.html#93c62d289d2ace9320f92cb0d3ee7c1f">n</a>;
 <a name="l00073"></a>00073     }
-<a name="l00074"></a>00074     <span class="keywordtype">void</span> clear_past_of_spike_list(<span class="keyword">const</span> Time &amp; time_end_past);
+<a name="l00074"></a>00074     <span class="keywordtype">void</span> <a class="code" href="classGroup.html#267c51944ac6ca3e38710ed2ea7192ca">clear_past_of_spike_list</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; time_end_past);
 <a name="l00075"></a>00075 
 <a name="l00076"></a>00076 <span class="preprocessor">#ifdef PARALLELSIM</span>
 <a name="l00077"></a>00077 <span class="preprocessor"></span>
-<a name="l00078"></a>00078     <span class="keywordtype">void</span> par_connect_to(<a class="code" href="classParallelNetManager.html" title="Main class for creating SpikeSim networks on a parallel system.">ParallelNetManager</a>* <span class="keyword">const</span>  pnm, <a class="code" href="classGroup.html" title="Group of neurons sharing similar properties.">Group</a> &amp; targetgroup, DistributionManager * <span class="keyword">const</span> weight_distrib_cfg, DistributionManager * <span class="keyword">const</span> delay_distrib_cfg, <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> syn_mech_cfg, <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> plast_mech_cfg, ConnectivityManager * <span class="keyword">const</span> connectivity_mgr, std::list&lt;boost::shared_ptr&lt;ConfigBase&gt; &gt; &amp; cfg_list, Size &amp;nb_con); 
+<a name="l00078"></a>00078     <span class="keywordtype">void</span> par_connect_to(<a class="code" href="classParallelNetManager.html" title="Main class for creating SpikeSim networks on a parallel system.">ParallelNetManager</a>* <span class="keyword">const</span>  pnm, <a class="code" href="classGroup.html" title="Group of neurons sharing similar properties.">Group</a> &amp; targetgroup, <a class="code" href="structDistributionManager.html">DistributionManager</a> * <span class="keyword">const</span> weight_distrib_cfg, <a class="code" href="structDistributionManager.html">DistributionManager</a> * <span class="keyword">const</span> delay_distrib_cfg, <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> syn_mech_cfg, <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> plast_mech_cfg, <a class="code" href="structConnectivityManager.html">ConnectivityManager</a> * <span class="keyword">const</span> connectivity_mgr, std::list&lt;boost::shared_ptr&lt;ConfigBase&gt; &gt; &amp; cfg_list, <a class="code" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9" title="Size for arrays and lists (redefinition of unsigned integers).">Size</a> &amp;nb_con); 
 <a name="l00079"></a>00079     <span class="keyword">typedef</span> std::list&lt;boost::shared_ptr&lt;ConfigBase&gt; &gt; ListBaseType; 
 <a name="l00080"></a>00080     <span class="keyword">typedef</span> std::list&lt;boost::shared_ptr&lt;ConnectivityManager&gt; &gt; ListConnType; 
 <a name="l00081"></a>00081     <span class="keyword">typedef</span> std::list&lt;boost::shared_ptr&lt;DistributionManager&gt; &gt; ListDistrType; 
@@ -106,7 +107,7 @@
 <a name="l00099"></a>00099 <span class="comment"></span>
 <a name="l00101"></a>00101 <span class="comment">// Update method</span>
 <a name="l00102"></a>00102 <span class="comment">// all the groups are updates from #0 to last one</span>
-<a name="l00103"></a>00103 <span class="keyword">inline</span> <span class="keywordtype">void</span> Group::update()
+<a name="l00103"></a><a class="code" href="classGroup.html#15613fb52efd859858250ddf52ca6599">00103</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classGroup.html#15613fb52efd859858250ddf52ca6599">Group::update</a>()
 <a name="l00104"></a>00104 {
 <a name="l00105"></a>00105     <span class="keywordflow">for</span> (ListNrnType::iterator i = <a class="code" href="classGroup.html#d93041adee4fb46bb5ca2713152cca3c">list_</a>.begin();
 <a name="l00106"></a>00106             i != <a class="code" href="classGroup.html#d93041adee4fb46bb5ca2713152cca3c">list_</a>.end();
@@ -115,27 +116,27 @@
 <a name="l00109"></a>00109 }
 <a name="l00110"></a>00110 
 <a name="l00112"></a>00112 <span class="comment">// clean the spike list of the neurons up to 'time_end_past' (excluded)</span>
-<a name="l00113"></a>00113 <span class="keyword">inline</span> <span class="keywordtype">void</span> Group::clear_past_of_spike_list(<span class="keyword">const</span> Time &amp; time_end_past)
+<a name="l00113"></a><a class="code" href="classGroup.html#267c51944ac6ca3e38710ed2ea7192ca">00113</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classGroup.html#267c51944ac6ca3e38710ed2ea7192ca">Group::clear_past_of_spike_list</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; time_end_past)
 <a name="l00114"></a>00114 {
-<a name="l00115"></a>00115     DataRecordNeuronVisitor vis;
+<a name="l00115"></a>00115     <a class="code" href="classDataRecordNeuronVisitor.html">DataRecordNeuronVisitor</a> vis;
 <a name="l00116"></a>00116     <span class="keywordflow">for</span> (ListNrnType::const_iterator i = <a class="code" href="classGroup.html#d93041adee4fb46bb5ca2713152cca3c">list_</a>.begin(); i != <a class="code" href="classGroup.html#d93041adee4fb46bb5ca2713152cca3c">list_</a>.end(); ++i) {
 <a name="l00117"></a>00117         (*i)-&gt;apply_visitor(vis);
 <a name="l00118"></a>00118         <span class="comment">//</span>
-<a name="l00119"></a>00119         <span class="keywordflow">if</span> (vis.spike_time_list_pointer()) {
-<a name="l00120"></a>00120             std::deque&lt;Time&gt;::iterator j = vis.spike_time_list_pointer()-&gt;begin();
-<a name="l00121"></a>00121             <span class="keywordflow">for</span> (; j != vis.spike_time_list_pointer()-&gt;end();
+<a name="l00119"></a>00119         <span class="keywordflow">if</span> (vis.<a class="code" href="classDataRecordNeuronVisitor.html#406f9c65127d83a518c191975d2c8a4a">spike_time_list_pointer</a>()) {
+<a name="l00120"></a>00120             std::deque&lt;Time&gt;::iterator j = vis.<a class="code" href="classDataRecordNeuronVisitor.html#406f9c65127d83a518c191975d2c8a4a">spike_time_list_pointer</a>()-&gt;begin();
+<a name="l00121"></a>00121             <span class="keywordflow">for</span> (; j != vis.<a class="code" href="classDataRecordNeuronVisitor.html#406f9c65127d83a518c191975d2c8a4a">spike_time_list_pointer</a>()-&gt;end();
 <a name="l00122"></a>00122                     ++j)
 <a name="l00123"></a>00123                 <span class="keywordflow">if</span> ((*j) &gt; time_end_past) <span class="keywordflow">break</span>;
-<a name="l00124"></a>00124             vis.erase_past_spike_list(j);
+<a name="l00124"></a>00124             vis.<a class="code" href="classDataRecordNeuronVisitor.html#77b39996a6e24ee11b968b45ba37b720">erase_past_spike_list</a>(j);
 <a name="l00125"></a>00125         }
 <a name="l00126"></a>00126         <span class="comment">//</span>
-<a name="l00127"></a>00127         vis.reset();
+<a name="l00127"></a>00127         vis.<a class="code" href="classDataRecordNeuronVisitor.html#66f196c683a79b82f81529a6fe8db997">reset</a>();
 <a name="l00128"></a>00128     }
 <a name="l00129"></a>00129 }
 <a name="l00130"></a>00130 
 <a name="l00131"></a>00131 <span class="preprocessor">#endif // !defined(GROUP_H)</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:04 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:52 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

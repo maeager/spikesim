@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: /media/data/Work/spikesimv6/Network.h Source File</title>
+<title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/Network.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,38 +9,39 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>/media/data/Work/spikesimv6/Network.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// Network.h</span>
+<h1>/media/data/Work/spikesimv6/Network.h</h1><a href="Network_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// Network.h</span>
 <a name="l00003"></a>00003 <span class="comment"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#ifndef NETWORK_H</span>
 <a name="l00005"></a>00005 <span class="preprocessor"></span><span class="preprocessor">#define NETWORK_H</span>
 <a name="l00006"></a>00006 <span class="preprocessor"></span>
 <a name="l00007"></a>00007 <span class="preprocessor">#include &lt;list&gt;</span>
 <a name="l00008"></a>00008 
-<a name="l00009"></a>00009 <span class="preprocessor">#include "Group.h"</span>
-<a name="l00010"></a>00010 <span class="preprocessor">#include "GlobalDefs.h"</span>
+<a name="l00009"></a>00009 <span class="preprocessor">#include "<a class="code" href="Group_8h.html">Group.h</a>"</span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include "<a class="code" href="GlobalDefs_8h.html">GlobalDefs.h</a>"</span>
 <a name="l00011"></a>00011 
 <a name="l00012"></a>00012 
 <a name="l00014"></a>00014 <span class="comment">// Network class definition</span>
 <a name="l00015"></a>00015 <span class="comment">// to handle a collection groups of neurons, create them from a configuration file, the outputs, etc.</span>
 <a name="l00017"></a>00017 <span class="comment"></span>
 <a name="l00018"></a>00018 
-<a name="l00019"></a>00019 <span class="keyword">class </span>Network
+<a name="l00019"></a><a class="code" href="classNetwork.html">00019</a> <span class="keyword">class </span><a class="code" href="classNetwork.html">Network</a>
 <a name="l00020"></a>00020 {
 <a name="l00021"></a>00021 <span class="keyword">public</span>:
-<a name="l00022"></a>00022     Network() {}
-<a name="l00023"></a>00023     ~Network();
-<a name="l00024"></a>00024     <span class="keywordtype">void</span> build_from_file(std::string filename, std::string logfilename = <span class="stringliteral">"log.dat"</span>, <span class="keywordtype">bool</span> no_output = <span class="keyword">false</span>);
-<a name="l00025"></a>00025     <span class="keywordtype">void</span> update();
-<a name="l00026"></a>00026     <span class="keywordtype">void</span> clear_past_of_spike_list(<span class="keyword">const</span> Time &amp; time_end_past);
+<a name="l00022"></a><a class="code" href="classNetwork.html#3cc2fb4f8fa4d507077e8da85ce5a1c8">00022</a>     <a class="code" href="classNetwork.html#3cc2fb4f8fa4d507077e8da85ce5a1c8">Network</a>() {}
+<a name="l00023"></a>00023     <a class="code" href="classNetwork.html#7a4e19cdb4bf0c7ecf82baa643831492">~Network</a>();
+<a name="l00024"></a>00024     <span class="keywordtype">void</span> <a class="code" href="classNetwork.html#292a5a115ff6d44b5dc6eebac310bfd1">build_from_file</a>(std::string filename, std::string logfilename = <span class="stringliteral">"log.dat"</span>, <span class="keywordtype">bool</span> no_output = <span class="keyword">false</span>);
+<a name="l00025"></a>00025     <span class="keywordtype">void</span> <a class="code" href="classNetwork.html#b07bb6f6d9020b9eb230551083ea929f">update</a>();
+<a name="l00026"></a>00026     <span class="keywordtype">void</span> <a class="code" href="classNetwork.html#41f5b300e6ea9869a1068f5f83304071">clear_past_of_spike_list</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; time_end_past);
 <a name="l00027"></a>00027 <span class="keyword">protected</span>:
-<a name="l00028"></a>00028     <span class="keyword">typedef</span> std::list&lt;boost::shared_ptr&lt;Group&gt; &gt; ListGroupType;
-<a name="l00029"></a>00029     <span class="keyword">typedef</span> std::list&lt;boost::shared_ptr&lt;ConfigBase&gt; &gt; ListConfigType;
-<a name="l00030"></a>00030     ListGroupType gp_list_; <span class="comment">// list of pointers to the neurons of the network</span>
-<a name="l00031"></a>00031     ListConfigType cfg_list_; <span class="comment">// list of pointers to the configurators for the connections to keep</span>
+<a name="l00028"></a><a class="code" href="classNetwork.html#9976c665555e5c3ebe89f2b4f9b1d264">00028</a>     <span class="keyword">typedef</span> std::list&lt;boost::shared_ptr&lt;Group&gt; &gt; <a class="code" href="classNetwork.html#9976c665555e5c3ebe89f2b4f9b1d264">ListGroupType</a>;
+<a name="l00029"></a><a class="code" href="classNetwork.html#4f425f8a1c4db777dc3fb8f8fafd7ab4">00029</a>     <span class="keyword">typedef</span> std::list&lt;boost::shared_ptr&lt;ConfigBase&gt; &gt; <a class="code" href="classNetwork.html#4f425f8a1c4db777dc3fb8f8fafd7ab4">ListConfigType</a>;
+<a name="l00030"></a><a class="code" href="classNetwork.html#3a3134fe2f508a65d28968d94e3fa524">00030</a>     <a class="code" href="classNetwork.html#9976c665555e5c3ebe89f2b4f9b1d264">ListGroupType</a> <a class="code" href="classNetwork.html#3a3134fe2f508a65d28968d94e3fa524">gp_list_</a>; <span class="comment">// list of pointers to the neurons of the network</span>
+<a name="l00031"></a><a class="code" href="classNetwork.html#a5a53afc198ae2ba2f50d864e167f478">00031</a>     <a class="code" href="classNetwork.html#4f425f8a1c4db777dc3fb8f8fafd7ab4">ListConfigType</a> <a class="code" href="classNetwork.html#a5a53afc198ae2ba2f50d864e167f478">cfg_list_</a>; <span class="comment">// list of pointers to the configurators for the connections to keep</span>
 <a name="l00032"></a>00032 
 <a name="l00033"></a>00033 };
 <a name="l00034"></a>00034 
@@ -49,25 +50,25 @@
 <a name="l00039"></a>00039 <span class="comment"></span>
 <a name="l00041"></a>00041 <span class="comment">// Update method</span>
 <a name="l00042"></a>00042 <span class="comment">// all the groups are updates from #0 to last one</span>
-<a name="l00043"></a>00043 <span class="keyword">inline</span> <span class="keywordtype">void</span> Network::update()
+<a name="l00043"></a><a class="code" href="classNetwork.html#b07bb6f6d9020b9eb230551083ea929f">00043</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classNetwork.html#b07bb6f6d9020b9eb230551083ea929f">Network::update</a>()
 <a name="l00044"></a>00044 {
-<a name="l00045"></a>00045     <span class="keywordflow">for</span> (ListGroupType::const_iterator i = gp_list_.begin();
-<a name="l00046"></a>00046             i != gp_list_.end();
+<a name="l00045"></a>00045     <span class="keywordflow">for</span> (ListGroupType::const_iterator i = <a class="code" href="classNetwork.html#3a3134fe2f508a65d28968d94e3fa524">gp_list_</a>.begin();
+<a name="l00046"></a>00046             i != <a class="code" href="classNetwork.html#3a3134fe2f508a65d28968d94e3fa524">gp_list_</a>.end();
 <a name="l00047"></a>00047             ++i)
 <a name="l00048"></a>00048         (*i)-&gt;update();
 <a name="l00049"></a>00049 }
 <a name="l00050"></a>00050 
 <a name="l00052"></a>00052 <span class="comment">// clean the spike list of the neurons up to 'time_end_past'</span>
-<a name="l00053"></a>00053 <span class="keyword">inline</span> <span class="keywordtype">void</span> Network::clear_past_of_spike_list(<span class="keyword">const</span> Time &amp; time_end_past)
+<a name="l00053"></a><a class="code" href="classNetwork.html#41f5b300e6ea9869a1068f5f83304071">00053</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classNetwork.html#41f5b300e6ea9869a1068f5f83304071">Network::clear_past_of_spike_list</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; time_end_past)
 <a name="l00054"></a>00054 {
-<a name="l00055"></a>00055     <span class="keywordflow">for</span> (ListGroupType::const_iterator i = gp_list_.begin(); i != gp_list_.end(); ++i)
+<a name="l00055"></a>00055     <span class="keywordflow">for</span> (ListGroupType::const_iterator i = <a class="code" href="classNetwork.html#3a3134fe2f508a65d28968d94e3fa524">gp_list_</a>.begin(); i != <a class="code" href="classNetwork.html#3a3134fe2f508a65d28968d94e3fa524">gp_list_</a>.end(); ++i)
 <a name="l00056"></a>00056         (*i)-&gt;clear_past_of_spike_list(time_end_past);
 <a name="l00057"></a>00057 }
 <a name="l00058"></a>00058 
 <a name="l00059"></a>00059 
 <a name="l00060"></a>00060 <span class="preprocessor">#endif // !defined(NETWORK_H)</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:04 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:53 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

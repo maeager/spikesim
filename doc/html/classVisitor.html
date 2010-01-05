@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>spikesimv6: Visitor&lt; Type &gt; Class Template Reference</title>
+<title>ParSpikeSimv6.2: Visitor&lt; Type &gt; Class Template Reference</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,6 +9,7 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -32,8 +33,7 @@
 <a href="classVisitor-members.html">List of all members.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="anchor" name="e245e54eb5e51ea41b97757d8254227a"></a><!-- doxytag: member="Visitor::visit" ref="e245e54eb5e51ea41b97757d8254227a" args="(Type &amp;)=0" -->
-virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (Type &amp;)=0</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVisitor.html#e245e54eb5e51ea41b97757d8254227a">visit</a> (Type &amp;)=0</td></tr>
 
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
@@ -42,10 +42,35 @@ virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (Ty
 
 <a class="el" href="classVisitor.html" title="Visitor: class template to access information within classes (Type).">Visitor</a>: class template to access information within classes (Type). 
 <p>
-The behaviour is defined in a class derived from (one or) several Visitor&lt;Type1&gt;, Visitor&lt;Type2&gt; in the definition of visit(). The derivation is associated with one from <a class="el" href="structAbstractVisitor.html" title="AbstractVisitor: common interface for all visitors.">AbstractVisitor</a> in the derived classes. All the classes that take the place of Type must have an accpet method, with <a class="el" href="structAbstractVisitor.html" title="AbstractVisitor: common interface for all visitors.">AbstractVisitor</a> in argument. <hr>The documentation for this class was generated from the following file:<ul>
+The behaviour is defined in a class derived from (one or) several Visitor&lt;Type1&gt;, Visitor&lt;Type2&gt; in the definition of <a class="el" href="classVisitor.html#e245e54eb5e51ea41b97757d8254227a">visit()</a>. The derivation is associated with one from <a class="el" href="structAbstractVisitor.html" title="AbstractVisitor: common interface for all visitors.">AbstractVisitor</a> in the derived classes. All the classes that take the place of Type must have an accpet method, with <a class="el" href="structAbstractVisitor.html" title="AbstractVisitor: common interface for all visitors.">AbstractVisitor</a> in argument. <hr><h2>Member Function Documentation</h2>
+<a class="anchor" name="e245e54eb5e51ea41b97757d8254227a"></a><!-- doxytag: member="Visitor::visit" ref="e245e54eb5e51ea41b97757d8254227a" args="(Type &amp;)=0" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Type&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classVisitor.html">Visitor</a>&lt; Type &gt;::visit           </td>
+          <td>(</td>
+          <td class="paramtype">Type &amp;&nbsp;</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Implemented in <a class="el" href="classDataCommonNeuronVisitor.html#3f62b8e77bb8f99dd4d4eaa602e5c2a2">DataCommonNeuronVisitor</a>, <a class="el" href="classDataRecordNeuronVisitor.html#49d5f61f42ee82c72098e6289118bfd4">DataRecordNeuronVisitor</a>, <a class="el" href="structDispatcherNrn2.html#30b6050b7bbeb0f82aa3cbc30da38c61">DispatcherNrn2&lt; Configurator &gt;</a>, <a class="el" href="structDispatcherNrn2.html#8e2ebf0d1dc7be1a41afb1859bcab4b4">DispatcherNrn2&lt; Configurator &gt;</a>, <a class="el" href="structDispatcherNrn2.html#26ecc7f3492bd50c6a469579782b548a">DispatcherNrn2&lt; Configurator &gt;</a>, <a class="el" href="structDispatcherNrn2.html#f64fc39daa620d27e0525914fa220146">DispatcherNrn2&lt; Configurator &gt;</a>, <a class="el" href="structDispatcherNrn2.html#40419cef5db2fb4a50c9ee930821c103">DispatcherNrn2&lt; Configurator &gt;</a>, <a class="el" href="structDispatcherNrn2.html#37f9975935c436eb50a84b3938e88da7">DispatcherNrn2&lt; Configurator &gt;</a>, <a class="el" href="structDispatcherNrn2.html#56eba7c2cc1137e17ad01483e974b247">DispatcherNrn2&lt; Configurator &gt;</a>, <a class="el" href="structDispatcherNrn2.html#5cecddbef2a9fa624b9daf9cf79b4ad5">DispatcherNrn2&lt; Configurator &gt;</a>, <a class="el" href="structDispatcherNrn2.html#5e9107fdf12e6cdb032d3ff453b1ca4f">DispatcherNrn2&lt; Configurator &gt;</a>, <a class="el" href="structDispatcherNrn1.html#c635ec144255910ebae9708e6cedf9a3">DispatcherNrn1</a>, <a class="el" href="structDispatcherNrn1.html#beb1e56333cc2d789c6cd675dd70e3c1">DispatcherNrn1</a>, and <a class="el" href="structDispatcherNrn1.html#95f7503711bdae74df9535a0e764fb42">DispatcherNrn1</a>.</p>
+
+</div>
+</div><p>
+<hr>The documentation for this class was generated from the following file:<ul>
 <li>/media/data/Work/spikesimv6/<a class="el" href="Visitor_8h-source.html">Visitor.h</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:19 2009 for spikesimv6 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:57 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>
