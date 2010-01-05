@@ -11,6 +11,10 @@
 #include "ParNetwork.h"
 #include <mpi.h>
 
+#include "NoThreading.h"
+#include "Engine.h"
+
+
 int
 main(int argc, char *argv[])
 {
@@ -58,7 +62,7 @@ main(int argc, char *argv[])
 
     pnm.load_balance_roulette();
     pnm.create_network(net);
-    pnm.connect_network(net,false);
+    pnm.connect_network(net);
 //Round robin is probably the most inefficient way to distribute the neurons
 //Guy from IBM said that holding all the synapse on CPUs would be better
 
@@ -82,6 +86,11 @@ main(int argc, char *argv[])
         RandomGenerator::reinit();
 
     // start of the simulation
+        // start of the simulation
+        Engine<NoThreading> engine;
+
+        engine.init(net);
+        engine.launch_sim(net);
 
 
 

@@ -57,7 +57,11 @@ class KeepArgs;
 void bbs_context_wait();
 void bbs_handle();
 
-
+//! Abstract BBS server class
+/*! methods remain virtual so that these commands are done by BBSDirectServer, 
+ * adding layer to send and recv buffers 
+ * 
+ */
 class BBSDirect : public BBSImpl
 {
 public:
@@ -104,7 +108,9 @@ private:
 
 };
 
-
+//! BBSDirectServer - server side of bulletin board
+/*! Performs the task of collecting queues of messages and controlling operations of the BBS.
+ */
 class BBSDirectServer
 {
 public:
@@ -146,8 +152,10 @@ private:
 
 
 
-
-class BBSClient : public BBSImpl   // implemented as PVM Client
+/** Client side of BBS
+ *
+ */
+class BBSClient : public BBSImpl
 {
 public:
     BBSClient();

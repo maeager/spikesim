@@ -16,7 +16,7 @@
 #include "SimulationEnvironment.h"
 #include "OutputManager.h"
 #include "NoThreading.h"
-//#include "Engine.h"
+#include "Engine.h"
 
 
 
@@ -27,7 +27,6 @@ int main(int argc, char *argv[])
     int rank = MPI::COMM_WORLD.Get_rank();
     int size = MPI::COMM_WORLD.Get_size();
     ParNetwork net;
-    if (rank == 0) {
 #else
     Network net;
 #endif
@@ -68,10 +67,10 @@ int main(int argc, char *argv[])
             RandomGenerator::reinit();
 
         // start of the simulation
-	//        Engine<MPIEngine> engine;
+        Engine<NoThreading> engine;
 
-	//        engine.init(net);
-	//        engine.launch_sim(net);
+        engine.init(net);
+        engine.launch_sim(net);
 
 
         // stop time clock
@@ -84,12 +83,13 @@ int main(int argc, char *argv[])
 
         // memory cleaning
 #ifdef PARALLELSIM
-    }
+
     std::cout << "Hello World! I am " << rank << " of " << size <<
               std::endl;
 
     MPI::Finalize();
 #endif
+
     // wait for key pressed
 //  std::cin.get();
     return 0;

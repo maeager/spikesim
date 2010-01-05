@@ -21,8 +21,8 @@
 
 void bbs_done();
 
-//! BBSImpl Bulletin Board Implementation class
-/*! Primarily a virtual class that stores some extra BBS information 
+//! BBSImpl Bulletin Board Abstract class
+/*! Primarily an abstract class that prepares server and client sides for BBS communication 
  */
 class BBSImpl
 {

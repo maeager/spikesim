@@ -49,7 +49,7 @@ std::vector<double> NetPar::max_histogram_;
 #endif
 
 
-//! Pre-synapses class
+//! Pre-synapse class
 /*!
  * PreSyn class is an amalgm of classes in NEURON and SpikeSim.
  * This should be on the node where the pre-cell neuron was constructed.
@@ -152,14 +152,12 @@ void NetParEvent::pr(const char* m, double tt, NetCvode* nc){
 
 
 
-/** 
- * Determine when a neuron has fired and alert an output event
- * 
+/** Determine when a neuron has fired and alert an output event
  * @param localgid id of local neuron
  * @param firetime time of spike
  */
 void NetPar::nrn_outputevent(unsigned char localgid, double firetime)
-{				/**<  */
+{		    
     if (!active_) {
         return;
     }
@@ -177,8 +175,7 @@ void NetPar::nrn_outputevent(unsigned char localgid, double firetime)
 #endif
 }
 
-/** 
- * setup output event on NCS
+/** setup output event on NCS
  * 
  * @param gid 
  * @param firetime 
@@ -203,20 +200,18 @@ std::cout << ParSpike::my_rank << " nrnncs_outputevent "<<gid<<" " << firetime <
 #endif
 	spfixout_[i++] = (unsigned char)((firetime - t_exchange_) * dt1_ + .5);
 std::cout<<  my_rank <<" idx= " <<  i<< "  firetime=" <<  firetime <<" t_exchange_="<<  t_exchange_ << " spfixout="<< (int)spfixout_[i-1] << std::endl;
-        sppk(&spfixout_[i], gid); //sppk(spfixout_+i, gid);
-//std::cout<<  my_rank <<" idx= " <<  i<< "  gid=" <<  gid <<" spupk="<<  spupk(&spfixin_ovfl_[idx]) << std::endl;//(spfixout_+i));
+        sppk(&spfixout_[i], gid); 
+//std::cout<<  my_rank <<" idx= " <<  i<< "  gid=" <<  gid <<" spupk="<<  spupk(&spfixin_ovfl_[idx]) << std::endl;
     } else {
 #if nrn_spikebuf_size == 0
 	i = nout_++;
         if (i >= ocapacity_) {
             ocapacity_ *= 2;
-            //  temp = SpikePacket_[ocapacity_];
-            //  std::copy(spikeout_,temp);
-            //  if (spikeout_) delete [] spikeout_;
-            //  spikeout_ =temp;temp=0;
             spikeout_.resize(ocapacity_);
         }
+#ifdef DEBUG
 std::cout<<  my_rank <<" cell  " <<  gid<< "  in slot " <<  i <<" fired at "<<  firetime << std::endl;
+#endif
         spikeout_[i].gid = gid;
         spikeout_[i].spiketime = firetime;
 #else
@@ -225,10 +220,6 @@ std::cout<<  my_rank <<" cell  " <<  gid<< "  in slot " <<  i <<" fired at "<<  
             i -= nrn_spikebuf_size;
             if (i >= ocapacity_) {
                 ocapacity_ *= 2;
-                //  temp = SpikePacket_[ocapacity_];
-                //  copy(spikeout_,temp);
-                //  if (spikeout_) delete [] spikeout_;
-                //  spikeout_ =temp;temp=0;
                 spikeout_.resize(ocapacity_);
             }
             spikeout_[i].gid = gid;
@@ -239,7 +230,9 @@ std::cout<<  my_rank <<" cell  " <<  gid<< "  in slot " <<  i <<" fired at "<<  
         }
 #endif
     }
+#ifdef DEBUG
 std::cout<<  my_rank <<" cell  " <<  gid<< "  in slot " <<  i <<" fired at "<<  firetime << std::endl;
+#endif
 }
 
 
@@ -282,10 +275,7 @@ void NetPar::calc_actual_mindelay() {
 }
 */
 
-/** 
- * Initialise spike exchange
- * 
- */
+//! Initialise spike exchange
 void NetPar::spike_exchange_init()
 {
 #ifdef DEBUG
@@ -344,10 +334,7 @@ std::cout <<"NetPar::spike_exchange_init" <<std::endl;
 }
 
 
-/**
- * Run the spike exchange routine.
- *
- */
+//!Run the spike exchange routine.
 void NetPar::spike_exchange()
 {
     if (!active_) {
@@ -439,10 +426,7 @@ std::cout<<  my_rank <<" spike_exchange sent  " <<  nout_<< "  received "<<  n<<
     NetPar::wt1_ = wtime() - wt;
 }
 
-/** 
- * Run the spike exchange routine with additional compression
- * 
- */
+//!Run the spike exchange routine with additional compressio
 void NetPar::spike_exchange_compressed()
 {
     if (!active_) {
@@ -582,9 +566,7 @@ std::cout<<  my_rank <<" nrn_spike_exchange sent  " <<  nout_<< "  received "<< 
     NetPar::wt1_ = wtime() - wt;
 }
 
-/**
- * mk_localgid_rep used by spike_compress to compress gid's on local node
- */
+//! mk_localgid_rep used by spike_compress to compress gid's on local node
 void NetPar::mk_localgid_rep()
 {
     int i, j, k;
@@ -763,7 +745,7 @@ void BBS::set_gid2node(int gid, int nid)
 }
 
 /** 
- * Clear the gid2in and gid2out lists
+ * Clear the Gid2PreSyn maps gid2in and gid2out
  * 
  */
 void NetPar::gid_clear()
@@ -814,10 +796,9 @@ void NetPar::gid_clear()
 }
 
 /** 
- * Does the neuron exist on this node
+ * Does the neuron, with \b gid, exist on this node
  * 
  * @param gid 
- * 
  * @return 
  */
 int BBS::gid_exists(int gid)
@@ -878,7 +859,7 @@ void BBS::cell()
 }
 
 /** 
- * Set the gid on the pre-synaptic pointer
+ * Set the \b gid on the pre-synaptic pointer
  * 
  * @param gid 
  */
@@ -909,10 +890,9 @@ void BBS::spike_record(int gid, std::vector<double>* spikevec, std::vector<doubl
 */
 
 /** 
- * Get the Neuron with id gid 
+ * Get the reference pointer of Neuron with id \b gid 
  * 
  * @param gid 
- * 
  * @return ConfigBase pointer to Neuron
  */
 ConfigBase* BBS::gid2obj(int gid)
@@ -1152,7 +1132,6 @@ std::vector<double> BBS::netpar_max_histogram(std::vector<double> mh)
 
 int NetPar::spike_compress(int nspike, bool gid_compress, int xchng_meth)
 {
-
     if (numprocs < 2) {
         return 0;
     }
@@ -1210,6 +1189,8 @@ int NetPar::spike_compress(int nspike, bool gid_compress, int xchng_meth)
     return ag_send_nspike_;
 
 }
+
+// following from src/nrnoc/nrntimeout.c
 
 #include <signal.h>
 #include <sys/time.h>

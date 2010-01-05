@@ -111,16 +111,16 @@ protected:
 // inline definitions
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////
-// constructor
+
+//! constructor
 inline DataCommonNeuron::DataCommonNeuron(ConfigBase * const configurator)
 {
     if (! dynamic_cast<DataCommonNeuronConfig *>(configurator))
         throw ConfigError("DataCommonNeuron: void configurator");
 };
 
-/////////////////////////////////////////////////
-// add a preneuron to the list
+
+//! add a preneuron to the list
 inline void DataCommonNeuron::add_presynapse_impl(SynapseInterface * const syn)
 {
     // add the synaptic mechanism if it is not already in the list (no duplicate)
@@ -134,15 +134,15 @@ inline void DataCommonNeuron::add_presynapse_impl(SynapseInterface * const syn)
         presyn_mech_list_.push_back(boost::shared_ptr<SynMechInterface>(syn->syn_mech()));
 }
 
-/////////////////////////////////////////////////
-// add a postneuron to the list
+
+//! add a postneuron to the list
 inline void DataCommonNeuron::add_postsynapse_impl(SynapseInterface * const syn)
 {
     list_postsynapses_.push_back(boost::shared_ptr<SynapseInterface>(syn));
 }
 
-/////////////////////////////////////////////////
-// called when the neuron fires a spike (activation mechanism)
+
+//! called when the neuron fires a spike (activation mechanism)
 inline void DataCommonNeuron::notify_firing_impl(const Time & time_to_spike)
 {
 //TODO add parallel send or
@@ -153,8 +153,8 @@ inline void DataCommonNeuron::notify_firing_impl(const Time & time_to_spike)
         (*i)->on_preneuron_fire_update(time_to_spike);
 }
 
-/////////////////////////////////////////////////
-// to access the list of postsynapses
+
+//! to access the list of postsynapses using Vistor
 inline void DataCommonNeuron::apply_vis_impl(AbstractVisitor & vis)
 {
     // check the compatibilty of the visitor and call the method visit if suitable

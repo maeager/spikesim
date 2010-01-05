@@ -21,6 +21,10 @@ class KeepArgs : public std::map<int, bbsmpibuf*, ltint> {};
 
 int BBSClient::sid_;
 
+/** Constructor for BBSClient
+ * @name BBSClient - 
+ * @return BBSClient
+ */
 BBSClient::BBSClient()
 {
     sendbuf_ = nil;
@@ -32,7 +36,10 @@ BBSClient::BBSClient()
 
     BBSClient::start();
 }
-
+/**
+ * @name BBSClient - 
+ * @return void
+ */
 BBSClient::~BBSClient()
 {
     BBS2MPI::unref(sendbuf_);
@@ -238,7 +245,10 @@ int BBSClient::look_take_todo()
     }
     return type;
 }
-
+/**
+ * @name take_todo - Grabs todo buffers 
+ * @return int
+ */
 int BBSClient::take_todo()
 {
     int type;
@@ -291,18 +301,23 @@ void BBSClient::return_args(int userid)
     }
 
 }
-
+/**
+ * @name done - Terminate the client
+ * @return void
+ */
 void BBSClient::done()
 {
 #if DEBUG
     std::cout <<  ParSpike::my_rank << " BBSClient::done " << std::endl;
-
 #endif
     BBSImpl::done();
     ParSpike::terminate();
     exit(0);
 }
-
+/**
+ * @name start - Start the client
+ * @return void
+ */
 void BBSClient::start()
 {
     char* client = 0;

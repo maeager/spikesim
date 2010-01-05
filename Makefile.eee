@@ -100,37 +100,37 @@ ParSpikeSim.2.exe: $(ParSpikeSim_CXXOBJECTS) main2.o
 SpikeSim.exe: $(SpikeSim_OBJECTS)
 	$(MPICXX) $(CXXFLAGS) -o SpikeSim.exe $(SpikeSim_OBJECTS)
 
-main3: $(ParSpikeSim_OBJECTS) main3.o
-	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main3 main3.o $(ParSpikeSim_OBJECTS)
+main3.exe: $(ParSpikeSim_OBJECTS) main3.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main3.exe main3.o $(ParSpikeSim_OBJECTS) NoThreading.o
 
-main2: $(ParSpikeSim_OBJECTS) main2.o
-	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main2 main2.o $(ParSpikeSim_OBJECTS)
+main2.exe: $(ParSpikeSim_OBJECTS) main2.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main2.exe main2.o $(ParSpikeSim_OBJECTS) NoThreading.o
 
-main1: $(ParSpikeSim_OBJECTS) main.o
-	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main1 main.o $(ParSpikeSim_OBJECTS)
+main1.exe: $(ParSpikeSim_OBJECTS) main.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main1.exe main.o $(ParSpikeSim_OBJECTS) NoThreading.o
 
-main-par: $(ParSpikeSim_CXXOBJECTS) main-par.o
-	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main-par main-par.o $(ParSpikeSim_CXXOBJECTS)
+main-par.exe: $(ParSpikeSim_CXXOBJECTS) main-par.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main-par.exe main-par.o $(ParSpikeSim_CXXOBJECTS)
 
-load_balances: load_balances.o $(ParSpikeSim_OBJECTS)	
-	$(MPICXX) $(CXXFLAGS)  -o load_balances load_balances.o $(ParSpikeSim_OBJECTS)
+load_balances.exe: load_balances.o $(ParSpikeSim_OBJECTS)	
+	$(MPICXX) $(CXXFLAGS)  -o load_balances.exe load_balances.o $(ParSpikeSim_OBJECTS)
 
 doc: Doxyfile
 	doxygen Doxyfile
 
 clean:
-	rm -f *.o *.exe *.bak *.sav *~ '#*'
+	rm -f *.o *.exe *.bak *.sav *~ '#*' *.tmp
 
-clean-style: clean
+kstyle: clean
 	kdestyle `find -type f -name '*.cpp'` `find -type f -name '*.h'`
 
 upload:
 	rsync -Cavuzb --exclude='ncb' --exclude='.hg*' --exclude='*.o' --exclude='*.exe' . meager@soma:~/dmf/ParSpikeSim
 
-upload-dryrun:
+upload-dryrun: clean
 	rsync -Cavuzb -n --exclude='.hg*' --exclude='*.o' --exclude='ncb' --exclude='*.exe' . meager@soma:~/dmf/ParSpikeSim
 
-download:
+download: clean
 	rsync -Cavuzb --exclude='*.o' --exclude='*.exe' meager@soma:~/dmf/ParSpikeSim/ ./
 
 download-dryrun:

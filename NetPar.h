@@ -63,12 +63,7 @@ public:
     double mindelay();
     /*  void pr(const char*, double t, NetCvode*);
         void asf_err();
-
         int type() { return PreSynType; }
-
-
-
-
         void update();
         void disconnect(Observable*);
         void update_ptr(double*);
@@ -76,20 +71,15 @@ public:
         void record(IvocVect*, IvocVect* idvec = nil, int rec_id = 0);
         void record(double t);
         void init();
-
-
         NetConPList dil_;
-    */  double threshold_;
+    */  
+    double threshold_;
     double delay_;
     double* thvar_;
     ConfigBase* osrc_;
     ConfigBase* ssrc_;
     double* tvec_;
     double* idvec_;
-//  HocCommand* stmt_;
-//  hoc_Item* hi_; // in the netcvode psl_
-//  hoc_Item* hi_th_; // in the netcvode psl_th_
-//  long hi_index_; // for SaveState read and write
     int use_min_delay_;
     int rec_id_;
     int output_index_;
@@ -128,13 +118,14 @@ typedef std::map<int, boost::shared_ptr<PreSyn > >::iterator Gid2PreSynItr;
 class NetPar : public ParSpike
 {
 private:
-    //static void sppk(std::vector<unsigned char> c, int gid);
+    //! Pack Spikes
     inline static void sppk(unsigned char* c, int gid) {
         for (register int i = ParSpike::localgid_size_ - 1; i >= 0; --i) {
             c[i] = gid & 255;
             gid >>= 8;
         }
     }
+    //! Unpack Spikes
     inline static int spupk(unsigned char* c) {
         int gid = c[0];
         for (register int i = 1; i < ParSpike::localgid_size_; ++i) {
@@ -160,14 +151,16 @@ public:
     void outputevent(unsigned char localgid, double firetime);
     void nrn_outputevent(unsigned char localgid, double firetime);
     void nrn_fake_fire(int gid, double firetime, int fake_out);
-//  static Symbol* netcon_sym_;
+
+    //! map of global neuron IDs to output presynapses
     static Gid2PreSyn* gid2out_;
+    //! map of global neuron IDs to input presynapses
     static Gid2PreSyn* gid2in_;
     static double t_exchange_;
     static double dt1_; // 1/dt
     static void mk_localgid_rep();
 
-// for compressed gid info during spike exchange
+    //! for compressed gid info during spike exchange
     static bool nrn_use_localgid_;
 
     static Gid2PreSyn** localmaps_;
@@ -179,10 +172,9 @@ public:
     static std::vector<double> max_histogram_;
 #endif
 
-    static int ocapacity_; // for spikeout_
-    // require it to be smaller than  min_interprocessor_delay.
-    static double wt_; // wait time for nrnmpi_spike_exchange
-    static double wt1_; // time to find the PreSyns and send the spikes.
+    static int ocapacity_; /// for spikeout_ 
+    static double wt_; /// wait time for nrnmpi_spike_exchange require it to be smaller than  min_interprocessor_delay.
+    static double wt1_; /// time to find the PreSyns and send the spikes.
     static bool use_compress_;
     static int spfixout_capacity_;
     static int idxout_;
@@ -198,24 +190,5 @@ public:
 
 };
 
-/*
-//inline static void sppk(std::vector<unsigned char> c, int gid) {
-inline static void sppk(unsigned char* c, int gid) {
-    for (register int i = ParSpike::localgid_size_-1; i >= 0; --i) {
-        c[i] = gid & 255;
-        gid >>= 8;
-    }
-}
-
-inline int spupk(unsigned char* c) {
-
-    int gid = c[0];
-    for (register int i = 1; i < ParSpike::localgid_size_; ++i) {
-        gid <<= 8;
-        gid += c[i];
-    }
-    return gid;
-}
-*/
 
 #endif

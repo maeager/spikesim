@@ -31,11 +31,6 @@ static int BBS2MPI::bufcnt_;
 static MPI_Datatype mytypes[] = {MPI_INT, MPI_DOUBLE, MPI_CHAR, MPI_PACKED};
 
 
-/*BBS2MPI::BBS2MPI()
-{
-
-}*/
-
  /** 
   * Unpack method
   * 
@@ -386,7 +381,7 @@ int BBS2MPI::bbsrecv(int source, bbsmpibuf* r)
     return status.MPI_TAG;
 }
 /** 
- * Send and Recv a buffer
+ * Send and Recv a buffer to process dest
  * 
  * @param dest 
  * @param tag 
@@ -412,7 +407,7 @@ int BBS2MPI::bbssendrecv(int dest, int tag, bbsmpibuf* s, bbsmpibuf* r)
     return BBS2MPI::bbsrecv(dest, r);
 }
 /** 
- * Probe sources
+ * Probe processes
  * 
  * @param size 
  * @param tag 
@@ -437,7 +432,7 @@ int BBS2MPI::iprobe(int* size, int* tag, int* source)
  * 
  * @param size 
  * 
- * @return 
+ * @return new buffer
  */
 bbsmpibuf* BBS2MPI::newbuf(int size)
 {
@@ -446,7 +441,6 @@ bbsmpibuf* BBS2MPI::newbuf(int size)
 #if DEBUG == 2
  std::cout <<  ParSpike::my_rank << " BBS2MPI::newbuf " <<  (long)buf << std::endl;
 #endif
-//  buf->buf = (char*)0;
     buf->buf.resize(size);
     buf->size = size;
     buf->pkposition = 0;
@@ -459,7 +453,7 @@ bbsmpibuf* BBS2MPI::newbuf(int size)
     return buf;
 }
 /** 
- * Copy and existing buffer
+ * Copy buffers using STL copy() for string
  * 
  * @param dest 
  * @param src 
@@ -468,16 +462,13 @@ void BBS2MPI::copy(bbsmpibuf* dest, bbsmpibuf* src)
 {
     int i;
     resize(dest, src->size);
-//  for (i=0; i < src->size; ++i) {
-//      dest->buf[i] = src->buf[i];
-//  }
     std::copy(src->buf.begin(), src->buf.end(), dest->buf.begin());
     dest->pkposition = src->pkposition;
     dest->upkpos = src->upkpos;
     dest->keypos = src->keypos;
 }
 /** 
- * Clean up buffers
+ * Clean up buffer
  * 
  * @param buf 
  */
@@ -496,7 +487,7 @@ void BBS2MPI::free(bbsmpibuf* buf)
 #endif
 }
 /** 
- * Increment references to buffer
+ * Increment references to buffer buf.
  * 
  * @param buf 
  */
@@ -506,7 +497,7 @@ void BBS2MPI::ref(bbsmpibuf* buf)
     buf->refcount += 1;
 }
 /** 
- * Decrement references to buffer
+ * Decrement references to buffer buf.
  * 
  * @param buf 
  */

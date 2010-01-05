@@ -1,0 +1,51 @@
+ParSpikeSim	version 6
+
+05/01/2010
+
+INTRO
+
+...
+
+
+
+BUILD
+
+$ make
+
+SETUP MPI
+
+Start ssh-agent for fast passwordless implementation of multiple processors.
+
+$ ssh-agent -s > ~/.ssh-agent
+$ . ~/.ssh-agent
+
+Check any log files left over from previous mpd.
+
+$ mpdcleanup
+
+Run the mpi daemon in background.
+
+$ mpd &
+
+Test the mpd.
+
+$ mpdtrace
+$ mpiringtest 100
+$ mpiexec -n 2 hostname
+
+EXAMPLE SIMULATION
+
+Build the your executable
+$ make ParSpikeSim.exe
+
+The MPI version should be run in the background from a script or in batch mode, but these examples are in commandline mode.  The number of processors, nprocs, is requested by the user and depends on the capability of the system.  The './' at the start of the executable is necessary unless the current folder is in the PATH variable.
+ 
+$ mpiexec -n nprocs  ./ParSpikeSim.exe > batch.log 2>&1 &
+
+or you may need to submit the script to the SGI grid engine
+
+$ qsub -q medium.q -b y -V -cwd -e /dev/null -o /dev/null mpiexec -n nprocs  ./ParSpikeSim.exe 
+
+where medium.q is a queue.  If the grid engine has parallel features built in, eg. MPI,  
+
+
