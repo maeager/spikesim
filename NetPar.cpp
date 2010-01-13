@@ -152,7 +152,7 @@ void NetParEvent::pr(const char* m, double tt, NetCvode* nc){
 
 
 
-/** Determine when a neuron has fired and alert an output event
+/*! Determine when a neuron has fired and alert an output event
  * @param localgid id of local neuron
  * @param firetime time of spike
  */
@@ -175,7 +175,7 @@ void NetPar::nrn_outputevent(unsigned char localgid, double firetime)
 #endif
 }
 
-/** setup output event on NCS
+/*! setup output event on NCS
  * 
  * @param gid 
  * @param firetime 
@@ -722,7 +722,7 @@ void NetPar::alloc_space()
     }
 }
  
-/** 
+/*! 
  * If the nid is equal to my_rank, push the gid onto the gid2in_ list 
  * 
  * @param gid neuron's id
@@ -744,22 +744,18 @@ void BBS::set_gid2node(int gid, int nid)
     }
 }
 
-/** 
+/*! 
  * Clear the Gid2PreSyn maps gid2in and gid2out
- * 
+ * original netpar components are stripped out and the NRNHashIterate has been replaced with the for loop
  */
 void NetPar::gid_clear()
 {
-//TODO  nrn_partrans_clear();
-#if PARANEURON
-    nrnmpi_split_clear();
-#endif
 
     if (!gid2out_) {
         return;
     }
     PreSynPtr ps, psi;
-// NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
+
     for (Gid2PreSyn::const_iterator i = NetPar::gid2out_->begin();
             i != NetPar::gid2out_->end();
             ++i) {
@@ -767,9 +763,6 @@ void NetPar::gid_clear()
         if (ps && !(psi = NetPar::gid2in_->find(ps->gid_)->second)) {
             ps->gid_ = -1;
             ps->output_index_ = -1;
-            //if (ps->dil_.count() == 0) {
-            //  delete ps;
-            //}
         }
     }
 
@@ -779,23 +772,13 @@ void NetPar::gid_clear()
         ps = i->second;
         ps->gid_ = -1;
         ps->output_index_ = -1;
-        //  if (ps->dil_.count() == 0) { //No synaptic connections
-        //  delete ps;
-        //  }
-    }
 
-//  int i;
-//  for (i = gid2out_->size_ - 1; i >= 0; --i) {
-//      gid2out_->at(i).clear();
-//  }
+    }
     gid2out_->clear();
-//  for (i = gid2in_->size_ - 1; i >= 0; --i) {
-//      gid2in_->at(i).clear();
-//  }
     gid2in_->clear();
 }
 
-/** 
+/*! 
  * Does the neuron, with \b gid, exist on this node
  * 
  * @param gid 
@@ -816,7 +799,7 @@ std::cout<<  my_rank <<" gid  " <<  gid<< "  exists"<< std::endl;
     return 0;
 }
 
-/** 
+/*! 
  * Set the threshold for spiking on neuron with gid
  * 
  * @param gid 
@@ -858,7 +841,7 @@ void BBS::cell()
     */
 }
 
-/** 
+/*! 
  * Set the \b gid on the pre-synaptic pointer
  * 
  * @param gid 
@@ -889,7 +872,7 @@ void BBS::spike_record(int gid, std::vector<double>* spikevec, std::vector<doubl
 }
 */
 
-/** 
+/*! 
  * Get the reference pointer of Neuron with id \b gid 
  * 
  * @param gid 
@@ -976,7 +959,7 @@ std::cout<<  my_rank <<" connect  " <<  target->gid  << "  from new PreSyn for "
 
 }
 
-/** 
+/*! 
  * 
  * 
  * @param tstop termination time for simulation

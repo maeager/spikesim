@@ -31,7 +31,7 @@ static int BBS2MPI::bufcnt_;
 static MPI_Datatype mytypes[] = {MPI_INT, MPI_DOUBLE, MPI_CHAR, MPI_PACKED};
 
 
- /** 
+ /*! 
   * Unpack method
   * 
   * @param buf 
@@ -59,7 +59,7 @@ std::cout<<ParSpike::my_rank<<" unpack size="<<r->size<<" upkpos="<<r->upkpos<<"
     assert(type[1] == count);
     MPI_Unpack(&(r->buf[0]), r->size, &r->upkpos, buf, count, mytypes[my_datatype], bbs_comm);
 }
-/** 
+/*! 
  * 
  * 
  * @param r 
@@ -86,7 +86,7 @@ std::cout <<  ParSpike::my_rank<< "  BBS2MPI::upkbegin keypos=" <<  p << " size=
     assert(type == 0);
     r->keypos = p;
 }
-/** 
+/*! 
  * Get the key of new buffer
  * 
  * @param r 
@@ -112,7 +112,7 @@ std::cout<< " getkey return  " <<  s<< std::endl;
     return s;
 }
 
-/** 
+/*! 
  * Get the ID in buffer
  * 
  * @param r buffer
@@ -134,7 +134,7 @@ std::cout<< " getid return  " <<  i<< std::endl;
 #endif
     return i;
 }
-/** 
+/*! 
  * Unpack an integer
  * 
  * @param r 
@@ -147,7 +147,7 @@ int BBS2MPI::upkint(bbsmpibuf* r)
     unpack(&i, 1, my_MPI_INT, r, "upkint");
     return i;
 }
-/** 
+/*! 
  * Unpack a double
  * 
  * @param r 
@@ -160,7 +160,7 @@ double BBS2MPI::upkdouble(bbsmpibuf* r)
     unpack(&x, 1, my_MPI_DOUBLE, r, "upkdouble");
     return x;
 }
-/** 
+/*! 
  * Unpack an array of doubles
  * 
  * @param n 
@@ -171,7 +171,7 @@ void BBS2MPI::upkvec(int n, double* x, bbsmpibuf* r)
 {
     unpack(x, n, my_MPI_DOUBLE, r, "upkvec");
 }
-/** 
+/*! 
  * Unpack string
  * 
  * @param r 
@@ -198,7 +198,7 @@ static void resize(bbsmpibuf* r, int size)
         r->size = newsize;
     }
 }
-/** 
+/*! 
  * begin packing
  * 
  * @param r 
@@ -213,7 +213,7 @@ void BBS2MPI::pkbegin(bbsmpibuf* r)
 #endif
     MPI_Pack(&type, 1, MPI_INT, &(r->buf[0]), r->size, &r->pkposition, bbs_comm);
 }
-/** 
+/*! 
  * 
  * 
  * @param r 
@@ -246,7 +246,7 @@ for(register int i=0; i<r->buf.size(); i++) std::cout << r->buf[i];
 #endif
 }
 
-/** 
+/*! 
  * Pack buffer generic method
  * 
  * @param inbuf 
@@ -281,7 +281,7 @@ std::cout<<" pkposition=" << r->pkposition << " " << e << std::endl;
 #endif
 }
 
-/** 
+/*! 
  * Pack integer
  * 
  * @param i 
@@ -293,7 +293,7 @@ void BBS2MPI::pkint(int i, bbsmpibuf* r)
     ii = i;
     pack(&ii, 1, my_MPI_INT, r, "pkint");
 }
-/** 
+/*! 
  * 
  * 
  * @param x 
@@ -305,7 +305,7 @@ void BBS2MPI::pkdouble(double x, bbsmpibuf* r)
     xx = x;
     pack(&xx, 1, my_MPI_DOUBLE, r, "pkdouble");
 }
-/** 
+/*! 
  * Pack vector of doubles
  * 
  * @param n size of array
@@ -316,7 +316,7 @@ void BBS2MPI::pkvec(int n, double* x, bbsmpibuf* r)
 {
     pack(x, n, my_MPI_DOUBLE, r, "pkvec");
 }
-/** 
+/*! 
  * 
  * 
  * @param s string
@@ -329,7 +329,7 @@ void BBS2MPI::pkstr(const char* s, bbsmpibuf* r)
     pack(&len, 1, my_MPI_INT, r, "pkstr length");
     pack((char*)s, len, my_MPI_CHAR, r, "pkstr string");
 }
-/** 
+/*! 
  * Send the buffer
  * 
  * @param dest target node
@@ -352,7 +352,7 @@ std::cout <<  ParSpike::my_rank << " BBS2MPI::bbssend " <<  (long)r << " dest=" 
  std::cout <<  ParSpike::my_rank << "return from send" << std::endl;
 #endif
 }
-/** 
+/*! 
  * Receive a buffer
  * 
  * @param source 
@@ -380,7 +380,7 @@ int BBS2MPI::bbsrecv(int source, bbsmpibuf* r)
     errno = 0;
     return status.MPI_TAG;
 }
-/** 
+/*! 
  * Send and Recv a buffer to process dest
  * 
  * @param dest 
@@ -406,7 +406,7 @@ int BBS2MPI::bbssendrecv(int dest, int tag, bbsmpibuf* s, bbsmpibuf* r)
     }
     return BBS2MPI::bbsrecv(dest, r);
 }
-/** 
+/*! 
  * Probe processes
  * 
  * @param size 
@@ -427,7 +427,7 @@ int BBS2MPI::iprobe(int* size, int* tag, int* source)
     }
     return flag;
 }
-/** 
+/*! 
  * Create a new buffer
  * 
  * @param size 
@@ -452,7 +452,7 @@ bbsmpibuf* BBS2MPI::newbuf(int size)
 #endif
     return buf;
 }
-/** 
+/*! 
  * Copy buffers using STL copy() for string
  * 
  * @param dest 
@@ -467,7 +467,7 @@ void BBS2MPI::copy(bbsmpibuf* dest, bbsmpibuf* src)
     dest->upkpos = src->upkpos;
     dest->keypos = src->keypos;
 }
-/** 
+/*! 
  * Clean up buffer
  * 
  * @param buf 
@@ -486,7 +486,7 @@ void BBS2MPI::free(bbsmpibuf* buf)
     --BBS2MPI::bufcnt_;
 #endif
 }
-/** 
+/*! 
  * Increment references to buffer buf.
  * 
  * @param buf 
@@ -496,7 +496,7 @@ void BBS2MPI::ref(bbsmpibuf* buf)
     assert(buf);
     buf->refcount += 1;
 }
-/** 
+/*! 
  * Decrement references to buffer buf.
  * 
  * @param buf 

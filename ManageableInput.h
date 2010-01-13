@@ -53,7 +53,7 @@ protected:
 // inline definitions
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/** call the update for all the manageable inputs
+/*! call the update method for all the manageable inputs
  * primary vector first, then secondary vector (some of the primary may be used by some in secondary)
  */
 inline void ManageableInputManager::input_update_general()

@@ -4,8 +4,6 @@
 #ifndef NETPAR_H
 #define NETPAR_H
 
-//#include "nrnhash.h"
-//#include "ParNetwork.h"
 #ifdef CPPMPI
 #include "ParSpike.2.h"
 #else
@@ -33,7 +31,7 @@
 #undef MD
 #define MD 2147483648.
 
-//#include "ParNetwork.h"
+
 
 extern int nrn_use_selfqueue_;
 //extern void nrn_pending_selfqueue(double, NrnThread*);

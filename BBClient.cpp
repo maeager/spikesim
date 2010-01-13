@@ -21,7 +21,7 @@ class KeepArgs : public std::map<int, bbsmpibuf*, ltint> {};
 
 int BBSClient::sid_;
 
-/** Constructor for BBSClient
+/*! Constructor for BBSClient
  * @name BBSClient - 
  * @return BBSClient
  */

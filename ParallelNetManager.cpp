@@ -13,9 +13,8 @@
 
 int ParallelNetManager::cell_cnt = 0;
 
-/** 
- * ParallelNetManager Constructor
- * 
+/*! ParallelNetManager Constructor
+ * Pass niput args to ParNetwork2BBS
  * @param argc pass input arguments to MPI_Init 
  * @param argv pass input arguments to MPI_Init 
  * 
@@ -38,7 +37,7 @@ ParallelNetManager::~ParallelNetManager()
 }
 
  
-/** 
+/*! 
  * sets the default parameters for PNM
  * 
  * @param ncells 
@@ -68,7 +67,7 @@ ParallelNetManager::~ParallelNetManager()
 }
 
 
-/** 
+/*! 
  *  Master process calls ParNetwork2BBS's done() to terminate the MPI processors 
  *  
  */ 
@@ -102,10 +101,7 @@ void ParallelNetManager::set_gid2node(int cell_id, int pcid = -1)
 }
 
 
-/** 
- *  simplistic partitioning of neurons on nodes 
- * 
- */
+//!simplistic partitioning of neurons on nodes 
 void ParallelNetManager::load_balance_round_robin()   
 {
     for (register int i = 0; i < ncell; ++i) {
@@ -114,7 +110,7 @@ void ParallelNetManager::load_balance_round_robin()
     cell_cnt = 0;
 }
 
-/// order partitioning based on num of nodes
+//! order partitioning based on num of nodes
 void ParallelNetManager::load_balance_roulette()  
 {
     for (register int i = 0; i < ncell; ++i) {
@@ -123,7 +119,7 @@ void ParallelNetManager::load_balance_roulette()
     cell_cnt = 0;
 }
 
-/// partition neurons based on groups
+//! partition neurons based on groups
 void ParallelNetManager::load_balance_by_group()   
 {
     if (ngroup > nwork) {
@@ -138,7 +134,7 @@ void ParallelNetManager::load_balance_by_group()
     cell_cnt = 0;
 }
 
-/// Check to see if global ID exists on this node
+//! Check to see if global ID exists on this node
 bool ParallelNetManager::gid_exists(int cell_id)
 {
     return pc->gid_exists(cell_id);
@@ -159,7 +155,7 @@ void ParallelNetManager::spike_record(int cell_id) {
 */
 
  
-/** 
+/*! 
  *  creates a cell such as "new Cell(x, y, z)" in original NEURON
  * 
  * @param cell_id global ID
@@ -173,6 +169,7 @@ void ParallelNetManager::create_cell(int cell_id, Group * gr)
 
 }
 
+//! Create cell on this node and register a syn connection
 void ParallelNetManager::register_cell(int cell_id, Group* gr) /**< Create the neuron on this node */
 {
 //TODO  ConfigBase * nc;
@@ -417,7 +414,7 @@ $o1.printf
 
 */
 
-/** 
+/*! 
  * Build the network using the types in each Group. The reason for this class to control 
  * network construction was to assert gid to neurons and have access to all cell lists
  * This method was performed within the original Network class by letting each Group take care of itself. 
@@ -425,7 +422,7 @@ $o1.printf
  * 
  * @param net ParNetwork 
  */
-void ParallelNetManager::create_network(ParNetwork&net)
+void ParallelNetManager::create_network(ParNetwork& net)
 {
 //TODO
 //Try this
@@ -462,8 +459,8 @@ void ParallelNetManager::create_network(ParNetwork&net)
 }
 
 
-/** 
- * After construction of the network, groups of neurons are connected based on the  
+/*! 
+ * Connect groups of neurons based on the  
  * Conn class list in PNM.  The ParallelNetManager pointer to this class is passed to the 
  * source group in the Connectivity class.
  *

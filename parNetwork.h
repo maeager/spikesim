@@ -19,7 +19,7 @@
 #include "NetPar.h"
 
 //! Synaptic Connection Class
-/**
+/*!
  * Important configurations for network connections.
  * 
  */
@@ -48,7 +48,7 @@ public:
 };
 
 //! ParNetwork class definition 
-/** Based on Network and other mechanisms in Neuron to handle a collection groups of neurons, create them from a configuration file, the outputs, etc. in a parallel environment
+/*! Based on Network and other mechanisms in Neuron to handle a collection groups of neurons, create them from a configuration file, the outputs, etc. in a parallel environment
  */
 class ParNetwork
 {

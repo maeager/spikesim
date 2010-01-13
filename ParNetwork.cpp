@@ -24,11 +24,12 @@ ParNetwork::
 
 
 /////////////////////////////////////////////////
-// connect to another group according to a script file describing the connections
-// this function is quite awful, but most of the object construction using the script file has been
-//   encapsulated in class constructors, so that only the overall process with the main tags are read here
-//   almost all the parameters are not known in this scope
-//TODO: This needs to be split into a configurator and an implementor, so  one process does not decide to build everything all at once
+//! connect to another group according to a script file describing the connections
+/*! this function is quite awful, but most of the object construction using the script file has been
+ *  encapsulated in class constructors, so that only the overall process with the main tags are read here
+*   almost all the parameters are not known in this scope
+*TODO: This needs to be split into a configurator and an implementor, so  one process does not decide to build everything all at once
+*/
 void ParNetwork::build_from_file(std::string configfilename, std::string logfilename, bool no_output)
 {
 //  std::ofstream logoutfile;
@@ -230,9 +231,8 @@ void ParNetwork::build_from_file(std::string configfilename, std::string logfile
 }
 
 
-
-/**
- * Load in the appropriate parameters from a script file but do NOT create neurons or connect them. Other params are for monitoring and logging
+//! Setup SpikeSim network from script.txt 
+/*! Load in the appropriate parameters from a script file but do NOT create neurons or connect them. Other params are for monitoring and logging
  * @param configfilename input file (eg. "./script.txt")
  * @param ncells monitor number of cells that need to be generated
  * @param ngroups monitor number of groups

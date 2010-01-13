@@ -1,6 +1,6 @@
 // ConnectivityManager.cpp
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-
+  
 
 #include "Macros.h"
 #include "ConnectivityManager.h"
@@ -12,7 +12,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
-// RandomFullPreConnectivity constructor with script file
+//! RandomFullPreConnectivity constructor with script file
 RandomFullPreConnectivity::RandomFullPreConnectivity(std::ifstream & is, const Size & size_gp_postnrn)
 {
     post_neuron_list_ = std::vector<bool>(size_gp_postnrn, false);
@@ -28,7 +28,7 @@ RandomFullPreConnectivity::RandomFullPreConnectivity(std::ifstream & is, const S
 }
 
 /////////////////////////////////////////////////
-// check if post neuron in the list
+//! do_connect checks if post neuron in the list
 bool RandomFullPreConnectivity::do_connect(const Size & n_prenrn, const Size & n_postnrn)
 {
     if (n_postnrn < post_neuron_list_.size())
@@ -44,8 +44,9 @@ bool RandomFullPreConnectivity::do_connect(const Size & n_prenrn, const Size & n
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
-// constructor with script file
-// each postneuron will have exactly nb_pre_connection preconnections
+//! RandomFixedPreConnectivity constructor with script file
+/*! each postneuron will have exactly nb_pre_connection preconnections
+ */
 RandomFixedPreConnectivity::RandomFixedPreConnectivity(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn)
 {
     con_list_ = std::vector<std::vector<bool> >(size_gp_prenrn, std::vector<bool>(size_gp_postnrn, false));
@@ -69,7 +70,7 @@ RandomFixedPreConnectivity::RandomFixedPreConnectivity(std::ifstream & is, const
 }
 
 /////////////////////////////////////////////////
-// check if connection in the list
+//! checks if connection is in the list
 bool RandomFixedPreConnectivity::do_connect(const Size & n_prenrn, const Size & n_postnrn)
 {
     if ((n_prenrn < con_list_.size()) && (n_postnrn < con_list_[n_prenrn].size()))
@@ -85,9 +86,10 @@ bool RandomFixedPreConnectivity::do_connect(const Size & n_prenrn, const Size & 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
-// constructor with script file
-// num_subgp_pre_ must be in [0 .. num_subgp_pre_ - 1] but must be in [1 .. num_subgp_pre_] in the script file
-// same for num_subgp_post_
+//! constructor with script file
+/*! num_subgp_pre_ must be in [0 .. num_subgp_pre_ - 1] but must be in [1 .. num_subgp_pre_] in the script file
+ * same for num_subgp_post_
+ */
 FullByBlockConnectivity::FullByBlockConnectivity(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn)
 {
     std::string test;
@@ -103,9 +105,9 @@ FullByBlockConnectivity::FullByBlockConnectivity(std::ifstream & is, const Size 
     size_gp_postnrn_ = size_gp_postnrn;
 }
 
-/////////////////////////////////////////////////
-// check if n_prenrn is in [ num_subgp_pre_/nb_division_pre_ , (num_subgp_pre_+1)/nb_division_pre_ )
-// same for n_postnrn
+/*! check if n_prenrn is in [ num_subgp_pre_/nb_division_pre_ , (num_subgp_pre_+1)/nb_division_pre_ )
+ * same for n_postnrn
+ */
 bool FullByBlockConnectivity::do_connect(const Size & n_prenrn, const Size & n_postnrn)
 {
     if ((n_prenrn*nb_division_pre_ >= num_subgp_pre_*size_gp_prenrn_) && (n_prenrn*nb_division_pre_ < (num_subgp_pre_ + 1)*size_gp_prenrn_)
@@ -121,10 +123,11 @@ bool FullByBlockConnectivity::do_connect(const Size & n_prenrn, const Size & n_p
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
-// constructor with script file
-// num_subgp_pre_ must be in [0 .. num_subgp_pre_ - 1] here but the corresponding value must be in [1 .. num_subgp_pre_] in the script file
-// same for num_subgp_post_
-// as FullByBlockConnectivity but proba connection in addition
+//! constructor with script file
+/*! num_subgp_pre_ must be in [0 .. num_subgp_pre_ - 1] here but the corresponding value must be in [1 .. num_subgp_pre_] in the script file
+ *same for num_subgp_post_
+ * as FullByBlockConnectivity but proba connection in addition
+ */
 RandomByBlockConnectivity::RandomByBlockConnectivity(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn)
 {
     std::string test;
@@ -142,9 +145,10 @@ RandomByBlockConnectivity::RandomByBlockConnectivity(std::ifstream & is, const S
 }
 
 /////////////////////////////////////////////////
-// check if n_prenrn is in [ num_subgp_pre_/nb_division_pre_ , (num_subgp_pre_+1)/nb_division_pre_ )
-// same for n_postnrn
-// and test with proba_connection
+/*! check if n_prenrn is in [ num_subgp_pre_/nb_division_pre_ , (num_subgp_pre_+1)/nb_division_pre_ )
+ * same for n_postnrn
+ * and test with proba_connection
+ */
 bool RandomByBlockConnectivity::do_connect(const Size & n_prenrn, const Size & n_postnrn)
 {
     if ((n_prenrn*nb_division_pre_ >= num_subgp_pre_*size_gp_prenrn_) && (n_prenrn*nb_division_pre_ < (num_subgp_pre_ + 1)*size_gp_prenrn_)
@@ -160,7 +164,7 @@ bool RandomByBlockConnectivity::do_connect(const Size & n_prenrn, const Size & n
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
-// RandomConnectivity constructor with script file
+//! RandomConnectivity constructor with script file
 RandomConnectivity::RandomConnectivity(std::ifstream & is)
 {
     std::string test;
@@ -175,8 +179,9 @@ RandomConnectivity::RandomConnectivity(std::ifstream & is)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
-// constructor with script file
-// the connection are in the script file "( n1 n2 ) ( n1 n2 ) ..."
+//! constructor with script file
+/*! the connection are in the script file "( n1 n2 ) ( n1 n2 ) ..."
+ */
 ListConnectivity::ListConnectivity(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn)
 {
     con_list_ = std::vector<std::vector<bool> >(size_gp_prenrn, std::vector<bool>(size_gp_postnrn, false));
@@ -213,7 +218,7 @@ ListConnectivity::ListConnectivity(std::ifstream & is, const Size & size_gp_pren
 }
 
 /////////////////////////////////////////////////
-// check if connection in the list
+//! check if connection target is in the list
 bool ListConnectivity::do_connect(const Size & n_prenrn, const Size & n_postnrn)
 {
     if ((n_prenrn < con_list_.size()) && (n_postnrn < con_list_[n_prenrn].size()))
@@ -228,7 +233,7 @@ bool ListConnectivity::do_connect(const Size & n_prenrn, const Size & n_postnrn)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
-// constructor with script file
+//! constructor with script file
 LoopConnectivity::LoopConnectivity(std::ifstream & is, const Size & size_gp)
 {
     con_list_ = std::vector<std::vector<bool> >(size_gp, std::vector<bool>(size_gp, false));
@@ -262,7 +267,7 @@ LoopConnectivity::LoopConnectivity(std::ifstream & is, const Size & size_gp)
 }
 
 /////////////////////////////////////////////////
-// check if connection in the list
+//! check if connection in the list
 bool LoopConnectivity::do_connect(const Size & n_prenrn, const Size & n_postnrn)
 {
     if ((n_prenrn < con_list_.size()) && (n_postnrn < con_list_[n_prenrn].size()))
@@ -277,7 +282,7 @@ bool LoopConnectivity::do_connect(const Size & n_prenrn, const Size & n_postnrn)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
-// SparseRandomConnectivityTypeII constructor with script file
+//! SparseRandomConnectivityTypeII constructor with script file
 SparseRandomConnectivityTypeII::SparseRandomConnectivityTypeII(std::ifstream & is, const Size & size_gp_prenrn, const Size & size_gp_postnrn)
 {
 
@@ -297,7 +302,7 @@ SparseRandomConnectivityTypeII::SparseRandomConnectivityTypeII(std::ifstream & i
 }
 
 /////////////////////////////////////////////////
-// check if connection in the list
+//! check if connection in the list
 bool SparseRandomConnectivityTypeII::do_connect(const Size & n_prenrn, const Size & n_postnrn)
 {
     if ((n_prenrn < con_list_.size()) && (n_postnrn < con_list_[n_prenrn].size()))

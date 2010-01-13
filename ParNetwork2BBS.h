@@ -20,18 +20,10 @@
 
 
 
-
-
-/*extern "C" {
-
-//  Symbol* hoc_which_template(Symbol*);
-
-//  extern double t;
-
-}
-*/
-
-
+//! Neuron's interface to BBS
+/*!
+ *
+ */
 class OcBBS : public BBS  //, public Resource {
 {
 public:
@@ -53,6 +45,11 @@ public:
 };
 
 
+//!
+/*! ParallelNetManager's interface to BBS
+ *
+ * 
+ */
 
 class ParNetwork2BBS
 {
