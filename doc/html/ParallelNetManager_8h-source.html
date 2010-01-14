@@ -57,13 +57,13 @@
 <a name="l00048"></a>00048     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#b8091e2f77ec6b9d70b8d18d8a229280">init</a>(<span class="keywordtype">int</span>, <span class="keywordtype">int</span>);
 <a name="l00049"></a>00049     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#2e2ff2919d867e1cfca1b57a62c4ccde">create_network</a>(<a class="code" href="classParNetwork.html" title="ParNetwork class definition.">ParNetwork</a>&amp;);
 <a name="l00050"></a>00050     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#fa43f220e6f901e2fc366600d3b7e5c3">connect_network</a>(<a class="code" href="classParNetwork.html" title="ParNetwork class definition.">ParNetwork</a>&amp;);
-<a name="l00051"></a>00051     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#b122345589a1074d781950a1fd0e5497">register_cell</a>(<span class="keywordtype">int</span>, <a class="code" href="classGroup.html" title="Group of neurons sharing similar properties.">Group</a>*);
+<a name="l00051"></a>00051     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#b122345589a1074d781950a1fd0e5497" title="Create cell on this node and register a syn connection.">register_cell</a>(<span class="keywordtype">int</span>, <a class="code" href="classGroup.html" title="Group of neurons sharing similar properties.">Group</a>*);
 <a name="l00052"></a>00052     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#99683699fc0406c0d837e7a3de2dfd3b">synmech_append</a>(<span class="keywordtype">int</span>, <span class="keywordtype">int</span>);
 <a name="l00053"></a>00053     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#c4b73907a373a4e64b3070545db85d26">set_gid2node</a>(<span class="keywordtype">int</span>, <span class="keywordtype">int</span>);
 <a name="l00054"></a>00054     <span class="keywordtype">bool</span> <a class="code" href="classParallelNetManager.html#8545e6cc0b9ce3a13904d8cdedcc2b86" title="Check to see if global ID exists on this node.">gid_exists</a>(<span class="keywordtype">int</span>);
 <a name="l00055"></a>00055     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#acd67fc3bf29f96accc76fd14926ba8d">create_cell</a>(<span class="keywordtype">int</span>, <a class="code" href="classGroup.html" title="Group of neurons sharing similar properties.">Group</a>*);
 <a name="l00056"></a>00056 
-<a name="l00057"></a><a class="code" href="classParallelNetManager.html#09f9a1887b683537354e96d1d89cff1e">00057</a>     <a class="code" href="classParNetwork2BBS.html">ParNetwork2BBS</a>* <a class="code" href="classParallelNetManager.html#09f9a1887b683537354e96d1d89cff1e">pc</a>;
+<a name="l00057"></a><a class="code" href="classParallelNetManager.html#09f9a1887b683537354e96d1d89cff1e">00057</a>     <a class="code" href="classParNetwork2BBS.html" title="ParallelNetManager&amp;#39;s interface to the BBS.">ParNetwork2BBS</a>* <a class="code" href="classParallelNetManager.html#09f9a1887b683537354e96d1d89cff1e">pc</a>;
 <a name="l00058"></a>00058 
 <a name="l00059"></a>00059     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#973e2a1b3507f6bcd7a87752488214d7">gatherspikes</a>();
 <a name="l00060"></a>00060     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#3a360db57dfcacfa7fd769d172078184">want_all_spikes</a>();
@@ -71,7 +71,7 @@
 <a name="l00062"></a>00062     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#ecc099622562af98adb64ec0024f9137">doinit</a>();
 <a name="l00063"></a>00063     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#ffe7c509c1bfb8671e54b25b7200a9bb">prun</a>(), <a class="code" href="classParallelNetManager.html#a6103736542c102aa251d6f56029b160">pcontinue</a>(<span class="keywordtype">double</span>), <a class="code" href="classParallelNetManager.html#7254d684613c679c6290cdbc8e0e6dd8">pinit</a>(), <a class="code" href="classParallelNetManager.html#6b69ff3f9ba60497b968cc44e8b45fd4">psolve</a>(<span class="keywordtype">double</span>);
 <a name="l00064"></a>00064     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#bbfecd62905dc82fceeb599238524849">postwait</a>(<span class="keywordtype">int</span> x);
-<a name="l00065"></a>00065     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#82efa3a4d89ced5f05ffae75abd53a4a">load_balance_round_robin</a>(); <span class="comment">//simplistic partitioning</span>
+<a name="l00065"></a>00065     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#82efa3a4d89ced5f05ffae75abd53a4a" title="simplistic partitioning of neurons on nodes">load_balance_round_robin</a>(); <span class="comment">//simplistic partitioning</span>
 <a name="l00066"></a>00066     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#2b0f28b542cb7d323c99d03ef4f872d8" title="order partitioning based on num of nodes">load_balance_roulette</a>();
 <a name="l00067"></a>00067     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#a2034905acb4458f9f0e6394acfaa9b0" title="partition neurons based on groups">load_balance_by_group</a>();
 <a name="l00068"></a>00068     <span class="keywordtype">void</span> <a class="code" href="classParallelNetManager.html#dfe6011d353b5898888666f67b419fb9">done</a>();
@@ -95,7 +95,7 @@
 <a name="l00086"></a>00086 
 <a name="l00087"></a>00087 <span class="preprocessor">#endif</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:53 2010 for ParSpikeSimv6.2 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Thu Jan 14 17:12:23 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

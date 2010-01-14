@@ -46,6 +46,15 @@ or you may need to submit the script to the SGI grid engine
 
 $ qsub -q medium.q -b y -V -cwd -e /dev/null -o /dev/null mpiexec -n nprocs  ./ParSpikeSim.exe 
 
-where medium.q is a queue.  If the grid engine has parallel features built in, eg. MPI,  
+where medium.q is a queue.  If the grid engine has parallel features built in, eg. MPI, then incorporate the parallel feature in the qsub script.  For information on the Grid Engine, look through the manual ($ man qsub)
+
+ANALYSING OUTPUT
+
+The SpikeSim program will output the weights, rate and other features depending on the input script's preferences.
+
+
+
+
+  
 
 

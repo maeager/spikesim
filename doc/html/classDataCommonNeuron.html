@@ -51,14 +51,19 @@ Inheritance diagram for DataCommonNeuron:</div>
 <tr><td colspan="2"><br><h2>Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataCommonNeuron.html#25b43d502f085d361c1a3c4f0529fe6e">DataCommonNeuron</a> (<a class="el" href="classConfigBase.html">ConfigBase</a> *const configurator)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">constructor  <a href="#25b43d502f085d361c1a3c4f0529fe6e"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataCommonNeuron.html#da7692e2b7e355b88e38bb832303a10f">add_presynapse_impl</a> (<a class="el" href="classSynapseInterface.html">SynapseInterface</a> *const syn)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">add a preneuron to the list  <a href="#da7692e2b7e355b88e38bb832303a10f"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataCommonNeuron.html#f04bd42d6c441926e6ac720212b60fd7">add_postsynapse_impl</a> (<a class="el" href="classSynapseInterface.html">SynapseInterface</a> *const syn)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">add a postneuron to the list  <a href="#f04bd42d6c441926e6ac720212b60fd7"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataCommonNeuron.html#5440f4d1748f6a3f0316ec6436140ae3">apply_vis_impl</a> (<a class="el" href="structAbstractVisitor.html">AbstractVisitor</a> &amp;vis)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">to access the list of postsynapses using Vistor  <a href="#5440f4d1748f6a3f0316ec6436140ae3"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataCommonNeuron.html#4b729a0cff2a1d16b96550bac353ed54">notify_firing_impl</a> (const <a class="el" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3">Time</a> &amp;time_to_spike)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">called when the neuron fires a spike (activation mechanism)  <a href="#4b729a0cff2a1d16b96550bac353ed54"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataCommonNeuron.html#92e3ff9a7aedd6cec5b815959c5b2ddb">plast_update_impl</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">const <a class="el" href="classDataCommonNeuron.html#746fc8e2cb3dfec4f1660cfc9367ae1b">ListSynMechType</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataCommonNeuron.html#ae664e77935d8708b35ad3a56c8b0e2f">presynmechlist_impl</a> () const </td></tr>
@@ -118,6 +123,8 @@ Inheritance diagram for DataCommonNeuron:</div>
 <div class="memdoc">
 
 <p>
+constructor 
+<p>
 
 </div>
 </div><p>
@@ -138,6 +145,8 @@ Inheritance diagram for DataCommonNeuron:</div>
 </div>
 <div class="memdoc">
 
+<p>
+add a preneuron to the list 
 <p>
 
 <p>Reimplemented in <a class="el" href="classDataPlastNeuron.html#eadb15c72101d20e56d95d2a35d81bef">DataPlastNeuron</a>.</p>
@@ -161,6 +170,8 @@ Inheritance diagram for DataCommonNeuron:</div>
 <div class="memdoc">
 
 <p>
+add a postneuron to the list 
+<p>
 
 </div>
 </div><p>
@@ -180,6 +191,8 @@ Inheritance diagram for DataCommonNeuron:</div>
 </div>
 <div class="memdoc">
 
+<p>
+to access the list of postsynapses using Vistor 
 <p>
 
 <p>Reimplemented in <a class="el" href="classDataRecordNeuron.html#130b3fafb67245d9fb605f6326de747a">DataRecordNeuron</a>.</p>
@@ -202,6 +215,8 @@ Inheritance diagram for DataCommonNeuron:</div>
 </div>
 <div class="memdoc">
 
+<p>
+called when the neuron fires a spike (activation mechanism) 
 <p>
 
 <p>Reimplemented in <a class="el" href="classDataPlastNeuron.html#a9924a2c7f0e310bc300cbf9e0dd6069">DataPlastNeuron</a>, and <a class="el" href="classDataRecordNeuron.html#503f2f7b1b34d1be0a085d1362c74b0c">DataRecordNeuron</a>.</p>
@@ -284,7 +299,7 @@ Inheritance diagram for DataCommonNeuron:</div>
 <hr>The documentation for this class was generated from the following file:<ul>
 <li>/media/data/Work/spikesimv6/<a class="el" href="DataCommonNeuron_8h-source.html">DataCommonNeuron.h</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:55 2010 for ParSpikeSimv6.2 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Thu Jan 14 17:12:25 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

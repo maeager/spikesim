@@ -1,3 +1,0 @@
-% connection batch 0	
-v_pre_0 = [	];	
-v_post_0 = [	];	

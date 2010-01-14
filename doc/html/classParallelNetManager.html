@@ -47,6 +47,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParallelNetManager.html#b122345589a1074d781950a1fd0e5497">register_cell</a> (int, <a class="el" href="classGroup.html">Group</a> *)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create cell on this node and register a syn connection.  <a href="#b122345589a1074d781950a1fd0e5497"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParallelNetManager.html#99683699fc0406c0d837e7a3de2dfd3b">synmech_append</a> (int, int)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParallelNetManager.html#c4b73907a373a4e64b3070545db85d26">set_gid2node</a> (int, int)</td></tr>
@@ -76,6 +77,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParallelNetManager.html#82efa3a4d89ced5f05ffae75abd53a4a">load_balance_round_robin</a> ()</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">simplistic partitioning of neurons on nodes  <a href="#82efa3a4d89ced5f05ffae75abd53a4a"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParallelNetManager.html#2b0f28b542cb7d323c99d03ef4f872d8">load_balance_roulette</a> ()</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">order partitioning based on num of nodes  <a href="#2b0f28b542cb7d323c99d03ef4f872d8"></a><br></td></tr>
@@ -166,8 +168,7 @@ This class provides an interface to many <a class="el" href="classBBS.html" titl
 <p>
 Constructor using C MPI utilities. 
 <p>
-<a class="el" href="classParallelNetManager.html" title="Main class for creating SpikeSim networks on a parallel system.">ParallelNetManager</a> Constructor<p>
-<dl compact><dt><b>Parameters:</b></dt><dd>
+<a class="el" href="classParallelNetManager.html" title="Main class for creating SpikeSim networks on a parallel system.">ParallelNetManager</a> Constructor Pass niput args to <a class="el" href="classParNetwork2BBS.html" title="ParallelNetManager&#39;s interface to the BBS.">ParNetwork2BBS</a> <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>argc</em>&nbsp;</td><td>pass input arguments to MPI_Init </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>argv</em>&nbsp;</td><td>pass input arguments to MPI_Init</td></tr>
@@ -225,7 +226,7 @@ Destructor.
 <div class="memdoc">
 
 <p>
-init sets the default parameters for PNM<p>
+sets the default parameters for PNM<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>ncells</em>&nbsp;</td><td></td></tr>
@@ -278,7 +279,7 @@ Build the network using the types in each <a class="el" href="classGroup.html" t
 <div class="memdoc">
 
 <p>
-After construction of the network, groups of neurons are connected based on the <a class="el" href="classConn.html" title="Synaptic Connection Class.">Conn</a> class list in PNM. The <a class="el" href="classParallelNetManager.html" title="Main class for creating SpikeSim networks on a parallel system.">ParallelNetManager</a> pointer to this class is passed to the source group in the Connectivity class.<p>
+Connect groups of neurons based on the <a class="el" href="classConn.html" title="Synaptic Connection Class.">Conn</a> class list in PNM. The <a class="el" href="classParallelNetManager.html" title="Main class for creating SpikeSim networks on a parallel system.">ParallelNetManager</a> pointer to this class is passed to the source group in the Connectivity class.<p>
 Output the num of connections in debug mode.<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
@@ -313,6 +314,8 @@ Output the num of connections in debug mode.<p>
 </div>
 <div class="memdoc">
 
+<p>
+Create cell on this node and register a syn connection. 
 <p>
 <dl compact><dt><b>Parameters: </b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -549,7 +552,7 @@ creates a cell such as "new Cell(x, y, z)" in original NEURON<p>
           <td class="memname">void ParallelNetManager::pcontinue           </td>
           <td>(</td>
           <td class="paramtype">double&nbsp;</td>
-          <td class="paramname">          </td>
+          <td class="paramname"> <em>x</em>          </td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
@@ -588,7 +591,7 @@ creates a cell such as "new Cell(x, y, z)" in original NEURON<p>
           <td class="memname">void ParallelNetManager::psolve           </td>
           <td>(</td>
           <td class="paramtype">double&nbsp;</td>
-          <td class="paramname">          </td>
+          <td class="paramname"> <em>x</em>          </td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
@@ -637,6 +640,8 @@ creates a cell such as "new Cell(x, y, z)" in original NEURON<p>
 
 <p>
 simplistic partitioning of neurons on nodes 
+<p>
+
 </div>
 </div><p>
 <a class="anchor" name="2b0f28b542cb7d323c99d03ef4f872d8"></a><!-- doxytag: member="ParallelNetManager::load_balance_roulette" ref="2b0f28b542cb7d323c99d03ef4f872d8" args="()" -->
@@ -1068,7 +1073,7 @@ Master process calls ParNetwork2BBS's <a class="el" href="classParallelNetManage
 <hr>The documentation for this class was generated from the following files:<ul>
 <li>/media/data/Work/spikesimv6/<a class="el" href="ParallelNetManager_8h-source.html">ParallelNetManager.h</a><li>/media/data/Work/spikesimv6/<a class="el" href="ParallelNetManager_8cpp.html">ParallelNetManager.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:57 2010 for ParSpikeSimv6.2 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Thu Jan 14 17:12:26 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

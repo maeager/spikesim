@@ -331,7 +331,7 @@ int ParSpike::spike_exchange_compressed()
     }
     ovfl_ = novfl;
     return ntot;
-}
+} 
 
 
 double ParSpike::mindelay(double m)

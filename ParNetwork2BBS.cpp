@@ -1,4 +1,4 @@
-/*
+/*!
   This file is based directly on NEURON's "src/parallel/ocbbs.cpp"
   */
 

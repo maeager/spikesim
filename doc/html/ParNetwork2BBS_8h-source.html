@@ -35,133 +35,122 @@
 <a name="l00020"></a>00020 <span class="preprocessor"></span>
 <a name="l00021"></a>00021 
 <a name="l00022"></a>00022 
-<a name="l00023"></a>00023 
 <a name="l00024"></a>00024 
-<a name="l00025"></a>00025 <span class="comment">/*extern "C" {</span>
-<a name="l00026"></a>00026 <span class="comment"></span>
-<a name="l00027"></a>00027 <span class="comment">//  Symbol* hoc_which_template(Symbol*);</span>
-<a name="l00028"></a>00028 <span class="comment"></span>
-<a name="l00029"></a>00029 <span class="comment">//  extern double t;</span>
-<a name="l00030"></a>00030 <span class="comment"></span>
-<a name="l00031"></a>00031 <span class="comment">}</span>
-<a name="l00032"></a>00032 <span class="comment">*/</span>
-<a name="l00033"></a>00033 
-<a name="l00034"></a>00034 
-<a name="l00035"></a><a class="code" href="classOcBBS.html">00035</a> <span class="keyword">class </span><a class="code" href="classOcBBS.html">OcBBS</a> : <span class="keyword">public</span> <a class="code" href="classBBS.html" title="BBS Base for all classes in Bulletin Board Server.">BBS</a>  <span class="comment">//, public Resource {</span>
-<a name="l00036"></a>00036 {
-<a name="l00037"></a>00037 <span class="keyword">public</span>:
-<a name="l00038"></a>00038 <span class="preprocessor">#ifdef CPPMPI</span>
-<a name="l00039"></a>00039 <span class="preprocessor"></span>    <a class="code" href="classOcBBS.html#e2926ef4f70b32fc91ccaa11ab9eacb4">OcBBS</a>(<span class="keywordtype">int</span> n, <span class="keywordtype">int</span>&amp; pargc, <span class="keywordtype">char</span>**&amp;pargv): <a class="code" href="classBBS.html#f74a83220f1c159b5e781d9272aac6af">BBS</a>(n, pargc, pargv) {
-<a name="l00040"></a>00040         <a class="code" href="classOcBBS.html#7eeb20f2b38bcccaa22b4e3e2aaa5fc7">next_local_</a> = 0;
-<a name="l00041"></a>00041     }
-<a name="l00042"></a>00042 <span class="preprocessor">#else</span>
-<a name="l00043"></a><a class="code" href="classOcBBS.html#e2926ef4f70b32fc91ccaa11ab9eacb4">00043</a> <span class="preprocessor"></span>    <a class="code" href="classOcBBS.html#e2926ef4f70b32fc91ccaa11ab9eacb4">OcBBS</a>(<span class="keywordtype">int</span> n, <span class="keywordtype">int</span>* pargc, <span class="keywordtype">char</span>***pargv): <a class="code" href="classBBS.html" title="BBS Base for all classes in Bulletin Board Server.">BBS</a>(n, pargc, pargv) {
-<a name="l00044"></a>00044         <a class="code" href="classOcBBS.html#7eeb20f2b38bcccaa22b4e3e2aaa5fc7">next_local_</a> = 0;
-<a name="l00045"></a>00045     }
-<a name="l00046"></a>00046 <span class="preprocessor">#endif</span>
-<a name="l00047"></a>00047 <span class="preprocessor"></span>
-<a name="l00048"></a><a class="code" href="classOcBBS.html#05c9e6810250c4762372603789eb2486">00048</a>     <span class="keyword">virtual</span> <a class="code" href="classOcBBS.html#05c9e6810250c4762372603789eb2486">~OcBBS</a>() {}
+<a name="l00027"></a><a class="code" href="classOcBBS.html">00027</a> <span class="keyword">class </span><a class="code" href="classOcBBS.html" title="Neuron&amp;#39;s original interface to BBS.">OcBBS</a> : <span class="keyword">public</span> <a class="code" href="classBBS.html" title="BBS Base for all classes in Bulletin Board Server.">BBS</a>  <span class="comment">//, public Resource {</span>
+<a name="l00028"></a>00028 {
+<a name="l00029"></a>00029 <span class="keyword">public</span>:
+<a name="l00030"></a>00030 <span class="preprocessor">#ifdef CPPMPI</span>
+<a name="l00031"></a>00031 <span class="preprocessor"></span>    <a class="code" href="classOcBBS.html#e2926ef4f70b32fc91ccaa11ab9eacb4">OcBBS</a>(<span class="keywordtype">int</span> n, <span class="keywordtype">int</span>&amp; pargc, <span class="keywordtype">char</span>**&amp;pargv): <a class="code" href="classBBS.html#f74a83220f1c159b5e781d9272aac6af">BBS</a>(n, pargc, pargv) {
+<a name="l00032"></a>00032         <a class="code" href="classOcBBS.html#7eeb20f2b38bcccaa22b4e3e2aaa5fc7">next_local_</a> = 0;
+<a name="l00033"></a>00033     }
+<a name="l00034"></a>00034 <span class="preprocessor">#else</span>
+<a name="l00035"></a><a class="code" href="classOcBBS.html#e2926ef4f70b32fc91ccaa11ab9eacb4">00035</a> <span class="preprocessor"></span>    <a class="code" href="classOcBBS.html#e2926ef4f70b32fc91ccaa11ab9eacb4">OcBBS</a>(<span class="keywordtype">int</span> n, <span class="keywordtype">int</span>* pargc, <span class="keywordtype">char</span>***pargv): <a class="code" href="classBBS.html" title="BBS Base for all classes in Bulletin Board Server.">BBS</a>(n, pargc, pargv) {
+<a name="l00036"></a>00036         <a class="code" href="classOcBBS.html#7eeb20f2b38bcccaa22b4e3e2aaa5fc7">next_local_</a> = 0;
+<a name="l00037"></a>00037     }
+<a name="l00038"></a>00038 <span class="preprocessor">#endif</span>
+<a name="l00039"></a>00039 <span class="preprocessor"></span>
+<a name="l00040"></a><a class="code" href="classOcBBS.html#05c9e6810250c4762372603789eb2486">00040</a>     <span class="keyword">virtual</span> <a class="code" href="classOcBBS.html#05c9e6810250c4762372603789eb2486">~OcBBS</a>() {}
+<a name="l00041"></a>00041 
+<a name="l00042"></a><a class="code" href="classOcBBS.html#92cc645313336000a9cd0ce9d6a10b60">00042</a>     <span class="keywordtype">double</span> <a class="code" href="classOcBBS.html#92cc645313336000a9cd0ce9d6a10b60">retval_</a>;
+<a name="l00043"></a><a class="code" href="classOcBBS.html#58700e3bcb93fe6eda9ceab42d4d9c19">00043</a>     <span class="keywordtype">int</span> <a class="code" href="classOcBBS.html#58700e3bcb93fe6eda9ceab42d4d9c19">userid_</a>;
+<a name="l00044"></a><a class="code" href="classOcBBS.html#7eeb20f2b38bcccaa22b4e3e2aaa5fc7">00044</a>     <span class="keywordtype">int</span> <a class="code" href="classOcBBS.html#7eeb20f2b38bcccaa22b4e3e2aaa5fc7">next_local_</a>;
+<a name="l00045"></a>00045 };
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047 
 <a name="l00049"></a>00049 
-<a name="l00050"></a><a class="code" href="classOcBBS.html#92cc645313336000a9cd0ce9d6a10b60">00050</a>     <span class="keywordtype">double</span> <a class="code" href="classOcBBS.html#92cc645313336000a9cd0ce9d6a10b60">retval_</a>;
-<a name="l00051"></a><a class="code" href="classOcBBS.html#58700e3bcb93fe6eda9ceab42d4d9c19">00051</a>     <span class="keywordtype">int</span> <a class="code" href="classOcBBS.html#58700e3bcb93fe6eda9ceab42d4d9c19">userid_</a>;
-<a name="l00052"></a><a class="code" href="classOcBBS.html#7eeb20f2b38bcccaa22b4e3e2aaa5fc7">00052</a>     <span class="keywordtype">int</span> <a class="code" href="classOcBBS.html#7eeb20f2b38bcccaa22b4e3e2aaa5fc7">next_local_</a>;
-<a name="l00053"></a>00053 };
-<a name="l00054"></a>00054 
-<a name="l00055"></a>00055 
-<a name="l00056"></a>00056 
-<a name="l00057"></a><a class="code" href="classParNetwork2BBS.html">00057</a> <span class="keyword">class </span><a class="code" href="classParNetwork2BBS.html">ParNetwork2BBS</a>
-<a name="l00058"></a>00058 {
-<a name="l00059"></a>00059 <span class="keyword">public</span>:
-<a name="l00060"></a>00060 <span class="preprocessor">#ifdef CPPMPI</span>
-<a name="l00061"></a>00061 <span class="preprocessor"></span>    <a class="code" href="classParNetwork2BBS.html#a7ae67f4f4e68cef67170d3c7fcac2a4">ParNetwork2BBS</a>(<span class="keywordtype">int</span>&amp; argc, <span class="keywordtype">char</span>**&amp;argv);
-<a name="l00062"></a>00062 <span class="preprocessor">#else</span>
-<a name="l00063"></a>00063 <span class="preprocessor"></span>    <a class="code" href="classParNetwork2BBS.html#a7ae67f4f4e68cef67170d3c7fcac2a4">ParNetwork2BBS</a>(<span class="keywordtype">int</span>* argc, <span class="keywordtype">char</span>***argv);
-<a name="l00064"></a>00064 <span class="preprocessor">#endif</span>
-<a name="l00065"></a>00065 <span class="preprocessor"></span>    <a class="code" href="classParNetwork2BBS.html#5c0ac4d345dc7d1835068d3e627e53ae">~ParNetwork2BBS</a>();
-<a name="l00066"></a>00066 
-<a name="l00067"></a>00067     <span class="keywordtype">int</span> <a class="code" href="classParNetwork2BBS.html#a399b37bd97f3e7b56e28e2c4f43d9cb">submit_help</a>();
-<a name="l00068"></a>00068     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#8e873d99378e1b65fd59934de494dfee">submit</a>();
-<a name="l00069"></a>00069     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#08961b235f25f0f2db93a9373da0a1d9">working</a>();
-<a name="l00070"></a>00070     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#942c5446a7a29ddce9b4ef73dd156579">retval</a>();
-<a name="l00071"></a>00071     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#52cf20f53c01d04f8a7e8bd36f46933b">userid</a>();
-<a name="l00072"></a>00072     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#aed6a31786db41ec184855f9394f3a33">pack</a>();
-<a name="l00073"></a>00073     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#b80d9081eaaa1289507320a8def831dd">post</a>(std::string);
-<a name="l00074"></a>00074     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#4d46f794e805cc1e1126b81422529065">unpack</a>();
-<a name="l00075"></a>00075     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#4edde504a2a4c4cf991f78447010c139">upkscalar</a>();
-<a name="l00076"></a>00076     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#6e1de39f2fd4a7d27fc40d673836c673">take</a>();
-<a name="l00077"></a>00077     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#c535e8a89b390e0f3e1b7688ebf19b14">look</a>();
-<a name="l00078"></a>00078     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#d76a1d101f5637735a5f71bbcfabda50">look_take</a>();
-<a name="l00079"></a>00079     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#e08134f73da9063ecb636bd1f601a99a">worker</a>();
-<a name="l00080"></a>00080     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#4067ac6f8fc457caf2afb7d69695061e">done</a>();
-<a name="l00081"></a>00081     <span class="keywordtype">int</span> <a class="code" href="classParNetwork2BBS.html#06dc2e8645d2c32170b7151c9cfd2f58">id</a>();
-<a name="l00082"></a>00082     <span class="keywordtype">int</span> <a class="code" href="classParNetwork2BBS.html#597e5f0771e2ace71f8673be5b964f03">nhost</a>();
-<a name="l00083"></a>00083     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#875cb37f48ba865649cea1cdc668387c">context</a>();
-<a name="l00084"></a>00084 
-<a name="l00085"></a>00085     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#60439eec3e58862dc77b0f0e528f13ea">pctime</a>();
-<a name="l00086"></a>00086     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#df0745c85bd6fabd2708be141c8186af">wait_time</a>();
-<a name="l00087"></a>00087     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#36d6fe20854070d54c8d0466caf691b6">step_time</a>();
-<a name="l00088"></a>00088     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#6f9b494940b05e1219595ddcc6a44f24">send_time</a>();
-<a name="l00089"></a>00089     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#0f7457028cf1596008d503af9da8d9f9">event_time</a>();  <span class="comment">//empty</span>
-<a name="l00090"></a>00090     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#dd864caa499f6dd7277afb954162550e">integ_time</a>(); <span class="comment">//empty</span>
-<a name="l00091"></a>00091     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#0e5264365c6911f3d58e8df8e38f434e">vtransfer_time</a>(); <span class="comment">//empty</span>
-<a name="l00092"></a>00092 <span class="comment">//no     mech_time</span>
-<a name="l00093"></a>00093 
-<a name="l00094"></a>00094     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#2d7315685a1d178171ec46f6e1c7220a">set_gid2node</a>(<span class="keywordtype">int</span> gid, <span class="keywordtype">int</span> nid);
-<a name="l00095"></a>00095     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#283004c53bf834a4a037b0fa86e0b0f4">gid_exists</a>(<span class="keywordtype">int</span> gid);
-<a name="l00096"></a>00096     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#c349a571eb2172e8b4769f08775d1e18">outputcell</a>(<span class="keywordtype">int</span> gid) ;
-<a name="l00097"></a>00097     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#1660ef17594fe3dee3686cfcaec42b94">cell</a>();
-<a name="l00098"></a>00098     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#bffc440ac5b66c683d059f52cd279b8c">threshold</a>(<span class="keywordtype">int</span>, <span class="keywordtype">double</span>);
-<a name="l00099"></a>00099 <span class="comment">//   double spike_record(int gid, double* spikevec, double* gidvec) ;</span>
-<a name="l00100"></a>00100     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#96c763b84784f30f487aa0e1948cc580">psolve</a>(<span class="keywordtype">double</span>  step);
-<a name="l00101"></a>00101     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#679e65b30ab2b33dcd7856397c41f4aa">set_maxstep</a>(<span class="keywordtype">double</span> maxstep);
-<a name="l00102"></a>00102     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#7d11e1ac322b46e5fba785e834cac567">spike_stat</a>(<span class="keywordtype">int</span> *nsend, <span class="keywordtype">int</span> * nsendmax, <span class="keywordtype">int</span> * nrecv, <span class="keywordtype">int</span> *nrecv_useful);
-<a name="l00103"></a>00103     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#ae7aadd9bde65e944127a6c28b1ab1ef">maxhist</a>(std::vector&lt;double&gt; vec);
-<a name="l00104"></a>00104     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#473085c97fc63e6fdd2c0d5dd5999d31">checkpoint</a>(<span class="keywordtype">void</span>*);
-<a name="l00105"></a>00105     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#aa3b527f3d03cdf38840f7e4d75126d7">spcompress</a>(<span class="keywordtype">int</span> , <span class="keywordtype">int</span> , <span class="keywordtype">int</span>);
-<a name="l00106"></a>00106     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#504450016270f60d6e0c75a1e9db015d">gid_clear</a>();
-<a name="l00107"></a>00107 
-<a name="l00108"></a>00108     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#e31063c7a1137f733306479d96076d8a">source_var</a>(<span class="keywordtype">void</span>*);  <span class="comment">// &amp;source_variable, source_global_index</span>
-<a name="l00109"></a>00109     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#77f2715fe8ee66a5114924bcdaf8b481">target_var</a>(<span class="keywordtype">void</span>*) ; <span class="comment">// &amp;target_variable, source_global_index</span>
-<a name="l00110"></a>00110     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#440497db011bbf96c42b7aca40581d24">setup_transfer</a>(<span class="keywordtype">void</span>*); <span class="comment">// after all source/target and before init and run</span>
-<a name="l00111"></a>00111 <span class="comment">//  "splitcell_connect", splitcell_connect,</span>
-<a name="l00112"></a>00112 <span class="comment">//  "multisplit", multisplit,</span>
-<a name="l00113"></a>00113 
-<a name="l00114"></a>00114     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#f15ad5f59168252a814e3dba4698bd2c">barrier</a>();
-<a name="l00115"></a>00115     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#c7467b3cc706998d2f203d76512746f3">allreduce</a>(<span class="keywordtype">double</span> val , <span class="keywordtype">int</span> type) ;
-<a name="l00116"></a>00116     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#cc7d6c10bc5a13cea702eed5133c8bf9">allgather</a>(<span class="keywordtype">double</span> val, std::vector&lt;double&gt; *vec) ;
-<a name="l00117"></a>00117     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#a8d18fc6e0ed72119d64977807bcd834">alltoall</a>(std::vector&lt;double&gt; *vsrc, std::vector&lt;double&gt; *vscnt, std::vector&lt;double&gt; *vdest);
-<a name="l00118"></a>00118     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#bc294e221068958ebc2444dc9f3cacdf">broadcast</a>(std::string s, <span class="keywordtype">int</span> srcid) ;
-<a name="l00119"></a>00119     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#bc294e221068958ebc2444dc9f3cacdf">broadcast</a>(std::vector&lt;double&gt; vec, <span class="keywordtype">int</span> srcid) ;
-<a name="l00120"></a>00120 <span class="comment">//  "nthread", nthrd,</span>
-<a name="l00121"></a>00121 <span class="comment">//  "partition", partition,</span>
-<a name="l00122"></a>00122 <span class="comment">//  "thread_stat", thread_stat,</span>
-<a name="l00123"></a>00123 <span class="comment">//  "thread_busywait", thread_busywait,</span>
-<a name="l00124"></a>00124 <span class="comment">//  "thread_how_many_proc", thread_how_many_proc,</span>
-<a name="l00125"></a>00125 <span class="comment">//  "sec_in_thread", sec_in_thread,</span>
-<a name="l00126"></a>00126 <span class="comment">//  "thread_ctime", thread_ctime,</span>
-<a name="l00127"></a>00127 
+<a name="l00054"></a><a class="code" href="classParNetwork2BBS.html">00054</a> <span class="keyword">class </span><a class="code" href="classParNetwork2BBS.html" title="ParallelNetManager&amp;#39;s interface to the BBS.">ParNetwork2BBS</a>
+<a name="l00055"></a>00055 {
+<a name="l00056"></a>00056 <span class="keyword">public</span>:
+<a name="l00057"></a>00057 <span class="preprocessor">#ifdef CPPMPI</span>
+<a name="l00058"></a>00058 <span class="preprocessor"></span>    <a class="code" href="classParNetwork2BBS.html#a7ae67f4f4e68cef67170d3c7fcac2a4">ParNetwork2BBS</a>(<span class="keywordtype">int</span>&amp; argc, <span class="keywordtype">char</span>**&amp;argv);
+<a name="l00059"></a>00059 <span class="preprocessor">#else</span>
+<a name="l00060"></a>00060 <span class="preprocessor"></span>    <a class="code" href="classParNetwork2BBS.html#a7ae67f4f4e68cef67170d3c7fcac2a4">ParNetwork2BBS</a>(<span class="keywordtype">int</span>* argc, <span class="keywordtype">char</span>***argv);
+<a name="l00061"></a>00061 <span class="preprocessor">#endif</span>
+<a name="l00062"></a>00062 <span class="preprocessor"></span>    <a class="code" href="classParNetwork2BBS.html#5c0ac4d345dc7d1835068d3e627e53ae">~ParNetwork2BBS</a>();
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064     <span class="keywordtype">int</span> <a class="code" href="classParNetwork2BBS.html#a399b37bd97f3e7b56e28e2c4f43d9cb">submit_help</a>();
+<a name="l00065"></a>00065     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#8e873d99378e1b65fd59934de494dfee">submit</a>();
+<a name="l00066"></a>00066     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#08961b235f25f0f2db93a9373da0a1d9">working</a>();
+<a name="l00067"></a>00067     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#942c5446a7a29ddce9b4ef73dd156579">retval</a>();
+<a name="l00068"></a>00068     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#52cf20f53c01d04f8a7e8bd36f46933b">userid</a>();
+<a name="l00069"></a>00069     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#aed6a31786db41ec184855f9394f3a33">pack</a>();
+<a name="l00070"></a>00070     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#b80d9081eaaa1289507320a8def831dd">post</a>(std::string);
+<a name="l00071"></a>00071     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#4d46f794e805cc1e1126b81422529065">unpack</a>();
+<a name="l00072"></a>00072     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#4edde504a2a4c4cf991f78447010c139">upkscalar</a>();
+<a name="l00073"></a>00073     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#6e1de39f2fd4a7d27fc40d673836c673">take</a>();
+<a name="l00074"></a>00074     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#c535e8a89b390e0f3e1b7688ebf19b14">look</a>();
+<a name="l00075"></a>00075     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#d76a1d101f5637735a5f71bbcfabda50">look_take</a>();
+<a name="l00076"></a>00076     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#e08134f73da9063ecb636bd1f601a99a">worker</a>();
+<a name="l00077"></a>00077     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#4067ac6f8fc457caf2afb7d69695061e">done</a>();
+<a name="l00078"></a>00078     <span class="keywordtype">int</span> <a class="code" href="classParNetwork2BBS.html#06dc2e8645d2c32170b7151c9cfd2f58">id</a>();
+<a name="l00079"></a>00079     <span class="keywordtype">int</span> <a class="code" href="classParNetwork2BBS.html#597e5f0771e2ace71f8673be5b964f03">nhost</a>();
+<a name="l00080"></a>00080     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#875cb37f48ba865649cea1cdc668387c">context</a>();
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#60439eec3e58862dc77b0f0e528f13ea">pctime</a>();
+<a name="l00083"></a>00083     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#df0745c85bd6fabd2708be141c8186af">wait_time</a>();
+<a name="l00084"></a>00084     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#36d6fe20854070d54c8d0466caf691b6">step_time</a>();
+<a name="l00085"></a>00085     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#6f9b494940b05e1219595ddcc6a44f24">send_time</a>();
+<a name="l00086"></a>00086     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#0f7457028cf1596008d503af9da8d9f9">event_time</a>();  <span class="comment">//empty</span>
+<a name="l00087"></a>00087     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#dd864caa499f6dd7277afb954162550e">integ_time</a>(); <span class="comment">//empty</span>
+<a name="l00088"></a>00088     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#0e5264365c6911f3d58e8df8e38f434e">vtransfer_time</a>(); <span class="comment">//empty</span>
+<a name="l00089"></a>00089 <span class="comment">//no     mech_time</span>
+<a name="l00090"></a>00090 
+<a name="l00091"></a>00091     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#2d7315685a1d178171ec46f6e1c7220a">set_gid2node</a>(<span class="keywordtype">int</span> gid, <span class="keywordtype">int</span> nid);
+<a name="l00092"></a>00092     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#283004c53bf834a4a037b0fa86e0b0f4">gid_exists</a>(<span class="keywordtype">int</span> gid);
+<a name="l00093"></a>00093     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#c349a571eb2172e8b4769f08775d1e18">outputcell</a>(<span class="keywordtype">int</span> gid) ;
+<a name="l00094"></a>00094     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#1660ef17594fe3dee3686cfcaec42b94">cell</a>();
+<a name="l00095"></a>00095     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#bffc440ac5b66c683d059f52cd279b8c">threshold</a>(<span class="keywordtype">int</span>, <span class="keywordtype">double</span>);
+<a name="l00096"></a>00096 <span class="comment">//   double spike_record(int gid, double* spikevec, double* gidvec) ;</span>
+<a name="l00097"></a>00097     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#96c763b84784f30f487aa0e1948cc580">psolve</a>(<span class="keywordtype">double</span>  step);
+<a name="l00098"></a>00098     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#679e65b30ab2b33dcd7856397c41f4aa">set_maxstep</a>(<span class="keywordtype">double</span> maxstep);
+<a name="l00099"></a>00099     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#7d11e1ac322b46e5fba785e834cac567">spike_stat</a>(<span class="keywordtype">int</span> *nsend, <span class="keywordtype">int</span> * nsendmax, <span class="keywordtype">int</span> * nrecv, <span class="keywordtype">int</span> *nrecv_useful);
+<a name="l00100"></a>00100     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#ae7aadd9bde65e944127a6c28b1ab1ef">maxhist</a>(std::vector&lt;double&gt; vec);
+<a name="l00101"></a>00101     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#473085c97fc63e6fdd2c0d5dd5999d31">checkpoint</a>(<span class="keywordtype">void</span>*);
+<a name="l00102"></a>00102     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#aa3b527f3d03cdf38840f7e4d75126d7">spcompress</a>(<span class="keywordtype">int</span> , <span class="keywordtype">int</span> , <span class="keywordtype">int</span>);
+<a name="l00103"></a>00103     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#504450016270f60d6e0c75a1e9db015d">gid_clear</a>();
+<a name="l00104"></a>00104 
+<a name="l00105"></a>00105     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#e31063c7a1137f733306479d96076d8a">source_var</a>(<span class="keywordtype">void</span>*);  <span class="comment">// &amp;source_variable, source_global_index</span>
+<a name="l00106"></a>00106     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#77f2715fe8ee66a5114924bcdaf8b481">target_var</a>(<span class="keywordtype">void</span>*) ; <span class="comment">// &amp;target_variable, source_global_index</span>
+<a name="l00107"></a>00107     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#440497db011bbf96c42b7aca40581d24">setup_transfer</a>(<span class="keywordtype">void</span>*); <span class="comment">// after all source/target and before init and run</span>
+<a name="l00108"></a>00108 <span class="comment">//  "splitcell_connect", splitcell_connect,</span>
+<a name="l00109"></a>00109 <span class="comment">//  "multisplit", multisplit,</span>
+<a name="l00110"></a>00110 
+<a name="l00111"></a>00111     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#f15ad5f59168252a814e3dba4698bd2c">barrier</a>();
+<a name="l00112"></a>00112     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#c7467b3cc706998d2f203d76512746f3">allreduce</a>(<span class="keywordtype">double</span> val , <span class="keywordtype">int</span> type) ;
+<a name="l00113"></a>00113     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#cc7d6c10bc5a13cea702eed5133c8bf9">allgather</a>(<span class="keywordtype">double</span> val, std::vector&lt;double&gt; *vec) ;
+<a name="l00114"></a>00114     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#a8d18fc6e0ed72119d64977807bcd834">alltoall</a>(std::vector&lt;double&gt; *vsrc, std::vector&lt;double&gt; *vscnt, std::vector&lt;double&gt; *vdest);
+<a name="l00115"></a>00115     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#bc294e221068958ebc2444dc9f3cacdf">broadcast</a>(std::string s, <span class="keywordtype">int</span> srcid) ;
+<a name="l00116"></a>00116     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#bc294e221068958ebc2444dc9f3cacdf">broadcast</a>(std::vector&lt;double&gt; vec, <span class="keywordtype">int</span> srcid) ;
+<a name="l00117"></a>00117 <span class="comment">//  "nthread", nthrd,</span>
+<a name="l00118"></a>00118 <span class="comment">//  "partition", partition,</span>
+<a name="l00119"></a>00119 <span class="comment">//  "thread_stat", thread_stat,</span>
+<a name="l00120"></a>00120 <span class="comment">//  "thread_busywait", thread_busywait,</span>
+<a name="l00121"></a>00121 <span class="comment">//  "thread_how_many_proc", thread_how_many_proc,</span>
+<a name="l00122"></a>00122 <span class="comment">//  "sec_in_thread", sec_in_thread,</span>
+<a name="l00123"></a>00123 <span class="comment">//  "thread_ctime", thread_ctime,</span>
+<a name="l00124"></a>00124 
+<a name="l00125"></a>00125 
+<a name="l00126"></a>00126     std::string <a class="code" href="classParNetwork2BBS.html#df665b71d665395a8cea53f9b2361542">upkstr</a>();
+<a name="l00127"></a>00127     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#4a1cb7f8966f5f2224c0da8d10308e86">upkvec</a>(std::vector&lt;double&gt;*);
 <a name="l00128"></a>00128 
-<a name="l00129"></a>00129     std::string <a class="code" href="classParNetwork2BBS.html#df665b71d665395a8cea53f9b2361542">upkstr</a>();
-<a name="l00130"></a>00130     <span class="keywordtype">double</span> <a class="code" href="classParNetwork2BBS.html#4a1cb7f8966f5f2224c0da8d10308e86">upkvec</a>(std::vector&lt;double&gt;*);
-<a name="l00131"></a>00131 
-<a name="l00132"></a>00132 
-<a name="l00133"></a>00133     <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a>* <a class="code" href="classParNetwork2BBS.html#bb5a66302719b2ea6f04400397341433">gid2obj</a>(<span class="keywordtype">int</span> gid);
-<a name="l00134"></a>00134     <a class="code" href="classNeuronInterface.html">NeuronInterface</a>* <a class="code" href="classParNetwork2BBS.html#37e085f9cae65f9343ef77626f59a5d4">gid2cell</a>(<span class="keywordtype">int</span> gid);
-<a name="l00135"></a>00135     <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a>* <a class="code" href="classParNetwork2BBS.html#5fadeae2291604a2504d25f8fd475b9a">gid_connect</a>(<span class="keywordtype">int</span> gid, <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a>*);
-<a name="l00136"></a>00136 
-<a name="l00137"></a>00137 
-<a name="l00138"></a>00138     <span class="keywordtype">void</span> <a class="code" href="classParNetwork2BBS.html#99bdb1a15f533b4a1fa1204f06a9516a">pack_help</a>(<span class="keywordtype">int</span>);
-<a name="l00139"></a>00139     <span class="keywordtype">void</span> <a class="code" href="classParNetwork2BBS.html#3606bd4dc02ff3b004eca02e016df44c">unpack_help</a>(<span class="keywordtype">int</span>);
-<a name="l00140"></a>00140     <span class="keywordtype">char</span>* <a class="code" href="classParNetwork2BBS.html#f52e77d9ede9a1102c15ad6aad65b6ca">key_help</a>();
-<a name="l00141"></a>00141 
-<a name="l00142"></a>00142 <span class="keyword">public</span>:
-<a name="l00143"></a><a class="code" href="classParNetwork2BBS.html#f89f40130a57730a6d374af295e6e230">00143</a>     <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classParNetwork2BBS.html#f89f40130a57730a6d374af295e6e230">posting_</a>;
-<a name="l00144"></a><a class="code" href="classParNetwork2BBS.html#94408a8cb0567dfd2b57148dbea0da5f">00144</a>     <a class="code" href="classOcBBS.html">OcBBS</a>* <a class="code" href="classParNetwork2BBS.html#94408a8cb0567dfd2b57148dbea0da5f">bbs</a>;
-<a name="l00145"></a>00145 };
-<a name="l00146"></a>00146 
-<a name="l00147"></a>00147 <span class="preprocessor">#endif</span>
+<a name="l00129"></a>00129 
+<a name="l00130"></a>00130     <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a>* <a class="code" href="classParNetwork2BBS.html#bb5a66302719b2ea6f04400397341433">gid2obj</a>(<span class="keywordtype">int</span> gid);
+<a name="l00131"></a>00131     <a class="code" href="classNeuronInterface.html">NeuronInterface</a>* <a class="code" href="classParNetwork2BBS.html#37e085f9cae65f9343ef77626f59a5d4">gid2cell</a>(<span class="keywordtype">int</span> gid);
+<a name="l00132"></a>00132     <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a>* <a class="code" href="classParNetwork2BBS.html#5fadeae2291604a2504d25f8fd475b9a">gid_connect</a>(<span class="keywordtype">int</span> gid, <a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a>*);
+<a name="l00133"></a>00133 
+<a name="l00134"></a>00134 
+<a name="l00135"></a>00135     <span class="keywordtype">void</span> <a class="code" href="classParNetwork2BBS.html#99bdb1a15f533b4a1fa1204f06a9516a">pack_help</a>(<span class="keywordtype">int</span>);
+<a name="l00136"></a>00136     <span class="keywordtype">void</span> <a class="code" href="classParNetwork2BBS.html#3606bd4dc02ff3b004eca02e016df44c">unpack_help</a>(<span class="keywordtype">int</span>);
+<a name="l00137"></a>00137     <span class="keywordtype">char</span>* <a class="code" href="classParNetwork2BBS.html#f52e77d9ede9a1102c15ad6aad65b6ca">key_help</a>();
+<a name="l00138"></a>00138 
+<a name="l00139"></a>00139 <span class="keyword">public</span>:
+<a name="l00140"></a><a class="code" href="classParNetwork2BBS.html#f89f40130a57730a6d374af295e6e230">00140</a>     <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="classParNetwork2BBS.html#f89f40130a57730a6d374af295e6e230">posting_</a>;
+<a name="l00141"></a><a class="code" href="classParNetwork2BBS.html#94408a8cb0567dfd2b57148dbea0da5f">00141</a>     <a class="code" href="classOcBBS.html" title="Neuron&amp;#39;s original interface to BBS.">OcBBS</a>* <a class="code" href="classParNetwork2BBS.html#94408a8cb0567dfd2b57148dbea0da5f">bbs</a>;
+<a name="l00142"></a>00142 };
+<a name="l00143"></a>00143 
+<a name="l00144"></a>00144 <span class="preprocessor">#endif</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:53 2010 for ParSpikeSimv6.2 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Thu Jan 14 17:12:23 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

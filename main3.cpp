@@ -15,6 +15,14 @@
 #include "Engine.h"
 
 
+void
+end_spikesim()
+{
+
+    ParSpike::terminate();
+
+}
+
 int
 main(int argc, char *argv[])
 {
@@ -36,7 +44,7 @@ main(int argc, char *argv[])
     if (pnm.myid == 0) {
         std::cout << "ncells " << ncells << ", ngroups " << ngroups << std::endl;
         std::cout << "Hit Enter to continue" << std::endl;
-        std::cin.get();
+        //std::cin.get();
     }
     } catch (ConfigError & err) {
         std::cout << err.what();
@@ -85,19 +93,20 @@ main(int argc, char *argv[])
     if (SimEnv::reinit_random_before_sim())
         RandomGenerator::reinit();
 
-    // start of the simulation
-        // start of the simulation
-        Engine<NoThreading> engine;
+    pnm.pinit();
 
-        engine.init(net);
-        engine.launch_sim(net);
+    // start of the simulation
+    // start of the simulation
+    //    Engine<NoThreading> engine;
+
+    //    engine.init(net);
+    //    engine.launch_sim(net);
 
 
 
     // stop time clock
     long actual_stop_time = (long) time(NULL);
     if (pnm.myid == 0) std::cout << "real-time duration of the simulation: " << (actual_stop_time - actual_start_time) << " seconds" << std::endl;
-
     // additional outputs
     OutputManager::do_output("end_sim");
     OutputManager::close_all();
@@ -106,13 +115,8 @@ main(int argc, char *argv[])
 
     std::cout << "Hello World! I am " << pnm.myid << " of " << pnm.nhost << std::endl;
 
-    pnm.pc->barrier();
-    if (pnm.myid == 0) {
-        std::cin.get();
-	pnm.done();
-    } 
-    //MPI_Finalize();
-    
-    // wait for key pressed
+    //Finish and Clean up
+    if (pnm.myid == 0) pnm.pc->done();
+    end_spikesim();
     return 0;
 }

@@ -20,7 +20,7 @@
 
 
 
-//! Neuron's interface to BBS
+//! Neuron's original interface to BBS
 /*!
  *
  */
@@ -45,8 +45,8 @@ public:
 };
 
 
-//!
-/*! ParallelNetManager's interface to BBS
+//! ParallelNetManager's interface to the BBS
+/*! 
  *
  * 
  */

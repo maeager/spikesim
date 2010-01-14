@@ -257,11 +257,16 @@ void ParallelNetManager::maxstepsize()
     }
 }
 
-
+*/
 void ParallelNetManager::doinit()
 {
-    //stdinit();
+  //stdinit();
+  // \ -setdt()
+  //   -init()
+  //   \ finitialise(vinit)
+ 
 }
+
 
 void ParallelNetManager::pinit()
 {
@@ -273,6 +278,8 @@ void ParallelNetManager::pinit()
     }
     doinit(); // the master does one also
 }
+
+
 
 void ParallelNetManager::psolve(double x)
 {
@@ -297,7 +304,7 @@ void ParallelNetManager::prun()
     pinit();
     pcontinue(tstop);
 }
-
+/*
 void ParallelNetManager::postwait(int x)
 {
     double w;

@@ -36,8 +36,7 @@
 <a name="l00021"></a>00021 <span class="keyword">class </span><a class="code" href="classDataRecordNeuronVisitor.html">DataRecordNeuronVisitor</a>;
 <a name="l00022"></a>00022 
 <a name="l00023"></a>00023 
-<a name="l00025"></a>00025 <span class="comment">// DataRecordNeuronConfig class definition</span>
-<a name="l00027"></a>00027 <span class="comment"></span>
+<a name="l00027"></a>00027 
 <a name="l00028"></a><a class="code" href="classDataRecordNeuronConfig.html">00028</a> <span class="keyword">class </span><a class="code" href="classDataRecordNeuronConfig.html">DataRecordNeuronConfig</a>
 <a name="l00029"></a>00029         : <span class="keyword">public</span> <a class="code" href="classDataCommonNeuronConfig.html">DataCommonNeuronConfig</a>
 <a name="l00030"></a>00030 {
@@ -50,7 +49,6 @@
 <a name="l00041"></a>00041 
 <a name="l00042"></a>00042 
 <a name="l00043"></a>00043 
-<a name="l00045"></a>00045 <span class="comment">// DataRecordNeuron definition</span>
 <a name="l00046"></a>00046 <span class="comment">// for neurons that record their activity</span>
 <a name="l00047"></a>00047 <span class="comment">// contains a list of the spike times</span>
 <a name="l00049"></a>00049 <span class="comment"></span>
@@ -80,8 +78,7 @@
 <a name="l00073"></a>00073 
 <a name="l00074"></a>00074 
 <a name="l00075"></a>00075 
-<a name="l00077"></a>00077 <span class="comment">// DataRecordNeuronVisitor class definition</span>
-<a name="l00079"></a>00079 <span class="comment"></span>
+<a name="l00079"></a>00079 
 <a name="l00080"></a><a class="code" href="classDataRecordNeuronVisitor.html">00080</a> <span class="keyword">class </span><a class="code" href="classDataRecordNeuronVisitor.html">DataRecordNeuronVisitor</a>
 <a name="l00081"></a>00081         : <span class="keyword">public</span> <a class="code" href="structAbstractVisitor.html" title="AbstractVisitor: common interface for all visitors.">AbstractVisitor</a>
 <a name="l00082"></a>00082         , <span class="keyword">public</span> <a class="code" href="classVisitor.html" title="Visitor: class template to access information within classes (Type).">Visitor</a>&lt;DataRecordNeuron&gt;
@@ -109,7 +106,6 @@
 <a name="l00104"></a>00104 
 <a name="l00106"></a>00106 <span class="comment">// inline definitions</span>
 <a name="l00108"></a>00108 <span class="comment"></span>
-<a name="l00110"></a>00110 <span class="comment">// constructor</span>
 <a name="l00111"></a><a class="code" href="classDataRecordNeuron.html#0b3b06393a366a144221c73d8e613b7f">00111</a> <span class="keyword">inline</span> <a class="code" href="classDataRecordNeuron.html#0b3b06393a366a144221c73d8e613b7f">DataRecordNeuron::DataRecordNeuron</a>(<a class="code" href="classConfigBase.html" title="ConfigBase: common interface for all configurators.">ConfigBase</a> * <span class="keyword">const</span> configurator)
 <a name="l00112"></a>00112         : <a class="code" href="classDataCommonNeuron.html">DataCommonNeuron</a>(configurator)
 <a name="l00113"></a>00113 {
@@ -117,16 +113,14 @@
 <a name="l00115"></a>00115         <span class="keywordflow">throw</span> <a class="code" href="classConfigError.html" title="Run-time error during the configuration process.">ConfigError</a>(<span class="stringliteral">"DataRecordNeuron: void configurator"</span>);
 <a name="l00116"></a>00116 };
 <a name="l00117"></a>00117 
-<a name="l00119"></a>00119 <span class="comment">// called when the neuron fires a spike (activation mechanism)</span>
 <a name="l00120"></a><a class="code" href="classDataRecordNeuron.html#503f2f7b1b34d1be0a085d1362c74b0c">00120</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classDataRecordNeuron.html#503f2f7b1b34d1be0a085d1362c74b0c">DataRecordNeuron::notify_firing_impl</a>(<span class="keyword">const</span> <a class="code" href="GlobalDefs_8h.html#c2d3e0ba793497bcca555c7c2cf64ff3" title="Time in seconds (double).">Time</a> &amp; time_to_spike)
 <a name="l00121"></a>00121 {
 <a name="l00122"></a>00122     <span class="comment">// add the spike time to the list of spike times</span>
 <a name="l00123"></a>00123     spike_time_list_.push_back(time_to_spike + <a class="code" href="classSimEnv.html#fb8ee5b71c65c6cc9300e12c714fa4ab">SimEnv::sim_time</a>());
 <a name="l00124"></a>00124     <span class="comment">// notify the post synapses</span>
-<a name="l00125"></a>00125     <a class="code" href="classDataCommonNeuron.html#4b729a0cff2a1d16b96550bac353ed54">DataCommonNeuron::notify_firing_impl</a>(time_to_spike);
+<a name="l00125"></a>00125     <a class="code" href="classDataCommonNeuron.html#4b729a0cff2a1d16b96550bac353ed54" title="called when the neuron fires a spike (activation mechanism)">DataCommonNeuron::notify_firing_impl</a>(time_to_spike);
 <a name="l00126"></a>00126 }
 <a name="l00127"></a>00127 
-<a name="l00129"></a>00129 <span class="comment">// to access the list of spike times</span>
 <a name="l00130"></a><a class="code" href="classDataRecordNeuron.html#130b3fafb67245d9fb605f6326de747a">00130</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classDataRecordNeuron.html#130b3fafb67245d9fb605f6326de747a">DataRecordNeuron::apply_vis_impl</a>(<a class="code" href="structAbstractVisitor.html" title="AbstractVisitor: common interface for all visitors.">AbstractVisitor</a> &amp; vis)
 <a name="l00131"></a>00131 {
 <a name="l00132"></a>00132     <span class="comment">// check the compatibilty of the visitor and call the method visit if suitable</span>
@@ -135,11 +129,10 @@
 <a name="l00135"></a>00135         ptvis-&gt;<a class="code" href="classDataRecordNeuronVisitor.html#49d5f61f42ee82c72098e6289118bfd4">visit</a>(*<span class="keyword">this</span>);
 <a name="l00136"></a>00136     <span class="keywordflow">else</span>
 <a name="l00137"></a>00137         <span class="comment">// if the visitor is not suitable, send it to the base class</span>
-<a name="l00138"></a>00138         <a class="code" href="classDataCommonNeuron.html#5440f4d1748f6a3f0316ec6436140ae3">DataCommonNeuron::apply_vis_impl</a>(vis);
+<a name="l00138"></a>00138         <a class="code" href="classDataCommonNeuron.html#5440f4d1748f6a3f0316ec6436140ae3" title="to access the list of postsynapses using Vistor">DataCommonNeuron::apply_vis_impl</a>(vis);
 <a name="l00139"></a>00139 }
 <a name="l00140"></a>00140 
 <a name="l00141"></a>00141 
-<a name="l00143"></a>00143 <span class="comment">// called to erase the past of the list of the spike times</span>
 <a name="l00144"></a>00144 <span class="comment">// it is an iterator to indicate the position corresponding to the end of the "past" in the list</span>
 <a name="l00145"></a><a class="code" href="classDataRecordNeuronVisitor.html#77b39996a6e24ee11b968b45ba37b720">00145</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classDataRecordNeuronVisitor.html#77b39996a6e24ee11b968b45ba37b720">DataRecordNeuronVisitor::erase_past_spike_list</a>(<span class="keyword">const</span> std::deque&lt;Time&gt;::iterator &amp; it)
 <a name="l00146"></a>00146 {
@@ -152,7 +145,7 @@
 <a name="l00153"></a>00153 
 <a name="l00154"></a>00154 <span class="preprocessor">#endif // !defined(DATARECORDNEURON_H)</span>
 </pre></div></div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:52 2010 for ParSpikeSimv6.2 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Thu Jan 14 17:12:22 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

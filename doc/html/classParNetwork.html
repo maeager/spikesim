@@ -69,6 +69,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParNetwork.html#1f023f709ef2bf394ae70ec630f13cae">config_from_file</a> (std::string filename, <a class="el" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9">Size</a> &amp;ncells, <a class="el" href="GlobalDefs_8h.html#772b762114e74538c967388931c4a5e9">Size</a> &amp;ngroups, std::string logfilename=&quot;log.dat&quot;, bool no_output=false)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Setup SpikeSim network from script.txt.  <a href="#1f023f709ef2bf394ae70ec630f13cae"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParNetwork.html#a2bb250e7e7445c498e42f1881f2c231">create</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParNetwork.html#65dc59287ea1809bfcb8b9458a819966">connect_groups</a> ()</td></tr>
@@ -247,7 +248,7 @@ Efficient shared_ptr list of Connection types.
           <td class="memname">void ParNetwork::build_from_file           </td>
           <td>(</td>
           <td class="paramtype">std::string&nbsp;</td>
-          <td class="paramname"> <em>filename</em>, </td>
+          <td class="paramname"> <em>configfilename</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -271,7 +272,8 @@ Efficient shared_ptr list of Connection types.
 <div class="memdoc">
 
 <p>
-
+connect to another group according to a script file describing the connections<p>
+this function is quite awful, but most of the object construction using the script file has been encapsulated in class constructors, so that only the overall process with the main tags are read here almost all the parameters are not known in this scope TODO: This needs to be split into a configurator and an implementor, so one process does not decide to build everything all at once 
 </div>
 </div><p>
 <a class="anchor" name="95bddc6640cbd332ff440f00e042df20"></a><!-- doxytag: member="ParNetwork::update" ref="95bddc6640cbd332ff440f00e042df20" args="()" -->
@@ -375,6 +377,8 @@ Method to create pointers to all cells all the groups are updates from #0 to las
 </div>
 <div class="memdoc">
 
+<p>
+Setup SpikeSim network from script.txt. 
 <p>
 Load in the appropriate parameters from a script file but do NOT create neurons or connect them. Other params are for monitoring and logging <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
@@ -598,7 +602,7 @@ list of pointers to all the pre- and post-synaptic connections in the network
 <hr>The documentation for this class was generated from the following files:<ul>
 <li>/media/data/Work/spikesimv6/<a class="el" href="ParNetwork_8h-source.html">ParNetwork.h</a><li>/media/data/Work/spikesimv6/<a class="el" href="ParNetwork_8cpp.html">ParNetwork.cpp</a></ul>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Mon Jan 4 16:42:57 2010 for ParSpikeSimv6.2 by&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Generated on Thu Jan 14 17:12:26 2010 for ParSpikeSimv6.2 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>
