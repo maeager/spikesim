@@ -6,7 +6,12 @@ syntax: glob
 *.bak
 *.sav
 *.tmp
-
+*.tag
+*.k*
+parallel/*
+oc/*
+nrniv/*
+nrnmpi/*
 
 #editor autosaves
 *~
@@ -15,10 +20,16 @@ syntax: glob
 # temporary data
 syntax: regexp
 temp
+any.boost
 weight1.txt
 weight2.txt
 rate0.txt
 error
 tags
 test_mpi
+test_pnm
+main1
+main2
+main3
 DEADJOE
+deadjoe
