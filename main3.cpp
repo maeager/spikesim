@@ -90,7 +90,7 @@ main(int argc, char *argv[])
         RandomGenerator::reinit();
 
     // start of the simulation
-
+    pnm.pc->worker();
 
 
     // stop time clock

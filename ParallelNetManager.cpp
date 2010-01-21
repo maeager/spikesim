@@ -226,20 +226,11 @@ void ParallelNetManager::maxstepsize()
 }
 */
 
-void ParallelNetManager::doinit()
-{
-    //stdinit();
-}
-
-void ParallelNetManager::pinit()
+void ParallelNetManager::prepare_sim()
 {
     maxstepsize();
-    if (nwork > 1) {
-        append_string("ParallelNetManager");
-        append_string("doinit");
-        pc->context();
-    }
-    doinit(); // the master does one also
+    if (SimEnv::reinit_random_before_sim())
+      RandomGenerator::reinit();  //start all generators 
 }
 
 void ParallelNetManager::psolve(double x)
@@ -430,4 +421,40 @@ void ParallelNetManager::connect_network(ParNetwork&net, bool no_output = false)
         }
             //(**gp_source).par_connect_to(**gp_target, weight_distrib_cfg, delay_distrib_cfg, syn_mech_cfg, plast_mech_cfg, connectivity_cfg, cfg_list_, nb_con);
     */
+}
+
+
+
+void ParallelNetManager::launch_sim(ParNetwork & net)
+
+{
+
+  net.spike_exchange_init();
+    while (SimEnv::i_time() < SimEnv::i_duration()) {
+        // input updates
+        ManageableInputManager::input_update_general();
+
+        // output recordings to files and cleaning of the spike_lists
+        if ((SimEnv::i_time() % (OutputManager::i_outputting_period())) == 0) {
+            // display the simulated time on the console
+            std::cout << SimEnv::sim_time() << std::endl;
+            // performs the recurrent outputting
+            OutputManager::do_output("during_sim");
+            // clean the past spike history of the record neurons
+            OutputManager::clear_past_of_spike_lists(net);
+        }
+
+        // performs the outputting at each time step
+        OutputManager::do_output("each_time_step");
+
+        // activation update of all the neurons (they call the update of the synapses)
+        net.update();
+
+        // weight updates of the concerned plastic synapses (with the class DataPlastNeuron)
+        if (SimEnv::sim_time() >= SimEnv::plasticity_effective_start_time())
+            PlasticityManager::plast_update_general(); // only updates plastic neurons
+
+        // advance the simulated time a timestep further
+        SimEnv::advance();
+    }
 }

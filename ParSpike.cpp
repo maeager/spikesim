@@ -261,7 +261,7 @@ int ParSpike::spike_exchange()
 }
 
 
-/*
+/** Original NEURON Comments:
 The compressed spike format is restricted to the fixed step method and is
 a sequence of unsigned char.
 nspike = buf[0]*256 + buf[1]

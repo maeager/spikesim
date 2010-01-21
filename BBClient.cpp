@@ -259,7 +259,7 @@ int BBSClient::take_todo()
         std::cout <<  ParSpike::my_rank << " execute context " << std::endl;
 
 #endif
-        execute_helper();
+        //execute_helper();
     }
     upkbegin();
     return type;

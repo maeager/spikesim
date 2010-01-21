@@ -22,14 +22,14 @@ ParNetwork::
 }
 
 
-/////////////////////////////////////////////////
-// connect to another group according to a script file describing the connections
-// this function is quite awful, but most of the object construction using the script file has been
-//   encapsulated in class constructors, so that only the overall process with the main tags are read here
-//   almost all the parameters are not known in this scope
-//----------ME------------
-// TODO: This needs to be split into a configurator and an implementor, so  one process does not decide to build everything
 
+//! connect to another group according to a script file describing the connections
+/** this function is quite awful, but most of the object construction using the script file has been
+   encapsulated in class constructors, so that only the overall process with the main tags are read here
+   almost all the parameters are not known in this scope
+----------ME------------
+ TODO: This needs to be split into a configurator and an implementor, so  one process does not decide to build everything
+*/
 void ParNetwork::build_from_file(std::string configfilename, std::string logfilename, bool no_output)
 {
 //  std::ofstream logoutfile;
@@ -220,6 +220,10 @@ void ParNetwork::build_from_file(std::string configfilename, std::string logfile
 
 }
 
+
+//! Config only! connect to another group according to a script file describing the connections
+/** This is the configurator that reads in the networks details from a file
+*/
 void ParNetwork::config_from_file(std::string configfilename, Size & ncells, Size &ngroups, std::string logfilename, bool no_output)
 {
 //  std::ofstream logoutfile;

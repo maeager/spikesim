@@ -184,17 +184,13 @@ std::cout << ParSpike::my_rank << " nrnncs_outputevent "<<gid<<" " << firetime <
 #endif
 	spfixout_[i++] = (unsigned char)((firetime - t_exchange_) * dt1_ + .5);
 std::cout<<  my_rank <<" idx= " <<  i<< "  firetime=" <<  firetime <<" t_exchange_="<<  t_exchange_ << " spfixout="<< (int)spfixout_[i-1] << std::endl;
-        sppk(&spfixout_[i], gid); //sppk(spfixout_+i, gid);
-//std::cout<<  my_rank <<" idx= " <<  i<< "  gid=" <<  gid <<" spupk="<<  spupk(&spfixin_ovfl_[idx]) << std::endl;//(spfixout_+i));
+        sppk(&spfixout_[i], gid); 
+//std::cout<<  my_rank <<" idx= " <<  i<< "  gid=" <<  gid <<" spupk="<<  spupk(&spfixin_ovfl_[idx]) << std::endl;
     } else {
 #if nrn_spikebuf_size == 0
 	i = nout_++;
         if (i >= ocapacity_) {
             ocapacity_ *= 2;
-            //  temp = SpikePacket_[ocapacity_];
-            //  std::copy(spikeout_,temp);
-            //  if (spikeout_) delete [] spikeout_;
-            //  spikeout_ =temp;temp=0;
             spikeout_.resize(ocapacity_);
         }
 std::cout<<  my_rank <<" cell  " <<  gid<< "  in slot " <<  i <<" fired at "<<  firetime << std::endl;
@@ -206,10 +202,6 @@ std::cout<<  my_rank <<" cell  " <<  gid<< "  in slot " <<  i <<" fired at "<<  
             i -= nrn_spikebuf_size;
             if (i >= ocapacity_) {
                 ocapacity_ *= 2;
-                //  temp = SpikePacket_[ocapacity_];
-                //  copy(spikeout_,temp);
-                //  if (spikeout_) delete [] spikeout_;
-                //  spikeout_ =temp;temp=0;
                 spikeout_.resize(ocapacity_);
             }
             spikeout_[i].gid = gid;
@@ -325,7 +317,6 @@ void NetPar::spike_exchange()
     if (!active_) {
         return;
     }
-
     if (use_compress_) {
         spike_exchange_compressed(); return;
     }

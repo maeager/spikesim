@@ -42,7 +42,8 @@ public:
     void set_gid2node(int, int);
     bool gid_exists(int);
     void create_cell(int, Group*);
-
+    void prepare_sim();
+    void launch_sim();
     ParNetwork2BBS* pc;
 
     void gatherspikes();
