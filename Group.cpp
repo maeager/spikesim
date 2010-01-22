@@ -58,9 +58,11 @@ void Group::populate(std::ifstream & is)
     } else if (test == "CORR_INPUT_SHIFTED_COPY") {
         nrn_act_cfg_ = new CorrInputRefShiftedCopy(is);
     } else if (test == "IF_MECH_CFG") {
-        nrn_act_cfg_ = new IFMechConfig(is);
+        nrn_act_cfg_ = new IFMechConfig(is,false);
     } else if (test == "INSTANT_IF_MECH_CFG") {
         nrn_act_cfg_ = new InstantIFMechConfig(is);
+    } else if (test == "EIF_MECH_CFG") {
+        nrn_act_cfg_ = new IFMechConfig(is,true);
     } else throw ConfigError("Group: unknown neural activation mechanism, got '" + test + "'");
 
     //Create Neurons
@@ -197,7 +199,9 @@ void Group::populate_config(std::ifstream & is)
     } else if (test == "CORR_INPUT_SHIFTED_COPY") {
         nrn_act_cfg_ = new CorrInputRefShiftedCopy(is);
     } else if (test == "IF_MECH_CFG") {
-        nrn_act_cfg_ = new IFMechConfig(is);
+        nrn_act_cfg_ = new IFMechConfig(is,false);
+    } else if (test == "EIF_MECH_CFG") {
+        nrn_act_cfg_ = new IFMechConfig(is,true);
     } else if (test == "INSTANT_IF_MECH_CFG") {
         nrn_act_cfg_ = new InstantIFMechConfig(is);
     } else throw ConfigError("Group: unknown neural activation mechanism, got '" + test + "'");

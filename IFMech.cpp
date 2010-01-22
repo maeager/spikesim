@@ -27,11 +27,16 @@ IFMechConfig::IFMechConfig(double tauP, double Vth, double Vr, double Vp, double
 */
 /////////////////////////////////////////////////
 // IFMechConfig constructor with script file
-IFMechConfig::IFMechConfig(std::ifstream & is)
+IFMechConfig::IFMechConfig(std::ifstream & is, bool eif)
 {
     std::string test;
     READ_FROM_FILE(is, tauP_, "tau", "IFMechConfig")
     READ_FROM_FILE(is, Vth_, "Vth", "IFMechConfig")
+    if (eif) {
+        READ_FROM_FILE(is, deltaT_, "deltaT", "IFMechConfig")
+    } else {
+        deltaT_ = 0;
+    }
     READ_FROM_FILE(is, Vr_, "Vr", "IFMechConfig")
     READ_FROM_FILE(is, Vp_, "Vp", "IFMechConfig")
     double refrac_per_in_seconds;
