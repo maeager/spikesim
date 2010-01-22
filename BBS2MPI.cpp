@@ -521,3 +521,64 @@ void BBS2MPI::checkbufleak()
 #endif
 
 
+
+#include <signal.h>
+#include <sys/time.h>
+
+
+static double told;
+static struct itimerval value;
+#if !defined(BLUEGENE)
+static struct sigaction act, oact;
+#endif
+
+static void timed_out(int sig)
+{
+#if 0
+    printf("timed_out told=%g t=%g\n", told, t);
+#endif
+    if (SimEnv::sim_time() == told) { /* nothing has been accomplished since last signal*/
+        std::cout << "nrn_timeout t= " << SimEnv::sim_time() << std::endl;
+        ParSpike::mpiabort(0);
+    }
+    told = SimEnv::sim_time();
+}
+
+void BBS2MPI::timeout(int seconds)
+{
+    if (ParSpike::my_rank != 0) {
+        return;
+    } //only the Master continues
+#if 0
+    printf("nrn_timeout %d\n", seconds);
+#endif
+#if BLUEGENE
+    if (seconds) {
+        //t = told;
+        signal(SIGALRM, timed_out);
+    } else {
+        signal(SIGALRM, SIG_DFL);
+    }
+#else
+    if (seconds) {
+        //t = told;
+        act.sa_handler = timed_out;
+        act.sa_flags = SA_RESTART;
+        if (sigaction(SIGALRM, &act, &oact)) {
+            std::cout << "sigaction failed" << std::endl;
+            ParSpike::mpiabort(0);
+        }
+    } else {
+        sigaction(SIGALRM, &oact, (struct sigaction*)0);
+    }
+#endif
+    value.it_interval.tv_sec = seconds; 
+    value.it_interval.tv_usec = 0;
+    value.it_value.tv_sec = seconds;
+    value.it_value.tv_usec = 0;
+    if (setitimer(ITIMER_REAL, &value, (struct itimerval*)0)) {
+        std::cout << "setitimer failed" << std::endl;
+        ParSpike::mpiabort(0);
+    }
+
+}

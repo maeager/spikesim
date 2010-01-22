@@ -370,32 +370,7 @@ double ParNetwork2BBS::spcompress(int nspike = -1, int gid_compress = 1, int xch
 {
     return (double)NetPar::spike_compress(nspike, gid_compress, xchng_meth);
 }
-/*
- double splitcell_connect(void* v) {
-    int that_host = (int)chkarg(1, 0, bbs->numprocs-1);
-    // also needs a currently accessed section that is the root of this_tree
-    bbs->splitcell_connect(that_host);
-    return 0.;
-}
 
-
- double multisplit(void* v) {
-    double x = -1.;
-    int sid = -1;
-    int backbone_style = 2;
-    int reducedtree_host = 0;
-    if (ifarg(1)) {
-        x = chkarg(1, 0, 1);
-        sid = (int)chkarg(2, 0, (double)(0x7fffffff));
-    }
-    if (ifarg(3)) {
-        backbone_style = (int)chkarg(3, 0, 2);
-    }
-    // also needs a currently accessed section
-    bbs->multisplit(x, sid, backbone_style);
-    return 0.;
-}
-*/
 double ParNetwork2BBS::gid_clear()
 {
     NetPar::gid_clear();
@@ -407,6 +382,7 @@ double ParNetwork2BBS::outputcell(int gid)
     bbs->outputcell(gid);
     return 0.;
 }
+
 /*
  double ParNetwork2BBS::spike_record(int gid, std::vector<double>* spikevec, std::vector<double>* gidvec) {
     //bbs->spike_record(gid, spikevec, gidvec);
@@ -458,7 +434,7 @@ double ParNetwork2BBS::target_var(void*)   // &target_variable, source_global_in
 
 double ParNetwork2BBS::setup_transfer(void*)   // after all source/target and before init and run
 {
-//    bbs->setup_transfer();
+    bbs->setup_transfer();
     return 0.;
 }
 
