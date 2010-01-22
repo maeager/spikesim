@@ -1,3 +1,7 @@
+// ParallelNetManager.h
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 #ifndef PARALLELNETMANAGER_H
 #define PARALLELNETMANAGER_H
 
@@ -8,13 +12,13 @@
 #endif
 #include "ParNetwork.h"
 //#include "NetPar.h"
-#include "ParNetwork2BBS.h"
+#include "ParNetwork2BBS.h" 
 
 
 #include <list>
 #include <fstream>
 #include <string>
-#include<boost/shared_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "IdCounter.h"
 #include "Error.h"
@@ -25,18 +29,25 @@
 
 class Group;
 
+//! Main class for creating SpikeSim networks on a parallel system.
+/*! This class provides an interface to many BBS and MPI utilities  
+ * from the original NEURON parallel implementation.
+ */ 
+
 class  ParallelNetManager
 {
 public:
 #ifdef CPPMPI
+    //! Constructor using C++ MPI utilities
     ParallelNetManager(int& argc, char**&argv);
 #else
+    //! Constructor using C MPI utilities
     ParallelNetManager(int* argc, char***argv);
 #endif
     ~ParallelNetManager();
     void init(int, int);
     void create_network(ParNetwork&);
-    void connect_network(ParNetwork&net, bool);
+    void connect_network(ParNetwork&);
     void register_cell(int, Group*);
     void synmech_append(int, int);
     void set_gid2node(int, int);
@@ -55,7 +66,7 @@ public:
     void load_balance_round_robin(); //simplistic partitioning
     void load_balance_roulette();
     void load_balance_by_group();
-    void terminate();
+    void done();
 
     ConfigBase* cm2t(int precell_id, ConfigBase* postcell_syn, double weight, double delay);
 // mostly for debugging

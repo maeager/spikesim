@@ -14,11 +14,7 @@
 class ManageableInput;
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// ManageableInputManager class definition
-// to centralise all manageable inputs and launch the general update
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
+//! ManageableInputManager class definition to centralise all manageable inputs and launch the general update
 class ManageableInputManager
 {
     friend class ManageableInput;
@@ -34,11 +30,9 @@ protected:
 
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// ManageableInput class definition
-// base class for any input that has to be updated prior to any other mechanism at each simulation time step
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
+//! ManageableInput class definition
+/*! Base class for any input that has to be updated prior to any other mechanism at each simulation time step
+ */
 class ManageableInput
 {
     friend class ManageableInputManager;
@@ -59,9 +53,9 @@ protected:
 // inline definitions
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////
-// call the update for all the manageable inputs
-// primary vector first, then secondary vector (some of the primary may be used by some in secondary)
+/*! call the update method for all the manageable inputs
+ * primary vector first, then secondary vector (some of the primary may be used by some in secondary)
+ */
 inline void ManageableInputManager::input_update_general()
 {
     for (std::list<ManageableInput *>::const_iterator i = list_inputs_primary_.begin();

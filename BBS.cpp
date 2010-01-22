@@ -371,6 +371,9 @@ void BBSImpl::worker()
     double st, et;
     int id;
     if (!is_master()) {
+#ifdef DEBUG
+      std::cout << ParSpike::my_rank <<  ": in BBSImpl::worker() " << std::endl;
+#endif
         for (;;) {
             st = time();
             id = take_todo();

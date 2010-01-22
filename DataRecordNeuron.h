@@ -22,7 +22,7 @@ class DataRecordNeuronVisitor;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// DataRecordNeuronConfig class definition
+/// DataRecordNeuronConfig class definition
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class DataRecordNeuronConfig
@@ -42,7 +42,7 @@ public:
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// DataRecordNeuron definition
+/// DataRecordNeuron definition
 // for neurons that record their activity
 // contains a list of the spike times
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,7 +74,7 @@ private:
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// DataRecordNeuronVisitor class definition
+/// DataRecordNeuronVisitor class definition
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class DataRecordNeuronVisitor
@@ -107,7 +107,7 @@ protected:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
-// constructor
+//! constructor
 inline DataRecordNeuron::DataRecordNeuron(ConfigBase * const configurator)
         : DataCommonNeuron(configurator)
 {
@@ -116,7 +116,7 @@ inline DataRecordNeuron::DataRecordNeuron(ConfigBase * const configurator)
 };
 
 /////////////////////////////////////////////////
-// called when the neuron fires a spike (activation mechanism)
+//! called when the neuron fires a spike (activation mechanism)
 inline void DataRecordNeuron::notify_firing_impl(const Time & time_to_spike)
 {
     // add the spike time to the list of spike times
@@ -126,7 +126,7 @@ inline void DataRecordNeuron::notify_firing_impl(const Time & time_to_spike)
 }
 
 /////////////////////////////////////////////////
-// to access the list of spike times
+//! to access the list of spike times
 inline void DataRecordNeuron::apply_vis_impl(AbstractVisitor & vis)
 {
     // check the compatibilty of the visitor and call the method visit if suitable
@@ -140,7 +140,7 @@ inline void DataRecordNeuron::apply_vis_impl(AbstractVisitor & vis)
 
 
 /////////////////////////////////////////////////
-// called to erase the past of the list of the spike times
+//! called to erase the past of the list of the spike times
 // it is an iterator to indicate the position corresponding to the end of the "past" in the list
 inline void DataRecordNeuronVisitor::erase_past_spike_list(const std::deque<Time>::iterator & it)
 {

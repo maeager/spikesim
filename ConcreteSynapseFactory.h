@@ -60,7 +60,7 @@ protected:
 
 
 
-// ConcreteSynapseFactory class template specialisation for DataPlastSynapseConfig
+//! ConcreteSynapseFactory class template specialisation for DataPlastSynapseConfig
 template <class SynMechConfig, class PlastMechConfig>
 class ConcreteSynapseFactory<DataPlastSynapseConfig, SynMechConfig, PlastMechConfig>
         : public AbstractSynapseFactory

@@ -1,5 +1,9 @@
-#ifndef bbsmpi_h
-#define bbsmpi_h
+// BBS2MPI.h
+// Neuron's bbsmpipack 
+
+#ifndef BBS2MPI_H
+#define BBS2MPI_H
+
 
 #include <cstdlib>
 #include <iostream>
@@ -15,7 +19,7 @@
 #include <mpi.h>
 
 
-
+//! Primary Buffer type for BBS
 typedef struct bbsmpibuf {
 //    std::vector<char> buf;
   std::string buf;
@@ -28,8 +32,7 @@ typedef struct bbsmpibuf {
 
 namespace BBS2MPI
 {
-//public:
-//  BBS2MPI();
+
 bbsmpibuf* newbuf(int size);
 void free(bbsmpibuf* buf);
 void copy(bbsmpibuf* dest, bbsmpibuf* src);

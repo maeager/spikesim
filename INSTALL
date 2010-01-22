@@ -1,0 +1,5 @@
+This program requires:
+
+* gcc 3.4.4 or above
+* boost 1.33 or above
+* mpich2 

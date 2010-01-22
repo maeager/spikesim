@@ -1,5 +1,8 @@
-#ifndef bbssrv_h
-#define bbssrv_h
+// BBS.h
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifndef BBS_H
+#define BBS_H
 
 #include <iostream>
 #include <vector>
@@ -18,6 +21,9 @@
 
 void bbs_done();
 
+//! BBSImpl Bulletin Board Abstract class
+/*! Primarily an abstract class that prepares server and client sides for BBS communication 
+ */
 class BBSImpl
 {
 public:
@@ -79,7 +85,9 @@ protected:
 
 
 
-
+//! BBS Base for all classes in Bulletin Board Server
+/*! Takes care of the interface between ParSpike/MPI and ParNetwork/ParallelNetManager 
+ */
 class BBS : public ParSpike
 {
 public:

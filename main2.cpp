@@ -12,6 +12,8 @@
 #include "ParNetwork.h"
 #include <mpi.h>
 
+using namespace std;
+
 int
 main(int argc, char *argv[])
 {
@@ -22,6 +24,7 @@ main(int argc, char *argv[])
     ParallelNetManager pnm(&argc, &argv);
 #endif
     std::cout << "Hello World! I am " << pnm.myid << " of " << pnm.nhost << std::endl;
+    cout << "ParSpikeSim: I am " << pnm.myid << " of " << pnm.nhost << endl;
 
     // TEST ParallelNetManager
     pnm.init(100, 5);
@@ -45,16 +48,17 @@ main(int argc, char *argv[])
     // construction of the network, initialisation of the simulation environment, etc.
     try {
         net.config_from_file("./script.txt", ncells, ngroups);
+      //net.build_from_file("./script.txt");
+	
     } catch (ConfigError & err) {
-        std::cout << err.what();
+      cout <<"Error "<< err.what();
         // terminates the execution
-
-        std::cin.get();
+	cin.get();
         return EXIT_FAILURE;
     } catch (...) {
-        std::cout << "ParNetwork: unknown error when building from script file";
+        cout << "ParNetwork: unknown error when building from script file";
         // terminates the execution
-        std::cin.get();
+        cin.get();
         return EXIT_FAILURE;
     }
     //End testing
@@ -67,35 +71,52 @@ main(int argc, char *argv[])
     // Start Creation of network cells
     // net.create_population();
 
-//  net.build_network();
-//s pnm.ncell = net.network_size();
+    //End Setup of ParNetwork
+    if (pnm.myid != 0) {
+      //      pnm.pc->barrier(); 
+    } else {
+        cout << "TESTING ParNetwork" << endl;
+        cout << "cell_list size  = " <<   net.network_size() << endl;
+        cout << "conn list size = " << net.conn_list_.size() << endl;  
+        cout << "group list size= " << net.gp_list_.size() << endl;
+        cout << "cfg list size= " << net.cfg_list_.size() << endl;
+        cout << "presyn list size= " << net.presyn_list.size() << endl;
+        cout << "postsyn list size= " << net.postsyn_list.size() << endl;
+        cout << "Hit Enter to continue" << endl; //cin.get();
+     }
+     cout << "Ncells = " << ncells << "\tNgroups = " << ngroups << endl;
     pnm.init(ncells, ngroups);
-    pnm.load_balance_roulette();
-    pnm.create_network(net);
+//Round robin is probably the most inefficient way to distribute the neurons
+//Guy from IBM said that holding all the synapse on CPUs would be better
+     pnm.load_balance_round_robin();
+     if (pnm.myid == 0) {
+       cout << "TESTING ParallelNetManager" << endl;
+       cout << "\tncell = " << pnm.ncell << endl;
+       cout << "\tngroup = " << pnm.ngroup << endl;
+       cout << "\tncellgrp = " << pnm.ncellgrp << endl;
+     }
 
+
+     // Start Creation of network cells
+     pnm.create_network(net);
+     pnm.connect_network(net);
+     pnm.pc->barrier(); 
     if (pnm.myid == 0) {
-        std::cout << "ncell = " << pnm.ncell << std::endl;
-        std::cout << "nhost = " << pnm.nhost << std::endl;
-        std::cout << "ngroup = " << pnm.ngroup << std::endl;
-        std::cout << "ncellgrp = " << pnm.ncellgrp << std::endl;
+      //      pnm.prun();
+    
     }
 
 
 
-//Round robin is probably the most inefficient way to distribute the neurons
-//Guy from IBM said that holding all the synapse on CPUs would be better
 
-
-    std::cout << pnm.myid << " ParNetwork size " << net.network_size() << std::endl;
-
-/*    std::cout << "simulation duration: " << (SimEnv::i_duration() * SimEnv::timestep()) << std::endl;
-    std::cout << std::endl << "[info] press any key now to start the execution" << std::endl << std::endl;
-    std::cin.get();
+/*    cout << "Simulation duration: " << (SimEnv::i_duration() * SimEnv::timestep()) << endl;
+    cout << endl << "[info] press any key now to start the execution" << endl << endl;
+    cin.get();
 
     // open the output files
     OutputManager::open_files();
 
-    OutputManager::do_output_connectivity(std::list<Size>(), std::list<Size>(), 1);
+    OutputManager::do_output_connectivity(list<Size>(), list<Size>(), 1);
 
 
     // start time clock
@@ -111,7 +132,7 @@ main(int argc, char *argv[])
 
     // stop time clock
     long actual_stop_time = (long) time(NULL);
-    if (pnm.myid == 0)  std::cout << "real-time duration of the simulation: " << (actual_stop_time - actual_start_time) << " seconds" << std::endl;
+    if (pnm.myid == 0)  cout << "real-time duration of the simulation: " << (actual_stop_time - actual_start_time) << " seconds" << endl;
 
     // additional outputs
     OutputManager::do_output("end_sim");
@@ -121,12 +142,16 @@ main(int argc, char *argv[])
     // memory cleaning
 */
 
-    pnm.pc->barrier();
-    if (pnm.myid == 0) {
-        std::cin.get(); 
-	pnm.terminate();
-    }
+    
+	pnm.pc->barrier(); 
+	
+	if(pnm.myid == 0) {
+	  std::cout << "Hit Enter to finish" << std::endl;
+	  std::cin.get();
+	  pnm.done();
+	} else 	MPI_Finalize();
 
-    // wait for key pressed
+
+
     return 0;
 }

@@ -1,3 +1,6 @@
+// ParNetwork2BBS.h
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 #ifndef PARNETWORK2BBS_H
 #define PARNETWORK2BBS_H
 
@@ -17,18 +20,10 @@
 
 
 
-
-
-/*extern "C" {
-
-//  Symbol* hoc_which_template(Symbol*);
-
-//  extern double t;
-
-}
-*/
-
-
+//! Neuron's original interface to BBS
+/*!
+ *
+ */
 class OcBBS : public BBS  //, public Resource {
 {
 public:
@@ -50,6 +45,11 @@ public:
 };
 
 
+//! ParallelNetManager's interface to the BBS
+/*! 
+ *
+ * 
+ */
 
 class ParNetwork2BBS
 {

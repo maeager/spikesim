@@ -27,7 +27,6 @@ int main(int argc, char *argv[])
     int rank = MPI::COMM_WORLD.Get_rank();
     int size = MPI::COMM_WORLD.Get_size();
     ParNetwork net;
-    if (rank == 0) {
 #else
     Network net;
 #endif
@@ -47,7 +46,7 @@ int main(int argc, char *argv[])
             return EXIT_FAILURE;
         }
 #ifdef PARALLELSIM
-        net.build_network();
+        //net.build_network();
         std::cout << std::endl << "ParNetwork size " << net.network_size() << std::endl;
 #endif
         std::cout << "simulation duration: " << (SimEnv::i_duration() * SimEnv::timestep()) << std::endl;
@@ -68,7 +67,7 @@ int main(int argc, char *argv[])
             RandomGenerator::reinit();
 
         // start of the simulation
-        Engine<MPIEngine> engine;
+        Engine<NoThreading> engine;
 
         engine.init(net);
         engine.launch_sim(net);
@@ -84,12 +83,13 @@ int main(int argc, char *argv[])
 
         // memory cleaning
 #ifdef PARALLELSIM
-    }
+
     std::cout << "Hello World! I am " << rank << " of " << size <<
               std::endl;
 
     MPI::Finalize();
 #endif
+
     // wait for key pressed
 //  std::cin.get();
     return 0;
