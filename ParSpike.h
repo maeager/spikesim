@@ -97,6 +97,7 @@ public:
     double dbl_allreduce(double x, int type);
     void dbl_allgather(double* s, double* r, int n) ;
 
+    void setup_transfer();
 
     static std::vector<SpikePacket_> spikeout_;
     static std::vector<SpikePacket_> spikein_;

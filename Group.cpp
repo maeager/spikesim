@@ -262,8 +262,7 @@ void Group::create_population()
 }
 
 /////////////////////////////////////////////////
-// connect to another group with STDP synapses
-// Note: Parallel implementation
+// connect to another group with STDP synapses, parallel implementation
 void Group::par_connect_to(ParallelNetManager* const  pnm, Group & targetgroup
                            , DistributionManager * const weight_distrib_cfg
                            , DistributionManager * const delay_distrib_cfg

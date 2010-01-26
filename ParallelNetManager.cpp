@@ -258,8 +258,27 @@ void ParallelNetManager::maxstepsize()
 }
 
 */
+
+ 
+/** doinit - prepare for simulation 
+  * Need to emulate the tasks in SpikeSim and NEURON's
+  * stdinit
+  *    reinit_random_before_sim calls RandomGen members
+  * 
+  * @return 
+  */
 void ParallelNetManager::doinit()
 {
+    // reinitialisation of the random number generator
+    if (SimEnv::reinit_random_before_sim())
+        RandomGenerator::reinit();
+
+    //prepare for spike_exchange
+    
+    pc->
+
+    
+    
   //stdinit();
   // \ -setdt()
   //   -init()
@@ -269,7 +288,7 @@ void ParallelNetManager::doinit()
 
 
 void ParallelNetManager::pinit()
-{
+{	      /**< Call workers to initialise simulation */
     maxstepsize();
     if (nwork > 1) {
         append_string("ParallelNetManager");
@@ -280,10 +299,21 @@ void ParallelNetManager::pinit()
 }
 
 
-
+///See launch_sim
 void ParallelNetManager::psolve(double x)
 {
-    pc->psolve(x);
+
+  launch_sim();
+
+  //pc->psolve(x);  // this has to be done by PNM rather than BBS
+
+  //integrate all parts
+
+  //spike exchange
+
+  //plastic update
+
+
 }
 
 void ParallelNetManager::pcontinue(double x)
@@ -425,21 +455,14 @@ $o1.printf
 /*! 
  * Build the network using the types in each Group. The reason for this class to control 
  * network construction was to assert gid to neurons and have access to all cell lists
- * This method was performed within the original Network class by letting each Group take care of itself. 
+ * This method was performed within the original SpikeSim Network class by letting each Group take care of itself. 
  *For the parallel system creation of the cells must be done by PNM and ParNetwork so that we can check to see if the cell is intended to be created on this node
  * 
  * @param net ParNetwork 
  */
 void ParallelNetManager::create_network(ParNetwork& net)
 {
-//TODO
-//Try this
-//------
-//  net.create();
-//------
-//Or
 
-// 
     for (ParNetwork::ListGroupType::const_iterator grp = net.gp_list_.begin();
             grp != net.gp_list_.end();
 	 ++grp){
@@ -478,13 +501,10 @@ void ParallelNetManager::create_network(ParNetwork& net)
  */
 void ParallelNetManager::connect_network(ParNetwork&net)
 {
-
-//TODO
-//Try this
 //------
 //  net.connect_groups();
 //------
-//Or
+
       Size nb_con=0;
         for (ParNetwork::ListConnType::const_iterator i = net.conn_list_.begin();
              i != net.conn_list_.end();
@@ -533,6 +553,7 @@ void ParallelNetManager::launch_sim(ParNetwork & net)
         // activation update of all the neurons (they call the update of the synapses)
         net.update();
 
+	
         // weight updates of the concerned plastic synapses (with the class DataPlastNeuron)
         if (SimEnv::sim_time() >= SimEnv::plasticity_effective_start_time())
             PlasticityManager::plast_update_general(); // only updates plastic neurons
@@ -541,5 +562,4 @@ void ParallelNetManager::launch_sim(ParNetwork & net)
         SimEnv::advance();
     }
 }
-
 

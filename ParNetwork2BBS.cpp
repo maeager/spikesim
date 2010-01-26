@@ -434,7 +434,7 @@ double ParNetwork2BBS::target_var(void*)   // &target_variable, source_global_in
 
 double ParNetwork2BBS::setup_transfer(void*)   // after all source/target and before init and run
 {
-    bbs->setup_transfer();
+  //    bbs->setup_transfer();
     return 0.;
 }
 
