@@ -274,7 +274,8 @@ void BBSImpl::execute(int id)   // assumes a "_todo" message in receive buffer
     }
     userid = upkint();
     ac_ = double(id);
-    //  execute_helper(); //builds and execute hoc statement
+    execute_helper(); //builds and execute hoc statement
+    //I need some way of Identifying what is said
     et = time() - st;
     total_exec_time += et;
 #ifdef DEBUG

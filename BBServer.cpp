@@ -16,7 +16,7 @@
 #define POLLCNT 300
 
 int bbs_poll_;
-
+void bbs_handle();
 //extern double hoc_cross_x_;
 static int bbs_poll_cnt_;
 static int bbs_msg_cnt_;

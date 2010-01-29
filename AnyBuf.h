@@ -74,17 +74,31 @@ static void append_char_ptr(const char * value)
     bbsbuf.push_back(to_append);
 }
 
-/*static void print_bbsbuf()
+static void print_bbsbuf()
 {
     int i=1;
     boost::any elem;
-    std::cout <<"[bbsbuf] ";
-    while (ifarg(i)){
-
-    bbsbuf.push_back(to_append);
+    std::cout <<"[bbsbuf] "<< std::endl;
+ while (ifarg(i)){
+   if(std::string *s = getstr(i)){
+     std::cout<< i <<": "<<*s<<endl;
+   }else if(int *s = getint(i)){
+     std::cout<< i <<": "<<*s<<endl;
+   }else if(double *s = getval(i)){
+     std::cout<< i <<": "<<*s<<endl;
+   }else if(std::vector *s = getvec(i)){
+     std::cout<< i <<": "<<*s<<endl;
+   }else
+     {
+       std::cout<<"type mismatch"<<endl;
+     }
+   
+   i++;
+ }
+    std::cout <<"[bbsbuf end] "<< std::endl;
 }
-}
 
+/*
 
 void append_any(many & values, const boost::any & value)
 {

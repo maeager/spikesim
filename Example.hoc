@@ -80,7 +80,7 @@ ttrans	    = 0		// ms   // when calculating statistics, ignore
 cvode.active(0)
 dt 	    = 0.05	//ms
 
-// �� Initialisation ���������������������������������������������������
+//  Initialisation
 
 objref cvode, random
 cvode = new CVode(0)    // start with CVode inactive
@@ -473,7 +473,6 @@ proc spike2file() { localobj outf
 
 
 prun()
-
 pnm.pc.runworker
 
 print_results()

@@ -466,7 +466,6 @@ double ParNetwork2BBS::barrier()
 {
     // return wait time
     double t = 0.;
-
     if (bbs->numprocs > 1) {
         t = bbs->wtime();
         bbs->barrier();
@@ -684,7 +683,9 @@ ConfigBase* ParNetwork2BBS::gid_connect(int gid, ConfigBase* syn)
 }
 
 
-
+//! Execute command 
+/** Need to fit this command to ParSpikeSim or bypass it through direct commands
+ */
 void BBSImpl::execute_helper()
 {
     char* s;
@@ -692,13 +693,13 @@ void BBSImpl::execute_helper()
     switch (style) {
     case 0:
         s = upkstr();
-        //hoc_obj_run(s, nil);
+        hoc_obj_run(s, nil);
 //!!run command
         delete [] s;
         break;
     case 1:
     case 2: {
-        /*      int i, j;
+              int i, j;
                 Symbol* fname;
                 Object* ob = nil;
                 char* sarg[20]; // upto 20 argument may be strings
@@ -767,7 +768,7 @@ void BBSImpl::execute_helper()
                     delete [] sarg[i];
                 }
 
-        */      }
+             }
     break;
     }
 }

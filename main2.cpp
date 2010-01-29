@@ -23,25 +23,31 @@ main(int argc, char *argv[])
 #else
     ParallelNetManager pnm(&argc, &argv);
 #endif
+    std::cout << "Hello World! I am " << pnm.myid << " of " << pnm.nhost << std::endl;
     cout << "ParSpikeSim: I am " << pnm.myid << " of " << pnm.nhost << endl;
 
     // TEST ParallelNetManager
     pnm.init(100, 5);
     if (pnm.myid == 0) {
-      cout << "TESTING ParallelNetManager" << endl;
-      cout << "\tncell = " << pnm.ncell << endl;
-      cout << "\tngroup = " << pnm.ngroup << endl;
-      cout << "\tncellgrp = " << pnm.ncellgrp << endl;
+        std::cout << "ncell = " << pnm.ncell << std::endl;
+        std::cout << "nhost = " << pnm.nhost << std::endl;
+        std::cout << "ngroup = " << pnm.ngroup << std::endl;
+        std::cout << "ncellgrp = " << pnm.ncellgrp << std::endl;
     }
+    // TESTING load balances
+    pnm.load_balance_roulette(); pnm.pc->gid_clear(); pnm.pc->barrier(); if (pnm.myid == 0) std::cin.get();
+    pnm.load_balance_round_robin(); pnm.pc->gid_clear(); pnm.pc->barrier(); if (pnm.myid == 0) std::cin.get();
+    pnm.load_balance_by_group(); pnm.pc->gid_clear();
 
+    //TESTING ParNetwork
     ParNetwork net;
 
     Size ncells = 0, ngroups = 0;
 
-    cout << "[info] press any key at end of execution to close this window" << endl << endl;
+    std::cout << "[info] press any key at end of execution to close this window" << std::endl << std::endl;
     // construction of the network, initialisation of the simulation environment, etc.
     try {
-      net.config_from_file("./script.txt", ncells, ngroups);
+        net.config_from_file("./script.txt", ncells, ngroups);
       //net.build_from_file("./script.txt");
 	
     } catch (ConfigError & err) {
@@ -55,6 +61,15 @@ main(int argc, char *argv[])
         cin.get();
         return EXIT_FAILURE;
     }
+    //End testing
+     pnm.pc->barrier();
+     if (pnm.myid == 0) {
+        std::cout << "Hit Enter to continue" << std::endl; std::cin.get();
+    }
+     //    pnm.init(ncells, ngroups);
+     //pnm.load_balance_round_robin();
+    // Start Creation of network cells
+    // net.create_population();
 
     //End Setup of ParNetwork
     if (pnm.myid != 0) {
@@ -70,7 +85,7 @@ main(int argc, char *argv[])
         cout << "Hit Enter to continue" << endl; //cin.get();
      }
      cout << "Ncells = " << ncells << "\tNgroups = " << ngroups << endl;
-     pnm.init(ncells, ngroups);
+    pnm.init(ncells, ngroups);
 //Round robin is probably the most inefficient way to distribute the neurons
 //Guy from IBM said that holding all the synapse on CPUs would be better
      pnm.load_balance_round_robin();

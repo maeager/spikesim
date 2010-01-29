@@ -1,6 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<<<<<<< local
 <title>ParSpikeSimv6.2: /media/data/Work/spikesimv6/BBS.h Source File</title>
+=======
+<title>spikesimv6: /media/data/Work/spikesimv6/parallel/bbs.h Source File</title>
+>>>>>>> other
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -9,11 +13,15 @@
   <div class="tabs">
     <ul>
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+<<<<<<< local
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
+=======
+>>>>>>> other
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
+<<<<<<< local
 <h1>/media/data/Work/spikesimv6/BBS.h</h1><a href="BBS_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// BBS.h</span>
 <a name="l00003"></a>00003 <span class="comment"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#ifndef BBS_H</span>
@@ -35,7 +43,32 @@
 <a name="l00020"></a>00020 <span class="preprocessor">#include "<a class="code" href="InterfaceBase_8h.html">InterfaceBase.h</a>"</span>
 <a name="l00021"></a>00021 
 <a name="l00022"></a>00022 <span class="keywordtype">void</span> <a class="code" href="BBS_8h.html#75ea96929bf1bdfa14ce14ff29b01c99">bbs_done</a>();
+=======
+<h1>/media/data/Work/spikesimv6/parallel/bbs.h</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef bbs_h</span>
+<a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define bbs_h</span>
+<a name="l00003"></a>00003 <span class="preprocessor"></span>
+<a name="l00004"></a>00004 <span class="preprocessor">#include "bbsimpl.h"</span>
+<a name="l00005"></a>00005 
+<a name="l00006"></a>00006 <span class="keyword">class </span>IvocVect;
+<a name="l00007"></a>00007 
+<a name="l00008"></a>00008 <span class="keyword">class </span><a class="code" href="classBBS.html" title="BBS Base for all classes in Bulletin Board Server.">BBS</a> {
+<a name="l00009"></a>00009 <span class="keyword">public</span>:
+<a name="l00010"></a>00010         <a class="code" href="classBBS.html" title="BBS Base for all classes in Bulletin Board Server.">BBS</a>();
+<a name="l00011"></a>00011         <a class="code" href="classBBS.html" title="BBS Base for all classes in Bulletin Board Server.">BBS</a>(<span class="keywordtype">int</span> nhost);
+<a name="l00012"></a>00012         <span class="keyword">virtual</span> ~<a class="code" href="classBBS.html" title="BBS Base for all classes in Bulletin Board Server.">BBS</a>();
+<a name="l00013"></a>00013 
+<a name="l00014"></a>00014         <span class="keywordtype">boolean</span> look(<span class="keyword">const</span> <span class="keywordtype">char</span>*);
+<a name="l00015"></a>00015 
+<a name="l00016"></a>00016         <span class="keywordtype">void</span> take(<span class="keyword">const</span> <span class="keywordtype">char</span>*); <span class="comment">/* blocks til something to take */</span>
+<a name="l00017"></a>00017         <span class="keywordtype">boolean</span> look_take(<span class="keyword">const</span> <span class="keywordtype">char</span>*); <span class="comment">/* returns false if nothing to take */</span>
+<a name="l00018"></a>00018         <span class="comment">// after taking use these</span>
+<a name="l00019"></a>00019         <span class="keywordtype">int</span> upkint();
+<a name="l00020"></a>00020         <span class="keywordtype">double</span> upkdouble();
+<a name="l00021"></a>00021         <span class="keywordtype">void</span> upkvec(<span class="keywordtype">int</span> n, <span class="keywordtype">double</span>* px); <span class="comment">// n input px space must exist</span>
+<a name="l00022"></a>00022         <span class="keywordtype">char</span>* upkstr(); <span class="comment">// delete [] char* when finished</span>
+>>>>>>> other
 <a name="l00023"></a>00023 
+<<<<<<< local
 <a name="l00025"></a>00025 
 <a name="l00027"></a><a class="code" href="classBBSImpl.html">00027</a> <span class="keyword">class </span><a class="code" href="classBBSImpl.html" title="BBSImpl Bulletin Board Abstract class.">BBSImpl</a>
 <a name="l00028"></a>00028 {
@@ -168,8 +201,61 @@
 <a name="l00157"></a>00157 
 <a name="l00158"></a>00158 
 <a name="l00159"></a>00159 <span class="preprocessor">#endif</span>
+=======
+<a name="l00024"></a>00024         <span class="comment">// before posting use these</span>
+<a name="l00025"></a>00025         <span class="keywordtype">void</span> pkbegin();
+<a name="l00026"></a>00026         <span class="keywordtype">void</span> pkint(<span class="keywordtype">int</span>);
+<a name="l00027"></a>00027         <span class="keywordtype">void</span> pkdouble(<span class="keywordtype">double</span>);
+<a name="l00028"></a>00028         <span class="keywordtype">void</span> pkvec(<span class="keywordtype">int</span> n, <span class="keywordtype">double</span>* px); <span class="comment">// doesn't pack n</span>
+<a name="l00029"></a>00029         <span class="keywordtype">void</span> pkstr(<span class="keyword">const</span> <span class="keywordtype">char</span>*);
+<a name="l00030"></a>00030         <span class="keywordtype">void</span> post(<span class="keyword">const</span> <span class="keywordtype">char</span>*);
+<a name="l00031"></a>00031 
+<a name="l00032"></a>00032         <span class="keywordtype">int</span> submit(<span class="keywordtype">int</span> userid);
+<a name="l00033"></a>00033         <span class="keywordtype">boolean</span> working(<span class="keywordtype">int</span> &amp;<span class="keywordtype">id</span>, <span class="keywordtype">double</span>&amp; x, <span class="keywordtype">int</span>&amp; userid);
+<a name="l00034"></a>00034         <span class="keywordtype">void</span> context();
+<a name="l00035"></a>00035 
+<a name="l00036"></a>00036         <span class="keywordtype">boolean</span> is_master();
+<a name="l00037"></a>00037         <span class="keywordtype">void</span> worker(); <span class="comment">// forever execute</span>
+<a name="l00038"></a>00038         <span class="keywordtype">void</span> done(); <span class="comment">// prints timing</span>
+<a name="l00039"></a>00039 
+<a name="l00040"></a>00040         <span class="keywordtype">void</span> perror(<span class="keyword">const</span> <span class="keywordtype">char</span>*);
+<a name="l00041"></a>00041         <span class="keywordtype">double</span> time();
+<a name="l00042"></a>00042         <span class="keywordtype">double</span> wait_time();
+<a name="l00043"></a>00043         <span class="keywordtype">double</span> integ_time();
+<a name="l00044"></a>00044         <span class="keywordtype">double</span> send_time();
+<a name="l00045"></a>00045         <span class="keywordtype">void</span> add_wait_time(<span class="keywordtype">double</span>); <span class="comment">// add interval since arg</span>
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047         <span class="keywordtype">int</span> nhost();
+<a name="l00048"></a>00048         <span class="keywordtype">int</span> myid();
+<a name="l00049"></a>00049 
+<a name="l00050"></a>00050         <span class="comment">// netpar interface</span>
+<a name="l00051"></a>00051         <span class="keywordtype">void</span> <a class="code" href="classBBS.html#37d37a9d438ad4ff38e4e3590f23dde9">set_gid2node</a>(<span class="keywordtype">int</span>, <span class="keywordtype">int</span>);
+<a name="l00052"></a>00052         <span class="keywordtype">int</span> <a class="code" href="classBBS.html#993e82cfcd15ce284b2f6815c9122cf6">gid_exists</a>(<span class="keywordtype">int</span>);
+<a name="l00053"></a>00053         <span class="keywordtype">double</span> <a class="code" href="classBBS.html#5a863b411c9d23b17f67a6917fdf2311">threshold</a>();
+<a name="l00054"></a>00054         <span class="keywordtype">void</span> cell();
+<a name="l00055"></a>00055         <span class="keywordtype">void</span> outputcell(<span class="keywordtype">int</span>);
+<a name="l00056"></a>00056         <span class="keywordtype">void</span> spike_record(<span class="keywordtype">int</span>, IvocVect*, IvocVect*);
+<a name="l00057"></a>00057         <span class="keywordtype">void</span> <a class="code" href="classBBS.html#5505a569e08c5ceb7e3f2e6845fa2e1a">netpar_solve</a>(<span class="keywordtype">double</span>);
+<a name="l00058"></a>00058         Object** <a class="code" href="classBBS.html#865f15807e94be71839d8f1dcc2d4b50">gid2obj</a>(<span class="keywordtype">int</span>);
+<a name="l00059"></a>00059         Object** gid2cell(<span class="keywordtype">int</span>);
+<a name="l00060"></a>00060         Object** gid_connect(<span class="keywordtype">int</span>);
+<a name="l00061"></a>00061         <span class="keywordtype">double</span> netpar_mindelay(<span class="keywordtype">double</span> maxdelay);
+<a name="l00062"></a>00062         <span class="keywordtype">void</span> netpar_spanning_statistics(<span class="keywordtype">int</span>*, <span class="keywordtype">int</span>*, <span class="keywordtype">int</span>*, <span class="keywordtype">int</span>*);
+<a name="l00063"></a>00063         IvocVect* netpar_max_histogram(IvocVect*);
+<a name="l00064"></a>00064 <span class="keyword">protected</span>:
+<a name="l00065"></a>00065         <span class="keywordtype">void</span> <a class="code" href="classBBS.html#892895f58412f691d703a3854fc1a24c" title="HAVE_PVM3_H.">init</a>(<span class="keywordtype">int</span>);
+<a name="l00066"></a>00066 <span class="keyword">protected</span>:
+<a name="l00067"></a>00067         <a class="code" href="classBBSImpl.html" title="BBSImpl Bulletin Board Implementation class.">BBSImpl</a>* impl_;
+<a name="l00068"></a>00068 };
+<a name="l00069"></a>00069 
+<a name="l00070"></a>00070 <span class="preprocessor">#endif</span>
+>>>>>>> other
 </pre></div></div>
+<<<<<<< local
 <hr size="1"><address style="text-align: right;"><small>Generated on Thu Jan 14 17:12:22 2010 for ParSpikeSimv6.2 by&nbsp;
+=======
+<hr size="1"><address style="text-align: right;"><small>Generated on Thu Dec 24 13:26:04 2009 for spikesimv6 by&nbsp;
+>>>>>>> other
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

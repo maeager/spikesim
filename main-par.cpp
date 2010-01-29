@@ -42,7 +42,7 @@ if (rank==0){
 		return EXIT_FAILURE;
 	}
 
-//	net.build_network();
+	net.build_network();
 	std::cout << std::endl << "ParNetwork size " << net.network_size() << std::endl;
 
 	std::cout << "simulation duration: " << (SimEnv::i_duration() * SimEnv::timestep()) << std::endl;

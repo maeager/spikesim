@@ -7,7 +7,10 @@
 ParSpike::ParSpike(void)
 {
 }
+/*
 
+
+*/
 MPI_Comm mpi_comm;
 MPI_Comm bbs_comm;
 int ParSpike::ag_send_size_;
@@ -19,7 +22,7 @@ int ParSpike::nout_ = 0;
 int ParSpike::mpi_use = 0;
 int ParSpike::numprocs = 1;
 int ParSpike::under_mpi_control_ = 1;
-int ParSpike::my_rank = 0; /*! rank */
+int ParSpike::my_rank = 0; /* rank */
 int ParSpike::np;   //automatically set the other static variables to zero
 int* ParSpike::displs;
 int* ParSpike::nin_;
@@ -45,7 +48,7 @@ void ParSpike::init(int mpi_control, int* pargc, char*** pargv)
     mpi_use = 1;
     under_mpi_control_ = mpi_control;
     if (under_mpi_control_) {
-#if DEBUG == 2
+#ifdef DEBUG
 
             std::cout << "init: argc=" << *pargc << std::endl;
             for (i = 0; i < *pargc; ++i) {
@@ -69,8 +72,9 @@ void ParSpike::init(int mpi_control, int* pargc, char*** pargv)
         std::cout << "MPI_Comm_size failed" << std::endl;
     }
     spike_initialize();
+    /*begin instrumentation*/
 
-#if DEBUG == 2
+#ifdef DEBUG
     {int i;
         if (my_rank == 0) {
             std::cout << "init: argc=" << *pargc << std::endl;
@@ -91,8 +95,7 @@ void ParSpike::init(int mpi_control, int* pargc, char*** pargv)
 }
 
 
-/*! Create the MPI block of spike packets to be sent/received
- */
+
 void ParSpike::make_spike_type()
 {
     SpikePacket_ s;
@@ -161,16 +164,17 @@ double ParSpike::wtime()
 void ParSpike::terminate()
 {
 
-    if (under_mpi_control_) {
-#if DEBUG == 2
-    std::cout << "Terminating: rank " << my_rank << std::endl;
+#ifdef DEBUG
+    std::cout << "terminate: rank " << my_rank << std::endl;
 #endif
+    if (under_mpi_control_) {
         MPI_Finalize();
     }
     mpi_use = 0;
-#if DEBUG == 2
+#ifdef DEBUG
 //      BBS2MPI::checkbufleak();
 #endif
+
 
 }
 
@@ -180,15 +184,9 @@ void ParSpike::mpiabort(int errcode)
     int flag;
     MPI_Initialized(&flag);
     if (flag) {
-#if DEBUG == 2
-    std::cout << "Aborting MPI: rank " << my_rank << std::endl;
-#endif        
-    MPI_Abort(MPI_COMM_WORLD, errcode);
+        MPI_Abort(MPI_COMM_WORLD, errcode);
     } else {
-#if DEBUG == 2
-    std::cout << "Aborting STD: rank " << my_rank << std::endl;
-#endif
-	std::abort();
+        std::abort();
     }
 
 }
@@ -198,8 +196,6 @@ void ParSpike::mpiabort(int errcode)
 
 
 
-/*! Method to Send/Recv  all spikes using MPI_Allgather, taken directly from NEURON.
- */
 int ParSpike::spike_exchange()
 {
     int i, n, novfl, n1;
@@ -225,7 +221,7 @@ int ParSpike::spike_exchange()
             icapacity_ = n + 10;
             //if (spikein_) delete spikein_;
             spikein_.clear();
-            spikein_.resize(icapacity_);
+            spikein_.resize(icapacity_);// (NRNMPI_Spike*)hoc_Emalloc(icapacity_ * sizeof(NRNMPI_Spike));
         }
         MPI_Allgatherv(&spikeout_[0], nout_, spike_type, &spikein_[0], nin_, displs, spike_type, mpi_comm);
     }
@@ -254,7 +250,7 @@ int ParSpike::spike_exchange()
         if (icapacity_ < novfl) {
             icapacity_ = novfl + 10;
             spikein_.clear();//if(spikein_) delete [] spikein_;
-            spikein_.resize(icapacity_);
+            spikein_.resize(icapacity_);// (NRNMPI_Spike*)hoc_Emalloc(icapacity_ * sizeof(NRNMPI_Spike));
         }
         n1 = (nout_ > spikebuf_size) ? nout_ - spikebuf_size : 0;
         MPI_Allgatherv(&spikeout_[0], n1, spike_type, &spikein_[0], nin_, displs, spike_type, mpi_comm);
@@ -264,22 +260,25 @@ int ParSpike::spike_exchange()
     return n;
 }
 
-//! spike_exchange_compressed: comments from original work
-/*! The compressed spike format is restricted to the fixed step method and is a sequence of unsigned char.
- * nspike = buf[0]*256 + buf[1]
- * a sequence of spiketime, localgid pairs. There are nspike of them.
- * spiketime is relative to the last transfer time in units of dt.
- * note that this requires a mindelay < 256*dt.
- * localgid is an unsigned int, unsigned short,
- * or unsigned char in size depending on the range and thus takes
- * own byte coding. When the localgid range is smaller than the true
- * gid range, the gid->PreSyn are remapped into
- * hostid specific maps. If there are not many holes, i.e just about every
- * spike from a source machine is delivered to some cell on a
- * target machine, then instead of a hash map, a vector is used.
- * The allgather sends the first part of the buf and the allgatherv buffer
- * sends any overflow.
- */
+
+/** Original NEURON Comments:
+The compressed spike format is restricted to the fixed step method and is
+a sequence of unsigned char.
+nspike = buf[0]*256 + buf[1]
+a sequence of spiketime, localgid pairs. There are nspike of them.
+    spiketime is relative to the last transfer time in units of dt.
+    note that this requires a mindelay < 256*dt.
+    localgid is an unsigned int, unsigned short,
+    or unsigned char in size depending on the range and thus takes
+    4, 2, or 1 byte respectively. To be machine independent we do our
+    own byte coding. When the localgid range is smaller than the true
+    gid range, the gid->PreSyn are remapped into
+    hostid specific maps. If there are not many holes, i.e just about every
+    spike from a source machine is delivered to some cell on a
+    target machine, then instead of a hash map, a vector is used.
+The allgather sends the first part of the buf and the allgatherv buffer
+sends any overflow.
+*/
 int ParSpike::spike_exchange_compressed()
 {
     int i, novfl, n, ntot, idx, bs, bstot; /* n is #spikes, bs is #byte overflow */
@@ -288,9 +287,9 @@ int ParSpike::spike_exchange_compressed()
 
         //todo: change memory
         if (displs) delete displs;
-        displs = new int[np];
+        displs = new int[np]; //(int*)hoc_Emalloc(np*sizeof(int));
         displs[0] = 0;
-        byteovfl = new int[np]; 
+        byteovfl = new int[np]; //(int*)hoc_Emalloc(np*sizeof(int));
     }
     bbs_context_wait();
 
@@ -317,8 +316,8 @@ int ParSpike::spike_exchange_compressed()
     if (novfl) {
         if (ovfl_capacity_ < novfl) {
             ovfl_capacity_ = novfl + 10;
-            spfixin_ovfl_.clear();
-            spfixin_ovfl_.resize(ovfl_capacity_ *(1 + localgid_size_)); 
+            spfixin_ovfl_.clear();//if(spfixin_ovfl_) delete [] spfixin_ovfl_;
+            spfixin_ovfl_.resize(ovfl_capacity_ *(1 + localgid_size_));  //= new unsigned char[ovfl_capacity_ * (1 + localgid_size_)];//(unsigned char*)hoc_Emalloc(ovfl_capacity_ * (1 + localgid_size_)*sizeof(unsigned char));
         }
         bs = byteovfl[my_rank];
         /*
@@ -331,8 +330,7 @@ int ParSpike::spike_exchange_compressed()
     }
     ovfl_ = novfl;
     return ntot;
-} 
-
+}
 
 double ParSpike::mindelay(double m)
 {
@@ -357,20 +355,17 @@ int ParSpike::int_allmax(int x)
     return result;
 }
 
-//! int_gather interface to MPI_Gather
 void ParSpike::int_gather(int* s, int* r, int cnt, int root)
 {
     MPI_Gather(s, cnt, MPI_INT, r, cnt, MPI_INT, root, mpi_comm);
 }
 
-//! int_gatherv interface to MPI_Gatherv
 void ParSpike::int_gatherv(int* s, int scnt,
                            int* r, int* rcnt, int* rdispl, int root)
 {
     MPI_Gatherv(s, scnt, MPI_INT, r, rcnt, rdispl, MPI_INT, root, mpi_comm);
 }
 
-//! int_alltoallv interface to MPI_Alltoallv with MPI_INT
 void ParSpike::int_alltoallv(int* s, int* scnt, int* sdispl,
                              int* r, int* rcnt, int* rdispl)
 {
@@ -378,7 +373,6 @@ void ParSpike::int_alltoallv(int* s, int* scnt, int* sdispl,
                   r, rcnt, rdispl, MPI_INT, mpi_comm);
 }
 
-//! dbl_alltoallv interface to MPI_Alltoallv with MPI_DOUBLES
 void ParSpike::dbl_alltoallv(double* s, int* scnt, int* sdispl,
                              double* r, int* rcnt, int* rdispl)
 {
@@ -412,9 +406,7 @@ void ParSpike::dbl_broadcast(double* buf, int cnt, int root)
 
 void ParSpike::int_broadcast(int* buf, int cnt, int root)
 {
-#if DEBUG ==2 
-std::cout << my_rank << " int_broadcast " <<cnt << " buf[0]=" (my_rank == root ? buf[0]:-1)<< std::endl;
-#endif
+//std::cout << "%d int_broadcast %d buf[0]=%d\n", my_rank, cnt, my_rank == root ? buf[0]: -1);
     MPI_Bcast(buf, cnt,  MPI_INT, root, mpi_comm);
 }
 
@@ -517,15 +509,9 @@ void ParSpike::wait(void** request)
     MPI_Wait((MPI_Request*)request, &status);
 }
 
-//! Barrier interface to MPI_Barrier
-/*! Halts processors until they all reach this point
- */ 
 void ParSpike::barrier()
 {
-#if DEBUG == 2
-  if (my_rank != 0)  std::cout << "Halting on MPI_barrier()"<< std::endl;
-#endif
-  if (MPI_Barrier(mpi_comm) != MPI_SUCCESS ) std::cout << "MPI_Barrier failure" << std::endl;
+    MPI_Barrier(mpi_comm);
 }
 
 double ParSpike::dbl_allreduce(double x, int type)

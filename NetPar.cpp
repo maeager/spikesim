@@ -340,7 +340,6 @@ void NetPar::spike_exchange()
     if (!active_) {
         return;
     }
-
     if (use_compress_) {
         spike_exchange_compressed(); return;
     }
