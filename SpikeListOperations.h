@@ -68,6 +68,45 @@ public:
 };
 
 
+//! Outputs the membrane potential of a neuron
+/*! 
+*/
+class PotentialOutputter
+{
+protected:
+    //! Type for initialisation value.
+    typedef void * InitValue;
+    //! Constructor.
+    PotentialOutputter(InitValue) {}
+public:
+    //! Returns 1, one potential per neuron.
+    /*! Used by a class \b NeuronListHandler (see OutputterImpl) to determine the number of outputs to pass to a \b FileWrapper.
+     */
+    unsigned nb_outputs_for_neuron(NeuronInterface * const) {
+        return 1;
+    }
+
+    //! Sends the neuron potential to the FileWrapper
+    /*! Method template called according to the real type of FileWrapper.
+        \param t_start Start time. Ignored.
+        \param t_stop Stop time. Ignored.
+        \param nrn Neuron to treat.
+        \param file_wrapper (of type \b FileWrapper).
+     */
+    template <class FileWrapper>
+    inline void operation(const Time & t_start, const Time & t_stop
+                          , NeuronInterface * const nrn
+                          , FileWrapper * const file_wrapper) {
+
+        file_wrapper->write_to_file(nrn->potential());
+    }
+
+    template <class FileWrapper>
+    inline void export_connectivity(NeuronInterface * const nrn, FileWrapper * const file_wrapper, int pre_post) {
+    }
+
+};
+
 
 //! Computes the spiking rate of a neuron.
 /*! The rate (in Hz) is computed for all the spikes between times \b t_start and \b t_stop.

@@ -30,6 +30,10 @@ typedef struct bbsmpibuf {
     int refcount;
 } bbsmpibuf;
 
+/** Neuron's bbsmpipack 
+  * This namespace provide packages for BBS to interface with MPI.
+  * 
+  */
 namespace BBS2MPI
 {
 
@@ -59,6 +63,8 @@ int iprobe(int* size, int* tag, int* source);
 void bbssend(int dest, int tag, bbsmpibuf* r);
 int bbsrecv(int source, bbsmpibuf* r);
 int bbssendrecv(int dest, int tag, bbsmpibuf* s, bbsmpibuf* r);
+
+void timeout(int seconds);
 }
 
 

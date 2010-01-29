@@ -54,8 +54,8 @@ public:
     bool gid_exists(int);
     void create_cell(int, Group*);
     void prepare_sim();
-    void launch_sim();
-    ParNetwork2BBS* pc;
+    void launch_sim(ParNetwork&);
+
 
     void gatherspikes();
     void want_all_spikes();
@@ -79,6 +79,9 @@ public:
     int prstat, maxstepsize_called_, want_graph_, edgecount_;
     double localmaxstep_;
     double tstop;
+    
+    ParNetwork2BBS* pc;
+
     ConfigBase * nc;  //temp pointer in several member functions
     static int cell_cnt;
 //external stdinit, continuerun, cvode, tstop, hoc_sf_

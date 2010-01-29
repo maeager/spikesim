@@ -118,7 +118,10 @@ void OutputManager::add_outputter(const std::string & key, const std::string & f
         */      else if (key == "weight") {
             AsciiFileInitialiser afi(name_tmp, 7);
             outputter = new OutputterImpl<AsciiFileWrapper, WeightOutputter, SingleWayThroughGroups>(key, freq_tag, afi, 0, 0);
-        } else throw ConfigError("OutputManager: unknown key '" + key + "' (should be: 'weight', 'rate', 'correl' or 'spike')");
+        } else if (key == "potential") {
+            AsciiFileInitialiser afi(name_tmp, 7);
+            outputter = new OutputterImpl<AsciiFileWrapper, PotentialOutputter, SingleWayThroughGroups>(key, freq_tag, afi, 0, 0);
+        } else throw ConfigError("OutputManager: unknown key '" + key + "' (should be: 'weight', 'rate', 'correl', 'spike' or 'potential')");
     }
     /*  else if (output_file_type == "matlab")
         {

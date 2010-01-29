@@ -5,6 +5,7 @@
 #include <errno.h>
 #include "BBS2MPI.h"
 #include "ParSpike.h"
+#include "SimulationEnvironment.h"
 #include <mpi.h>
 #include <errno.h>
 #define debugleak 0

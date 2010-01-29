@@ -486,28 +486,90 @@ int ParSpike::pgvts_least(double* t, int* op, int* init)
     return 0;
 }
 
-/* following for splitcell.cpp transfer */
-void ParSpike::send_doubles(double* pd, int cnt, int dest, int tag)
+
+void ParSpike::setup_transfer() 
 {
-    MPI_Send(pd, cnt, MPI_DOUBLE, dest, tag, mpi_comm);
+
+#ifdef DEBUG
+  std::cout << "setup_transfer" << std::endl;
+#endif
+	alloclists();
+	is_setup_ = true;
+
+	// send this machine source count to all other machines and get the
+	// source counts for all machines. This allows us to create the
+	// proper incoming source buffer and make the outgoing source pointer
+	// point to the right spot in that.
+	if (!srccnt_) {
+		srccnt_ = new int[numprocs];
+		srcdspl_ = new int[numprocs];
+	}
+	srccnt_[my_rank] = sources_->count();
+	if (nrnmpi_numprocs > 1) {
+	  BBS2MPI::int_allgather(srccnt_ + ParSpike::my_rank, srccnt_, 1);
+		errno = 0;
+	}
+	
+	// allocate the source buffer
+	int i, j;
+	src_buf_size_ = 0;
+	for (i=0; i < numprocs; ++i) {
+		srcdspl_[i] = src_buf_size_;
+		src_buf_size_ += srccnt_[i];
+	}
+	if (incoming_source_buf_) {
+		delete [] incoming_source_buf_;
+		incoming_source_buf_ = 0;
+		outgoing_source_buf_ = 0;
+	}
+	if (src_buf_size_ == 0) {
+		nrnmpi_v_transfer_ = 0;
+		return;
+	}
+	int osb = srcdspl_[my_rank];
+	incoming_source_buf_ = new double[src_buf_size_];
+	outgoing_source_buf_ = incoming_source_buf_ + osb;
+
+	// send this machines list of sgids (in source buf order) to all
+	// machines and receive corresponding lists from all machines. This
+	// allows us to create the source buffer index to target list
+	// (by finding the index into the sgid to target list).
+	int* sgid = new int[src_buf_size_];
+	for (i = 0, j = osb; i < sources_->count(); ++i, ++j) {
+		sgid[j] = sgids_->item(i);
+	}
+	if (nrnmpi_numprocs > 1) {
+		nrnmpi_int_allgatherv(sgid + osb, sgid, srccnt_, srcdspl_);
+	}
+	errno = 0;
+	
+	if (s2t_index_) { delete [] s2t_index_; }
+	s2t_index_ = new int[targets_->count()];
+	MapInt2Int* mi2 = new MapInt2Int(20);
+//printf("srcbufsize=%d\n", src_buf_size_);
+	for (i = 0; i < src_buf_size_; ++i) {
+		if (mi2->find(sgid[i], j)) {
+			char tmp[10];
+			sprintf(tmp, "%d", sgid[i]);
+			hoc_execerror("multiple instances of source gid:", tmp);
+		}
+		(*mi2)[sgid[i]] = i;
+	}
+	for (i=0; i < targets_->count(); ++i) {
+		assert(mi2->find(sgid2targets_->item(i), s2t_index_[i]));
+	}
+	delete [] sgid;
+	delete mi2;
+	nrnmpi_v_transfer_ = var_transfer;
+	nrn_mk_transfer_thread_data_ = mk_ttd;
+	if (!v_structure_change) {
+		mk_ttd();
+	}
 }
 
-void ParSpike::recv_doubles(double* pd, int cnt, int src, int tag)
-{
-    MPI_Status status;
-    MPI_Recv(pd, cnt, MPI_DOUBLE, src, tag, mpi_comm, &status);
-}
 
-void ParSpike::postrecv_doubles(double* pd, int cnt, int src, int tag, void** request)
-{
-    MPI_Irecv(pd, cnt, MPI_DOUBLE, src, tag, mpi_comm, (MPI_Request*)request);
-}
 
-void ParSpike::wait(void** request)
-{
-    MPI_Status status;
-    MPI_Wait((MPI_Request*)request, &status);
-}
+
 
 void ParSpike::barrier()
 {
@@ -532,14 +594,36 @@ double ParSpike::dbl_allreduce(double x, int type)
     return result;
 }
 
+
+/* following for splitcell.cpp transfer */
+void ParSpike::send_doubles(double* pd, int cnt, int dest, int tag)
+{
+    MPI_Send(pd, cnt, MPI_DOUBLE, dest, tag, mpi_comm);
+}
+
+void ParSpike::recv_doubles(double* pd, int cnt, int src, int tag)
+{
+    MPI_Status status;
+    MPI_Recv(pd, cnt, MPI_DOUBLE, src, tag, mpi_comm, &status);
+}
+
+void ParSpike::postrecv_doubles(double* pd, int cnt, int src, int tag, void** request)
+{
+    MPI_Irecv(pd, cnt, MPI_DOUBLE, src, tag, mpi_comm, (MPI_Request*)request);
+}
+
+void ParSpike::wait(void** request)
+{
+    MPI_Status status;
+    MPI_Wait((MPI_Request*)request, &status);
+}
+
 void ParSpike::dbl_allgather(double* s, double* r, int n)
 {
     MPI_Allgather(s, n,  MPI_DOUBLE, r, n, MPI_DOUBLE, mpi_comm);
 }
 
 #if BGPDMA
-
-
 static MPI_Comm bgp_comm;
 
 void ParSpike::bgp_comm()

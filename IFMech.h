@@ -4,6 +4,7 @@
 #ifndef IFMECH_H
 #define IFMECH_H
 
+#include <math.h>
 
 #include "SimulationEnvironment.h"
 #include "Error.h"
@@ -33,7 +34,10 @@ public:
 
 public:
 //  IFMechConfig(double tauP, double Vth, double Vr, double Vp, double refrac_per_in_seconds);
-    IFMechConfig(std::ifstream & is);
+    IFMechConfig(std::ifstream & is, bool eif);
+    inline const double & deltaT() const {
+        return deltaT_;
+    }
     inline const double & tauP() const {
         return tauP_;
     }
@@ -52,6 +56,7 @@ public:
 private:
     double tauP_
     , Vth_
+    , deltaT_
     , Vr_
     , Vp_;          /*!< . */
     Size refrac_per_;   /*!< Refractory period in time steps. */
@@ -107,6 +112,8 @@ inline void IFMech::perform_calculations(TypeImpl & neuron)
 {
     double time_to_spike;
 
+    bool e = (ifmcfg_->deltaT()!=0);
+
     // Update v;
     v[0] = v[1];
 
@@ -114,11 +121,10 @@ inline void IFMech::perform_calculations(TypeImpl & neuron)
     if (refrac_time_left_ > 0) {
         --refrac_time_left_;
     } else {
-        // Calculate alpha0 and beta0  in Shelly&Tao
+        // update alpha and beta
         alpha[0] = alpha[1];
         beta[0] = beta[1];
-        k[0] = -alpha[0] * v[0] + beta[0];  // calculate k1;
-        alpha[1] = 1.0 / ifmcfg_->tauP();    // initialise
+        alpha[1] = 1.0 / ifmcfg_->tauP();
         beta[1] = ifmcfg_->Vp() / ifmcfg_->tauP();
 
         // sum all synaptic contributions (continuous or impulsive conductance and current):
@@ -127,37 +133,94 @@ inline void IFMech::perform_calculations(TypeImpl & neuron)
                 ++i)
             (*i)->send_updated_states(alpha[1], beta[1]);
 
-        // increment v[1] with estimated integral over SimEnv::timestep() of continuous current
-        k[1] = -alpha[1] * (v[0] + SimEnv::timestep() * k[0]) + beta[1];
+        // calculate dv/dt at start of time step
+        k[0] = -alpha[0] * v[0] + beta[0];
+        if (e) {
+            k[0] += alpha[0] * ifmcfg_->deltaT() * exp((v[0] - ifmcfg_->Vth()) / ifmcfg_->deltaT());
+        }
+
+        // use that to estimate new V
+        v[1] = v[0] + SimEnv::timestep() * k[0];
+
+        // calculate dv/dt at end of time step
+        k[1] = -alpha[1] * v[1] + beta[1];
+        if (e) {
+            k[1] += alpha[1] * ifmcfg_->deltaT() * exp((v[1] - ifmcfg_->Vth()) / ifmcfg_->deltaT());
+        }
+
+        // use that to calculate new V
         v[1] = v[0] + SimEnv::timestep() * (k[0] + k[1]) / 2.0;
 
-        if (v[1] > ifmcfg_->Vth()) { // the neuron spikes!
-            // determine the exact time of the next spike:
-            time_to_spike = SimEnv::timestep() * (ifmcfg_->Vth() - v[0]) / (v[1] - v[0]);
-            // corrections
-            if (time_to_spike < 0) {
-                time_to_spike = 0;
-#ifdef _DEBUG
-                std::cout << "IFMech: negative time_to_spike";
-#endif
-            } else if (time_to_spike >= SimEnv::timestep()) {
-                time_to_spike = 0;
-#ifdef _DEBUG
-                std::cout << "IFMech: too large time_to_spike";
-#endif
+        if (ifmcfg_->deltaT()) {
+            //////
+            // We can't actually simulate the spike going to infinity
+            // I just calculate the time to spike analytically from the exponential spiking current, and check if it's within this time step.
+            // Pressley & Troyer check when it goes above a certain triggering threshold, then calculate the time to spike analytically from there.
+            // They didn't give much detail about that, though.
+            // Also they use smaller time steps for greater accuracy when close to a spike. I haven't tried this.
+
+            // Calculate time to spike analytically
+            // APPROXIMATION: synaptic and leakage currents are ignored in this step. Close to a spike, exponential term is probably much bigger than them.
+            time_to_spike = ifmcfg_->tauP() * exp((ifmcfg_->Vth() - v[0]) / ifmcfg_->deltaT());
+
+            // Check if it spikes in this time step
+            if (time_to_spike < SimEnv::timestep()) { // the neuron spikes!
+
+                // reset
+                // calculate spike current using Vr
+                // APPROXIMATION
+                // theoretically this isn't right because the voltage we're about to reset to isn't exactly Vr
+                // and because I'm ignoring synaptic contributions to conductance.
+                // Spike current after reset is probably small anyway, so hopefully this is a reasonable estimate.
+                double psi;
+                if (e) {
+                    psi = ifmcfg_->deltaT() / ifmcfg_->tauP() * exp((ifmcfg_->Vr() - ifmcfg_->Vth()) / ifmcfg_->deltaT());
+                } else {
+                    psi = 0;
+                }
+                // calculate what the next V is.
+                v[0] = ifmcfg_->Vr() - time_to_spike * (beta[0] + psi + beta[1] + psi - alpha[1] * (beta[0] + psi) * SimEnv::timestep()) / 2.0;
+                v[0] /= 1.0 + time_to_spike * (-alpha[0] - alpha[1] + alpha[0] * alpha[1] * SimEnv::timestep()) / 2.0;
+                k[0] = -alpha[0] * v[0] + beta[0] + psi;
+                k[1] = -alpha[1] * (v[0] + SimEnv::timestep() * k[0]) + beta[1] + psi;
+                v[1] = v[0] + SimEnv::timestep() * (k[0] + k[1]) / 2.0;
+                
+
+                // effect the consequences of the spike:
+                neuron.notify_firing_impl(time_to_spike);
+
+                // start the refractory period
+                refrac_time_left_ = ifmcfg_->refrac_per();
             }
+        } else {
+            if (v[1] > ifmcfg_->Vth()) { // the neuron spikes!
+                // determine the exact time of the next spike:
+                time_to_spike = SimEnv::timestep() * (ifmcfg_->Vth() - v[0]) / (v[1] - v[0]);
+                // corrections
+                if (time_to_spike < 0) {
+                    time_to_spike = 0;
+    #ifdef _DEBUG
+                    std::cout << "IFMech: negative time_to_spike";
+    #endif
+                } else if (time_to_spike >= SimEnv::timestep()) {
+                    time_to_spike = 0;
+    #ifdef _DEBUG
+                    std::cout << "IFMech: too large time_to_spike";
+    #endif
+                }
 
-            v[0] = ifmcfg_->Vr() - time_to_spike * (beta[0] + beta[1] - alpha[1] * beta[0] * SimEnv::timestep()) / 2.0;
-            v[0] /= 1.0 + time_to_spike * (-alpha[0] - alpha[1] + alpha[0] * alpha[1] * SimEnv::timestep()) / 2.0;
-            k[0] = -alpha[0] * v[0] + beta[0];
-            k[1] = -alpha[1] * (v[0] + SimEnv::timestep() * k[0]) + beta[1];
-            v[1] = v[0] + SimEnv::timestep() * (k[0] + k[1]) / 2.0;
+                v[0] = ifmcfg_->Vr() - time_to_spike * (beta[0] + beta[1] - alpha[1] * beta[0] * SimEnv::timestep()) / 2.0;
+                v[0] /= 1.0 + time_to_spike * (-alpha[0] - alpha[1] + alpha[0] * alpha[1] * SimEnv::timestep()) / 2.0;
+                k[0] = -alpha[0] * v[0] + beta[0];
+                k[1] = -alpha[1] * (v[0] + SimEnv::timestep() * k[0]) + beta[1];
+                v[1] = v[0] + SimEnv::timestep() * (k[0] + k[1]) / 2.0;
 
-            // effect the consequences of the spike:
-            neuron.notify_firing_impl(time_to_spike);
+                // effect the consequences of the spike:
+                neuron.notify_firing_impl(time_to_spike);
 
-            // start the refractory period
-            refrac_time_left_ = ifmcfg_->refrac_per();
+                // start the refractory period
+                refrac_time_left_ = ifmcfg_->refrac_per();
+            }
         }
     }
 }

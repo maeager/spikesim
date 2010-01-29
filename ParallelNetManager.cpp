@@ -1,23 +1,25 @@
 
 
-//#include "NetPar.h"
+
 #include <errno.h>
 #include "Group.h"
 #include "GlobalDefs.h"
 #include "AnyBuf.h"
+#include "NeuronFactory.h"
 #include "ParallelNetManager.h"
 #include "ParNetwork2BBS.h"
-
+//#include "NetPar.h"
 #define nil 0
 
 int ParallelNetManager::cell_cnt = 0;
 
-
-/*ParallelNetManager::ParallelNetManager()
-{
-}
-*/
-
+/*! ParallelNetManager Constructor
+ * Pass niput args to ParNetwork2BBS
+ * @param argc pass input arguments to MPI_Init 
+ * @param argv pass input arguments to MPI_Init 
+ * 
+ * @return 
+ */
 #ifdef CPPMPI
 ParallelNetManager::ParallelNetManager(int& argc, char**&argv)
 #else
@@ -29,12 +31,18 @@ ParallelNetManager::ParallelNetManager(int* argc, char***argv)
 
 }
 
+//!Destructor
 ParallelNetManager::~ParallelNetManager()
 {
 }
 
-
-void ParallelNetManager::init(int ncells, int ngroups)
+ 
+/*! 
+ * sets the default parameters for PNM
+ * 
+ * @param ncells 
+ * @param ngroups 
+ */void ParallelNetManager::init(int ncells, int ngroups)
 {
 
     nhost = pc->nhost();
@@ -59,46 +67,60 @@ void ParallelNetManager::init(int ncells, int ngroups)
 }
 
 
-void ParallelNetManager::terminate()
+/*! 
+ *  Master process calls ParNetwork2BBS's done() to terminate the MPI processors 
+ *  
+ */ 
+void ParallelNetManager::done()
 {
     if (myid == 0) pc->done();
 }
 
-// originally
-// the gid <-> cell map was constructed in two phases.
-// first we specify which gids will exist on this machine.
-// Then, when create_cell is called we can decide if the cell
-// will actually be created and, if so, pc->presyn actually
-// creates the PreSyn, sets the gid, and makes the gid2PreSyn map.
-// that is deprecated.
-// Now it is best merely to call
-// register_cell(gid, cellobject) and that will both call gid_exists (if it
-// does not already exist), and make the mapping.
-
+/**
+ * set_gid2node: originally
+ * the gid <-> cell map was constructed in two phases.
+ * first we specify which gids will exist on this machine.
+ * Then, when create_cell is called we can decide if the cell
+ * will actually be created and, if so, pc->presyn actually
+ * creates the PreSyn, sets the gid, and makes the gid2PreSyn map.
+ * that is deprecated.
+ * Now it is best merely to call
+ * register_cell(gid, cellobject) and that will both call gid_exists (if it
+ * does not already exist), and make the mapping.
+ *
+ * @param cell_id global cell ID
+ * @param pcid rank of node 
+ */
 void ParallelNetManager::set_gid2node(int cell_id, int pcid = -1)
 {
     if (pcid == -1) pcid = myid; //default to myid
     pc->set_gid2node(cell_id, pcid);
-#ifdef DEBUG
-    if (myid == 0) std::cout << "Cell " << cell_id << " set by me to host " << pcid << std::endl;
+#if DEBUG ==2
+    std::cout << "Cell " << cell_id << " set by me to host " << pcid << std::endl;
 #endif
 }
 
-void ParallelNetManager::load_balance_round_robin()   // simplistic partitioning
+
+//!simplistic partitioning of neurons on nodes 
+void ParallelNetManager::load_balance_round_robin()   
 {
     for (register int i = 0; i < ncell; ++i) {
         set_gid2node(i, i % nwork);
     }
+    cell_cnt = 0;
 }
 
-void ParallelNetManager::load_balance_roulette()   // in order partitioning
+//! order partitioning based on num of nodes
+void ParallelNetManager::load_balance_roulette()  
 {
     for (register int i = 0; i < ncell; ++i) {
         set_gid2node(i, floor(i*nwork / ncell));
     }
+    cell_cnt = 0;
 }
 
-void ParallelNetManager::load_balance_by_group()   // group partitioning
+//! partition neurons based on groups
+void ParallelNetManager::load_balance_by_group()   
 {
     if (ngroup > nwork) {
         for (register int gr = 0; gr < ngroup; ++gr) {
@@ -109,12 +131,15 @@ void ParallelNetManager::load_balance_by_group()   // group partitioning
         for (register int nc = 0; nc < ncell; ++nc)
             set_gid2node(nc, floor(nc*nwork / ncell));
     }
+    cell_cnt = 0;
 }
 
+//! Check to see if global ID exists on this node
 bool ParallelNetManager::gid_exists(int cell_id)
 {
     return pc->gid_exists(cell_id);
 }
+
 /*
 void  ParallelNetManager::want_all_spikes() {
     for(register int i=0; i<ncell;++i) {
@@ -128,9 +153,14 @@ void ParallelNetManager::spike_record(int cell_id) {
     }
 }
 */
-// arg is gid and string that creates a cell such as "new Cell(x, y, z)"
-// return the cell object (usually nil)
-// this is deprecated
+
+ 
+/*! 
+ *  creates a cell such as "new Cell(x, y, z)" in original NEURON
+ * 
+ * @param cell_id global ID
+ * @param gr pointer to Group
+ */
 void ParallelNetManager::create_cell(int cell_id, Group * gr)
 {
     if (gid_exists(cell_id)) {
@@ -139,7 +169,8 @@ void ParallelNetManager::create_cell(int cell_id, Group * gr)
 
 }
 
-void ParallelNetManager::register_cell(int cell_id, Group* gr)
+//! Create cell on this node and register a syn connection
+void ParallelNetManager::register_cell(int cell_id, Group* gr) /**< Create the neuron on this node */
 {
 //TODO  ConfigBase * nc;
     if (!pc->gid_exists(cell_id)) {
@@ -188,6 +219,7 @@ ConfigBase* ParallelNetManager::cm2t(int precell_id, ConfigBase* postcell_syn, d
     return nc;
 }
 
+
 void ParallelNetManager::set_maxstep()
 {
     // arg is max allowed, return val is just for this subnet
@@ -224,18 +256,66 @@ void ParallelNetManager::maxstepsize()
         pc->barrier();
     }
 }
+
 */
 
-void ParallelNetManager::prepare_sim()
+ 
+/** doinit - prepare for simulation 
+  * Need to emulate the tasks in SpikeSim and NEURON's
+  * stdinit
+  *    reinit_random_before_sim calls RandomGen members
+  * 
+  * @return 
+  */
+void ParallelNetManager::doinit()
 {
-    maxstepsize();
+    // reinitialisation of the random number generator
     if (SimEnv::reinit_random_before_sim())
-      RandomGenerator::reinit();  //start all generators 
+        RandomGenerator::reinit();
+
+    //prepare for spike_exchange
+    
+    //pc->
+
+    
+    
+  //stdinit();
+  // \ -setdt()
+  //   -init()
+  //   \ finitialise(vinit)
+ 
 }
 
+
+void ParallelNetManager::pinit()
+{	      /**< Call workers to initialise simulation */
+    maxstepsize();
+
+   if (nwork > 1) {
+        append_string("ParallelNetManager");
+        append_string("doinit");
+        pc->context();
+    }
+    doinit(); // the master does one also
+
+}
+
+
+//! See launch_sim
 void ParallelNetManager::psolve(double x)
 {
-    pc->psolve(x);
+
+  launch_sim();
+
+  //pc->psolve(x);  // this has to be done by PNM rather than BBS
+
+  //integrate all parts
+
+  //spike exchange
+
+  //plastic update
+
+
 }
 
 void ParallelNetManager::pcontinue(double x)
@@ -256,6 +336,7 @@ void ParallelNetManager::prun()
     pinit();
     pcontinue(tstop);
 }
+
 
 void ParallelNetManager::postwait(int x)
 {
@@ -374,61 +455,88 @@ $o1.printf
 */
 
 
-void ParallelNetManager::create_network(ParNetwork&net)
+
+/*! 
+ * Build the network using the types in each Group. The reason for this class to control 
+ * network construction was to assert gid to neurons and have access to all cell lists
+ * This method was performed within the original SpikeSim Network class by letting each Group take care of itself. 
+ *For the parallel system creation of the cells must be done by PNM and ParNetwork so that we can check to see if the cell is intended to be created on this node
+ * 
+ * @param net ParNetwork 
+ */
+void ParallelNetManager::create_network(ParNetwork& net)
 {
-//TODO
-//Try this
-//------
-//  net.create();
-//------
-//Or
-    for (ParNetwork::ListGroupType::const_iterator i = net.gp_list_.begin();
-            i != net.gp_list_.end();
-            ++i)
-        (*i)->create_population();
-    net.build_cell_list();
+
+    for (ParNetwork::ListGroupType::const_iterator grp = net.gp_list_.begin();
+            grp != net.gp_list_.end();
+	 ++grp){
+      //(*i)->create_population();    
+    //Create Neurons
+      if ((!(*grp)->neuronconfigurator()) || (!(*grp)->dataconfigurator()))
+        throw ConfigError("Group: void group or neuron configurator");
+    else {
+#ifdef DEBUG
+        std::cout << "Creating cells in Group " << std::endl;
+#endif
+        NeuronFactory nrnfactory( (*grp)->dataconfigurator(),  (*grp)->neuronconfigurator());
+        for (Size ii = 0; ii < (*grp)->size(); ++ii){
+	  //Is this cell to be created on the current node
+             if (gid_exists(cell_cnt++)) {
+	       (*grp)->list_.push_back(boost::shared_ptr<NeuronInterface>(nrnfactory.create()));
+	     }
+	}
+#ifdef DEBUG
+        std::cout << "Completed creating cells in Group:"<< (*grp)->id << " size = " << (*grp)->list_.size() << std::endl;
+#endif
+    }
+    }
+    net.build_cell_list();  //inline function
 }
 
-void ParallelNetManager::connect_network(ParNetwork&net, bool no_output = false)
-{
 
-//TODO
-//Try this
+/*! 
+ * Connect groups of neurons based on the  
+ * Conn class list in PNM.  The ParallelNetManager pointer to this class is passed to the 
+ * source group in the Connectivity class.
+ *
+ * Output the num of connections in debug mode.
+ *
+ * @param net 
+ */
+void ParallelNetManager::connect_network(ParNetwork&net)
+{
 //------
 //  net.connect_groups();
 //------
-//Or
-    /*  Size nb_con=0;
+
+      Size nb_con=0;
         for (ParNetwork::ListConnType::const_iterator i = net.conn_list_.begin();
              i != net.conn_list_.end();
              ++i){
-            //(*i)->connect_to();
     // connect the groups
-            (*i).gp_source->par_connect_to(this,(*i).gp_target,
-                (*i).weight_distrib_cfg_,
-                (*i).delay_distrib_cfg_,
-                (*i).syn_mech_cfg_,
-                (*i).plast_mech_cfg_,
-                (*i).connectivity_cfg_,
-                (*i).cfg_list_,
+	  (*i)->gp_source->par_connect_to(this,
+		*(*i)->gp_target,
+		(*i)->weight_distrib_cfg_.get(),
+                (*i)->delay_distrib_cfg_.get(),
+                (*i)->syn_mech_cfg_.get(),
+                (*i)->plast_mech_cfg_.get(),
+                (*i)->connectivity_cfg_.get(),
+                net.cfg_list_,
                 nb_con);
-        // output on screen: write out the size of the constructed group
-            if (! no_output)
-            {
-                std::cout << nb_con << " connections from group #" << (*i).gp_source->id << " to group #" << (*i).gp_target->id  << std::endl;
-            }
+	    
+	       // output on screen: write out the size of the constructed group
+#ifdef DEBUG
+                std::cout << nb_con << " connections from group #" << (*i)->gp_source->id << " to group #" << (*i)->gp_target->id  << std::endl;
+#endif
             nb_con=0;
         }
-            //(**gp_source).par_connect_to(**gp_target, weight_distrib_cfg, delay_distrib_cfg, syn_mech_cfg, plast_mech_cfg, connectivity_cfg, cfg_list_, nb_con);
-    */
+    
 }
 
 
 
 void ParallelNetManager::launch_sim(ParNetwork & net)
-
 {
-
   net.spike_exchange_init();
     while (SimEnv::i_time() < SimEnv::i_duration()) {
         // input updates
@@ -450,6 +558,7 @@ void ParallelNetManager::launch_sim(ParNetwork & net)
         // activation update of all the neurons (they call the update of the synapses)
         net.update();
 
+	
         // weight updates of the concerned plastic synapses (with the class DataPlastNeuron)
         if (SimEnv::sim_time() >= SimEnv::plasticity_effective_start_time())
             PlasticityManager::plast_update_general(); // only updates plastic neurons

@@ -1,5 +1,6 @@
 # python temporary files
 syntax: glob
+conn*.txt
 *.o
 *.png
 *.exe
@@ -12,6 +13,7 @@ parallel/*
 oc/*
 nrniv/*
 nrnmpi/*
+
 
 #editor autosaves
 *~
