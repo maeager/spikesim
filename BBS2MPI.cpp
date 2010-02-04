@@ -190,7 +190,7 @@ char* BBS2MPI::upkstr(bbsmpibuf* r)
     return s;
 }
 
-static void resize(bbsmpibuf* r, int size)
+static void BBS2MPI::resize(bbsmpibuf* r, int size)
 {
     int newsize;
     if (r->size < size) {
@@ -199,6 +199,7 @@ static void resize(bbsmpibuf* r, int size)
         r->size = newsize;
     }
 }
+
 /*! 
  * begin packing
  * 

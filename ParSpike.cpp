@@ -7,10 +7,7 @@
 ParSpike::ParSpike(void)
 {
 }
-/*
 
-
-*/
 MPI_Comm mpi_comm;
 MPI_Comm bbs_comm;
 int ParSpike::ag_send_size_;
@@ -486,7 +483,7 @@ int ParSpike::pgvts_least(double* t, int* op, int* init)
     return 0;
 }
 
-
+/*
 void ParSpike::setup_transfer() 
 {
 
@@ -567,7 +564,7 @@ void ParSpike::setup_transfer()
 	}
 }
 
-
+*/
 
 
 

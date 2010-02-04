@@ -88,7 +88,7 @@ protected:
 //! BBS Base for all classes in Bulletin Board Server
 /*! Takes care of the interface between ParSpike/MPI and ParNetwork/ParallelNetManager 
  */
-class BBS : public ParSpike
+class BBS : public ParSpike, NetPar
 {
 public:
     BBS();

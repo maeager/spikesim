@@ -53,8 +53,8 @@ class PreSyn   //: public ConditionEvent {
 public:
     PreSyn(double* src, ConfigBase* osrc, ConfigBase* ssrc = 0);
     ~PreSyn();
-    void send(double sendtime, ParNetwork*);
-    void deliver(double, ParNetwork*);
+    void send(double sendtime, ParallelNetManager&);
+    void deliver(double, ParallelNetManager&);
     double value() {
         return *thvar_ - threshold_;
     }

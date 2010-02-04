@@ -235,7 +235,7 @@ std::cout<<  my_rank <<" cell  " <<  gid<< "  in slot " <<  i <<" fired at "<<  
 #endif
 }
 
-
+/*
 int NetPar::nrn_need_npe()
 {
 
@@ -261,7 +261,7 @@ int NetPar::nrn_need_npe()
     }
     return b;
 }
-/*
+
 void NetPar::calc_actual_mindelay() {
     //reasons why mindelay_ can be smaller than min_interprocessor_delay
     // are use_bgpdma when BGP_INTERVAL == 2
@@ -281,9 +281,9 @@ void NetPar::spike_exchange_init()
 #ifdef DEBUG
 std::cout <<"NetPar::spike_exchange_init" <<std::endl;
 #endif
-    if (!nrn_need_npe()) {
-        return;
-    }
+//    if (!nrn_need_npe()) {
+//        return;
+//    }
 //  if (!active_ && !nrn_use_selfqueue_) { return; }
     alloc_space();
 //std::cout<< " use= " <<  use<< "  active=" <<  active_<< std::endl;
@@ -404,7 +404,7 @@ std::cout<<  my_rank <<" spike_exchange sent  " <<  nout_<< "  received "<<  n<<
         for (j = 0; j < nn; ++j) {
             PreSynPtr ps;
             if (ps = gid2in_->find(spbufin_[i].gid[j])->second)) {
-//TODO              ps->send(spbufin_[i].spiketime[j], net_cvode_instance);//, nrn_threads);
+             ps->send(spbufin_[i].spiketime[j]);//, nrn_threads);
 #if NRNSTAT
                 ++nrecv_useful_;
 #endif
@@ -416,7 +416,7 @@ std::cout<<  my_rank <<" spike_exchange sent  " <<  nout_<< "  received "<<  n<<
     for (i = 0; i < n; ++i) {
         PreSynPtr ps;
         if (ps = gid2in_->find(spikein_[i].gid)->second) {
-//TODO          ps->send(spikein_[i].spiketime, net_cvode_instance));//, nrn_threads);
+          ps->send(spikein_[i].spiketime));//, nrn_threads);
 #if NRNSTAT
             ++nrecv_useful_;
 #endif
@@ -699,14 +699,17 @@ void NetPar::alloc_space()
 //      if (!gid2in_) gid2in_= boost::shared_ptr<Gid2PreSyn>();//(2311);
 
         ocapacity_  = 100;
-        spikeout_.clear(); spikeout_.resize(ocapacity_);
         //if (spikeout_) delete [] spikeout_;
         //spikeout_ = new SpikePacket_[ocapacity_];
-        icapacity_  = 100;
-        spikein_.clear(); spikein_.resize(icapacity_);
+	spikeout_.clear(); 
+	spikeout_.resize(ocapacity_);
+
         //if (spikein_)
         //  delete [] spikein_;
         //spikein_ = new  SpikePacket_[icapacity_];
+	icapacity_  = 100;
+        spikein_.clear(); spikein_.resize(icapacity_);
+        
         if (nin_) delete nin_;
         nin_ = new int(numprocs);
 #if nrn_spikebuf_size > 0
@@ -729,17 +732,17 @@ void NetPar::alloc_space()
  */
 void BBS::set_gid2node(int gid, int nid)
 {
-    NetPar::alloc_space();
+//    alloc_space();  commented out because gid2presyn tables are already defined
 
     if (nid == my_rank) {
 #if DEBUG ==2
         std::cout<< " gid  " <<  gid<< "  defined on " <<  my_rank<< std::endl;
 #endif
-        //PreSyn* ps;
-        if (NetPar::gid2in_->find(gid)->first)
-            NetPar::gid2in_->erase(gid);//assert(!(ps = NetPar::gid2in_->find(gid)));
-        (*NetPar::gid2out_)[gid] = PreSynPtr(); //temporary - TODO change this so that it points to the presynapse
-//TODO      NetPar::gid2out_->insert(pair<const int, PreSynPtr>(gid, nil));
+        //Clear GID in the incoming Gid2PreSyn table
+        if (gid2in_->find(gid)->first)
+            gid2in_->erase(gid);
+	//Set NULL pointer GID in outgoing Gid2PreSyn table
+     	gid2out_->insert(pair<const int, PreSynPtr>(gid, nil));
     }
 }
 
@@ -756,10 +759,10 @@ void NetPar::gid_clear()
     PreSynPtr ps, psi;
 
     for (Gid2PreSyn::const_iterator i = NetPar::gid2out_->begin();
-            i != NetPar::gid2out_->end();
+            i != gid2out_->end();
             ++i) {
         ps = i->second;
-        if (ps && !(psi = NetPar::gid2in_->find(ps->gid_)->second)) {
+        if (ps && !(psi = gid2in_->find(ps->gid_)->second)) {
             ps->gid_ = -1;
             ps->output_index_ = -1;
         }
@@ -786,8 +789,8 @@ void NetPar::gid_clear()
 int BBS::gid_exists(int gid)
 {
     PreSynPtr ps;
-    NetPar::alloc_space();
-    if (ps = NetPar::gid2out_->find(gid)->second) {
+    //NetPar::alloc_space();
+    if (ps = gid2out_->find(gid)->second) {
 std::cout<<  my_rank <<" gid  " <<  gid<< "  exists"<< std::endl;
         if (ps) {
             return (ps->output_index_ >= 0 ? 3 : 2);
@@ -818,27 +821,6 @@ double BBS::threshold(int gid, double threshold)
 
 
 
-void BBS::cell()
-{
-    /*TODO  int gid = int(chkarg(1, 0., MD));
-        PreSyn* ps;
-        assert(gid2out_->find(gid, ps));
-        Object* ob = *hoc_objgetarg(2);
-        if (!ob || ob->ctemplate != netcon_sym_->u.ctemplate) {
-            check_obj_type(ob, "NetCon");
-        }
-        NetCon* nc = (NetCon*)ob->u.this_pointer;
-        ps = nc->src_;
-    std::cout<<  my_rank <<" cell  " <<  gid<<" "<<  hoc_object_name(ps->ssrc_ ? ps->ssrc_->prop->dparam[6].obj : ps->osrc_) << std::endl;
-        (*gid2out_)[gid] = ps;
-        ps->gid_ = gid;
-        if (ifarg(3) && !chkarg(3, 0., 1.)) {
-            ps->output_index_ = -2; //prevents destruction of PreSyn
-        }else{
-            ps->output_index_ = gid;
-        }
-    */
-}
 
 /*! 
  * Set the \b gid on the pre-synaptic pointer
@@ -847,8 +829,8 @@ void BBS::cell()
  */
 void BBS::cell(int gid) //, NetCon* nc) {
 {
-    PreSynPtr   ps = NetPar::gid2out_->find(gid)->second;
-    (*NetPar::gid2out_)[gid] = ps;
+    PreSynPtr   ps = gid2out_->find(gid)->second;
+    (*gid2out_)[gid] = ps;
     ps->gid_ = gid;
     ps->output_index_ = gid;
 }
@@ -882,7 +864,7 @@ ConfigBase* BBS::gid2obj(int gid)
     ConfigBase* cell = 0;
 std::cout<<  my_rank <<" gid2obj gid= " <<  gid<< std::endl;
     PreSynPtr ps;
-    assert(ps = NetPar::gid2out_->find(gid)->second);
+    assert(ps = gid2out_->find(gid)->second);
 std::cout<< "  found " << std::endl;
 //  assert(ps);
 //TODO  cell = ps->ssrc_ ? ps->ssrc_->prop->dparam[6].obj : ps->osrc_;

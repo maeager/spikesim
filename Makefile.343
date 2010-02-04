@@ -1,5 +1,5 @@
 #  -*-mode: Makefile; makefile-mode:t-*-
-CXX = c++
+
 MPIDIR = $(HOME)/mpich2-1.0
 MPICC = $(MPIDIR)/bin/mpicc
 MPICXX = $(MPIDIR)/bin/mpicxx

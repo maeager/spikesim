@@ -1,13 +1,13 @@
 #  -*-mode: Makefile; makefile-mode:t-*-
-CXX = c++
+
 MPIDIR = $(HOME)/mpich2-1
+BOOSTDIR = /usr/local/include
 MPICC = $(MPIDIR)/bin/mpicc
 MPICXX = $(MPIDIR)/bin/mpicxx
 CXX = $(MPICXX)
-CXXFLAGS = -Wall -DPARALLELSIM -DDEBUG -I$(MPIDIR)/include
-#CXXFLAGS=  -Wall -DPARALLELSIM -DDEBUG -I$(MPIDIR)/include -DCPPMPI
+CXXFLAGS = -Wall -I$(MPIDIR)/include -I$(BOOSTDIR)  -DPARALLELSIM -DDEBUG  -DCPPMPI
 LDFLAGS = -lm
-# LDFLAGS = -L/opt/mpich/ch-p4/lib -lmpich
+# LDFLAGS = -L$(MPIDIR)$(MPIDIR)//lib -lmpich
 
 SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
 
@@ -42,9 +42,7 @@ RandomGenerator.o: RandomGenerator.cpp RandomGenerator.h   SimulationEnvironment
 STDPMech.o: STDPMech.cpp   STDPMech.h   SimulationEnvironment.h GlobalDefs.h ConfigBase.h Visitor.h Error.h   STDPFunction.h
 ShortTimeCorrInputRefs.o: ShortTimeCorrInputRefs.cpp   ShortTimeCorrInputRefs.h   CorrInputMech.h SimulationEnvironment.h GlobalDefs.h ConfigBase.h   Visitor.h Error.h   SpikeTimeGenerator.h DistributionManager.h RandomGenerator.h   
 SimulationEnvironment.o: SimulationEnvironment.cpp   SimulationEnvironment.h   GlobalDefs.h SpikeTimeGenerator.h DistributionManager.h   RandomGenerator.h  IdCounter.h NeuronTemplate.h SynapseTemplate.h   DataCommonNeuron.h   DataRecordNeuron.h   SimulationEnvironment.h DataPlastNeuron.h   Threading.h   DistributionManager.h RandomGenerator.h   PoissonMech.h NeuronActivationFunction.h SpikeTimeGenerator.h   PoissonParameters.h ManageableInput.h CorrInputMech.h   DeltaCorrInputRefs.h ShortTimeCorrInputRefs.h   OscillatoryCorrInputRefs.h DataIndivSynapse.h DataLightSynapse.h   DataPlastSynapse.h DoubleExpSynMech.h CondSynMech.h InstantSynMech.h   NoPlastMech.h STDPMech.h STDPFunction.h Network.h Group.h   ConnectivityManager.h OutputManager.h   StringFormatters.h   AsciiFileWrapper.h NoThreading.h Engine.h
-
 OutputManager.o: OutputManager.cpp   StringFormatters.h   SimulationEnvironment.h GlobalDefs.h Network.h   Error.h DataCommonNeuron.h Visitor.h ConfigBase.h InterfaceBase.h   DataRecordNeuron.h   CreatedTypeMaps.h NeuronTemplate.h SynapseTemplate.h DataPlastNeuron.h    DistributionManager.h RandomGenerator.h   PoissonMech.h NeuronActivationFunction.h SpikeTimeGenerator.h   PoissonParameters.h ManageableInput.h CorrInputMech.h   DeltaCorrInputRefs.h ShortTimeCorrInputRefs.h   OscillatoryCorrInputRefs.h DataIndivSynapse.h DataLightSynapse.h   DataPlastSynapse.h DoubleExpSynMech.h CondSynMech.h InstantSynMech.h   NoPlastMech.h STDPMech.h STDPFunction.h ConnectivityManager.h   AsciiFileWrapper.h SpikeListOperations.h WeightOperations.h   OutputGroupHandlers.h
-	$(CXX) $(CXXFLAGS)  -c -o OutputManager.o OutputManager.cpp
 
 main.o: main.cpp   TypeDefs.h Macros.h CreatedTypeMaps.h Error.h ConfigBase.h Visitor.h   InterfaceBase.h   GlobalDefs.h 
 	$(MPICXX) $(CXXFLAGS)  -c main.cpp -o main.o

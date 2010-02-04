@@ -65,6 +65,8 @@ int bbsrecv(int source, bbsmpibuf* r);
 int bbssendrecv(int dest, int tag, bbsmpibuf* s, bbsmpibuf* r);
 
 void timeout(int seconds);
+
+
 }
 
 
