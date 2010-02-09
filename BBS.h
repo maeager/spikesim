@@ -15,9 +15,12 @@
 #include "BBS2MPI.h"
 #endif
 
+#include "NetPar.h"
 #include "GlobalDefs.h"
 #include "ConfigBase.h"
 #include "InterfaceBase.h"
+
+
 
 void bbs_done();
 
@@ -87,8 +90,9 @@ protected:
 
 //! BBS Base for all classes in Bulletin Board Server
 /*! Takes care of the interface between ParSpike/MPI and ParNetwork/ParallelNetManager 
+ * Inherits NetPar and conseqeuently ParSpike 
  */
-class BBS : public ParSpike, NetPar
+class BBS : public NetPar
 {
 public:
     BBS();
@@ -97,10 +101,9 @@ public:
 #else
     BBS(int, int* argc, char***argv);
 #endif
-    virtual ~BBS();
+    ~BBS();
 
     bool look(const char*);
-
     void take(const char*); /* blocks til something to take */
     bool look_take(const char*); /* returns false if nothing to take */
     // after taking use these
@@ -142,7 +145,7 @@ public:
     void cell();    void cell(int);
     void outputcell(int);
     void spike_record(int, std::vector<double>, std::vector<double>);
-    void netpar_solve(double);
+    void netpar_solve(double);  //this is overtaken by PNM and ParNetwork
     ConfigBase* gid2obj(int);
     ConfigBase* gid2cell(int);
     ConfigBase* gid_connect(int, ConfigBase*);
@@ -152,7 +155,7 @@ public:
 protected:
     void init(int);
 protected:
-    BBSImpl* impl_;
+    BBSImpl* impl_;   //either DirectServer or Client
 };
 
 

@@ -5,6 +5,8 @@
 #include <string>
 #include <boost/any.hpp>
 
+//See documentation in doc/html/any/s02.html
+
 using boost::any_cast;
 typedef std::deque<boost::any> many;
 
@@ -73,21 +75,22 @@ static void append_char_ptr(const char * value)
     boost::any to_append = value;
     bbsbuf.push_back(to_append);
 }
-
+/*
 static void print_bbsbuf()
 {
-    int i=1;
+  int j,i=1;
     boost::any elem;
-    std::cout <<"[bbsbuf] "<< std::endl;
+    std::cout <<"[print bbsbuf ]"<< std::endl;
  while (ifarg(i)){
    if(std::string *s = getstr(i)){
-     std::cout<< i <<": "<<*s<<endl;
+     std::cout<< i <<": "<<*s<<std::endl;
    }else if(int *s = getint(i)){
-     std::cout<< i <<": "<<*s<<endl;
+     std::cout<< i <<": "<<(int)*s<<std::endl;
    }else if(double *s = getval(i)){
-     std::cout<< i <<": "<<*s<<endl;
+     std::cout<< i <<": "<<(double)*s<<std::endl;
    }else if(std::vector *s = getvec(i)){
-     std::cout<< i <<": "<<*s<<endl;
+     for (j=0; j< s->size(); j++)
+     std::cout<< i <<": "<<*s[j]<<std::endl;
    }else
      {
        std::cout<<"type mismatch"<<endl;
@@ -98,7 +101,7 @@ static void print_bbsbuf()
     std::cout <<"[bbsbuf end] "<< std::endl;
 }
 
-/*
+
 
 void append_any(many & values, const boost::any & value)
 {

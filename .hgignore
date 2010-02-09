@@ -13,7 +13,7 @@ parallel/*
 oc/*
 nrniv/*
 nrnmpi/*
-
+doc/*
 
 #editor autosaves
 *~

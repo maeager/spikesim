@@ -501,3 +501,270 @@ std::cout<<" fname="<< s <<" manifest= "<< i <<std::endl;
 }
 
 
+
+/*! 
+ * If the nid is equal to my_rank, push the gid onto the gid2in_ list 
+ * 
+ * @param gid neuron's id
+ * @param nid rank of node
+ */
+void BBS::set_gid2node(int gid, int nid)
+{
+//    alloc_space();  commented out because gid2presyn tables are already defined
+
+  if (nid == ParSpike::my_rank) {
+#if DEBUG ==2
+        std::cout<< " gid  " <<  gid<< "  defined on " <<  ParSpike::my_rank<< std::endl;
+#endif
+        //Clear GID in the incoming Gid2PreSyn table
+        if (gid2in_->find(gid)->first)
+            gid2in_->erase(gid);
+	//Set NULL pointer GID in outgoing Gid2PreSyn table
+     	//gid2out_->insert(std::pair<const int, PreSynPtr> (gid, nil));
+	(*gid2out_)[gid] = nil;
+    }
+}
+
+
+
+/*! 
+ * Does the neuron, with \b gid, exist on this node
+ * 
+ * @param gid 
+ * @return 
+ */
+int BBS::gid_exists(int gid)
+{
+    PreSynPtr ps;
+    NetPar::alloc_space();
+    if (ps = gid2out_->find(gid)->second) {
+std::cout<<  my_rank <<" gid  " <<  gid<< "  exists"<< std::endl;
+        if (ps) {
+            return (ps->output_index_ >= 0 ? 3 : 2);
+        } else {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
+
+/*! 
+ * Set the threshold for spiking on neuron with gid
+ * 
+ * @param gid 
+ * @param threshold 
+ * @return the threshold of the neuron
+ */
+double BBS::threshold(int gid, double threshold)
+{
+    PreSynPtr ps = gid2out_->find(gid)->second;
+
+    if (threshold == -1.0) {
+        ps->threshold_ = threshold;
+    }
+    return ps->threshold_;
+
+}
+
+
+
+
+/*! 
+ * Set the \b gid on the pre-synaptic pointer
+ * 
+ * @param gid 
+ */
+void BBS::cell(int gid) //, NetCon* nc) {
+{
+    PreSynPtr   ps = gid2out_->find(gid)->second;
+    (*gid2out_)[gid] = ps;
+    ps->gid_ = gid;
+    ps->output_index_ = gid;
+}
+
+
+void BBS::outputcell(int gid)
+{
+    PreSynPtr ps = gid2out_->find(gid)->second;
+//TODO  assert(ps = gid2out_->find(gid));
+    assert(ps);
+    ps->output_index_ = gid;
+    ps->gid_ = gid;
+}
+/*
+void BBS::spike_record(int gid, std::vector<double>* spikevec, std::vector<double>* gidvec) {
+    PreSyn* ps;
+    assert(gid2out_->find(gid, ps));
+    assert(ps);
+    ps->record(spikevec, gidvec, gid);
+}
+*/
+
+/*! 
+ * Get the reference pointer of Neuron with id \b gid 
+ * 
+ * @param gid 
+ * @return ConfigBase pointer to Neuron
+ */
+ConfigBase* BBS::gid2obj(int gid)
+{
+    ConfigBase* cell = 0;
+std::cout<<  my_rank <<" gid2obj gid= " <<  gid<< std::endl;
+    PreSynPtr ps;
+    assert(ps = gid2out_->find(gid)->second);
+std::cout<< "  found " << std::endl;
+//  assert(ps);
+//TODO  cell = ps->ssrc_ ? ps->ssrc_->prop->dparam[6].obj : ps->osrc_;
+std::cout<< "  return  " <<  (cell)<< std::endl;
+    return cell;
+}
+
+ConfigBase* BBS::gid2cell(int gid)
+{
+    ConfigBase* cell = 0;
+std::cout<<  my_rank <<" gid2obj gid= " <<  gid<< std::endl;
+    PreSynPtr ps;
+    assert(ps = gid2out_->find(gid)->second);
+std::cout<< "  found " << std::endl;
+    assert(ps);
+    /*TODO  if (ps->ssrc_) {
+            cell = ps->ssrc_->prop->dparam[6].obj;
+        }else{
+            cell = ps->osrc_;
+            // but if it is a POINT_PROCESS in a section
+            // that is inside an object ... (probably has a WATCH statement)
+            Section* sec = ob2pntproc(cell)->sec;
+            if (sec && sec->prop->dparam[6].obj) {
+                cell = sec->prop->dparam[6].obj;
+            }
+        }
+    */
+//std::cout<< "  return  " <<  hoc_object_name(cell)<< std::endl;
+    return cell;
+}
+
+ConfigBase* BBS::gid_connect(int gid, ConfigBase* target)
+{
+    /*  if (!is_point_process(target)) {
+            hoc_execerror("arg 2 must be a point process", 0);
+        }
+    */
+    NetPar::alloc_space();
+    PreSynPtr ps;
+    if (ps  = gid2out_->find(gid)->second) {
+        // the gid is owned by this machine so connect directly
+        assert(ps);
+    } else if ((ps = gid2in_->find(gid)->second)) {
+        // the gid stub already exists
+std::cout<<  my_rank <<" connect  " <<  target->gid<< "  from already existing "<<  gid<< std::endl;
+    } else {
+std::cout<<  my_rank <<" connect  " <<  target->gid  << "  from new PreSyn for "<<  gid<< std::endl;
+        PreSyn* ps_ = new PreSyn(nil, nil, nil);//,target);
+        ps = PreSynPtr(ps_); //(nil, nil, nil);
+//TODO?     net_cvode_instance->psl_append(ps);
+        (*gid2in_)[gid] = ps;
+        ps->gid_ = gid;
+    }
+    ConfigBase** po;
+    /*TODO  NetCon* nc;
+
+        if (ifarg(3)) {
+            po = hoc_objgetarg(3);
+            if (!*po || (*po)->ctemplate != netcon_sym_->u.ctemplate) {
+                check_obj_type(*po, "NetCon");
+            }
+            nc = (NetCon*)((*po)->u.this_pointer);
+            if (nc->target_ != ob2pntproc(target)) {
+                std::cout <<"target is different from 3rd arg NetCon target" << std::endl;
+            }
+            nc->replace_src(ps);
+        }else{
+            nc = new NetCon(ps, target);
+            po = hoc_temp_objvar(netcon_sym_, nc);
+            nc->obj_ = *po;
+        }
+    */  return *po;
+
+}
+
+/*! Iterative step calling update on each neuron and plastic synapse
+ * 
+ * 
+ * @param tstop termination time for simulation
+ */
+void BBS::netpar_solve(double tstop)
+{
+
+    double mt, md;
+//  tstopunset;
+    if (cvode_active_) {
+        mt = 1e-9 ; md = NetPar::mindelay_;
+    } else {
+        mt = SimEnv::timestep() ; md = NetPar::mindelay_ - 1e-10;
+    }
+    if (md < mt) {
+        if (my_rank == 0) {
+            std::cout << "mindelay is 0 (or less than dt for fixed step method)" << std::endl;
+        } else {
+            return;
+        }
+    }
+    double wt;
+
+    NetPar::timeout(20);
+    wt = wtime();
+    if (cvode_active_) {
+//TODO      ncs2nrn_integrate(tstop);
+    } else {
+//TODO      ncs2nrn_integrate(tstop+1e-11);
+    }
+    impl_->integ_time_ += wtime() - wt;
+    impl_->integ_time_ -= (NetPar::npe_ ? (NetPar::npe_[0].wx_ + NetPar::npe_[0].ws_) : 0.);
+
+    NetPar::spike_exchange();
+
+    NetPar::timeout(0);
+    impl_->wait_time_ += NetPar::wt_;
+    impl_->send_time_ += NetPar::wt1_;
+    if (NetPar::npe_) {
+        impl_->wait_time_ += NetPar::npe_[0].wx_;
+        impl_->send_time_ += NetPar::npe_[0].ws_;
+        NetPar::npe_[0].wx_ = NetPar::npe_[0].ws_ = 0.;
+    };
+std::cout<< my_rank <<" netpar_solve exit t= " <<  SimEnv::sim_time()<< "  tstop=" << SimEnv::i_duration()*SimEnv::timestep() <<" mindelay_="<< NetPar::mindelay_ << std::endl;
+
+//  tstopunset;
+}
+
+
+double BBS::netpar_mindelay(double maxdelay)
+{
+    return NetPar::set_mindelay(maxdelay);
+}
+
+void BBS::netpar_spanning_statistics(int* nsend, int* nsendmax, int* nrecv, int* nrecv_useful)
+{
+    *nsend = NetPar::nsend_;
+    *nsendmax = NetPar::nsendmax_;
+    *nrecv = NetPar::nrecv_;
+    *nrecv_useful = NetPar::nrecv_useful_;
+}
+
+/*
+std::vector<double> BBS::netpar_max_histogram(std::vector<double> mh)
+{
+  //TODO
+        std::vector<double> h = NetPar::max_histogram_;
+        if (NetPar::max_histogram_) {
+            NetPar::max_histogram_ = nil;
+        }
+        if (mh) {
+            NetPar::max_histogram_ = *mh;
+        }
+        return h;
+  
+
+}
+*/

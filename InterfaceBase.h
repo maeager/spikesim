@@ -7,10 +7,10 @@
 #include <deque>
 #include <boost/noncopyable.hpp>
 
+#include "BBS.h"
 #include "Visitor.h"
 #include "GlobalDefs.h"
 #include "IdCounter.h"
-
 
 
 template <class T>
@@ -18,7 +18,7 @@ struct Bide {
     typedef T X;
 };
 
-
+class BBS;
 class NeuronInterface;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,15 +63,18 @@ public:
     const NeuronInterface & post_nrn() const {
         return *post_nrn_;
     }
+
 #ifdef PARALLELSIM
-    void send(double sendtime, ConfigBase*);
-    void deliver(double, ConfigBase*);
+    //these methods are needed 
+    void send(double sendtime, BBS*);
+    void deliver(double, BBS*);
     void record(double t);
     int gid_;
-    unsigned char localgid_; // compressed gid for spike transfer
+    int output_index_;
+    unsigned char localgid_; // compressed gid for spkie transfer
     std::deque<double> tqe_; //stores delivered events
-
 #endif
+
 protected:
     virtual void on_preneuron_fire_update(const double & spike_time) = 0;
     virtual void on_preneuron_fire_plast_update(const double & spike_time) = 0;

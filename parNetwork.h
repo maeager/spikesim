@@ -57,13 +57,6 @@ public:
     void clear_past_of_spike_list(const Time & time_end_past);
     void build_cell_list();
 
-    //! Hash table of Global IDs to PreSyn synapses
-    /*! Used for automated identification of neurons from IDs and PreSyn.
-        See NEURON's original Hash table Gid2PreSyn
-     */
-    typedef std::map< int, SynMechInterface> Gid2PreSyn;  //Similar to NEURON's hash table for parallel program
-    static Gid2PreSyn* gid2out_;
-    static Gid2PreSyn* gid2in_;
 
     void config_from_file(std::string filename, Size & ncells, Size &ngroups, std::string logfilename = "log.dat", bool no_output = false);
     void create();
@@ -96,6 +89,7 @@ public:
 
     void spike_exchange_init();
 
+    static bool update_by_group;
 
 };
 
@@ -103,15 +97,24 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Network inline definitions
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+ bool update_by_group=false;
+
 
 ///////////////////////////////////////////////////////////////////////////
 //! Update method -  all the groups are updates from #0 to last one
 inline void ParNetwork::update()
 {
+  if (update_by_group){
     for (ListGroupType::const_iterator i = gp_list_.begin();
             i != gp_list_.end();
             ++i)
         (*i)->update();
+  } else {
+    for (ListNrnType::const_iterator i = cell_list_.begin();
+            i != cell_list_.end();
+            ++i)
+        (*i)->update();
+  }
 
 }
 
@@ -129,6 +132,7 @@ inline void ParNetwork::clear_past_of_spike_list(const Time & time_end_past)
 inline void ParNetwork::build_cell_list()
 {
 //TODO Check this
+
     for (ListGroupType::const_iterator i = gp_list_.begin();
             i != gp_list_.end();
             ++i)
@@ -138,6 +142,8 @@ inline void ParNetwork::build_cell_list()
             cell_list.push_back((*j));
 
 }
+
+
 inline void ParNetwork::create_population(){
     for (ListGroupType::const_iterator i = gp_list_.begin();
             i != gp_list_.end();

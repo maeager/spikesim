@@ -1,0 +1,6 @@
+
+
+Setup PreSyn and DataCommonNeuron's presyn-mech's
+
+
+notify_spike_impl  -> ps->send ?

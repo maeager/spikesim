@@ -275,9 +275,6 @@ void ParallelNetManager::doinit()
 
     //prepare for spike_exchange
     
-    //pc->
-
-    
     
   //stdinit();
   // \ -setdt()
@@ -359,7 +356,7 @@ void ParallelNetManager::postwait(int x)
         pc->post("poststat");//, myid, w, sm, s, r, ru);
     }
 }
-/*
+/*  HOC-like code here 
 proc ParallelNetManager::prstat() { local i, id, w, sm, s, r, ru // print the wait time and statistics
     if (nwork > 1) {
         pc->context(this, "postwait", $1)
@@ -558,6 +555,8 @@ void ParallelNetManager::launch_sim(ParNetwork & net)
         // activation update of all the neurons (they call the update of the synapses)
         net.update();
 
+	//Exchange Spikes
+	//net.spike_exchange();
 	
         // weight updates of the concerned plastic synapses (with the class DataPlastNeuron)
         if (SimEnv::sim_time() >= SimEnv::plasticity_effective_start_time())

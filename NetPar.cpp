@@ -1,7 +1,7 @@
-
+#include "ParSpike.h"
 #include "NetPar.h"
+
 #include "SimulationEnvironment.h"
-//#include "ParSpike.h"
 //#include "ParNetwork.h"
 #include "BBS.h"
 //#include "ParNetwork2BBS.h"
@@ -34,8 +34,6 @@ double NetPar::mindelay_; // the one actually used. Some of our optional algorit
 double NetPar::last_maxstep_arg_;
 NetParEvent* NetPar::npe_; // nrn_nthread of them
 int NetPar::n_npe_; // just to compare with nrn_nthread
-Gid2PreSyn* NetPar::gid2out_ = new Gid2PreSyn;
-Gid2PreSyn* NetPar::gid2in_ = new Gid2PreSyn;
 double NetPar::t_exchange_;
 double NetPar::dt1_; // 1/dt
 bool NetPar::nrn_use_localgid_;
@@ -45,16 +43,20 @@ int NetPar::nrecv_ = 0;
 int NetPar::nrecv_useful_ = 0;
 int nrn_use_selfqueue_;
 #if NRNSTAT
-std::vector<double> NetPar::max_histogram_;
+//std::vector<double> NetPar::max_histogram_;
 #endif
 
 
-//! Pre-synapse class
-/*!
- * PreSyn class is an amalgm of classes in NEURON and SpikeSim.
+
+
+
+
+// Pre-synapse class
+/* * PreSyn class is an amalgm of classes in NEURON and SpikeSim.
  * This should be on the node where the pre-cell neuron was constructed.
  */
-PreSyn::PreSyn(double* src, ConfigBase* osrc, ConfigBase* ssrc)
+
+/*PreSyn::PreSyn(double* src, ConfigBase* osrc, ConfigBase* ssrc)
 {
 
 //  hi_index_ = -1;
@@ -83,7 +85,7 @@ PreSyn::~PreSyn()
 {
 
 }
-
+*/
 NetPar::NetPar(void)
 {
 
@@ -404,7 +406,7 @@ std::cout<<  my_rank <<" spike_exchange sent  " <<  nout_<< "  received "<<  n<<
         for (j = 0; j < nn; ++j) {
             PreSynPtr ps;
             if (ps = gid2in_->find(spbufin_[i].gid[j])->second)) {
-             ps->send(spbufin_[i].spiketime[j]);//, nrn_threads);
+//TODO             ps->send(spbufin_[i].spiketime[j]);//, nrn_threads);
 #if NRNSTAT
                 ++nrecv_useful_;
 #endif
@@ -416,7 +418,7 @@ std::cout<<  my_rank <<" spike_exchange sent  " <<  nout_<< "  received "<<  n<<
     for (i = 0; i < n; ++i) {
         PreSynPtr ps;
         if (ps = gid2in_->find(spikein_[i].gid)->second) {
-          ps->send(spikein_[i].spiketime));//, nrn_threads);
+//TODO          ps->send(spikein_[i].spiketime) nrn_threads);
 #if NRNSTAT
             ++nrecv_useful_;
 #endif
@@ -576,8 +578,8 @@ void NetPar::mk_localgid_rep()
     int ngid = 0;
 //TODO
 //NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
-    for (Gid2PreSyn::const_iterator i = NetPar::gid2out_->begin();
-            i != NetPar::gid2out_->end();
+    for (Gid2PreSyn::const_iterator i = gid2out_->begin();
+            i != gid2out_->end();
             ++i) {
         ps = i->second;
         if (ps->output_index_ >= 0) {
@@ -602,8 +604,8 @@ void NetPar::mk_localgid_rep()
     // define the local gid and fill with the gids on this machine
 //TODO
 //NrnHashIterate(Gid2PreSyn, gid2out_, PreSyn*, ps) {
-    for (Gid2PreSyn::const_iterator i = NetPar::gid2out_->begin();
-            i != NetPar::gid2out_->end();
+    for (Gid2PreSyn::const_iterator i = gid2out_->begin();
+            i != gid2out_->end();
             ++i) {
         ps = i->second;
         if (ps->output_index_ >= 0) {
@@ -695,8 +697,8 @@ void NetPar::alloc_space()
 {
     if (!gid2out_) {
 //      netcon_sym_ = hoc_lookup("NetCon");
-//      if (!gid2out_) gid2out_= boost::shared_ptr<Gid2PreSyn>();//(211);
-//      if (!gid2in_) gid2in_= boost::shared_ptr<Gid2PreSyn>();//(2311);
+      if (!gid2out_) gid2out_= new Gid2PreSyn();
+      if (!gid2in_) gid2in_= new Gid2PreSyn();
 
         ocapacity_  = 100;
         //if (spikeout_) delete [] spikeout_;
@@ -725,28 +727,6 @@ void NetPar::alloc_space()
 }
  
 /*! 
- * If the nid is equal to my_rank, push the gid onto the gid2in_ list 
- * 
- * @param gid neuron's id
- * @param nid rank of node
- */
-void BBS::set_gid2node(int gid, int nid)
-{
-//    alloc_space();  commented out because gid2presyn tables are already defined
-
-    if (nid == my_rank) {
-#if DEBUG ==2
-        std::cout<< " gid  " <<  gid<< "  defined on " <<  my_rank<< std::endl;
-#endif
-        //Clear GID in the incoming Gid2PreSyn table
-        if (gid2in_->find(gid)->first)
-            gid2in_->erase(gid);
-	//Set NULL pointer GID in outgoing Gid2PreSyn table
-     	gid2out_->insert(pair<const int, PreSynPtr>(gid, nil));
-    }
-}
-
-/*! 
  * Clear the Gid2PreSyn maps gid2in and gid2out
  * original netpar components are stripped out and the NRNHashIterate has been replaced with the for loop
  */
@@ -758,7 +738,7 @@ void NetPar::gid_clear()
     }
     PreSynPtr ps, psi;
 
-    for (Gid2PreSyn::const_iterator i = NetPar::gid2out_->begin();
+    for (Gid2PreSyn::const_iterator i = gid2out_->begin();
             i != gid2out_->end();
             ++i) {
         ps = i->second;
@@ -780,228 +760,24 @@ void NetPar::gid_clear()
     gid2in_->clear();
 }
 
-/*! 
- * Does the neuron, with \b gid, exist on this node
- * 
- * @param gid 
- * @return 
- */
-int BBS::gid_exists(int gid)
-{
-    PreSynPtr ps;
-    //NetPar::alloc_space();
-    if (ps = gid2out_->find(gid)->second) {
-std::cout<<  my_rank <<" gid  " <<  gid<< "  exists"<< std::endl;
-        if (ps) {
-            return (ps->output_index_ >= 0 ? 3 : 2);
-        } else {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-/*! 
- * Set the threshold for spiking on neuron with gid
- * 
- * @param gid 
- * @param threshold 
- * @return the threshold of the neuron
- */
-double BBS::threshold(int gid, double threshold)
-{
-    PreSynPtr ps = NetPar::gid2out_->find(gid)->second;
-
-    if (threshold == -1.0) {
-        ps->threshold_ = threshold;
-    }
-    return ps->threshold_;
-
-}
 
 
 
-
-/*! 
- * Set the \b gid on the pre-synaptic pointer
- * 
- * @param gid 
- */
-void BBS::cell(int gid) //, NetCon* nc) {
-{
-    PreSynPtr   ps = gid2out_->find(gid)->second;
-    (*gid2out_)[gid] = ps;
-    ps->gid_ = gid;
-    ps->output_index_ = gid;
-}
-
-
-void BBS::outputcell(int gid)
-{
-    PreSynPtr ps = NetPar::gid2out_->find(gid)->second;
-//TODO  assert(ps = NetPar::gid2out_->find(gid));
-    assert(ps);
-    ps->output_index_ = gid;
-    ps->gid_ = gid;
-}
 /*
-void BBS::spike_record(int gid, std::vector<double>* spikevec, std::vector<double>* gidvec) {
-    PreSyn* ps;
-    assert(gid2out_->find(gid, ps));
-    assert(ps);
-    ps->record(spikevec, gidvec, gid);
-}
-*/
-
-/*! 
- * Get the reference pointer of Neuron with id \b gid 
- * 
- * @param gid 
- * @return ConfigBase pointer to Neuron
- */
-ConfigBase* BBS::gid2obj(int gid)
-{
-    ConfigBase* cell = 0;
-std::cout<<  my_rank <<" gid2obj gid= " <<  gid<< std::endl;
-    PreSynPtr ps;
-    assert(ps = gid2out_->find(gid)->second);
-std::cout<< "  found " << std::endl;
-//  assert(ps);
-//TODO  cell = ps->ssrc_ ? ps->ssrc_->prop->dparam[6].obj : ps->osrc_;
-std::cout<< "  return  " <<  (cell)<< std::endl;
-    return cell;
-}
-
-ConfigBase* BBS::gid2cell(int gid)
-{
-    ConfigBase* cell = 0;
-std::cout<<  my_rank <<" gid2obj gid= " <<  gid<< std::endl;
-    PreSynPtr ps;
-    assert(ps = NetPar::gid2out_->find(gid)->second);
-std::cout<< "  found " << std::endl;
-    assert(ps);
-    /*TODO  if (ps->ssrc_) {
-            cell = ps->ssrc_->prop->dparam[6].obj;
-        }else{
-            cell = ps->osrc_;
-            // but if it is a POINT_PROCESS in a section
-            // that is inside an object ... (probably has a WATCH statement)
-            Section* sec = ob2pntproc(cell)->sec;
-            if (sec && sec->prop->dparam[6].obj) {
-                cell = sec->prop->dparam[6].obj;
-            }
-        }
-    */
-//std::cout<< "  return  " <<  hoc_object_name(cell)<< std::endl;
-    return cell;
-}
-
-ConfigBase* BBS::gid_connect(int gid, ConfigBase* target)
-{
-    /*  if (!is_point_process(target)) {
-            hoc_execerror("arg 2 must be a point process", 0);
-        }
-    */
-    NetPar::alloc_space();
-    PreSynPtr ps;
-    if (ps  = NetPar::gid2out_->find(gid)->second) {
-        // the gid is owned by this machine so connect directly
-        assert(ps);
-    } else if ((ps = NetPar::gid2in_->find(gid)->second)) {
-        // the gid stub already exists
-std::cout<<  my_rank <<" connect  " <<  target->gid<< "  from already existing "<<  gid<< std::endl;
-    } else {
-std::cout<<  my_rank <<" connect  " <<  target->gid  << "  from new PreSyn for "<<  gid<< std::endl;
-        PreSyn* ps_ = new PreSyn(nil, nil, nil);//,target);
-        ps = PreSynPtr(ps_); //(nil, nil, nil);
-//TODO?     net_cvode_instance->psl_append(ps);
-        (*NetPar::gid2in_)[gid] = ps;
-        ps->gid_ = gid;
-    }
-    ConfigBase** po;
-    /*TODO  NetCon* nc;
-
-        if (ifarg(3)) {
-            po = hoc_objgetarg(3);
-            if (!*po || (*po)->ctemplate != netcon_sym_->u.ctemplate) {
-                check_obj_type(*po, "NetCon");
-            }
-            nc = (NetCon*)((*po)->u.this_pointer);
-            if (nc->target_ != ob2pntproc(target)) {
-                std::cout <<"target is different from 3rd arg NetCon target" << std::endl;
-            }
-            nc->replace_src(ps);
-        }else{
-            nc = new NetCon(ps, target);
-            po = hoc_temp_objvar(netcon_sym_, nc);
-            nc->obj_ = *po;
-        }
-    */  return *po;
-
-}
-
-/*! Iterative step calling update on each neuron and plastic synapse
- * 
- * 
- * @param tstop termination time for simulation
- */
-void BBS::netpar_solve(double tstop)
-{
-
-    double mt, md;
-//  tstopunset;
-    if (cvode_active_) {
-        mt = 1e-9 ; md = NetPar::mindelay_;
-    } else {
-        mt = SimEnv::timestep() ; md = NetPar::mindelay_ - 1e-10;
-    }
-    if (md < mt) {
-        if (my_rank == 0) {
-            std::cout << "mindelay is 0 (or less than dt for fixed step method)" << std::endl;
-        } else {
-            return;
-        }
-    }
-    double wt;
-
-    NetPar::timeout(20);
-    wt = wtime();
-    if (cvode_active_) {
-//TODO      ncs2nrn_integrate(tstop);
-    } else {
-//TODO      ncs2nrn_integrate(tstop+1e-11);
-    }
-    impl_->integ_time_ += wtime() - wt;
-    impl_->integ_time_ -= (NetPar::npe_ ? (NetPar::npe_[0].wx_ + NetPar::npe_[0].ws_) : 0.);
-
-    NetPar::spike_exchange();
-
-    NetPar::timeout(0);
-    impl_->wait_time_ += NetPar::wt_;
-    impl_->send_time_ += NetPar::wt1_;
-    if (NetPar::npe_) {
-        impl_->wait_time_ += NetPar::npe_[0].wx_;
-        impl_->send_time_ += NetPar::npe_[0].ws_;
-        NetPar::npe_[0].wx_ = NetPar::npe_[0].ws_ = 0.;
-    };
-std::cout<< my_rank <<" netpar_solve exit t= " <<  SimEnv::sim_time()<< "  tstop=" << SimEnv::i_duration()*SimEnv::timestep() <<" mindelay_="<< NetPar::mindelay_ << std::endl;
-
-//  tstopunset;
-}
-
 double PreSyn::mindelay()
 {
     double md = 1e9;
-    /*TODO  int i;
+    //TODO  int i;
         for (i=dil_.count()-1; i >= 0; --i) {
             NetCon* d = dil_.item(i);
             if (md > d->delay_) {
                 md = d->delay_;
             }
         }
-    */  return md;
+      return md;
 
 }
+*/
 
 double NetPar::set_mindelay(double maxdelay)
 {
@@ -1021,8 +797,8 @@ double NetPar::set_mindelay(double maxdelay)
 //    else{
 //  NrnHashIterate(Gid2PreSyn, gid2in_, PreSyn*, ps) {
     PreSynPtr ps;
-    for (Gid2PreSyn::const_iterator i = NetPar::gid2in_->begin();
-            i != NetPar::gid2in_->end();
+    for (Gid2PreSyn::const_iterator i = gid2in_->begin();
+            i != gid2in_->end();
             ++i) {
         ps = i->second;
         double md = ps->mindelay();
@@ -1062,35 +838,6 @@ std::cout<<  my_rank <<" local min= " <<  mindelay<< "   global min="<<  mindela
 #endif
     errno = 0;
     return mindelay;
-
-}
-
-double BBS::netpar_mindelay(double maxdelay)
-{
-    return NetPar::set_mindelay(maxdelay);
-}
-
-void BBS::netpar_spanning_statistics(int* nsend, int* nsendmax, int* nrecv, int* nrecv_useful)
-{
-    *nsend = NetPar::nsend_;
-    *nsendmax = NetPar::nsendmax_;
-    *nrecv = NetPar::nrecv_;
-    *nrecv_useful = NetPar::nrecv_useful_;
-}
-
-// unfortunately, ivocvect.h conflicts with STL
-std::vector<double> BBS::netpar_max_histogram(std::vector<double> mh)
-{
-    /*TODO
-        std::vector<double> h = NetPar::max_histogram_;
-        if (NetPar::max_histogram_) {
-            NetPar::max_histogram_ = nil;
-        }
-        if (mh) {
-            NetPar::max_histogram_ = *mh;
-        }
-        return h;
-    */
 
 }
 
@@ -1154,7 +901,54 @@ int NetPar::spike_compress(int nspike, bool gid_compress, int xchng_meth)
 
 }
 
-// following from src/nrnoc/nrntimeout.c
+// following from src/netcvode/netcvode.cpp
 
 
 
+
+void SynapseInterface::send(double tt, BBS* b) {
+
+	b->event(tt+delay_, this);
+	if (output_index_ >= 0) {
+
+		if (nrn_use_localgid_) {
+			b->nrn_outputevent(localgid_, tt);
+		}else
+
+		b->nrn2ncs_outputevent(output_index_, tt);
+
+	    }
+
+}
+	
+void SynapseInterface::deliver(double tt, BBS* b) {
+  /*	if (qthresh_) {
+		// the thread is the one that owns the PreSyn
+		assert(nt == nt_);
+		qthresh_ = nil;
+//printf("PreSyn::deliver %s condition event tt=%20.15g\n", ssrc_?secname(ssrc_):"", tt);
+		STATISTICS(deliver_qthresh_);
+		send(tt, ns, nt);
+		return;
+	}
+	// the thread is the one that owns the targets
+	int i, n = dil_.count();
+	STATISTICS(presyn_deliver_netcon_);
+	for (i=0; i < n; ++i) {
+		NetCon* d = dil_.item(i);
+		if (d->active_ && d->target_ && PP2NT(d->target_) == nt) {
+			double dtt = d->delay_ - delay_;
+			if (dtt == 0.) {
+				STATISTICS(presyn_deliver_direct_);
+				STATISTICS(deliver_cnt_);
+				d->deliver(tt, ns, nt);
+			}else if (dtt < 0.) {
+hoc_execerror("internal error: Source delay is > NetCon delay", 0);
+			}else{
+				STATISTICS(presyn_deliver_ncsend_);
+				ns->event(tt + dtt, d, nt);
+			}
+		}
+	}
+  */
+}

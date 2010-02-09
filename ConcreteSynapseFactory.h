@@ -69,8 +69,7 @@ public:
     typedef typename SynapseTypeMap < typename DataPlastSynapseConfig::related_component
     , typename SynMechConfig::related_component
     , typename PlastMechConfig::related_component
-    >::created_type
-    SynapseTypeToCreate;
+    >::created_type    SynapseTypeToCreate;
     typedef typename SynMechConfig::related_component SynMechTypeToCreate;
 
 public:

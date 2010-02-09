@@ -1,7 +1,7 @@
 #  -*-mode: Makefile; makefile-mode:t-*-
 
 MPIDIR = $(HOME)/mpich2-1
-BOOSTDIR = /usr/local/include
+BOOSTDIR = /home/eagerm/src/boost_1_41_0/
 MPICC = $(MPIDIR)/bin/mpicc
 MPICXX = $(MPIDIR)/bin/mpicxx
 CXX = $(MPICXX)

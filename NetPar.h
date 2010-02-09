@@ -43,34 +43,36 @@ class ParNetwork;
 
 class NetParEvent;
 
-//! Pre synapse class
-/*! 
+#define PreSyn SynapseInterface 
+
+// Pre synapse class
+/*
  *
  *
- */
 class PreSyn   //: public ConditionEvent {
 {
 public:
     PreSyn(double* src, ConfigBase* osrc, ConfigBase* ssrc = 0);
     ~PreSyn();
-    void send(double sendtime, ParallelNetManager&);
-    void deliver(double, ParallelNetManager&);
+    void send(double sendtime); //, ParallelNetManager&);
+    void deliver(double);//, ParallelNetManager&);
     double value() {
         return *thvar_ - threshold_;
     }
     double mindelay();
-    /*  void pr(const char*, double t, NetCvode*);
-        void asf_err();
-        int type() { return PreSynType; }
-        void update();
-        void disconnect(Observable*);
-        void update_ptr(double*);
-        void record_stmt(const char*);
-        void record(IvocVect*, IvocVect* idvec = nil, int rec_id = 0);
-        void record(double t);
-        void init();
-        NetConPList dil_;
-    */  
+    //   void pr(const char*, double t, NetCvode*);
+    //    void asf_err();
+    //    int type() { return PreSynType; }
+    //    void update();
+    //    void disconnect(Observable*);
+    //    void update_ptr(double*);
+    //    void record_stmt(const char*);
+    //    void record(IvocVect*, IvocVect* idvec = nil, int rec_id = 0);
+    //   void record(double t);
+    //    void init();
+    
+    //    std::list<SynapseTemplate*> ;
+      
     double threshold_;
     double delay_;
     double* thvar_;
@@ -94,19 +96,34 @@ public:
     } bgp;
 #endif
 
-    /*  static int presyn_send_mindelay_;
+    static int presyn_send_mindelay_;
         static int presyn_send_direct_;
         static int presyn_deliver_netcon_;
         static int presyn_deliver_direct_;
         static int presyn_deliver_ncsend_;
-    */
+    
 };
+
+*/
 
 //! Pointer to PreSyn type
 typedef boost::shared_ptr< PreSyn > PreSynPtr;
 //! Critical typedef map of global IDs to Presynapses
-typedef std::map<int, boost::shared_ptr<PreSyn > > Gid2PreSyn; //SynapseInterface
+typedef std::map<int, boost::shared_ptr<PreSyn> > Gid2PreSyn; //SynapseInterface
 typedef std::map<int, boost::shared_ptr<PreSyn > >::iterator Gid2PreSynItr;
+
+    // Hash table of Global IDs to PreSyn synapses
+    /* Used for automated identification of neurons from IDs and PreSyn.
+     *  See NEURON's original Hash table Gid2PreSyn
+     */ 
+  // Gid2PreSyn is very close  to NEURON's hash table for nrnmpi 
+  
+static Gid2PreSyn* gid2out_ = new Gid2PreSyn;
+static Gid2PreSyn* gid2in_ = new Gid2PreSyn;
+
+
+
+
 
 //! NetPar class
 /*! 
@@ -150,10 +167,12 @@ public:
     void nrn_outputevent(unsigned char localgid, double firetime);
     void nrn_fake_fire(int gid, double firetime, int fake_out);
 
-    //! map of global neuron IDs to output presynapses
-    static Gid2PreSyn* gid2out_;
-    //! map of global neuron IDs to input presynapses
-    static Gid2PreSyn* gid2in_;
+    /* //! map of global neuron IDs to output presynapses */
+    /* static Gid2PreSyn* gid2out_; */
+    /* //! map of global neuron IDs to input presynapses */
+    /* static Gid2PreSyn* gid2in_; */
+
+
     static double t_exchange_;
     static double dt1_; // 1/dt
     static void mk_localgid_rep();

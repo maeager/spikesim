@@ -108,7 +108,9 @@ Group::~Group()
 }
 
 /////////////////////////////////////////////////
-// connect to another group with STDP synapses
+//! connect to another group with STDP synapses
+/*! single-CPU version
+ */
 void Group::connect_to(Group & targetgroup
                        , DistributionManager * const weight_distrib_cfg
                        , DistributionManager * const delay_distrib_cfg

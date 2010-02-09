@@ -104,6 +104,7 @@ public:
 
     double source_var(void*);  // &source_variable, source_global_index
     double target_var(void*) ; // &target_variable, source_global_index
+
     double setup_transfer(void*); // after all source/target and before init and run
 //  "splitcell_connect", splitcell_connect,
 //  "multisplit", multisplit,

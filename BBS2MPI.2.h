@@ -1,4 +1,5 @@
 // BBS2MPI.2.h
+// Neuron's bbsmpipack file converted to MPI's c++ format 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef BBS2MPI_H
@@ -47,7 +48,7 @@ int upkint(bbsmpibuf* buf);
 double upkdouble(bbsmpibuf* buf);
 void upkvec(int n, double* x, bbsmpibuf* buf);
 char* upkstr(bbsmpibuf* buf);
-static void resize(bbsmpibuf* r, int size);
+ void resize(bbsmpibuf* r, int size);
 void pkbegin(bbsmpibuf* buf);
 void enddata(bbsmpibuf* buf);
 void pkint(int i, bbsmpibuf* buf);
