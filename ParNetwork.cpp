@@ -9,6 +9,8 @@
 
 #include "ParNetwork.h"
 
+bool ParNetwork::update_by_group=false;
+
 ParNetwork::
 ~ParNetwork()
 {
@@ -24,7 +26,7 @@ ParNetwork::
 
 
 //! connect to another group according to a script file describing the connections
-/** this function is quite awful, but most of the object construction using the script file has been
+ /** this function is quite awful, but most of the object construction using the script file has been
    encapsulated in class constructors, so that only the overall process with the main tags are read here
    almost all the parameters are not known in this scope
 ----------ME------------

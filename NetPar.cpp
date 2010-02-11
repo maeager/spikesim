@@ -1,9 +1,9 @@
-#include "ParSpike.h"
+//#include "ParSpike.h"
 #include "NetPar.h"
 
 #include "SimulationEnvironment.h"
 //#include "ParNetwork.h"
-#include "BBS.h"
+//#include "BBS.h"
 //#include "ParNetwork2BBS.h"
 
 #include "AnyBuf.h"
@@ -14,9 +14,7 @@
 #define MD 2147483648.
 
 
-// hash table where buckets are binary search maps
-//implementNrnHash(Gid2PreSyn, int, SynapseInterface*)
-extern ParNetwork* net_cvode_instance;
+//extern ParNetwork* net_cvode_instance;
 
 int cvode_active_ = 0;
 int NetPar::ocapacity_; // for spikeout_
@@ -32,7 +30,7 @@ double NetPar::usable_mindelay_;
 double NetPar::min_interprocessor_delay_;
 double NetPar::mindelay_; // the one actually used. Some of our optional algorithms
 double NetPar::last_maxstep_arg_;
-NetParEvent* NetPar::npe_; // nrn_nthread of them
+//NetParEvent* NetPar::npe_; // nrn_nthread of them
 int NetPar::n_npe_; // just to compare with nrn_nthread
 double NetPar::t_exchange_;
 double NetPar::dt1_; // 1/dt
@@ -906,8 +904,8 @@ int NetPar::spike_compress(int nspike, bool gid_compress, int xchng_meth)
 
 
 
-void SynapseInterface::send(double tt, BBS* b) {
-
+void SynapseInterface::send(double tt, ConfigBase* b) {
+  /*
 	b->event(tt+delay_, this);
 	if (output_index_ >= 0) {
 
@@ -918,10 +916,10 @@ void SynapseInterface::send(double tt, BBS* b) {
 		b->nrn2ncs_outputevent(output_index_, tt);
 
 	    }
-
+  */
 }
 	
-void SynapseInterface::deliver(double tt, BBS* b) {
+void SynapseInterface::deliver(double tt, ConfigBase* b) {
   /*	if (qthresh_) {
 		// the thread is the one that owns the PreSyn
 		assert(nt == nt_);

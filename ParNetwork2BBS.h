@@ -91,13 +91,13 @@ public:
     double set_gid2node(int gid, int nid);
     double gid_exists(int gid);
     double outputcell(int gid) ;
-    double cell();
+    //    double cell();
     double threshold(int, double);
 //   double spike_record(int gid, double* spikevec, double* gidvec) ;
     double psolve(double  step);
     double set_maxstep(double maxstep);
-    double spike_stat(int *nsend, int * nsendmax, int * nrecv, int *nrecv_useful);
-    double maxhist(std::vector<double> vec);
+    //double spike_stat(int *nsend, int * nsendmax, int * nrecv, int *nrecv_useful);
+    //double maxhist(std::vector<double> vec);
     double checkpoint(void*);
     double spcompress(int , int , int);
     double gid_clear();

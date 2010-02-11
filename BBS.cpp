@@ -513,15 +513,17 @@ void BBS::set_gid2node(int gid, int nid)
 //    alloc_space();  commented out because gid2presyn tables are already defined
 
   if (nid == ParSpike::my_rank) {
-#if DEBUG ==2
+#ifdef DEBUG
+
         std::cout<< " gid  " <<  gid<< "  defined on " <<  ParSpike::my_rank<< std::endl;
 #endif
         //Clear GID in the incoming Gid2PreSyn table
         if (gid2in_->find(gid)->first)
             gid2in_->erase(gid);
 	//Set NULL pointer GID in outgoing Gid2PreSyn table
-     	//gid2out_->insert(std::pair<const int, PreSynPtr> (gid, nil));
-	(*gid2out_)[gid] = nil;
+     	//gid2out_->insert(std::pair<const int, const PreSynPtr> (gid, 0));
+	SynapseInterface* syn=0;
+	(*gid2out_)[gid] = boost::shared_ptr<SynapseInterface>(syn);
     }
 }
 
@@ -661,12 +663,12 @@ ConfigBase* BBS::gid_connect(int gid, ConfigBase* target)
 std::cout<<  my_rank <<" connect  " <<  target->gid<< "  from already existing "<<  gid<< std::endl;
     } else {
 std::cout<<  my_rank <<" connect  " <<  target->gid  << "  from new PreSyn for "<<  gid<< std::endl;
-        PreSyn* ps_ = new PreSyn(nil, nil, nil);//,target);
+/*TODO        PreSyn* ps_ = new PreSyn(nil, nil, nil);//,target);
         ps = PreSynPtr(ps_); //(nil, nil, nil);
-//TODO?     net_cvode_instance->psl_append(ps);
+     net_cvode_instance->psl_append(ps);
         (*gid2in_)[gid] = ps;
         ps->gid_ = gid;
-    }
+*/    }
     ConfigBase** po;
     /*TODO  NetCon* nc;
 
@@ -690,7 +692,7 @@ std::cout<<  my_rank <<" connect  " <<  target->gid  << "  from new PreSyn for "
 }
 
 /*! Iterative step calling update on each neuron and plastic synapse
- * 
+ * --Possible redundancy  - could move this task to PNM or ParNetwork 
  * 
  * @param tstop termination time for simulation
  */
@@ -698,12 +700,14 @@ void BBS::netpar_solve(double tstop)
 {
 
     double mt, md;
-//  tstopunset;
+    /*  tstopunset;
     if (cvode_active_) {
         mt = 1e-9 ; md = NetPar::mindelay_;
     } else {
-        mt = SimEnv::timestep() ; md = NetPar::mindelay_ - 1e-10;
-    }
+    */
+    mt = SimEnv::timestep() ; 
+    md = NetPar::mindelay_ - 1e-10;
+    //}
     if (md < mt) {
         if (my_rank == 0) {
             std::cout << "mindelay is 0 (or less than dt for fixed step method)" << std::endl;
@@ -714,25 +718,27 @@ void BBS::netpar_solve(double tstop)
     double wt;
 
     NetPar::timeout(20);
-    wt = wtime();
-    if (cvode_active_) {
+     wt = wtime();
+    //    if (cvode_active_) {
 //TODO      ncs2nrn_integrate(tstop);
-    } else {
+//    } else {
 //TODO      ncs2nrn_integrate(tstop+1e-11);
-    }
+//    }
     impl_->integ_time_ += wtime() - wt;
-    impl_->integ_time_ -= (NetPar::npe_ ? (NetPar::npe_[0].wx_ + NetPar::npe_[0].ws_) : 0.);
+    //TODO    impl_->integ_time_ -= (NetPar::npe_ ? (NetPar::npe_[0].wx_ + NetPar::npe_[0].ws_) : 0.);
 
     NetPar::spike_exchange();
 
     NetPar::timeout(0);
     impl_->wait_time_ += NetPar::wt_;
     impl_->send_time_ += NetPar::wt1_;
-    if (NetPar::npe_) {
+    /*    if (NetPar::npe_) {
         impl_->wait_time_ += NetPar::npe_[0].wx_;
         impl_->send_time_ += NetPar::npe_[0].ws_;
         NetPar::npe_[0].wx_ = NetPar::npe_[0].ws_ = 0.;
-    };
+	};
+    */
+
 std::cout<< my_rank <<" netpar_solve exit t= " <<  SimEnv::sim_time()<< "  tstop=" << SimEnv::i_duration()*SimEnv::timestep() <<" mindelay_="<< NetPar::mindelay_ << std::endl;
 
 //  tstopunset;
@@ -752,9 +758,10 @@ void BBS::netpar_spanning_statistics(int* nsend, int* nsendmax, int* nrecv, int*
     *nrecv_useful = NetPar::nrecv_useful_;
 }
 
-/*
+
 std::vector<double> BBS::netpar_max_histogram(std::vector<double> mh)
 {
+  /*
   //TODO
         std::vector<double> h = NetPar::max_histogram_;
         if (NetPar::max_histogram_) {
@@ -765,6 +772,6 @@ std::vector<double> BBS::netpar_max_histogram(std::vector<double> mh)
         }
         return h;
   
-
-}
 */
+}
+

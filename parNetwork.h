@@ -62,6 +62,7 @@ public:
     void create();
     void connect_groups();
     void create_population();
+
     int network_size();
     //void psl_append(PreSynPtr p){ presyn_list.push_back(p);}
     
@@ -82,12 +83,9 @@ public:
     ListConfigType cfg_list_; // list of pointers to the configurators for the connections to keep
 
     //! list of pointers to all the neurons of the network
-    ListNrnType cell_list;  
+    ListNrnType cell_list_;  
     //! list of pointers to all the pre and post synapses of the network
     ListSynType presyn_list, postsyn_list;
-
-
-    void spike_exchange_init();
 
     static bool update_by_group;
 
@@ -97,7 +95,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Network inline definitions
 ///////////////////////////////////////////////////////////////////////////////////////////////////
- bool update_by_group=false;
+ 
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -139,7 +137,7 @@ inline void ParNetwork::build_cell_list()
         for (ListNrnType::iterator j = (*i)->list_.begin();
                 j != (*i)->list_.end();
                 ++j)
-            cell_list.push_back((*j));
+            cell_list_.push_back((*j));
 
 }
 
@@ -153,9 +151,8 @@ inline void ParNetwork::create_population(){
 
 inline int ParNetwork::network_size()
 {
-    return cell_list.size();
+    return cell_list_.size();
 }
-
 
 
 #endif // !defined(NETWORK_H)

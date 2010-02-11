@@ -1,15 +1,19 @@
-// from mpispike.c
+// Adapted from NEURON's mpispike.c
 
 #include "ParSpike.h"
-
+#include "BBS2MPI.h"
 #include <mpi.h>
+#include <errno.h>
 
 ParSpike::ParSpike(void)
 {
 }
 
+typedef std::map<int,int> MapInt2Int;    
+
 MPI_Comm mpi_comm;
 MPI_Comm bbs_comm;
+double ParSpike::transfer_wait_=0.0;
 int ParSpike::ag_send_size_;
 int ParSpike::ag_send_nspike_;
 int ParSpike::ovfl_capacity_;
@@ -19,7 +23,7 @@ int ParSpike::nout_ = 0;
 int ParSpike::mpi_use = 0;
 int ParSpike::numprocs = 1;
 int ParSpike::under_mpi_control_ = 1;
-int ParSpike::my_rank = 0; /* rank */
+int ParSpike::my_rank = 0; /*! MPI rank */
 int ParSpike::np;   //automatically set the other static variables to zero
 int* ParSpike::displs;
 int* ParSpike::nin_;
@@ -35,6 +39,14 @@ std::vector<SpikeBuffer_> ParSpike::spbufout_;;
 std::vector<SpikeBuffer_> ParSpike::spbufin_;;
 #endif
 
+std::vector<double> ParSpike::targets_;
+std::vector<int> ParSpike::sgid2targets_;
+//std::list<ConfigBase*> target_pntlist_;
+std::vector<double> ParSpike::sources_;
+std::vector<int> ParSpike::sgids_;
+std::map<int,int> ParSpike::sgid2srcindex_;
+
+
 static MPI_Datatype spike_type;
 extern void bbs_context_wait();
 
@@ -45,7 +57,7 @@ void ParSpike::init(int mpi_control, int* pargc, char*** pargv)
     mpi_use = 1;
     under_mpi_control_ = mpi_control;
     if (under_mpi_control_) {
-#ifdef DEBUG
+#if DEBUG == 2
 
             std::cout << "init: argc=" << *pargc << std::endl;
             for (i = 0; i < *pargc; ++i) {
@@ -71,7 +83,7 @@ void ParSpike::init(int mpi_control, int* pargc, char*** pargv)
     spike_initialize();
     /*begin instrumentation*/
 
-#ifdef DEBUG
+#if DEBUG == 2
     {int i;
         if (my_rank == 0) {
             std::cout << "init: argc=" << *pargc << std::endl;
@@ -92,7 +104,8 @@ void ParSpike::init(int mpi_control, int* pargc, char*** pargv)
 }
 
 
-
+/*! Create the MPI block of spike packets to be sent/received
+ */
 void ParSpike::make_spike_type()
 {
     SpikePacket_ s;
@@ -161,14 +174,14 @@ double ParSpike::wtime()
 void ParSpike::terminate()
 {
 
-#ifdef DEBUG
-    std::cout << "terminate: rank " << my_rank << std::endl;
-#endif
     if (under_mpi_control_) {
+#if DEBUG == 2
+    std::cout << "Terminating: rank " << my_rank << std::endl;
+#endif
         MPI_Finalize();
     }
     mpi_use = 0;
-#ifdef DEBUG
+#if DEBUG == 2
 //      BBS2MPI::checkbufleak();
 #endif
 
@@ -181,9 +194,15 @@ void ParSpike::mpiabort(int errcode)
     int flag;
     MPI_Initialized(&flag);
     if (flag) {
-        MPI_Abort(MPI_COMM_WORLD, errcode);
+#if DEBUG == 2
+    std::cout << "Aborting MPI: rank " << my_rank << std::endl;
+#endif        
+    MPI_Abort(MPI_COMM_WORLD, errcode);
     } else {
-        std::abort();
+#if DEBUG == 2
+    std::cout << "Aborting STD: rank " << my_rank << std::endl;
+#endif
+	std::abort();
     }
 
 }
@@ -193,6 +212,8 @@ void ParSpike::mpiabort(int errcode)
 
 
 
+/*! Method to Send/Recv  all spikes using MPI_Allgather, taken directly from NEURON.
+ */
 int ParSpike::spike_exchange()
 {
     int i, n, novfl, n1;
@@ -218,7 +239,7 @@ int ParSpike::spike_exchange()
             icapacity_ = n + 10;
             //if (spikein_) delete spikein_;
             spikein_.clear();
-            spikein_.resize(icapacity_);// (NRNMPI_Spike*)hoc_Emalloc(icapacity_ * sizeof(NRNMPI_Spike));
+            spikein_.resize(icapacity_);
         }
         MPI_Allgatherv(&spikeout_[0], nout_, spike_type, &spikein_[0], nin_, displs, spike_type, mpi_comm);
     }
@@ -247,7 +268,7 @@ int ParSpike::spike_exchange()
         if (icapacity_ < novfl) {
             icapacity_ = novfl + 10;
             spikein_.clear();//if(spikein_) delete [] spikein_;
-            spikein_.resize(icapacity_);// (NRNMPI_Spike*)hoc_Emalloc(icapacity_ * sizeof(NRNMPI_Spike));
+            spikein_.resize(icapacity_);
         }
         n1 = (nout_ > spikebuf_size) ? nout_ - spikebuf_size : 0;
         MPI_Allgatherv(&spikeout_[0], n1, spike_type, &spikein_[0], nin_, displs, spike_type, mpi_comm);
@@ -257,25 +278,22 @@ int ParSpike::spike_exchange()
     return n;
 }
 
-
-/** Original NEURON Comments:
-The compressed spike format is restricted to the fixed step method and is
-a sequence of unsigned char.
-nspike = buf[0]*256 + buf[1]
-a sequence of spiketime, localgid pairs. There are nspike of them.
-    spiketime is relative to the last transfer time in units of dt.
-    note that this requires a mindelay < 256*dt.
-    localgid is an unsigned int, unsigned short,
-    or unsigned char in size depending on the range and thus takes
-    4, 2, or 1 byte respectively. To be machine independent we do our
-    own byte coding. When the localgid range is smaller than the true
-    gid range, the gid->PreSyn are remapped into
-    hostid specific maps. If there are not many holes, i.e just about every
-    spike from a source machine is delivered to some cell on a
-    target machine, then instead of a hash map, a vector is used.
-The allgather sends the first part of the buf and the allgatherv buffer
-sends any overflow.
-*/
+//! spike_exchange_compressed: comments from original work
+/*! The compressed spike format is restricted to the fixed step method and is a sequence of unsigned char.
+ * nspike = buf[0]*256 + buf[1]
+ * a sequence of spiketime, localgid pairs. There are nspike of them.
+ * spiketime is relative to the last transfer time in units of dt.
+ * note that this requires a mindelay < 256*dt.
+ * localgid is an unsigned int, unsigned short,
+ * or unsigned char in size depending on the range and thus takes
+ * own byte coding. When the localgid range is smaller than the true
+ * gid range, the gid->PreSyn are remapped into
+ * hostid specific maps. If there are not many holes, i.e just about every
+ * spike from a source machine is delivered to some cell on a
+ * target machine, then instead of a hash map, a vector is used.
+ * The allgather sends the first part of the buf and the allgatherv buffer
+ * sends any overflow.
+ */
 int ParSpike::spike_exchange_compressed()
 {
     int i, novfl, n, ntot, idx, bs, bstot; /* n is #spikes, bs is #byte overflow */
@@ -284,9 +302,9 @@ int ParSpike::spike_exchange_compressed()
 
         //todo: change memory
         if (displs) delete displs;
-        displs = new int[np]; //(int*)hoc_Emalloc(np*sizeof(int));
+        displs = new int[np];
         displs[0] = 0;
-        byteovfl = new int[np]; //(int*)hoc_Emalloc(np*sizeof(int));
+        byteovfl = new int[np]; 
     }
     bbs_context_wait();
 
@@ -313,8 +331,8 @@ int ParSpike::spike_exchange_compressed()
     if (novfl) {
         if (ovfl_capacity_ < novfl) {
             ovfl_capacity_ = novfl + 10;
-            spfixin_ovfl_.clear();//if(spfixin_ovfl_) delete [] spfixin_ovfl_;
-            spfixin_ovfl_.resize(ovfl_capacity_ *(1 + localgid_size_));  //= new unsigned char[ovfl_capacity_ * (1 + localgid_size_)];//(unsigned char*)hoc_Emalloc(ovfl_capacity_ * (1 + localgid_size_)*sizeof(unsigned char));
+            spfixin_ovfl_.clear();
+            spfixin_ovfl_.resize(ovfl_capacity_ *(1 + localgid_size_)); 
         }
         bs = byteovfl[my_rank];
         /*
@@ -352,17 +370,20 @@ int ParSpike::int_allmax(int x)
     return result;
 }
 
+//! int_gather interface to MPI_Gather
 void ParSpike::int_gather(int* s, int* r, int cnt, int root)
 {
     MPI_Gather(s, cnt, MPI_INT, r, cnt, MPI_INT, root, mpi_comm);
 }
 
+//! int_gatherv interface to MPI_Gatherv
 void ParSpike::int_gatherv(int* s, int scnt,
                            int* r, int* rcnt, int* rdispl, int root)
 {
     MPI_Gatherv(s, scnt, MPI_INT, r, rcnt, rdispl, MPI_INT, root, mpi_comm);
 }
 
+//! int_alltoallv interface to MPI_Alltoallv with MPI_INT
 void ParSpike::int_alltoallv(int* s, int* scnt, int* sdispl,
                              int* r, int* rcnt, int* rdispl)
 {
@@ -370,6 +391,7 @@ void ParSpike::int_alltoallv(int* s, int* scnt, int* sdispl,
                   r, rcnt, rdispl, MPI_INT, mpi_comm);
 }
 
+//! dbl_alltoallv interface to MPI_Alltoallv with MPI_DOUBLES
 void ParSpike::dbl_alltoallv(double* s, int* scnt, int* sdispl,
                              double* r, int* rcnt, int* rdispl)
 {
@@ -403,7 +425,9 @@ void ParSpike::dbl_broadcast(double* buf, int cnt, int root)
 
 void ParSpike::int_broadcast(int* buf, int cnt, int root)
 {
-//std::cout << "%d int_broadcast %d buf[0]=%d\n", my_rank, cnt, my_rank == root ? buf[0]: -1);
+#if DEBUG ==2 
+std::cout << my_rank << " int_broadcast " <<cnt << " buf[0]=" (my_rank == root ? buf[0]:-1)<< std::endl;
+#endif
     MPI_Bcast(buf, cnt,  MPI_INT, root, mpi_comm);
 }
 
@@ -483,7 +507,7 @@ int ParSpike::pgvts_least(double* t, int* op, int* init)
     return 0;
 }
 
-/*
+
 void ParSpike::setup_transfer() 
 {
 
@@ -491,7 +515,7 @@ void ParSpike::setup_transfer()
   std::cout << "setup_transfer" << std::endl;
 #endif
 	alloclists();
-	is_setup_ = true;
+	//is_setup_ = true;
 
 	// send this machine source count to all other machines and get the
 	// source counts for all machines. This allows us to create the
@@ -501,9 +525,9 @@ void ParSpike::setup_transfer()
 		srccnt_ = new int[numprocs];
 		srcdspl_ = new int[numprocs];
 	}
-	srccnt_[my_rank] = sources_->count();
-	if (nrnmpi_numprocs > 1) {
-	  BBS2MPI::int_allgather(srccnt_ + ParSpike::my_rank, srccnt_, 1);
+	srccnt_[my_rank] = sources_.size();
+	if (numprocs > 1) {
+	  int_allgather(srccnt_ + my_rank, srccnt_, 1);
 		errno = 0;
 	}
 	
@@ -520,7 +544,7 @@ void ParSpike::setup_transfer()
 		outgoing_source_buf_ = 0;
 	}
 	if (src_buf_size_ == 0) {
-		nrnmpi_v_transfer_ = 0;
+	  //	v_transfer_ = 0;
 		return;
 	}
 	int osb = srcdspl_[my_rank];
@@ -532,45 +556,48 @@ void ParSpike::setup_transfer()
 	// allows us to create the source buffer index to target list
 	// (by finding the index into the sgid to target list).
 	int* sgid = new int[src_buf_size_];
-	for (i = 0, j = osb; i < sources_->count(); ++i, ++j) {
-		sgid[j] = sgids_->item(i);
+	for (i = 0, j = osb; i < sources_.size(); ++i, ++j) {
+	  sgid[j] = sgids_[i];
 	}
-	if (nrnmpi_numprocs > 1) {
-		nrnmpi_int_allgatherv(sgid + osb, sgid, srccnt_, srcdspl_);
+	if (numprocs > 1) {
+		int_allgatherv(sgid + osb, sgid, srccnt_, srcdspl_);
 	}
 	errno = 0;
 	
 	if (s2t_index_) { delete [] s2t_index_; }
-	s2t_index_ = new int[targets_->count()];
-	MapInt2Int* mi2 = new MapInt2Int(20);
+	s2t_index_ = new int[targets_.size()];
+	std::map<int,int> mi2;
 //printf("srcbufsize=%d\n", src_buf_size_);
 	for (i = 0; i < src_buf_size_; ++i) {
-		if (mi2->find(sgid[i], j)) {
-			char tmp[10];
-			sprintf(tmp, "%d", sgid[i]);
-			hoc_execerror("multiple instances of source gid:", tmp);
+	  if (mi2[sgid[i]]==j) {
+			std::cout << my_rank << ":ParSpike: multiple instances of source gid: " << sgid[i] << std::endl;
 		}
-		(*mi2)[sgid[i]] = i;
+		mi2[sgid[i]] = i;
 	}
-	for (i=0; i < targets_->count(); ++i) {
-		assert(mi2->find(sgid2targets_->item(i), s2t_index_[i]));
+	for (i=0; i < targets_.size(); ++i) {
+	  assert(mi2.find(sgid2targets_[i])== s2t_index_[i]);
 	}
 	delete [] sgid;
 	delete mi2;
-	nrnmpi_v_transfer_ = var_transfer;
-	nrn_mk_transfer_thread_data_ = mk_ttd;
-	if (!v_structure_change) {
-		mk_ttd();
-	}
+	//	v_transfer_ = var_transfer;
+	//nrn_mk_transfer_thread_data_ = mk_ttd;
+	//if (!v_structure_change) {
+	//	mk_ttd();
+	//}
 }
 
-*/
 
 
 
+//! Barrier interface to MPI_Barrier
+/*! Halts processors until they all reach this point
+ */ 
 void ParSpike::barrier()
 {
-    MPI_Barrier(mpi_comm);
+#if DEBUG == 2
+  if (my_rank != 0)  std::cout << "Halting on MPI_barrier()"<< std::endl;
+#endif
+  if (MPI_Barrier(mpi_comm) != MPI_SUCCESS ) std::cout << "MPI_Barrier failure" << std::endl;
 }
 
 double ParSpike::dbl_allreduce(double x, int type)
@@ -670,3 +697,105 @@ int bgp_conserve(int nsend, int nrecv)
 #endif /*BGPDMA*/
 
 
+
+void ParSpike::alloclists() {
+  //if (!targets_) {
+	  /*      	  *targets_ = new std::list< double >;
+	  *sgid2targets_ = new  std::list<int>;
+	  // target_pntlist_ = new std::list<ConfigBase;
+	  *sources_ = new std::list<double>;
+	  *sgids_ = new std::list<int>;
+	  sgid2srcindex_ = new  std::map<int,int>;
+	  */ 
+incoming_source_buf_ = new double;
+	  outgoing_source_buf_ = new double;
+	  s2t_index_ = new int;
+
+ targets_.erase_all(); targets_.capacity(100);
+		//	target_pntlist_.capacity(100);
+	  sgid2targets_.erase_all(); sgid2targets_.capacity(100);
+	  sources_.erase_all(); sources_.capacity(100);
+	  sgids_.erase_all(); sgids_.capacity(100);
+	  sgid2srcindex_.clear();// sgid2srcindex_.capacity(256);
+	  
+	  //	}
+	//	v_transfer_ = var_transfer;
+}
+
+void ParSpike::nrn_partrans_clear() {
+  //	if (!targets_) { return; }
+	//	v_transfer_ = 0;
+	sgid2srcindex_.empty();
+	sgids_.empty();
+	sources_.empty();
+	sgid2targets_.empty();
+	targets_.empty();
+	//	delete target_pntlist_;
+	// targets_ = 0;
+	//	rm_ttd();
+	//nrn_mk_transfer_thread_data_ = 0;
+}
+
+
+
+
+void ParSpike::var_transfer() {
+
+//	fprintf(xxxfile, "%g\n", t);
+/*	if (nrn_nthread > 1) {
+		// threads and nhost is tangential to the main purpose and
+		// can be thought about further if needed
+		assert(numprocs == 1);
+		// for threads we do direct transfers under the assumption
+		// that v is being transferred and they were set in a
+		// previous multithread job. For the fixed step method this
+		// call is from nonvint which in the same thread job as update
+		// and that is the case even with multisplit. So we really
+		// need to break the job between update and nonvint. Too bad.
+		// For global cvode, things are ok except if the source voltage
+		// is at a zero area node since nocap_v_part2 is a part
+		// of this job and in fact the v does not get updated til
+		// the next job in nocap_v_part3. Again, too bad. But it is
+		// quite ambiguous, stability wise,
+		// to have a gap junction in a zero area node, anyway, since
+		// the system is then truly a DAE.
+		// For now we presume we have dealt with these matters and
+		// do the transfer.
+
+				assert(n_transfer_thread_data_ == nrn_nthread);
+		TransferThreadData& ttd = transfer_thread_data_[_nt->d];
+		for (int i = 0; i < ttd.cnt; ++i) {
+			*targets_->item(ttd.ti[i]) = *sources_->item(ttd.si[i]);
+		}
+		return;
+		
+	}
+*/
+	int i, n = sources_.size();
+	for (i=0; i < n; ++i) {
+	  outgoing_source_buf_[i] = sources_[i];
+	}
+#if DEBUG == 2
+for (i=0; i < 10; ++i) {
+	printf("outgoing %d %g\n", i, outgoing_source_buf_[i]);
+}
+#endif
+#if PARALLELSIM
+ if (numprocs > 1) {
+		double wt = wtime();
+		dbl_allgatherv(outgoing_source_buf_, incoming_source_buf_,
+			srccnt_, srcdspl_);
+		//	transfer_wait_ += wtime() - wt;
+		errno = 0;
+	}
+#endif
+	n = targets_.size();
+	for (i=0; i < n; ++i) {
+	  targets_[i] = incoming_source_buf_[s2t_index_[i]];
+	}
+#if 0
+for (i=0; i < 10; ++i) {
+	printf("targets %d %d %g\n", i, s2t_index_[i],  targets_[i]);
+}
+#endif
+}

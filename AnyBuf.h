@@ -5,7 +5,7 @@
 #include <string>
 #include <boost/any.hpp>
 
-//See documentation in doc/html/any/s02.html
+//See documentation in boost/doc/html/any/s02.html
 
 using boost::any_cast;
 typedef std::deque<boost::any> many;

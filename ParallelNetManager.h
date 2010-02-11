@@ -56,6 +56,8 @@ public:
     void prepare_sim();
     void launch_sim(ParNetwork&);
 
+    //! Fill the important Gid2PreSyn maps IN and OUT 
+    void fill_hashtables();  // maybe overkill - should be done in creation of cells and synapses
 
     void gatherspikes();
     void want_all_spikes();

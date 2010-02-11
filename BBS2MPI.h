@@ -39,6 +39,7 @@ namespace BBS2MPI
 
 bbsmpibuf* newbuf(int size);
 void free(bbsmpibuf* buf);
+void resize(bbsmpibuf* r, int size);
 void copy(bbsmpibuf* dest, bbsmpibuf* src);
 void ref(bbsmpibuf* buf);
 void unref(bbsmpibuf* buf);

@@ -1,9 +1,11 @@
-
+/// ParallelNetManager.cpp
 
 
 #include <errno.h>
 #include "Group.h"
 #include "GlobalDefs.h"
+#include "SimulationEnvironment.h"
+#include "OutputManager.h"
 #include "AnyBuf.h"
 #include "NeuronFactory.h"
 #include "ParallelNetManager.h"
@@ -14,7 +16,7 @@
 int ParallelNetManager::cell_cnt = 0;
 
 /*! ParallelNetManager Constructor
- * Pass niput args to ParNetwork2BBS
+ * Pass input args to ParNetwork2BBS
  * @param argc pass input arguments to MPI_Init 
  * @param argv pass input arguments to MPI_Init 
  * 
@@ -302,7 +304,7 @@ void ParallelNetManager::pinit()
 void ParallelNetManager::psolve(double x)
 {
 
-  launch_sim();
+  //launch_sim();
 
   //pc->psolve(x);  // this has to be done by PNM rather than BBS
 
@@ -533,8 +535,9 @@ void ParallelNetManager::connect_network(ParNetwork&net)
 
 
 void ParallelNetManager::launch_sim(ParNetwork & net)
-{
-  net.spike_exchange_init();
+{	
+NetPar::spike_exchange_init();
+  
     while (SimEnv::i_time() < SimEnv::i_duration()) {
         // input updates
         ManageableInputManager::input_update_general();
@@ -556,6 +559,7 @@ void ParallelNetManager::launch_sim(ParNetwork & net)
         net.update();
 
 	//Exchange Spikes
+	NetPar::spike_exchange();
 	//net.spike_exchange();
 	
         // weight updates of the concerned plastic synapses (with the class DataPlastNeuron)

@@ -7,7 +7,8 @@
 #include <deque>
 #include <boost/noncopyable.hpp>
 
-#include "BBS.h"
+
+//#include "BBS.h"
 #include "Visitor.h"
 #include "GlobalDefs.h"
 #include "IdCounter.h"
@@ -65,11 +66,12 @@ public:
     }
 
 #ifdef PARALLELSIM
-    //these methods are needed 
-    void send(double sendtime, BBS*);
-    void deliver(double, BBS*);
+    //these methods are needed by the parallel system 
+    double mindelay();
+    void send(double sendtime, ConfigBase*);
+    void deliver(double, ConfigBase*);
     void record(double t);
-    int gid_;
+    int gid_,threshold_;
     int output_index_;
     unsigned char localgid_; // compressed gid for spkie transfer
     std::deque<double> tqe_; //stores delivered events

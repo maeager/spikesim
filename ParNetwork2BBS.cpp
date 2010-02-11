@@ -30,11 +30,7 @@ ParNetwork2BBS::ParNetwork2BBS(int& argc, char**&argv)
 ParNetwork2BBS::ParNetwork2BBS(int* argc, char***argv)
 {
 #endif
-    // not clear at moment what is best way to handle nested context
-    int i = -1;
-//  if (ifarg(1)) {
-//      i = int(chkarg(1, 0, 10000));
-//  }
+
     bbs = new OcBBS(1, argc, argv);
 
     //bbs->ref();
@@ -78,7 +74,8 @@ int ParNetwork2BBS::submit_help()
 	    bbs->pkint(b->index);
     //std::cout<< " ob= " <<  hoc_object_name(ob)<< std::endl;
 	}
-*/	std::string *s = boost::any_cast<std::string> (&bbsbuf[i++]);
+*/	
+	std::string *s = boost::any_cast<std::string> (&bbsbuf[i++]);
             bbs->pkstr(s->c_str());
             firstarg = i;
             for (; ifarg(i); ++i) { // first is least significant
@@ -92,11 +89,8 @@ int ParNetwork2BBS::submit_help()
                 ii *= 4;
             }
     //printf("submit style %d %s argtypes=%o\n", style, gargstr(firstarg-1), argtypes);
-    //        bbs->pkint(argtypes);
-    //        pack_help(firstarg, bbs);
-
-	    bbs->pkint(argtypes);
-	    pack_help(firstarg);
+       	    bbs->pkint(argtypes);
+	    pack_help(firstarg);  
         }else{
             bbs->pkint(0); // hoc statement style
 	    std::string* s = boost::any_cast<std::string> (&bbsbuf[i++]);
@@ -118,7 +112,7 @@ double ParNetwork2BBS::context()
 {
     submit_help();
 #ifdef DEBUG
-std::cout << bbs->myid() <<" ParNetwork2BBS::context " <<std::endl; //<<gargstr(2)
+std::cout << bbs->myid() <<":  ParNetwork2BBS::context " <<std::endl; 
 #endif
 bbs->context();
     return 1.;
@@ -292,9 +286,10 @@ double ParNetwork2BBS::pctime()
     return bbs->time();
 }
 
+ /* 
 double ParNetwork2BBS::vtransfer_time()
 {
-    /*  int mode = ifarg(1) ? int(chkarg(1, 0., 2.)) : 0;
+    int mode = ifarg(1) ? int(chkarg(1, 0., 2.)) : 0;
         if (mode == 2) {
             return bbs->rtcomp_time_;
     #if PARANEURON
@@ -305,11 +300,12 @@ double ParNetwork2BBS::vtransfer_time()
         }
     #else
         }
-    */
+
     return 0;
 //#endif
 
 }
+ */
 
 double ParNetwork2BBS::wait_time()
 {
@@ -327,10 +323,6 @@ double ParNetwork2BBS::step_time()
 
 double ParNetwork2BBS::send_time()
 {
-//  int arg = ifarg(1) ? int(chkarg(1, 0, 10)) : 0;
-//  if (arg) {
-//      return nrn_bgp_receive_time(arg);
-//  }
     return bbs->send_time();
 }
 
@@ -354,12 +346,13 @@ double ParNetwork2BBS::gid_exists(int gid)
 {
     return int(bbs->gid_exists(gid));
 }
-
+/*
 double ParNetwork2BBS::cell()
 {
     bbs->cell();
     return 0.;
 }
+*/
 
 double ParNetwork2BBS::threshold(int id, double thd = -1.0)
 {
@@ -399,7 +392,7 @@ double ParNetwork2BBS::set_maxstep(double maxstep)
 {
     return bbs->netpar_mindelay(maxstep);
 }
-
+/*
 double ParNetwork2BBS::spike_stat(int *nsend, int * nsendmax, int * nrecv, int *nrecv_useful)
 {
     *nsend = *nsendmax = *nrecv = *nrecv_useful = 0;
@@ -431,10 +424,11 @@ double ParNetwork2BBS::target_var(void*)   // &target_variable, source_global_in
 //  bbs->target_var();
     return 0.;
 }
+*/
 
-double ParNetwork2BBS::setup_transfer(void*)   // after all source/target and before init and run
+double ParNetwork2BBS::setup_transfer()   // after all source/target and before init and run
 {
-  //    bbs->setup_transfer();
+  ParSpike::setup_transfer();
     return 0.;
 }
 
@@ -664,6 +658,10 @@ ConfigBase* ParNetwork2BBS::gid_connect(int gid, ConfigBase* syn)
  */
 void BBSImpl::execute_helper()
 {
+#ifdef DEBUG
+std::cout << " Calling BBSImpl::execute_helper() " <<std::endl;
+#endif
+  /*TODO
     char* s;
     int style = upkint();
     switch (style) {
@@ -747,5 +745,6 @@ void BBSImpl::execute_helper()
              }
     break;
     }
+  */
 }
 

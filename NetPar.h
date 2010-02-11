@@ -9,7 +9,7 @@
 #else
 #include "ParSpike.h"
 #endif
-#include "BBS.h"
+//#include "BBS.h"
 
 #include <utility>
 #include <list>
@@ -39,9 +39,9 @@ extern int nrn_use_selfqueue_;
 
 //extern void nrn_partrans_clear();
 
-class ParNetwork;
+//class ParNetwork;
 
-class NetParEvent;
+//class NetParEvent;
 
 #define PreSyn SynapseInterface 
 
@@ -133,15 +133,15 @@ static Gid2PreSyn* gid2in_ = new Gid2PreSyn;
 class NetPar : public ParSpike
 {
 private:
-    //! Pack Spikes
-    inline static void sppk(unsigned char* c, int gid) {
+    
+  inline static void sppk(unsigned char* c, int gid) {/*! Pack Spikes */
         for (register int i = ParSpike::localgid_size_ - 1; i >= 0; --i) {
             c[i] = gid & 255;
             gid >>= 8;
         }
     }
-    //! Unpack Spikes
-    inline static int spupk(unsigned char* c) {
+
+  inline static int spupk(unsigned char* c) {/*! Unpack Spikes */
         int gid = c[0];
         for (register int i = 1; i < ParSpike::localgid_size_; ++i) {
             gid <<= 8;
@@ -201,7 +201,7 @@ public:
     static double min_interprocessor_delay_;
     static double mindelay_; // the one actually used. Some of our optional algorithms
     static double last_maxstep_arg_;
-    static NetParEvent* npe_; // nrn_nthread of them
+    //    static NetParEvent* npe_; // nrn_nthread of them
     static int n_npe_; // just to compare with nrn_nthread
 
 

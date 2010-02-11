@@ -7,6 +7,8 @@
 #include <cassert>
 #include <iostream>
 #include <vector>
+#include <list>
+#include <map>
 
 //must unset for mpi to work
 #undef SEEK_SET
@@ -97,8 +99,9 @@ public:
     double dbl_allreduce(double x, int type);
     void dbl_allgather(double* s, double* r, int n) ;
 
-    //void setup_transfer();
-
+    void setup_transfer();
+    void nrn_partrans_clear();
+    void alloclists();
     static std::vector<SpikePacket_> spikeout_;
     static std::vector<SpikePacket_> spikein_;
 #if _spikebuf_size > 0
@@ -129,7 +132,21 @@ public:
     static int* displs;
     static int* byteovfl; /* for the compressed transfer method */
 
+    /* partrans.cpp */
+    //void (*v_transfer_)(ParSpike*);
+ void var_transfer();
 
+ static double transfer_wait_;
+ int src_buf_size_, *srccnt_, *srcdspl_;
+ static std::vector<double > targets_;
+ static std::vector<int> sgid2targets_;
+//std::list<ConfigBase*> target_pntlist_;
+static std::vector<double> sources_;
+static std::vector<int> sgids_;
+static std::map<int,int> sgid2srcindex_;
+double* incoming_source_buf_;
+double* outgoing_source_buf_;
+int* s2t_index_;
 
 };
 
