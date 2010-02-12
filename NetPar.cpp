@@ -281,13 +281,11 @@ void NetPar::spike_exchange_init()
 #ifdef DEBUG
 std::cout <<"NetPar::spike_exchange_init" <<std::endl;
 #endif
-//    if (!nrn_need_npe()) {
-//        return;
-//    }
-//  if (!active_ && !nrn_use_selfqueue_) { return; }
+
     alloc_space();
-//std::cout<< " use= " <<  use<< "  active=" <<  active_<< std::endl;
-    //calc_actual_mindelay();
+
+
+//TODO calc_actual_mindelay();
     usable_mindelay_ = mindelay_;
     if (cvode_active_ == 0) {//&& nrn_nthread > 1) {
         usable_mindelay_ -= SimEnv::timestep(); //dt;
@@ -761,21 +759,29 @@ void NetPar::gid_clear()
 
 
 
-/*
+
 double PreSyn::mindelay()
 {
     double md = 1e9;
-    //TODO  int i;
+    int i;
+
+/*
+Search all incoming synapses for their delay to find the smallest
+
+src->list_postsynapses
+
         for (i=dil_.count()-1; i >= 0; --i) {
             NetCon* d = dil_.item(i);
             if (md > d->delay_) {
                 md = d->delay_;
             }
         }
-      return md;
+	return md;
+*/
+      return 0.;
 
 }
-*/
+
 
 double NetPar::set_mindelay(double maxdelay)
 {
@@ -794,6 +800,7 @@ double NetPar::set_mindelay(double maxdelay)
 
 //    else{
 //  NrnHashIterate(Gid2PreSyn, gid2in_, PreSyn*, ps) {
+
     PreSynPtr ps;
     for (Gid2PreSyn::const_iterator i = gid2in_->begin();
             i != gid2in_->end();
@@ -900,8 +907,6 @@ int NetPar::spike_compress(int nspike, bool gid_compress, int xchng_meth)
 }
 
 // following from src/netcvode/netcvode.cpp
-
-
 
 
 void SynapseInterface::send(double tt, ConfigBase* b) {

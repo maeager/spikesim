@@ -4,7 +4,8 @@ BOOSTDIR = /usr/local
 MPICC = $(MPIDIR)/bin/mpicc
 MPICXX = $(MPIDIR)/bin/mpicxx
 CXX = $(MPICXX)
-CXXFLAGS = -Wall -I$(BOOSTDIR) -I$(MPIDIR)/include  -DPARALLELSIM -DDEBUG  -DCPPMPI
+CXXFLAGS = -Wall -I$(BOOSTDIR) -I$(MPIDIR)/include  -DPARALLELSIM -DDEBUG  
+#-DCPPMPI
 LDFLAGS = -lm  
 # -L/opt/mpich/ch-p4/lib -lmpich
 

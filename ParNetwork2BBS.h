@@ -96,7 +96,7 @@ public:
 //   double spike_record(int gid, double* spikevec, double* gidvec) ;
     double psolve(double  step);
     double set_maxstep(double maxstep);
-    //double spike_stat(int *nsend, int * nsendmax, int * nrecv, int *nrecv_useful);
+    double spike_stat(int *nsend, int * nsendmax, int * nrecv, int *nrecv_useful);
     //double maxhist(std::vector<double> vec);
     double checkpoint(void*);
     double spcompress(int , int , int);
@@ -105,9 +105,7 @@ public:
     double source_var(void*);  // &source_variable, source_global_index
     double target_var(void*) ; // &target_variable, source_global_index
 
-    double setup_transfer(void*); // after all source/target and before init and run
-//  "splitcell_connect", splitcell_connect,
-//  "multisplit", multisplit,
+    double setup_transfer(); 
 
     double barrier();
     double allreduce(double val , int type) ;

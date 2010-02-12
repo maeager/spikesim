@@ -31,6 +31,7 @@ class SynapseTemplate
     friend class Bide<SynMech>::X;
 
     friend class DataCommonNeuron;
+
 public:
     SynapseTemplate(ConfigBase * datacfg, SynMech * const syn_mech, ConfigBase * plast_cfg, NeuronInterface * const preneuron, NeuronInterface * const postneuron);
     inline const double & weight() {

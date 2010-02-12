@@ -392,14 +392,14 @@ double ParNetwork2BBS::set_maxstep(double maxstep)
 {
     return bbs->netpar_mindelay(maxstep);
 }
-/*
+
 double ParNetwork2BBS::spike_stat(int *nsend, int * nsendmax, int * nrecv, int *nrecv_useful)
 {
     *nsend = *nsendmax = *nrecv = *nrecv_useful = 0;
     bbs->netpar_spanning_statistics(nsend, nsendmax, nrecv, nrecv_useful);
     return double(*nsendmax);
 }
-
+/*
 double ParNetwork2BBS::maxhist(std::vector<double> vec)
 {
     bbs->netpar_max_histogram(vec);
@@ -428,7 +428,7 @@ double ParNetwork2BBS::target_var(void*)   // &target_variable, source_global_in
 
 double ParNetwork2BBS::setup_transfer()   // after all source/target and before init and run
 {
-  ParSpike::setup_transfer();
+    bbs->setup_transfer();
     return 0.;
 }
 

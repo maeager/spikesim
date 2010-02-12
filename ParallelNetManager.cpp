@@ -536,8 +536,11 @@ void ParallelNetManager::connect_network(ParNetwork&net)
 
 void ParallelNetManager::launch_sim(ParNetwork & net)
 {	
-NetPar::spike_exchange_init();
+	pc->bbs->spike_exchange_init(); //NetPar::spike_exchange_init();
   
+//fadvance
+//	-netpar_solve
+
     while (SimEnv::i_time() < SimEnv::i_duration()) {
         // input updates
         ManageableInputManager::input_update_general();
@@ -559,7 +562,7 @@ NetPar::spike_exchange_init();
         net.update();
 
 	//Exchange Spikes
-	NetPar::spike_exchange();
+	pc->bbs->spike_exchange() ; //NetPar::spike_exchange();
 	//net.spike_exchange();
 	
         // weight updates of the concerned plastic synapses (with the class DataPlastNeuron)

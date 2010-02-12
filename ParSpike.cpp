@@ -575,10 +575,10 @@ void ParSpike::setup_transfer()
 		mi2[sgid[i]] = i;
 	}
 	for (i=0; i < targets_.size(); ++i) {
-	  assert(mi2.find(sgid2targets_[i])== s2t_index_[i]);
+	  assert(mi2[sgid2targets_[i]] == s2t_index_[i]);
 	}
 	delete [] sgid;
-	delete mi2;
+//	delete mi2;
 	//	v_transfer_ = var_transfer;
 	//nrn_mk_transfer_thread_data_ = mk_ttd;
 	//if (!v_structure_change) {
@@ -711,12 +711,12 @@ incoming_source_buf_ = new double;
 	  outgoing_source_buf_ = new double;
 	  s2t_index_ = new int;
 
- targets_.erase_all(); targets_.capacity(100);
+ targets_.clear(); targets_.reserve(100);
 		//	target_pntlist_.capacity(100);
-	  sgid2targets_.erase_all(); sgid2targets_.capacity(100);
-	  sources_.erase_all(); sources_.capacity(100);
-	  sgids_.erase_all(); sgids_.capacity(100);
-	  sgid2srcindex_.clear();// sgid2srcindex_.capacity(256);
+	  sgid2targets_.clear(); sgid2targets_.reserve(100);
+	  sources_.clear(); sources_.reserve(100);
+	  sgids_.clear(); sgids_.reserve(100);
+	  sgid2srcindex_.clear();//sgid2srcindex_.reserve(256);
 	  
 	  //	}
 	//	v_transfer_ = var_transfer;
@@ -725,11 +725,11 @@ incoming_source_buf_ = new double;
 void ParSpike::nrn_partrans_clear() {
   //	if (!targets_) { return; }
 	//	v_transfer_ = 0;
-	sgid2srcindex_.empty();
-	sgids_.empty();
-	sources_.empty();
-	sgid2targets_.empty();
-	targets_.empty();
+	sgid2srcindex_.clear();
+	sgids_.clear();
+	sources_.clear();
+	sgid2targets_.clear();
+	targets_.clear();
 	//	delete target_pntlist_;
 	// targets_ = 0;
 	//	rm_ttd();
