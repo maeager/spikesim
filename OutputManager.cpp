@@ -8,7 +8,7 @@
 
 // file handlers
 #include "AsciiFileWrapper.h"
-// #include "MatlabFileWrapper.h"
+#include "MatFileWrapper.h"
 
 // operations
 #include "SpikeListOperations.h"
@@ -100,9 +100,9 @@ void OutputManager::add_outputter(const std::string & key, const std::string & f
     if (freq_tag != "during_sim" && freq_tag != "end_sim" && freq_tag != "each_time_step")
         throw ConfigError("OutputManager: unknown freq_tag '" + freq_tag + "' (should be: 'during_sim', 'end_sim' or 'each_time_step')");
 
+    std::string name_tmp = make_name(name_model_ + key);
     // choice of outputter
     if (output_file_type == "ascii") {
-        std::string name_tmp = make_name(name_model_ + key);
         if (key == "spike") {
             AsciiFileInitialiser afi(name_tmp, (unsigned)log10((double)SimEnv::i_duration()) + 1);
             outputter = new OutputterImpl<AsciiFileWrapper, IndivSpikeOutputter, SingleWayThroughGroups>(key, freq_tag, afi, 0, 0);
@@ -122,43 +122,25 @@ void OutputManager::add_outputter(const std::string & key, const std::string & f
             AsciiFileInitialiser afi(name_tmp, 7);
             outputter = new OutputterImpl<AsciiFileWrapper, PotentialOutputter, SingleWayThroughGroups>(key, freq_tag, afi, 0, 0);
         } else throw ConfigError("OutputManager: unknown key '" + key + "' (should be: 'weight', 'rate', 'correl', 'spike' or 'potential')");
-    }
-    /*  else if (output_file_type == "matlab")
-        {
-            std::string var_name_tmp = make_name(name_model_ + key);
-            // send the number of outputting, to create matlab matrices end cells of suitable dimensions
-            unsigned nb_outputting_iterations = 0;
-            if (freq_tag == "during_sim")
-                nb_outputting_iterations = (unsigned) ceil((double) SimEnv::i_duration() / i_outputting_period());
-            else if (freq_tag == "end_sim")
-                nb_outputting_iterations = 1;
-            else if (freq_tag == "each_time_step")
-                nb_outputting_iterations = SimEnv::i_duration();
-
-            // creates the outputter
-            if (key == "spike")
-            {
-                MatlabFileInitialiser mfi(name_model_, var_name_tmp, nb_outputting_iterations);
-                outputter = new OutputterImpl<MatlabFileWrapper<SpikeListToMatlabCellArray>, IndivSpikeOutputter, SingleWayThroughGroups>(key, freq_tag, mfi, 0, 0);
-            }
-            else if (key == "rate")
-            {
-                MatlabFileInitialiser mfi(name_model_, var_name_tmp, nb_outputting_iterations);
-                outputter = new OutputterImpl<MatlabFileWrapper<ToMatlabMatrix>, SpikingRateOutputter, SingleWayThroughGroups>(key, freq_tag, mfi, 0, 0);
-            }
-    / *     else if (key == "correl")
-            {
-                MatlabFileInitialiser mfi(name_model_, var_name_tmp, nb_outputting_iterations);
-                outputter = new OutputterImpl<MatlabFileWrapper<ToMatlabMatrix>, CovarianceOutputter<STDPFunction>, AllCrossPairsThroughSameGroups>(key, freq_tag, mfi, 0, 0);
-            }
-    * /     else if (key == "weight")
-            {
-                MatlabFileInitialiser mfi(name_model_, var_name_tmp, nb_outputting_iterations);
-                outputter = new OutputterImpl<MatlabFileWrapper<ToMatlabMatrix>, WeightOutputter, SingleWayThroughGroups>(key, freq_tag, mfi, 0, 0);
-            }
-            else throw ConfigError("OutputManager: unknown key '" + key + "' (should be: 'weight', 'rate', 'correl' or 'spike')");
-        }
-    */  else throw ConfigError("OutputManager: unknown type of output file (should be: 'ascii' or 'matlab'");
+#ifdef MAT_FILE_OUTPUT
+    } else if (output_file_type == "matlab") {
+        if (key == "spike") {
+            MatFileInitialiser mfi(name_tmp, MATFILE_SPIKE);
+            outputter = new OutputterImpl<MatFileWrapper, IndivSpikeOutputter, SingleWayThroughGroups>(key, freq_tag, mfi, 0, 0);
+        } else if (key == "rate") {
+            MatFileInitialiser mfi(name_tmp, MATFILE_MATRIX);
+            outputter = new OutputterImpl<MatFileWrapper, SpikingRateOutputter, SingleWayThroughGroups>(key, freq_tag, mfi, 0, 0);
+        } else if (key == "weight") {
+            MatFileInitialiser mfi(name_tmp, MATFILE_MATRIX);
+            outputter = new OutputterImpl<MatFileWrapper, WeightOutputter, SingleWayThroughGroups>(key, freq_tag, mfi, 0, 0);
+        } else if (key == "potential") {
+            MatFileInitialiser mfi(name_tmp, MATFILE_MATRIX);
+            outputter = new OutputterImpl<MatFileWrapper, PotentialOutputter, SingleWayThroughGroups>(key, freq_tag, mfi, 0, 0);
+        } else throw ConfigError("OutputManager: unknown key '" + key + "' (should be: 'weight', 'rate', 'correl', 'spike' or 'potential')");
+    } else throw ConfigError("OutputManager: unknown type of output file (should be: 'ascii' or 'matlab'");
+#else   // !defined(MAT_FILE_OUTPUT)
+    } else throw ConfigError("OutputManager: unknown type of output file (should be: 'ascii')");
+#endif  // !defined(MAT_FILE_OUTPUT)
 
     // add the newly created outputter to the list
     outputter_list_.push_back(outputter);
