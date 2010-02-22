@@ -108,7 +108,7 @@ main(int argc, char *argv[])
     //pnm.pc->barrier();
     //if (pnm.myid == 0) {
     //    std::cin.get(); }
-    pnm.terminate();
+    pnm.done();
     // wait for key pressed
     return 0;
 }

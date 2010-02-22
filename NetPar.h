@@ -30,7 +30,7 @@
 
 #undef MD
 #define MD 2147483648.
-
+#define NRNSTAT 0
 
 
 extern int nrn_use_selfqueue_;
@@ -160,7 +160,7 @@ public:
     static void gid_clear();
     void spike_exchange_init();
     static double set_mindelay(double maxdelay);
-    static void timeout(int);
+  //    static void timeout(int);
     static void spike_exchange();
     void nrn2ncs_outputevent(int netcon_output_index, double firetime);
     void outputevent(unsigned char localgid, double firetime);
@@ -183,10 +183,10 @@ public:
     static Gid2PreSyn** localmaps_;
 
     static std::deque< std::pair<int, double> > tq;
-#define NRNSTAT 1
+
     static int nsend_, nsendmax_, nrecv_, nrecv_useful_;
 #if NRNSTAT
-    static std::vector<double> max_histogram_;
+    //    static std::vector<double> max_histogram_;
 #endif
 
     static int ocapacity_; /// for spikeout_ 

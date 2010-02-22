@@ -13,7 +13,7 @@ SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLi
 
 # SpikeSim_OBJECTS = CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o Network.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o main.o 
 
-ParSpikeSim_OBJECTS= ParNetwork.o BBS.o  ParSpike.o BBServer.o BBClient.o BBS2MPI.o  ParNetwork2BBS.o ParallelNetManager.o  CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o NeuronActivationFunction.o NoThreading.o OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o NetPar.o
+ParSpikeSim_OBJECTS= ParNetwork.o BBS.o  ParSpike.o BBServer.o BBClient.o BBS2MPI.o  ParNetwork2BBS.o ParallelNetManager.o  CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o NeuronActivationFunction.o  OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o NetPar.o
 
 ParSpikeSim_CXXOBJECTS= NetPar.o ParNetwork.o BBS.o ParSpike.2.o BBServer.o BBClient.o BBS2MPI.2.o  ParNetwork2BBS.o ParallelNetManager.o  CondSynMech.o ConnectivityManager.o DataIndivSynapse.o DataLightSynapse.o DataPlastNeuron.o DataPlastSynapse.o DeltaCorrInputRefs.o DistributionManager.o DoubleExpSynMech.o Group.o IFMech.o InstantIFMech.o InstantSynMech.o ManageableInput.o NeuronActivationFunction.o  OscillatoryCorrInputRefs.o OutputManager.o PoissonMech.o RandomGenerator.o STDPMech.o ShortTimeCorrInputRefs.o SimulationEnvironment.o 
 
@@ -105,7 +105,7 @@ SpikeSim.exe: $(SpikeSim_OBJECTS)
 	$(MPICXX) $(CXXFLAGS) -o SpikeSim.exe $(SpikeSim_OBJECTS)
 
 main4.exe: $(ParSpikeSim_OBJECTS) main4.o
-	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main4.exe main4.o $(ParSpikeSim_OBJECTS) NoThreading.o
+	$(MPICXX) $(LDFLAGS) $(CXXFLAGS) -o main4.exe main4.o $(ParSpikeSim_OBJECTS)
 
 
 main3.exe: $(ParSpikeSim_OBJECTS) main3.o

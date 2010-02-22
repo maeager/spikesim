@@ -148,6 +148,10 @@ double* incoming_source_buf_;
 double* outgoing_source_buf_;
 int* s2t_index_;
 
+/*timeout*/
+ static void timeout(int);
+ static void timed_out(int);
+
 };
 
 //class ParSpike GlobalSpikeConfig;

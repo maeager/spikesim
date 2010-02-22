@@ -801,3 +801,65 @@ for (i=0; i < 10; ++i) {
 }
 #endif
 }
+
+#if 0
+#include <signal.h>
+#include <sys/time.h>
+#include <section.h>
+
+static double told;
+static struct itimerval value;
+#if !defined(BLUEGENE)
+static struct sigaction act, oact;
+#endif
+
+
+void ParSpike::timed_out(int sig) {
+#ifdef DEBUG
+  std::cout << "timed_out told = " << told << "  t= "<< t << std::endl;
+#endif
+	if (_t == told) { /* nothing has been accomplished since last signal*/
+	  std::cout << "nrn_timeout t="<< _t<<std::endl;
+		ParSpike::abort(0);
+	}
+	told = _t;
+}
+
+void ParSpike::timeout(int seconds) {
+	if (my_rank != 0) { return; }
+#if BLUEGENE
+	if (seconds) {
+		told = nrn_threads->_t;
+		signal(SIGALRM, timed_out);
+	}else{
+		signal(SIGALRM, SIG_DFL);
+	}
+#else
+	if (seconds) {
+		told = nrn_threads->_t;
+		act.sa_handler = timed_out;
+		act.sa_flags = SA_RESTART;
+		if(sigaction(SIGALRM, &act, &oact)) {
+		  std::cout<< "sigaction failed"<< std::endl;
+			mpiabort(0);
+		}
+	}else{
+		sigaction(SIGALRM, &oact, (struct sigaction*)0);
+	}
+#endif
+	value.it_interval.tv_sec = seconds;
+	value.it_interval.tv_usec = 0;
+	value.it_value.tv_sec = seconds;
+	value.it_value.tv_usec = 0;
+	if(setitimer(ITIMER_REAL, &value, (struct itimerval*)0)) {
+	  std::cout<< "setitimer failed" <<std::endl;
+	  mpiabort(0);
+	}
+	
+}
+
+#else
+
+void ParSpike::timeout(int err){}
+
+#endif
