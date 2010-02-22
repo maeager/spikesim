@@ -479,8 +479,11 @@ void ParallelNetManager::create_network(ParNetwork& net)
 #endif
         NeuronFactory nrnfactory( (*grp)->dataconfigurator(),  (*grp)->neuronconfigurator());
         for (Size ii = 0; ii < (*grp)->size(); ++ii){
-	  //Is this cell to be created on the current node
+	  //Is this cell to be created on the current node?
              if (gid_exists(cell_cnt++)) {
+#ifdef DEBUG
+        std::cout << "Creating cells in Group " << std::endl;
+#endif
 	       (*grp)->list_.push_back(boost::shared_ptr<NeuronInterface>(nrnfactory.create()));
 	     }
 	}
@@ -562,6 +565,7 @@ void ParallelNetManager::launch_sim(ParNetwork & net)
         net.update();
 
 	//Exchange Spikes
+	
 	pc->bbs->spike_exchange() ; //NetPar::spike_exchange();
 	//net.spike_exchange();
 	

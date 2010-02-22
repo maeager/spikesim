@@ -84,6 +84,7 @@ PreSyn::~PreSyn()
 
 }
 */
+
 NetPar::NetPar(void)
 {
 
@@ -387,6 +388,7 @@ std::cout<<  my_rank <<" spike_exchange sent  " <<  nout_<< "  received "<<  n<<
 #endif
         }
     }
+
     int ms = max_histogram_.size() - 1;
     mx = (mx < ms) ? mx : ms;
     max_histogram_[mx] += 1.;

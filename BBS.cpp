@@ -717,7 +717,7 @@ void BBS::netpar_solve(double tstop)
     }
     double wt;
 
-    BBS2MPI::timeout(20);
+    ParSpike::timeout(20);
      wt = wtime();
     //    if (cvode_active_) {
 //TODO      ncs2nrn_integrate(tstop);
@@ -729,7 +729,7 @@ void BBS::netpar_solve(double tstop)
 
     NetPar::spike_exchange();
 
-    BBS2MPI::timeout(0);
+    ParSpike::timeout(0);
     impl_->wait_time_ += NetPar::wt_;
     impl_->send_time_ += NetPar::wt1_;
     /*    if (NetPar::npe_) {

@@ -16,7 +16,7 @@
 
 
 void
-end_spikesim()
+force_end_spikesim()
 {
 
     ParSpike::terminate();
@@ -82,8 +82,8 @@ main(int argc, char *argv[])
  //   std::cin.get();
 
     // open the output files
-    OutputManager::open_files();
-    OutputManager::do_output_connectivity(std::list<Size>(), std::list<Size>(), 1);
+    //OutputManager::open_files();
+    //OutputManager::do_output_connectivity(std::list<Size>(), std::list<Size>(), 1);
 
 
     // start time clock
@@ -91,9 +91,12 @@ main(int argc, char *argv[])
 
 
     // start of the simulation
-
-    pnm.pinit();
-
+    //pnm.pc->worker();
+    //if (pnm.myid==0) {
+    //  std::cout << " Hit Enter to start. "<< std::endl;
+    //  std::cin.get();
+    //}
+    //pnm.pinit();
 
     // start of the simulation
     // start of the simulation
@@ -116,7 +119,11 @@ main(int argc, char *argv[])
     std::cout << "Hello World! I am " << pnm.myid << " of " << pnm.nhost << std::endl;
 
     //Finish and Clean up
-    if (pnm.myid == 0) pnm.pc->done();
-    end_spikesim();
+    if (pnm.myid == 0) {
+      pnm.pc->done();
+    }else {
+      sleep(0.2);
+      force_end_spikesim();
+    }
     return 0;
 }
