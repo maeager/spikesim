@@ -353,7 +353,7 @@ bool BBSImpl::working(int& id, double& x, int& userid)
             return true;
         } else if ((id = look_take_todo()) != 0) {
 #ifdef DEBUG
-            std::cout <<  " working: no result for " <<  working_id_ << "  but did get _todo id=" << id  << " " << std::endl;
+                    std::cout <<  " working: no result for " <<  working_id_ << "  but did get _todo id=" << id  << " " << std::endl;
 #endif
             execute(id);
         }

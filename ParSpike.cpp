@@ -136,6 +136,7 @@ void ParSpike::make_spike_type()
 
 static MPI_Datatype spikebuf_type;
 
+//! Prepare the SpikeBuffer and commit the type to MPI
 void ParSpike::make_spikebuf_type()
 {
     SpikeBuffer_ s;
@@ -188,6 +189,7 @@ void ParSpike::terminate()
 
 }
 
+//! Method to abort all MPI processes before aborting program
 void ParSpike::mpiabort(int errcode)
 {
 
